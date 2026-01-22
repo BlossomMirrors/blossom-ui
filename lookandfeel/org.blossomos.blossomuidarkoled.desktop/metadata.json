@@ -1,0 +1,24 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "info@blossomos.org",
+        "Name": "Blossom"
+      },
+      {
+        "Name": "Yannik Ain"
+      }
+    ],
+    "Category": "",
+    "Description": "BlossomUI Dark OLED",
+    "Description[en_GB]": "BlossomUI Dark OLED",
+    "Id": "org.blossomos.blossomuidarkoled.desktop",
+    "License": "GPL-2.0-or-later",
+    "Name": "BlossomUI Dark OLED",
+    "Name[en_GB]": "BlossomUI Dark OLED",
+    "Website": "https://github.com/Bali10050/BlossomUI"
+  },
+  "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;Dark;OLED;Theme;",
+  "X-KDE-PluginInfo-Version": "1.0"
+}

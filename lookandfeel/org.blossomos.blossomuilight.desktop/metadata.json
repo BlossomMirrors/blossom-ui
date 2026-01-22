@@ -1,0 +1,24 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "info@blossomos.org",
+        "Name": "Blossom"
+      },
+      {
+        "Name": "Yannik Ain"
+      }
+    ],
+    "Category": "",
+    "Description": "BlossomUI Light",
+    "Description[en_GB]": "BlossomUI Light",
+    "Id": "org.blossomos.blossomuilight.desktop",
+    "License": "GPL-2.0-or-later",
+    "Name": "BlossomUI Light",
+    "Name[en_GB]": "BlossomUI Light",
+    "Website": "https://github.com/Bali10050/BlossomUI"
+  },
+  "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;Light;Theme;",
+  "X-KDE-PluginInfo-Version": "1.0"
+}

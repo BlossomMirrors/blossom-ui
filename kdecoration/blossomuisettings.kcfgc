@@ -1,0 +1,6 @@
+File=blossomuisettingsdata.kcfg
+ClassName=InternalSettings
+NameSpace=BlossomUI
+Singleton=false
+Mutators=true
+GlobalEnums=true

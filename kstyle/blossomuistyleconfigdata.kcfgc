@@ -1,0 +1,6 @@
+File=blossomui.kcfg
+ClassName=StyleConfigData
+NameSpace=BlossomUI
+Singleton=true
+Mutators=true
+GlobalEnums=true
