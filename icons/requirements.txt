@@ -1,0 +1,2 @@
+requests>=2.31.0
+# or install with yay -Sy python-requests and then just run ./icongen.py
