@@ -4,10 +4,13 @@ Lucide Icon Generator for BlossomUI Icon Theme
 Fetches icons from Lucide icon library and applies KDE theme text color.
 
 Usage:
-    python icongen.py <icon-name> <path/to/original> [additional/symlink/path...]
+    python icongen.py <icon-name> [additional/symlink/path...]
+
+The source icon is always saved to source/<icon-name>.svgz.
+All target paths become symlinks pointing to the source file.
 
 Example:
-    python icongen.py wifi apps/16/wifi.svg apps/22/wifi.svg
+    python icongen.py wifi actions/16/network-wifi actions/22/network-wifi
 """
 
 import sys
@@ -44,7 +47,7 @@ def apply_kde_theme_colors(svg_content, size=16):
     vb_parts = [float(x) for x in original_viewbox.split()]
     vb_x, vb_y, vb_w, vb_h = vb_parts[0], vb_parts[1], vb_parts[2], vb_parts[3]
     
-    padding = 1
+    padding = 3
     new_viewbox = f"{vb_x - padding} {vb_y - padding} {vb_w + padding * 2} {vb_h + padding * 2}"
     
     root.set('width', '16')
@@ -133,40 +136,19 @@ def save_icon(svg_content, target_path):
 
 
 def create_symlink(source, target):
-    import shutil
-    
-    source_path = Path(source).with_suffix('.svgz')
-    target_path = Path(target)
-    
-    # If target is in a sized directory (16/, 22/, 24/, 32/), copy instead of symlink
-    if any(f'/{size}/' in str(target_path) for size in ['16', '22', '24', '32', '48', '64']):
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Remove old files
-        for ext in ['.svg', '.svgz']:
-            old_file = target_path.with_suffix(ext)
-            if old_file.exists() or old_file.is_symlink():
-                old_file.unlink()
-        
-        # Copy the svgz file
-        target_svgz = target_path.with_suffix('.svgz')
-        shutil.copy2(source_path, target_svgz)
-        print(f"Copied: {target_svgz}")
-        return
-    
-    # For symbolic/ and other directories, use symlinks as before
     source_path = Path(source).resolve()
-    # Ensure target extension matches source extension (.svgz -> .svgz)
-    target_path = target_path.with_suffix(source_path.suffix)
+    target_path = Path(target).with_suffix(source_path.suffix)
     target_path.parent.mkdir(parents=True, exist_ok=True)
 
-    if target_path.exists() or target_path.is_symlink():
-        target_path.unlink()
+    for ext in ['.svg', '.svgz']:
+        old = target_path.with_suffix(ext)
+        if old.exists() or old.is_symlink():
+            old.unlink()
 
     try:
         rel_source = os.path.relpath(source_path, target_path.parent)
         target_path.symlink_to(rel_source)
-        print(f"Symlinked: {target_path} -> {source}")
+        print(f"Symlinked: {target_path} -> {rel_source}")
     except Exception as e:
         print(f"Error creating symlink {target}: {e}", file=sys.stderr)
 
@@ -221,11 +203,11 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Basic usage
-  python icongen.py wifi source/wifi.svgz actions/16/network-wifi.svgz
+  # Basic usage (source saved to source/wifi.svgz automatically)
+  python icongen.py wifi actions/16/network-wifi actions/22/network-wifi
 
   # With mapping file
-  python icongen.py --map=icon_mapping.json wifi source/wifi.svgz actions/16/network-wifi.svgz
+  python icongen.py --map=icon_mapping.json wifi actions/16/network-wifi
 
   # Use existing mapping (fetch from mapping file)
   python icongen.py --map=icon_mapping.json --from-map wifi
@@ -233,8 +215,7 @@ Examples:
     )
 
     parser.add_argument('icon_name', help='Lucide icon name to fetch')
-    parser.add_argument('source_path', nargs='?', help='Path to save the source icon (e.g., source/wifi.svgz)')
-    parser.add_argument('target_paths', nargs='*', help='Additional paths for symlinks')
+    parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<icon-name>.svgz is always the source)')
     parser.add_argument('--map', metavar='FILE', help='Icon mapping JSON file to update')
     parser.add_argument('--from-map', action='store_true',
                         help='Use source and target paths from mapping file (requires --map)')
@@ -269,12 +250,7 @@ Examples:
         print(f"  Targets: {len(target_paths)} paths")
 
     else:
-        if not args.source_path:
-            print("Error: source_path is required (or use --from-map)", file=sys.stderr)
-            parser.print_help()
-            sys.exit(1)
-
-        source_path = args.source_path
+        source_path = f"source/{args.icon_name}.svgz"
         target_paths = args.target_paths
 
     # Fetch and process icon
