@@ -114,6 +114,10 @@ StyleConfig::StyleConfig(QWidget *parent)
     connect(_useNewCheckBox, &QAbstractButton::toggled, this, &StyleConfig::updateChanged);
     connect(_documentModeTabs, &QAbstractButton::toggled, this, &StyleConfig::updateChanged);
     connect(_fullOutline, &QAbstractButton::toggled, this, &StyleConfig::updateChanged);
+    connect(_capacityBarWarnThreshold, SIGNAL(valueChanged(int)), SLOT(updateChanged()));
+    connect(_capacityBarCritThreshold, SIGNAL(valueChanged(int)), SLOT(updateChanged()));
+    connect(_capacityBarWarnColor, &KColorButton::changed, this, &StyleConfig::updateChanged);
+    connect(_capacityBarCritColor, &KColorButton::changed, this, &StyleConfig::updateChanged);
 }
 
 //__________________________________________________________________
@@ -167,6 +171,10 @@ void StyleConfig::save()
     StyleConfigData::setUseNewCheckBox(_useNewCheckBox->isChecked());
     StyleConfigData::setDocumentModeTabs(_documentModeTabs->isChecked());
     StyleConfigData::setFullOutline(_fullOutline->isChecked());
+    StyleConfigData::setCapacityBarWarnThreshold(_capacityBarWarnThreshold->value());
+    StyleConfigData::setCapacityBarCritThreshold(_capacityBarCritThreshold->value());
+    StyleConfigData::setCapacityBarWarnColor(_capacityBarWarnColor->color());
+    StyleConfigData::setCapacityBarCritColor(_capacityBarCritColor->color());
 
     StyleConfigData::self()->save();
 
@@ -299,6 +307,14 @@ void StyleConfig::updateChanged()
         modified = true;
     else if (_fullOutline->isChecked() != StyleConfigData::fullOutline())
         modified = true;
+    else if (_capacityBarWarnThreshold->value() != StyleConfigData::capacityBarWarnThreshold())
+        modified = true;
+    else if (_capacityBarCritThreshold->value() != StyleConfigData::capacityBarCritThreshold())
+        modified = true;
+    else if (_capacityBarWarnColor->color() != StyleConfigData::capacityBarWarnColor())
+        modified = true;
+    else if (_capacityBarCritColor->color() != StyleConfigData::capacityBarCritColor())
+        modified = true;
 
     if (_shadowSize->currentIndex() == 0) {
         _shadowColor->setEnabled(false);
@@ -414,6 +430,10 @@ void StyleConfig::load()
     _disableDolphinUrlNavigatorBackground->setChecked(StyleConfigData::disableDolphinUrlNavigatorBackground());
     _versionNumber->setText(BLOSSOMUI_VERSION_STRING);
     _tabsHeight->setValue(StyleConfigData::tabsHeight());
+    _capacityBarWarnThreshold->setValue(StyleConfigData::capacityBarWarnThreshold());
+    _capacityBarCritThreshold->setValue(StyleConfigData::capacityBarCritThreshold());
+    _capacityBarWarnColor->setColor(StyleConfigData::capacityBarWarnColor());
+    _capacityBarCritColor->setColor(StyleConfigData::capacityBarCritColor());
 }
 
 }

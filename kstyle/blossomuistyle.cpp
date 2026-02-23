@@ -43,6 +43,7 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDockWidget>
+#include <QDragMoveEvent>
 #include <QFormLayout>
 #include <QGraphicsView>
 #include <QGroupBox>
@@ -62,6 +63,8 @@
 #include <QScrollBar>
 #include <QSplitterHandle>
 #include <QStackedLayout>
+#include <QStorageInfo>
+#include <QStyledItemDelegate>
 #include <QSurfaceFormat>
 #include <QTableView>
 #include <QTextEdit>
@@ -77,6 +80,7 @@
 #endif
 
 // #include <QDebug>
+#include <cmath>
 
 namespace BlossomUIPrivate
 {
@@ -155,6 +159,325 @@ private:
 
     //* margin
     int _itemMargin;
+};
+
+//* extra icon-to-text spacing in Dolphin's places sidebar
+class DolphinPlacesDelegate : public QStyledItemDelegate
+{
+    //* mirrors KFilePlacesViewDelegate's hardcoded s_lateralMargin
+    static constexpr int s_lateralMargin = 4;
+    static constexpr int s_extraGap = 2;
+    //* KFilePlacesModel::CapacityBarRecommendedRole
+    static constexpr int s_capacityBarRole = 0x1548C5C4;
+    //* KFilePlacesModel::UrlRole
+    static constexpr int s_urlRole = 0x069CD12B;
+
+    struct FreeSpaceInfo {
+        quint64 used = 0;
+        quint64 size = 0;
+    };
+
+public:
+    explicit DolphinPlacesDelegate(QAbstractItemView *view, QAbstractItemDelegate *original)
+        : QStyledItemDelegate(view)
+        , m_view(view)
+        , m_original(original)
+    {
+        view->viewport()->installEventFilter(this);
+    }
+
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (!m_view || watched != m_view->viewport() || m_redirectingEvent)
+            return QStyledItemDelegate::eventFilter(watched, event);
+
+        const auto type = event->type();
+
+        if (type == QEvent::MouseMove) {
+            const auto *me = static_cast<QMouseEvent *>(event);
+            const QPoint pos = me->pos();
+            if (m_hasRedirectedPress) {
+                sendMouseRedirected(watched, me, m_redirectedPressPos);
+                updateHoverBoundary(m_redirectedPressPos);
+                return true;
+            }
+            updateHoverBoundary(pos);
+            if (!m_view->indexAt(pos).isValid()) {
+                const QModelIndex nearest = nearestItemAt(pos);
+                if (nearest.isValid()) {
+                    const QPoint target = snapToItem(pos, nearest);
+                    sendMouseRedirected(watched, me, target);
+                    updateHoverBoundary(target);
+                    return true;
+                }
+            }
+        } else if (type == QEvent::MouseButtonPress) {
+            const auto *me = static_cast<QMouseEvent *>(event);
+            if (me->button() == Qt::LeftButton) {
+                QModelIndex pressedIdx = m_view->indexAt(me->pos());
+                if (!pressedIdx.isValid())
+                    pressedIdx = nearestItemAt(me->pos());
+                m_dragSourceIndex = QPersistentModelIndex(pressedIdx);
+
+                if (!m_view->indexAt(me->pos()).isValid()) {
+                    // press in a gap: snap to nearest item and remember the position
+                    const QModelIndex nearest = nearestItemAt(me->pos());
+                    if (nearest.isValid()) {
+                        m_redirectedPressPos = snapToItem(me->pos(), nearest);
+                        m_hasRedirectedPress = true;
+                        sendMouseRedirected(watched, me, m_redirectedPressPos);
+                        return true;
+                    }
+                }
+            }
+        } else if (type == QEvent::MouseButtonRelease) {
+            m_dragging = false;
+            m_dragSourceIndex = QPersistentModelIndex();
+            if (m_hasRedirectedPress) {
+                const auto *me = static_cast<QMouseEvent *>(event);
+                sendMouseRedirected(watched, me, m_redirectedPressPos);
+                m_hasRedirectedPress = false;
+                return true;
+            }
+        } else if (type == QEvent::DragEnter) {
+            m_dragging = true;
+            const QPoint pos = static_cast<QDragMoveEvent *>(event)->position().toPoint();
+            if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
+                m_view->update(idx);
+            if (m_dragSourceIndex.isValid())
+                m_view->update(m_dragSourceIndex);
+        } else if (type == QEvent::DragMove) {
+            m_dragging = true;
+            const QPoint pos = static_cast<QDragMoveEvent *>(event)->position().toPoint();
+            if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
+                m_view->update(idx);
+            if (m_dragSourceIndex.isValid())
+                m_view->update(m_dragSourceIndex);
+        } else if (type == QEvent::Drop || type == QEvent::DragLeave) {
+            m_dragging = false;
+            m_dragSourceIndex = QPersistentModelIndex();
+            m_view->viewport()->update();
+        }
+
+        return QStyledItemDelegate::eventFilter(watched, event);
+    }
+
+    QPoint snapToItem(const QPoint &pos, const QModelIndex &idx) const
+    {
+        return QPoint(pos.x(), m_view->visualRect(idx).center().y());
+    }
+
+    void sendMouseRedirected(QObject *watched, const QMouseEvent *original, const QPoint &target) const
+    {
+        const QPointF globalTarget = m_view->viewport()->mapToGlobal(QPointF(target));
+        m_redirectingEvent = true;
+        QMouseEvent redirected(original->type(), QPointF(target), globalTarget, original->button(), original->buttons(), original->modifiers());
+        QApplication::sendEvent(watched, &redirected);
+        m_redirectingEvent = false;
+    }
+
+    QModelIndex nearestItemAt(const QPoint &pos) const
+    {
+        const QAbstractItemModel *model = m_view ? m_view->model() : nullptr;
+        if (!model)
+            return {};
+        QModelIndex best;
+        int bestDist = INT_MAX;
+        for (int row = 0, rows = model->rowCount(); row < rows; ++row) {
+            const QModelIndex idx = model->index(row, 0);
+            if (idx.data(Qt::DecorationRole).value<QIcon>().isNull())
+                continue; // skip pure section-header rows
+            const QRect vr = m_view->visualRect(idx);
+            if (!vr.isValid())
+                continue;
+            const int dist = pos.y() < vr.top() ? vr.top() - pos.y() : pos.y() > vr.bottom() ? pos.y() - vr.bottom() : 0;
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = idx;
+            }
+        }
+        return best;
+    }
+
+    void updateHoverBoundary(const QPoint &pos)
+    {
+        if (!m_view)
+            return;
+        const QModelIndex idx = m_view->indexAt(pos);
+        if (!idx.isValid()) {
+            m_lastHoveredIndex = QPersistentModelIndex();
+            return;
+        }
+        const QRect vr = m_view->visualRect(idx);
+        const int iconSize = m_view->iconSize().width();
+        const int stdH = qMax(iconSize, m_view->fontMetrics().height()) + s_lateralMargin;
+        if (vr.height() <= stdH) {
+            m_lastHoveredIndex = QPersistentModelIndex();
+            return;
+        }
+
+        const QRect itemR(vr.left(), vr.bottom() - stdH + 1, vr.width(), stdH);
+        const bool onItem = itemR.contains(pos);
+        const QPersistentModelIndex pidx(idx);
+        if (pidx != m_lastHoveredIndex || onItem != m_lastHoverOnItem) {
+            m_lastHoveredIndex = pidx;
+            m_lastHoverOnItem = onItem;
+            m_view->update(idx);
+        }
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        if (!m_original || !m_view) {
+            QStyledItemDelegate::paint(painter, option, index);
+            return;
+        }
+
+        const QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
+        if (icon.isNull()) {
+            m_original->paint(painter, option, index);
+            return;
+        }
+
+        const int iconSize = m_view->iconSize().width();
+        const bool isLTR = option.direction == Qt::LeftToRight;
+        const int iconAreaWidth = s_lateralMargin + iconSize;
+
+        const int standardHeight = qMax(iconSize, option.fontMetrics.height()) + s_lateralMargin;
+        const int headerHeight = qMax(0, option.rect.height() - standardHeight);
+        const int itemTop = option.rect.top() + headerHeight;
+
+        const bool hasCapacityBar = index.data(s_capacityBarRole).toBool();
+
+        QRect textClipRect;
+        QRect textDrawRect;
+        if (hasCapacityBar) {
+            const int barHeight = static_cast<int>(std::ceil(iconSize / 6.0));
+            const int textTop = itemTop + (standardHeight - option.fontMetrics.height() - barHeight) / 2;
+            textClipRect = QRect(isLTR ? iconAreaWidth : 0, textTop, option.rect.width() - iconAreaWidth, option.fontMetrics.height() + barHeight + 4);
+            textDrawRect = QRect((isLTR ? iconAreaWidth : 0) + s_lateralMargin,
+                                 textTop,
+                                 option.rect.width() - iconAreaWidth - 2 * s_lateralMargin,
+                                 option.fontMetrics.height());
+        } else {
+            textClipRect =
+                QRect((isLTR ? iconAreaWidth : 0) + s_lateralMargin, itemTop, option.rect.width() - iconAreaWidth - 2 * s_lateralMargin, standardHeight);
+            textDrawRect = textClipRect;
+        }
+
+        const QRect itemRect(option.rect.left(), itemTop, option.rect.width(), standardHeight);
+        const QPoint cursorInView = m_view->viewport()->mapFromGlobal(QCursor::pos());
+        const bool hoverOnItem = itemRect.contains(cursorInView);
+
+        const bool isDragSource = m_dragging && m_dragSourceIndex.isValid() && QPersistentModelIndex(index) == m_dragSourceIndex;
+
+        QStyleOptionViewItem bgOption = option;
+        bgOption.rect = itemRect;
+        if (!hoverOnItem)
+            bgOption.state &= ~QStyle::State_MouseOver;
+        if (!isDragSource && (bgOption.state & QStyle::State_Selected))
+            bgOption.state |= QStyle::State_Active;
+        painter->save();
+        const QRegion baseClip = painter->hasClipping() ? painter->clipRegion() : QRegion(option.rect);
+        painter->setClipRegion(baseClip.intersected(QRegion(textClipRect)));
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &bgOption, painter, m_view);
+        painter->restore();
+
+        QStyleOptionViewItem delegateOption = option;
+        if (!hoverOnItem)
+            delegateOption.state &= ~QStyle::State_MouseOver;
+        if (!isDragSource && (delegateOption.state & QStyle::State_Selected))
+            delegateOption.state |= QStyle::State_Active;
+        painter->save();
+        painter->setClipRegion(baseClip.subtracted(QRegion(textClipRect)));
+        m_original->paint(painter, delegateOption, index);
+        painter->restore();
+
+        const QRect shiftedTextRect = textDrawRect.adjusted(s_extraGap, 0, 0, 0);
+        const QString text = index.data(Qt::DisplayRole).toString();
+        const QString elidedText = option.fontMetrics.elidedText(text, Qt::ElideRight, shiftedTextRect.width());
+        const bool selected = option.state & QStyle::State_Selected;
+
+        painter->save();
+        painter->setFont(option.font);
+
+        painter->setPen(selected && !isDragSource ? option.palette.highlightedText().color() : option.palette.text().color());
+        // clip to textClipRect so glyph left-bearings dont bleed into the icon area (gets weird blue artifact pixels then)
+        painter->setClipRegion(baseClip.intersected(QRegion(textClipRect)));
+        painter->drawText(shiftedTextRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+        painter->restore();
+
+        if (hasCapacityBar) {
+            const QPersistentModelIndex pIdx(index);
+            const QUrl url = index.data(s_urlRole).toUrl();
+            if (!m_freeSpaceCache.contains(pIdx) && url.isLocalFile()) {
+                const QStorageInfo si(url.toLocalFile());
+                if (si.isValid() && si.bytesTotal() > 0)
+                    m_freeSpaceCache[pIdx] = {quint64(si.bytesTotal() - si.bytesAvailable()), quint64(si.bytesTotal())};
+            }
+            const auto it = m_freeSpaceCache.constFind(pIdx);
+            if (it != m_freeSpaceCache.constEnd() && it->size > 0) {
+                const qreal usedSpace = it->used / qreal(it->size);
+                drawCapacityBar(painter, option, shiftedTextRect, usedSpace, iconSize);
+            }
+        }
+    }
+
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        if (m_original)
+            return m_original->sizeHint(option, index);
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
+
+    void drawCapacityBar(QPainter *painter, const QStyleOptionViewItem &option, const QRect &textRect, qreal usedSpace, int iconSize) const
+    {
+        const qreal barHeight = std::ceil(iconSize / 6.0);
+        const qreal radius = barHeight / 2.0;
+
+        const QRectF bgRect(textRect.x(), textRect.bottom() + 2.0, textRect.width(), barHeight);
+        QRectF fillRect = bgRect;
+        fillRect.setWidth(bgRect.width() * usedSpace);
+
+        const bool selected = option.state & QStyle::State_Selected;
+
+        QColor bgColor(option.palette.color(QPalette::Active, QPalette::WindowText));
+        bgColor.setAlphaF(0.2);
+
+        QColor fillColor;
+        const int pct = qRound(usedSpace * 100);
+        if (pct >= BlossomUI::StyleConfigData::capacityBarCritThreshold())
+            fillColor = BlossomUI::StyleConfigData::capacityBarCritColor();
+        else if (pct >= BlossomUI::StyleConfigData::capacityBarWarnThreshold())
+            fillColor = BlossomUI::StyleConfigData::capacityBarWarnColor();
+        else
+            fillColor =
+                selected ? option.palette.color(QPalette::Active, QPalette::HighlightedText) : option.palette.color(QPalette::Active, QPalette::Highlight);
+
+        painter->save();
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(bgColor);
+        painter->drawRoundedRect(bgRect, radius, radius);
+        painter->setBrush(fillColor);
+        painter->drawRoundedRect(fillRect, radius, radius);
+        painter->restore();
+    }
+
+private:
+    QPointer<QAbstractItemView> m_view;
+    QPointer<QAbstractItemDelegate> m_original;
+    mutable QHash<QPersistentModelIndex, FreeSpaceInfo> m_freeSpaceCache;
+    mutable bool m_dragging = false;
+    mutable QPersistentModelIndex m_dragSourceIndex;
+
+    mutable bool m_hasRedirectedPress = false;
+    mutable QPoint m_redirectedPressPos;
+
+    mutable bool m_redirectingEvent = false;
+
+    mutable QPersistentModelIndex m_lastHoveredIndex;
+    mutable bool m_lastHoverOnItem = false;
 };
 
 //_______________________________________________________________
@@ -385,7 +708,7 @@ void Style::polish(QWidget *widget)
         }
 
         /* take all precautions */
-        if (!_subApp && !_isLibreoffice && widget->isWindow() && widget->windowType() != Qt::Desktop && !widget->testAttribute(Qt::WA_PaintOnScreen)
+        if (!_subApp && !_isLibreoffice && widget->isWindow() && !widget->testAttribute(Qt::WA_PaintOnScreen)
             && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeDesktop) && !widget->inherits("KScreenSaver") && !widget->inherits("QSplashScreen")) {
             // if( _isPlasma && !qobject_cast<QDialog*>(widget) ) break;
             if (!_helper->compositingActive())
@@ -1608,6 +1931,11 @@ bool Style::eventFilter(QObject *object, QEvent *event)
         if (event->type() == QEvent::Show || event->type() == QEvent::Polish || event->type() == QEvent::LayoutRequest || event->type() == QEvent::Resize) {
             listView->setSpacing(2);
             listView->setUniformItemSizes(false);
+            // install wrapper delegate on the places sidebar to add extra icon-text spacing
+            if (object->inherits("KFilePlacesView") && listView->itemDelegate() && !listView->property("_blossomui_places_delegate").toBool()) {
+                listView->setProperty("_blossomui_places_delegate", true);
+                listView->setItemDelegateForColumn(0, new BlossomUIPrivate::DolphinPlacesDelegate(listView, listView->itemDelegate()));
+            }
         }
     }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -8825,8 +9153,8 @@ void Style::setSurfaceFormat(QWidget *widget) const
         if (widget->windowHandle() // too late
             || widget->windowFlags().testFlag(Qt::FramelessWindowHint) || widget->windowFlags().testFlag(Qt::X11BypassWindowManagerHint)
             || qobject_cast<QFrame *>(widget) // a floating frame, as in Filelight
-            || widget->windowType() == Qt::Desktop || widget->testAttribute(Qt::WA_PaintOnScreen) || widget->testAttribute(Qt::WA_X11NetWmWindowTypeDesktop)
-            || widget->inherits("KScreenSaver") || widget->inherits("QSplashScreen"))
+            || widget->testAttribute(Qt::WA_PaintOnScreen) || widget->testAttribute(Qt::WA_X11NetWmWindowTypeDesktop) || widget->inherits("KScreenSaver")
+            || widget->inherits("QSplashScreen"))
             return;
 
         QWidget *p = widget->parentWidget();

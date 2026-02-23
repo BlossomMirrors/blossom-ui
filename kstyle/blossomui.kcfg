@@ -105,6 +105,23 @@
     <entry name="UseNewCheckBox" type="Bool">
       <default>true</default>
     </entry>
+
+    <entry name="CapacityBarWarnThreshold" type="Int">
+      <default>80</default>
+      <min>1</min>
+      <max>99</max>
+    </entry>
+    <entry name="CapacityBarCritThreshold" type="Int">
+      <default>95</default>
+      <min>1</min>
+      <max>100</max>
+    </entry>
+    <entry name="CapacityBarWarnColor" type="Color">
+      <default>255, 160, 0</default>
+    </entry>
+    <entry name="CapacityBarCritColor" type="Color">
+      <default>220, 38, 38</default>
+    </entry>
   </group>
 
 

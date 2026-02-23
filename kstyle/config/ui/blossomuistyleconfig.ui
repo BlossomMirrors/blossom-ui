@@ -518,6 +518,87 @@
          </property>
         </widget>
        </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QGroupBox" name="_placesCapacityGroup">
+         <property name="title">
+          <string>Drive Capacity Bar</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_placesCapacity">
+          <item row="0" column="0">
+           <widget class="QLabel" name="_capacityBarWarnLabel">
+            <property name="text">
+             <string>Warning at</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="_capacityBarWarnThreshold">
+            <property name="suffix">
+             <string> %</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>99</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="KColorButton" name="_capacityBarWarnColor"/>
+          </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_capacity_warn">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="_capacityBarCritLabel">
+            <property name="text">
+             <string>Critical at</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="_capacityBarCritThreshold">
+            <property name="suffix">
+             <string> %</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="KColorButton" name="_capacityBarCritColor"/>
+          </item>
+          <item row="1" column="3">
+           <spacer name="horizontalSpacer_capacity_crit">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="Tabs">

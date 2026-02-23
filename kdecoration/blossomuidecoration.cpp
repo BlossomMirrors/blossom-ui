@@ -231,7 +231,7 @@ bool Decoration::init()
 
     // full reconfiguration
     connect(s.get(), &KDecoration3::DecorationSettings::reconfigured, this, &Decoration::reconfigure);
-    connect(s.get(), &KDecoration3::DecorationSettings::reconfigured, SettingsProvider::self(), &SettingsProvider::reconfigure, Qt::UniqueConnection);
+
     connect(s.get(), &KDecoration3::DecorationSettings::reconfigured, this, &Decoration::updateButtonsGeometryDelayed);
 
     connect(window(), &KDecoration3::DecoratedWindow::activeChanged, this, &Decoration::recalculateBorders);
@@ -307,13 +307,17 @@ void Decoration::calculateWindowAndTitleBarShapes(const bool windowShapeOnly)
             QPainterPath path;
             const qreal radius = m_scaledCornerRadius;
 
-            // adjust by 1.0 pixel to prevent antialiasing inset and ensure smooth edges
-            path.moveTo(-1.0, m_titleRect.bottom());
-            path.lineTo(-1.0, radius);
+            // expand path 1px outward on all sides to prevent AA-induced semi-transparent edge
+            // QRect::bottom() = top+height-1, keeping the boundary pixel outside the fill so
+            // CompositionMode_Source cant produce a fractional-alpha gap between titlebar and window during animations
+            const qreal W = m_titleRect.width();
+            const qreal bottom = m_titleRect.bottom();
+            path.moveTo(-1.0, bottom);
+            path.lineTo(-1.0, radius - 1.0);
             path.arcTo(QRectF(-1.0, -1.0, radius * 2, radius * 2), 180, -90);
-            path.lineTo(m_titleRect.width() - radius, -1.0);
-            path.arcTo(QRectF(m_titleRect.width() - radius * 2 + 1.0, -1.0, radius * 2, radius * 2), 90, -90);
-            path.lineTo(m_titleRect.width() + 1.0, m_titleRect.bottom());
+            path.lineTo(W + 1.0 - radius, -1.0);
+            path.arcTo(QRectF(W + 1.0 - radius * 2, -1.0, radius * 2, radius * 2), 90, -90);
+            path.lineTo(W + 1.0, bottom);
             path.closeSubpath();
 
             *m_titleBarPath = path;
@@ -430,6 +434,8 @@ qreal Decoration::borderSize(bool bottom, qreal scale) const
 //________________________________________________________________
 void Decoration::reconfigure()
 {
+    SettingsProvider::self()->reconfigure();
+
     m_internalSettings = SettingsProvider::self()->internalSettings(this);
 
     setScaledCornerRadius();
@@ -528,14 +534,13 @@ void Decoration::updateButtonsGeometry()
 {
     const auto s = settings();
     const qreal buttonSpacing = s->smallSpacing() * Metrics::TitleBar_ButtonSpacing;
-    const qreal halfSpacing = buttonSpacing / 2.0;
 
     const auto leftButtonList = m_leftButtons->buttons();
     const auto rightButtonList = m_rightButtons->buttons();
     const auto buttonList = leftButtonList + rightButtonList;
 
-    for (int i = 0; i < buttonList.size(); ++i) {
-        auto btn = static_cast<Button *>(buttonList[i]);
+    for (auto *b : buttonList) {
+        auto btn = static_cast<Button *>(b);
 
         const int verticalOffset = (isTopEdge() ? s->smallSpacing() * Metrics::TitleBar_TopMargin : 0);
 
@@ -543,22 +548,22 @@ void Decoration::updateButtonsGeometry()
         const int bHeight = preferredSize.height() + verticalOffset;
         const int bWidth = preferredSize.width();
 
-        // Determine if this button should get extra spacing on left/right
-        bool isFirstInGroup = (i == 0 && leftButtonList.contains(btn)) || (rightButtonList.contains(btn) && btn == rightButtonList.first());
-        bool isLastInGroup = (leftButtonList.contains(btn) && btn == leftButtonList.last()) || (rightButtonList.contains(btn) && btn == rightButtonList.last());
+        const bool isFirstInGroup =
+            (leftButtonList.contains(btn) && btn == leftButtonList.first()) || (rightButtonList.contains(btn) && btn == rightButtonList.first());
+        const bool isLastInGroup =
+            (leftButtonList.contains(btn) && btn == leftButtonList.last()) || (rightButtonList.contains(btn) && btn == rightButtonList.last());
 
-        // Expand geometry to cover half spacing on each side (except first/last in group)
-        qreal leftExpand = isFirstInGroup ? 0 : halfSpacing;
-        qreal rightExpand = isLastInGroup ? 0 : halfSpacing;
+        const qreal leftExpand = isFirstInGroup ? 0 : buttonSpacing;
+        const qreal rightExpand = isLastInGroup ? 0 : buttonSpacing;
 
-        btn->setGeometry(QRectF(QPoint(-leftExpand, 0), QSizeF(bWidth + leftExpand + rightExpand, bHeight)));
+        btn->setGeometry(QRectF(QPointF(0, 0), QSizeF(bWidth + leftExpand + rightExpand, bHeight)));
         btn->setPadding(QMargins(leftExpand, verticalOffset, rightExpand, 0));
         btn->setOffset(QPointF(leftExpand, verticalOffset));
-        btn->setIconSize(QSizeF(bHeight, bWidth));
+        btn->setIconSize(QSizeF(bWidth, bHeight));
     }
 
     if (!m_leftButtons->buttons().isEmpty()) {
-        m_leftButtons->setSpacing(s->smallSpacing() * Metrics::TitleBar_ButtonSpacing);
+        m_leftButtons->setSpacing(0);
 
         const int vPadding = isTopEdge() ? 0 : s->smallSpacing() * Metrics::TitleBar_TopMargin;
         const int hPadding = s->smallSpacing() * Metrics::TitleBar_SideMargin;
@@ -569,7 +574,7 @@ void Decoration::updateButtonsGeometry()
             geometry.adjust(-hPadding, 0, 0, 0);
             button->setGeometry(geometry);
             button->setFlag(Button::FlagFirstInList);
-            button->setLeftPadding(hPadding + geometry.x() + halfSpacing);
+            button->setLeftPadding(hPadding);
             button->setIconSize(button->preferredSize());
 
             m_leftButtons->setPos(QPointF(0, vPadding));
@@ -580,7 +585,7 @@ void Decoration::updateButtonsGeometry()
     }
 
     if (!m_rightButtons->buttons().isEmpty()) {
-        m_rightButtons->setSpacing(s->smallSpacing() * Metrics::TitleBar_ButtonSpacing);
+        m_rightButtons->setSpacing(0);
 
         const int vPadding = isTopEdge() ? 0 : s->smallSpacing() * Metrics::TitleBar_TopMargin;
         const int hPadding = s->smallSpacing() * Metrics::TitleBar_SideMargin;
@@ -591,7 +596,7 @@ void Decoration::updateButtonsGeometry()
             geometry.adjust(0, 0, hPadding, 0);
             button->setGeometry(geometry);
             button->setFlag(Button::FlagFirstInList);
-            button->setRightPadding(hPadding + halfSpacing);
+            button->setRightPadding(hPadding);
             button->setIconSize(button->preferredSize());
 
             m_rightButtons->setPos(QPointF(size().width() - m_rightButtons->geometry().width(), vPadding));
@@ -640,13 +645,13 @@ void Decoration::paint(QPainter *painter, const QRectF &repaintRegion)
 void Decoration::paintTitleBar(QPainter *painter, const QRectF &repaintRegion)
 {
     const auto c = window();
-    QRectF rect(QPointF(0, 0), QSizeF(size().width(), borderTop()));
-    QBrush frontBrush;
-    QBrush backBrush(this->titleBarColor());
 
-    if (!rect.intersects(repaintRegion)) {
+    const QRectF fullTitleRect(QPointF(0, 0), QSizeF(size().width(), borderTop()));
+    if (!fullTitleRect.intersects(repaintRegion))
         return;
-    }
+
+    if (!m_internalSettings)
+        return;
 
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -654,32 +659,30 @@ void Decoration::paintTitleBar(QPainter *painter, const QRectF &repaintRegion)
     painter->setRenderHint(QPainter::TextAntialiasing, true);
     painter->setPen(Qt::NoPen);
 
-    // render a linear gradient on title area
     if (c->isActive() && m_internalSettings->drawBackgroundGradient()) {
         const QColor titleBarColor(this->titleBarColor());
         QLinearGradient gradient(0, 0, 0, m_titleRect.height());
         gradient.setColorAt(0.0, titleBarColor.lighter(120));
         gradient.setColorAt(0.8, titleBarColor);
         painter->setBrush(gradient);
-
     } else {
         painter->setBrush(titleBarColor());
     }
 
-    auto s = settings();
-
     painter->drawPath(*m_titleBarPath);
-
     painter->restore();
 
-    // draw caption
+    // guard against being called before init() assigns these
+    if (!m_leftButtons || !m_rightButtons)
+        return;
+
+    auto s = settings();
     painter->setFont(s->font());
     painter->setPen(fontColor());
     const auto cR = captionRect();
     const QString caption = painter->fontMetrics().elidedText(c->caption(), Qt::ElideMiddle, cR.first.width());
     painter->drawText(cR.first, cR.second | Qt::TextSingleLine, caption);
 
-    // draw all buttons
     m_leftButtons->paint(painter, repaintRegion);
     m_rightButtons->paint(painter, repaintRegion);
 }
