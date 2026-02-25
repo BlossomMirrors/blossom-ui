@@ -2837,7 +2837,7 @@ bool Style::isSwitchWidget(const QWidget *widget) const
         return false;
 #if QT_CONFIG(accessibility)
     if (QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(const_cast<QWidget *>(widget))) {
-        return static_cast<int>(iface->role()) == QAccessible::Switch;
+        return static_cast<int>(iface->role()) == 0x00000087;
     }
 #endif
     return false;
