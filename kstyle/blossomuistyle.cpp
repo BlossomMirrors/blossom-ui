@@ -29,12 +29,17 @@
 #include "blossomuishadowhelper.h"
 #include "blossomuisplitterproxy.h"
 #include "blossomuistyleconfigdata.h"
+#include "blossomuiswitchwidget.h"
 #include "blossomuitoolsareamanager.h"
 #include "blossomuiwidgetexplorer.h"
 #include "blossomuiwindowmanager.h"
 
 #include <KColorUtils>
+#include <KConfigGroup>
+#include <KSharedConfig>
 
+#include <QAccessible>
+#include <QAction>
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -57,9 +62,12 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QPainter>
+#include <QPainterPath>
+#include <QPolygon>
 #include <QPushButton>
 #include <QQuickWidget>
 #include <QRadioButton>
+#include <QRegion>
 #include <QScrollBar>
 #include <QSplitterHandle>
 #include <QStackedLayout>
@@ -68,6 +76,7 @@
 #include <QSurfaceFormat>
 #include <QTableView>
 #include <QTextEdit>
+#include <QTimer>
 #include <QToolBar>
 #include <QToolBox>
 #include <QToolButton>
@@ -118,11 +127,10 @@ private:
     BlossomUI::WeakPointer<const QWidget> _tabBar;
 };
 
-//* needed to have spacing added to items in combobox
+//* needed to have spacing added to items in combobox (replicated from Breeze)
 class ComboBoxItemDelegate : public QItemDelegate
 {
 public:
-    //* constructor
     explicit ComboBoxItemDelegate(QAbstractItemView *parent)
         : QItemDelegate(parent)
         , _proxy(parent->itemDelegate())
@@ -130,34 +138,44 @@ public:
     {
     }
 
-    //* paint
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
-        // call either proxy or parent class
-        if (_proxy)
+        painter->setRenderHint(QPainter::Antialiasing);
+        // If the app set an item delegate that isn't the default, use its drawing (Breeze)
+        if (_proxy && _proxy->metaObject()->className() != QByteArray("QComboBoxDelegate")
+            && _proxy->metaObject()->className() != QByteArray("QStyledItemDelegate")) {
             _proxy.data()->paint(painter, option, index);
-        else
-            QItemDelegate::paint(painter, option, index);
+            return;
+        }
+
+        // Otherwise we draw the selected/highlighted background ourselves (Breeze)
+        if (option.showDecorationSelected && (option.state & QStyle::State_Selected)) {
+            QPalette::ColorGroup group = (option.state & QStyle::State_Enabled) ? QPalette::Active : QPalette::Disabled;
+            QColor c = option.palette.brush(group, QPalette::Highlight).color();
+            painter->setPen(c);
+            c.setAlphaF(c.alphaF() * 0.3);
+            painter->setBrush(c);
+            const qreal radius = BlossomUI::StyleConfigData::itemViewRadius();
+            painter->drawRoundedRect(QRectF(option.rect).adjusted(0.5, 0.5, -0.5, -0.5), radius, radius);
+        }
+
+        // Ask the base class to do everything else (Breeze)
+        QStyleOptionViewItem opt = option;
+        opt.showDecorationSelected = false;
+        opt.state &= ~QStyle::State_Selected;
+        QItemDelegate::paint(painter, opt, index);
     }
 
-    //* size hint for index
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
-        // get size from either proxy or parent class
-        auto size(_proxy ? _proxy.data()->sizeHint(option, index) : QItemDelegate::sizeHint(option, index));
-
-        // adjust and return
-        if (size.isValid()) {
+        QSize size(_proxy ? _proxy.data()->sizeHint(option, index) : QItemDelegate::sizeHint(option, index));
+        if (size.isValid())
             size.rheight() += _itemMargin * 2;
-        }
         return size;
     }
 
 private:
-    //* proxy
     BlossomUI::WeakPointer<QAbstractItemDelegate> _proxy;
-
-    //* margin
     int _itemMargin;
 };
 
@@ -366,20 +384,26 @@ public:
         }
 
         const QRect itemRect(option.rect.left(), itemTop, option.rect.width(), standardHeight);
+
+        // Clamp all rects to option.rect so content never overflows the cell
+        const QRect cellRect = option.rect;
+        const QRect clampedItemRect = itemRect.intersected(cellRect);
+        const QRect clampedTextClipRect = textClipRect.intersected(cellRect);
+        const QRect clampedTextDrawRect = textDrawRect.intersected(cellRect);
         const QPoint cursorInView = m_view->viewport()->mapFromGlobal(QCursor::pos());
-        const bool hoverOnItem = itemRect.contains(cursorInView);
+        const bool hoverOnItem = clampedItemRect.contains(cursorInView);
 
         const bool isDragSource = m_dragging && m_dragSourceIndex.isValid() && QPersistentModelIndex(index) == m_dragSourceIndex;
 
         QStyleOptionViewItem bgOption = option;
-        bgOption.rect = itemRect;
+        bgOption.rect = clampedItemRect;
         if (!hoverOnItem)
             bgOption.state &= ~QStyle::State_MouseOver;
         if (!isDragSource && (bgOption.state & QStyle::State_Selected))
             bgOption.state |= QStyle::State_Active;
         painter->save();
         const QRegion baseClip = painter->hasClipping() ? painter->clipRegion() : QRegion(option.rect);
-        painter->setClipRegion(baseClip.intersected(QRegion(textClipRect)));
+        painter->setClipRegion(baseClip.intersected(QRegion(clampedTextClipRect)));
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &bgOption, painter, m_view);
         painter->restore();
 
@@ -389,11 +413,11 @@ public:
         if (!isDragSource && (delegateOption.state & QStyle::State_Selected))
             delegateOption.state |= QStyle::State_Active;
         painter->save();
-        painter->setClipRegion(baseClip.subtracted(QRegion(textClipRect)));
+        painter->setClipRegion(baseClip.subtracted(QRegion(clampedTextClipRect)));
         m_original->paint(painter, delegateOption, index);
         painter->restore();
 
-        const QRect shiftedTextRect = textDrawRect.adjusted(s_extraGap, 0, 0, 0);
+        const QRect shiftedTextRect = clampedTextDrawRect.adjusted(s_extraGap, 0, 0, 0);
         const QString text = index.data(Qt::DisplayRole).toString();
         const QString elidedText = option.fontMetrics.elidedText(text, Qt::ElideRight, shiftedTextRect.width());
         const bool selected = option.state & QStyle::State_Selected;
@@ -403,7 +427,7 @@ public:
 
         painter->setPen(selected && !isDragSource ? option.palette.highlightedText().color() : option.palette.text().color());
         // clip to textClipRect so glyph left-bearings dont bleed into the icon area (gets weird blue artifact pixels then)
-        painter->setClipRegion(baseClip.intersected(QRegion(textClipRect)));
+        painter->setClipRegion(baseClip.intersected(QRegion(clampedTextClipRect)));
         painter->drawText(shiftedTextRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
         painter->restore();
 
@@ -417,8 +441,11 @@ public:
             }
             const auto it = m_freeSpaceCache.constFind(pIdx);
             if (it != m_freeSpaceCache.constEnd() && it->size > 0) {
+                painter->save();
+                painter->setClipRect(cellRect, Qt::IntersectClip);
                 const qreal usedSpace = it->used / qreal(it->size);
                 drawCapacityBar(painter, option, shiftedTextRect, usedSpace, iconSize);
+                painter->restore();
             }
         }
     }
@@ -530,6 +557,15 @@ Style::Style()
                  QStringLiteral("reparseConfiguration"),
                  this,
                  SLOT(configurationChanged()));
+
+    dbus.connect(QString(),
+                 QStringLiteral("/KGlobalSettings"),
+                 QStringLiteral("org.kde.KGlobalSettings"),
+                 QStringLiteral("notifyChange"),
+                 this,
+                 SLOT(configurationChanged()));
+
+    dbus.connect(QString(), QStringLiteral("/KWin"), QStringLiteral("org.kde.KWin"), QStringLiteral("reloadConfig"), this, SLOT(configurationChanged()));
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     this->addEventFilter(qApp);
 #else
@@ -629,6 +665,40 @@ void Style::polish(QWidget *widget)
         || qobject_cast<QSplitterHandle *>(widget) || qobject_cast<QTabBar *>(widget) || qobject_cast<QTextEdit *>(widget)
         || qobject_cast<QToolButton *>(widget) || widget->inherits("KTextEditor::View")) {
         widget->setAttribute(Qt::WA_Hover);
+    }
+
+    // switch (pill) checkboxes: replace indicator with actual switch widget (draggable)
+    if (auto checkBox = qobject_cast<QCheckBox *>(widget)) {
+        if (isSwitchWidget(checkBox)) {
+            QStyleOptionButton opt;
+            opt.initFrom(checkBox);
+            opt.rect = checkBox->rect();
+            opt.text = checkBox->text();
+            opt.icon = checkBox->icon();
+            opt.iconSize = checkBox->iconSize();
+            QRect indRect = subElementRect(SE_CheckBoxIndicator, &opt, checkBox);
+            BlossomUISwitchWidget *overlay = new BlossomUISwitchWidget(_helper, checkBox);
+            overlay->setParent(checkBox);
+            overlay->setGeometry(indRect);
+            overlay->show();
+            overlay->raise(); // ensure overlay is on top of any other children (e.g. label)
+            checkBox->setProperty("blossomui-switch-overlay", QVariant::fromValue<QObject *>(overlay));
+            addEventFilter(checkBox);
+            // update geometry after layout (checkbox rect may not be final at polish time)
+            QTimer::singleShot(0, checkBox, [this, checkBox]() {
+                QObject *ov = checkBox->property("blossomui-switch-overlay").value<QObject *>();
+                auto *o = qobject_cast<BlossomUISwitchWidget *>(ov);
+                if (o) {
+                    QStyleOptionButton opt;
+                    opt.initFrom(checkBox);
+                    opt.rect = checkBox->rect();
+                    opt.text = checkBox->text();
+                    opt.icon = checkBox->icon();
+                    opt.iconSize = checkBox->iconSize();
+                    o->setGeometry(subElementRect(SE_CheckBoxIndicator, &opt, checkBox));
+                }
+            });
+        }
     }
 
     /*if( widget && qobject_cast<const QGroupBox*>( widget ) ) {
@@ -861,11 +931,18 @@ void Style::polish(QWidget *widget)
     } else if (qobject_cast<QCommandLinkButton *>(widget)) {
         addEventFilter(widget);
 
+    } else if (widget->parent() && widget->parent()->inherits("QComboBoxListView")) {
+        widget->setAutoFillBackground(false);
+
     } else if (auto comboBox = qobject_cast<QComboBox *>(widget)) {
         if (!hasParent(widget, "QWebView")) {
             auto itemView(comboBox->view());
-            if (itemView && itemView->itemDelegate() && itemView->itemDelegate()->inherits("QComboBoxDelegate")) {
-                itemView->setItemDelegate(new BlossomUIPrivate::ComboBoxItemDelegate(itemView));
+            if (itemView && itemView->itemDelegate()) {
+                const QByteArray delegateClass = itemView->itemDelegate()->metaObject()->className();
+                const bool isDefaultDelegate = itemView->itemDelegate()->inherits("QComboBoxDelegate") || delegateClass == "QStyledItemDelegate";
+                if (isDefaultDelegate) {
+                    itemView->setItemDelegate(new BlossomUIPrivate::ComboBoxItemDelegate(itemView));
+                }
             }
         }
     } else if (widget->inherits("QComboBoxPrivateContainer")) {
@@ -920,13 +997,29 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
 
     if (_isDolphin && scrollArea->inherits("KItemListContainer")) {
         if (QWidget *parent = scrollArea->parentWidget(); parent && parent->inherits("DolphinView")) {
-            // Add top spacing for the card
-            const int topMargin = 8;
-            parent->setContentsMargins(0, topMargin, 0, 0);
-            scrollArea->setContentsMargins(0, 0, 0, 0);
+            // Card margins: top, right, bottom
+            const int margin = 8;
+            parent->setContentsMargins(0, margin, margin, margin);
             if (auto viewport = scrollArea->viewport()) {
                 viewport->setContentsMargins(0, 0, 0, 0);
             }
+            // Viewbox mask: apply to scroll area (whole card incl. header) so all corners have same radius
+            const int radius = 8;
+            scrollArea->setProperty("_blossomui_viewport_inset", 0);
+            scrollArea->setProperty("_blossomui_viewport_radius", radius);
+            scrollArea->installEventFilter(this);
+            const qreal dpr = scrollArea->devicePixelRatioF();
+            const int w = scrollArea->width();
+            const int h = scrollArea->height();
+            if (w > 0 && h > 0)
+                scrollArea->setMask(_helper->roundedRectRegion(w, h, radius, dpr));
+            QTimer::singleShot(100, scrollArea, [this, scrollArea, radius]() {
+                const qreal dpr = scrollArea->devicePixelRatioF();
+                const int w = scrollArea->width();
+                const int h = scrollArea->height();
+                if (w > 0 && h > 0)
+                    scrollArea->setMask(_helper->roundedRectRegion(w, h, radius, dpr));
+            });
 
             // Apply margins to the entire Dolphin window
             QWidget *mainWindow = parent;
@@ -934,10 +1027,16 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
                 mainWindow = mainWindow->parentWidget();
             }
             if (mainWindow) {
-                const int margin = 8;
-                mainWindow->setContentsMargins(margin, margin, margin, margin);
+                mainWindow->setContentsMargins(8, 8, 8, 8);
             }
         }
+    }
+
+    // Dolphin table/tree detail view only: inset viewport on right and bottom.
+    if (_isDolphin && (qobject_cast<QTableView *>(scrollArea) || qobject_cast<QTreeView *>(scrollArea))) {
+        const int radius = StyleConfigData::itemViewRadius();
+        const int inset = qMax(1, radius);
+        scrollArea->setContentsMargins(0, 0, inset, inset);
     }
 
     // add event filter, to make sure proper background is rendered behind scrollbars
@@ -965,6 +1064,9 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
     if (!(scrollArea->frameShape() == QFrame::NoFrame || scrollArea->backgroundRole() == QPalette::Window)) {
         return;
     }
+
+    if (_isDolphin && scrollArea->inherits("KItemListContainer"))
+        return;
 
     // get viewport and check background role
     auto viewport(scrollArea->viewport());
@@ -1013,6 +1115,16 @@ void Style::unpolish(QWidget *widget)
     if (qobject_cast<QAbstractScrollArea *>(widget) || qobject_cast<QDockWidget *>(widget) || qobject_cast<QMdiSubWindow *>(widget)
         || widget->inherits("QComboBoxPrivateContainer")) {
         widget->removeEventFilter(this);
+    }
+    if (auto checkBox = qobject_cast<QCheckBox *>(widget)) {
+        if (isSwitchWidget(checkBox)) {
+            QObject *ov = checkBox->property("blossomui-switch-overlay").value<QObject *>();
+            if (ov) {
+                ov->deleteLater();
+                checkBox->setProperty("blossomui-switch-overlay", QVariant());
+            }
+            widget->removeEventFilter(this);
+        }
     }
 
     if (_translucentWidgets.contains(widget)) {
@@ -1208,9 +1320,9 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWi
 
     // checkboxes and radio buttons
     case PM_IndicatorWidth:
-        return Metrics::CheckBox_Size;
+        return isSwitchCheckBox(option, widget) ? Metrics::Switch_Width : Metrics::CheckBox_Size;
     case PM_IndicatorHeight:
-        return Metrics::CheckBox_Size;
+        return isSwitchCheckBox(option, widget) ? Metrics::Switch_Height : int(Metrics::CheckBox_Size);
     case PM_ExclusiveIndicatorWidth:
         return Metrics::CheckBox_Size;
     case PM_ExclusiveIndicatorHeight:
@@ -1280,6 +1392,9 @@ int Style::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *
 
     case SH_ComboBox_ListMouseTracking:
         return true;
+    case SH_ComboBox_Popup:
+        // Use menu-style popup (PE_PanelMenu + CE_MenuItem) so Slint Qt backend and others get styled dropdown
+        return true;
     case SH_MenuBar_MouseTracking:
         return true;
     case SH_Menu_MouseTracking:
@@ -1302,8 +1417,14 @@ int Style::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *
         return StyleConfigData::animationsEnabled();
     case SH_Menu_SupportsSections:
         return true;
-    case SH_Widget_Animation_Duration:
-        return StyleConfigData::animationsEnabled() ? StyleConfigData::animationsDuration() : 0;
+    case SH_Widget_Animation_Duration: {
+        if (!StyleConfigData::animationsEnabled())
+            return 0;
+        const int base = StyleConfigData::animationsDuration();
+        const KConfigGroup g(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("General"));
+        const qreal factor = g.readEntry("AnimationDurationFactor", 1.0);
+        return qRound(base * qBound(0.0, factor, 10.0));
+    }
 
     case SH_DialogButtonBox_ButtonsHaveIcons:
         return true;
@@ -1946,6 +2067,27 @@ bool Style::eventFilter(QObject *object, QEvent *event)
     // cast to QWidget
     if (object->isWidgetType()) {
         QWidget *widget = static_cast<QWidget *>(object);
+        // Viewport mask for non-KItemListContainer scroll areas (KItemListContainer uses scroll-area-level mask)
+        if (QWidget *parent = widget->parentWidget()) {
+            if (QAbstractScrollArea *sa = qobject_cast<QAbstractScrollArea *>(parent)) {
+                if (!(_isDolphin && sa->inherits("KItemListContainer"))) {
+                    if (sa->viewport() == widget && sa->property("_blossomui_viewport_inset").isValid()) {
+                        const QEvent::Type t = event->type();
+                        if (t == QEvent::Resize || t == QEvent::Show) {
+                            const int inset = sa->property("_blossomui_viewport_inset").toInt();
+                            const int radius = sa->property("_blossomui_viewport_radius").toInt();
+                            const qreal dpr = widget->devicePixelRatioF();
+                            const int w = widget->width();
+                            const int h = widget->height();
+                            if (w > inset && h > inset)
+                                widget->setMask(_helper->roundedRectRegionBottomCorners(w - inset, h - inset, radius, dpr));
+                            else
+                                widget->clearMask();
+                        }
+                    }
+                }
+            }
+        }
         if (widget->inherits("QAbstractScrollArea") || widget->inherits("KTextEditor::View")) {
             return eventFilterScrollArea(widget, event);
         } else if (widget->inherits("QComboBoxPrivateContainer")) {
@@ -1955,6 +2097,9 @@ bool Style::eventFilter(QObject *object, QEvent *event)
                 // QDialogButtonBox has no paintEvent
                 return eventFilterDialogButtonBox(dialogButtonBox, event);
             }
+        } else if (auto checkBox = qobject_cast<QCheckBox *>(object)) {
+            if (isSwitchWidget(checkBox))
+                return eventFilterSwitchCheckBox(checkBox, event);
         }
         // paint background
         if (widget && event->type() == QEvent::Paint) {
@@ -2092,12 +2237,65 @@ bool Style::eventFilterPageViewHeader(QWidget *widget, QEvent *event)
 }
 
 //____________________________________________________________________________
+bool Style::eventFilterSwitchCheckBox(QCheckBox *checkBox, QEvent *event)
+{
+    if (event->type() == QEvent::Resize || event->type() == QEvent::Show) {
+        QObject *ov = checkBox->property("blossomui-switch-overlay").value<QObject *>();
+        auto *overlay = qobject_cast<BlossomUISwitchWidget *>(ov);
+        if (overlay) {
+            QStyleOptionButton opt;
+            opt.initFrom(checkBox);
+            opt.rect = checkBox->rect();
+            opt.text = checkBox->text();
+            opt.icon = checkBox->icon();
+            opt.iconSize = checkBox->iconSize();
+            QRect indRect = subElementRect(SE_CheckBoxIndicator, &opt, checkBox);
+            overlay->setGeometry(indRect);
+        }
+    }
+    return false;
+}
+
+//____________________________________________________________________________
 bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event)
 {
+    auto scrollArea = qobject_cast<QAbstractScrollArea *>(widget);
+    if (scrollArea) {
+        const QEvent::Type t = event->type();
+        if ((t == QEvent::Resize || t == QEvent::Show) && scrollArea->property("_blossomui_viewport_radius").isValid()) {
+            QTimer::singleShot(0, scrollArea, [this, scrollArea]() {
+                const int radius = scrollArea->property("_blossomui_viewport_radius").toInt();
+                if (_isDolphin && scrollArea->inherits("KItemListContainer")) {
+                    // Viewbox mask on scroll area (whole card) - all corners same radius
+                    const qreal dpr = scrollArea->devicePixelRatioF();
+                    const int w = scrollArea->width();
+                    const int h = scrollArea->height();
+                    if (w > 0 && h > 0)
+                        scrollArea->setMask(_helper->roundedRectRegion(w, h, radius, dpr));
+                    else
+                        scrollArea->clearMask();
+                } else if (scrollArea->property("_blossomui_viewport_inset").isValid()) {
+                    const int inset = scrollArea->property("_blossomui_viewport_inset").toInt();
+                    QWidget *vp = scrollArea->viewport();
+                    if (vp) {
+                        const qreal dpr = vp->devicePixelRatioF();
+                        const int w = vp->width();
+                        const int h = vp->height();
+                        if (w > inset && h > inset)
+                            vp->setMask(_helper->roundedRectRegionBottomCorners(w - inset, h - inset, radius, dpr));
+                        else
+                            vp->clearMask();
+                    }
+                }
+            });
+        }
+    }
+
     switch (event->type()) { // TODO: delete
     case QEvent::Paint: {
         // get scrollarea viewport
-        auto scrollArea(qobject_cast<QAbstractScrollArea *>(widget));
+        if (!scrollArea)
+            scrollArea = qobject_cast<QAbstractScrollArea *>(widget);
         QWidget *viewport;
         if (!(scrollArea && (viewport = scrollArea->viewport())))
             break;
@@ -2156,6 +2354,16 @@ bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event)
         else
             background = viewport->palette().color(role);
         painter.setBrush(background);
+
+        if (_isDolphin && scrollArea->inherits("KItemListContainer")) {
+            const auto cardColor = KColorUtils::mix(background, viewport->palette().color(QPalette::WindowText), 0.18);
+            painter.setBrush(cardColor);
+            const int radius = scrollArea->property("_blossomui_viewport_radius").toInt();
+            if (radius > 0)
+                painter.drawRoundedRect(scrollArea->rect(), radius, radius);
+            else
+                painter.drawRect(scrollArea->rect());
+        }
 
         // render
         // foreach( auto* child, children )
@@ -2239,22 +2447,12 @@ bool Style::eventFilterComboBoxContainer(QWidget *widget, QEvent *event)
         const auto &palette(widget->palette());
         const auto background(_helper->frameBackgroundColor(palette));
         const auto outline(_helper->frameOutlineColor(palette));
-        painter.setCompositionMode(QPainter::CompositionMode_Clear);
-        painter.fillRect(rect, Qt::transparent);
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
         const bool hasAlpha(_helper->hasAlphaChannel(widget));
         if (hasAlpha) {
             painter.setCompositionMode(QPainter::CompositionMode_Source);
-            _helper->renderMenuFrame(&painter, rect, background, outline, true);
-
-        } else {
-            _helper->renderMenuFrame(&painter, rect, background, outline, false);
         }
-    }
-    // update blur region
-    if (event->type() == QEvent::Move || event->type() == QEvent::Show || event->type() == QEvent::Hide) {
-        _blurHelper->forceUpdate(widget->window());
+        _helper->renderMenuFrame(&painter, rect, background, outline, hasAlpha);
     }
 
     return false;
@@ -2537,10 +2735,32 @@ QIcon Style::standardIconImplementation(StandardPixmap standardPixmap, const QSt
 }
 
 //_____________________________________________________________________
+void Style::loadGlobalAnimationSettings()
+{
+    KSharedConfig::Ptr config = KSharedConfig::openConfig();
+    const KConfigGroup cg(config, QStringLiteral("KDE"));
+
+    // Don't override if it isn't set by the user
+    if (!cg.hasKey("AnimationDurationFactor")) {
+        return;
+    }
+
+    const int animationsDuration = cg.readEntry("AnimationDurationFactor", StyleConfigData::animationsDuration() / 100.0f) * 100;
+    if (animationsDuration > 0) {
+        StyleConfigData::setAnimationsDuration(animationsDuration);
+        StyleConfigData::setAnimationsEnabled(true);
+    } else {
+        StyleConfigData::setAnimationsEnabled(false);
+    }
+}
+
+//_____________________________________________________________________
 void Style::loadConfiguration()
 {
     // load helper configuration
     _helper->loadConfig();
+
+    loadGlobalAnimationSettings();
 
     // update blurhelper
     _blurHelper->setTranslucentTitlebar(_helper->titleBarColor(true).alphaF() < 1.0 ? true : false);
@@ -2611,9 +2831,33 @@ QRect Style::pushButtonContentsRect(const QStyleOption *option, const QWidget *)
 }
 
 //___________________________________________________________________________________________________________________
-QRect Style::checkBoxContentsRect(const QStyleOption *option, const QWidget *) const
+bool Style::isSwitchWidget(const QWidget *widget) const
 {
-    return visualRect(option, option->rect.adjusted(Metrics::CheckBox_Size + Metrics::CheckBox_ItemSpacing, 0, 0, 0));
+    if (!widget)
+        return false;
+#if QT_CONFIG(accessibility)
+    if (QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(const_cast<QWidget *>(widget))) {
+        return static_cast<int>(iface->role()) == QAccessible::Switch;
+    }
+#endif
+    return false;
+}
+
+//___________________________________________________________________________________________________________________
+bool Style::isSwitchCheckBox(const QStyleOption *option, const QWidget *widget) const
+{
+    if (widget && isSwitchWidget(widget))
+        return true;
+    if (const QStyleOptionButton *buttonOption = qstyleoption_cast<const QStyleOptionButton *>(option))
+        return buttonOption->text.contains(QLatin1String("Switch"), Qt::CaseInsensitive); // fallback for Slint Qt backend
+    return false;
+}
+
+//___________________________________________________________________________________________________________________
+QRect Style::checkBoxContentsRect(const QStyleOption *option, const QWidget *widget) const
+{
+    const int indicatorWidth = isSwitchCheckBox(option, widget) ? Metrics::Switch_Width : Metrics::CheckBox_Size;
+    return visualRect(option, option->rect.adjusted(indicatorWidth + Metrics::CheckBox_ItemSpacing, 0, 0, 0));
 }
 
 //___________________________________________________________________________________________________________________
@@ -2632,10 +2876,10 @@ QRect Style::lineEditContentsRect(const QStyleOption *option, const QWidget *wid
     // copy rect and take out margins
     auto rect(option->rect);
 
-    // take out margins if there is enough room
+    // take out margins if there is enough room; add horizontal padding for inputs
     const int frameWidth(pixelMetric(PM_DefaultFrameWidth, option, widget));
     if (rect.height() >= option->fontMetrics.height() + 2 * frameWidth)
-        return insideMargin(rect, frameWidth);
+        return insideMargin(rect, frameWidth + Metrics::LineEdit_HPadding, frameWidth);
     else
         return rect;
 }
@@ -3676,19 +3920,23 @@ QRect Style::sliderSubControlRect(const QStyleOptionComplex *option, SubControl 
 }
 
 //______________________________________________________________
-QSize Style::checkBoxSizeFromContents(const QStyleOption *, const QSize &contentsSize, const QWidget *) const
+QSize Style::checkBoxSizeFromContents(const QStyleOption *option, const QSize &contentsSize, const QWidget *widget) const
 {
     // get contents size
     QSize size(contentsSize);
+
+    const bool isSwitch = isSwitchCheckBox(option, widget);
+    const int indicatorW = isSwitch ? Metrics::Switch_Width : Metrics::CheckBox_Size;
+    const int indicatorH = isSwitch ? Metrics::Switch_Height : int(Metrics::CheckBox_Size);
 
     // add focus height
     size = expandSize(size, 0, Metrics::CheckBox_FocusMarginWidth);
 
     // make sure there is enough height for indicator
-    size.setHeight(qMax(size.height(), int(Metrics::CheckBox_Size)));
+    size.setHeight(qMax(size.height(), indicatorH));
 
     // Add space for the indicator and the icon
-    size.rwidth() += Metrics::CheckBox_Size + Metrics::CheckBox_ItemSpacing;
+    size.rwidth() += indicatorW + Metrics::CheckBox_ItemSpacing;
 
     // also add extra space, to leave room to the right of the label
     size.rwidth() += Metrics::CheckBox_ItemSpacing;
@@ -3706,7 +3954,7 @@ QSize Style::lineEditSizeFromContents(const QStyleOption *option, const QSize &c
 
     const bool flat(frameOption->lineWidth == 0);
     const int frameWidth(pixelMetric(PM_DefaultFrameWidth, option, widget));
-    return flat ? contentsSize : expandSize(contentsSize, frameWidth);
+    return flat ? contentsSize : expandSize(contentsSize, frameWidth + Metrics::LineEdit_HPadding, frameWidth);
 }
 
 //______________________________________________________________
@@ -4353,8 +4601,8 @@ bool Style::drawFrameLineEditPrimitive(const QStyleOption *option, QPainter *pai
         const bool mouseOver(enabled && (state & State_MouseOver));
         const bool hasFocus(enabled && (state & State_HasFocus));
 
-        // focus takes precedence over mouse over
-        _animations->inputWidgetEngine().updateState(widget, AnimationFocus, hasFocus, AnimationLongDuration);
+        // focus takes precedence over mouse over (default duration, not AnimationLongDuration - was too slow)
+        _animations->inputWidgetEngine().updateState(widget, AnimationFocus, hasFocus);
         //_animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
 
         // retrieve animation mode and opacity
@@ -4427,23 +4675,57 @@ bool Style::drawFrameFocusRectPrimitive(const QStyleOption *option, QPainter *pa
 //___________________________________________________________________________________
 bool Style::drawFrameMenuPrimitive(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    // only draw frame for (expanded) toolbars and QtQuick controls
-    // do nothing for other cases, for which frame is rendered via drawPanelMenuPrimitive
-    if (qobject_cast<const QToolBar *>(widget)) {
+    // Draw for (expanded) toolbars, QtQuick controls, and Slint combobox popup (plain QWidget)
+    const bool isToolBar(qobject_cast<const QToolBar *>(widget));
+    const bool isQtQuick(isQtQuickControl(option, widget));
+    const bool isSlintPopup(widget && !widget->isWindow() && !qobject_cast<const QMenu *>(widget));
+
+    if (isToolBar || isQtQuick || isSlintPopup) {
         const auto &palette(option->palette);
         const auto background(_helper->frameBackgroundColor(palette));
-        const auto outline(QColor(0, 0, 0, 0));
+        const auto outline(_helper->isDarkTheme(palette) ? QColor(255, 255, 255, 30) : QColor(0, 0, 0, 40));
+        bool hasAlpha(_helper->hasAlphaChannel(widget));
+        if (isSlintPopup)
+            hasAlpha = true;
 
-        const bool hasAlpha(_helper->hasAlphaChannel(widget));
-        _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
-
-    } else if (isQtQuickControl(option, widget)) {
-        const auto &palette(option->palette);
-        const auto background(_helper->frameBackgroundColor(palette));
-        const auto outline(QColor(0, 0, 0, 0));
-
-        const bool hasAlpha(_helper->hasAlphaChannel(widget));
-        _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
+        painter->save();
+        // Skip renderBlurredBackground for QAbstractScrollArea (KItemListContainer etc.) - grab() during
+        // paint causes recursive repaint and SEGV
+        if (isSlintPopup && widget->window() && !qobject_cast<const QAbstractScrollArea *>(widget)) {
+            const QRect rectInWindow(widget->mapTo(widget->window(), option->rect.topLeft()), widget->mapTo(widget->window(), option->rect.bottomRight()));
+            if (_helper->renderBlurredBackground(painter, widget->window(), rectInWindow.normalized(), option->rect, 12)) {
+                QColor bg(background);
+                bg.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+                painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+                painter->setBrush(bg);
+                painter->setPen(Qt::NoPen);
+                painter->drawRoundedRect(option->rect, StyleConfigData::menuItemRadius(), StyleConfigData::menuItemRadius());
+                if (outline.isValid()) {
+                    painter->setPen(outline);
+                    painter->setBrush(Qt::NoBrush);
+                    painter->drawRoundedRect(QRectF(option->rect).adjusted(0.5, 0.5, -0.5, -0.5),
+                                             StyleConfigData::menuItemRadius() + 0.5,
+                                             StyleConfigData::menuItemRadius() + 0.5);
+                }
+            } else {
+                if (hasAlpha) {
+                    painter->setCompositionMode(QPainter::CompositionMode_Source);
+                    QColor bg(background);
+                    bg.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+                    _helper->renderMenuFrame(painter, option->rect, bg, outline, hasAlpha);
+                } else {
+                    _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
+                }
+            }
+        } else if (hasAlpha) {
+            painter->setCompositionMode(QPainter::CompositionMode_Source);
+            QColor bg(background);
+            bg.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+            _helper->renderMenuFrame(painter, option->rect, bg, outline, hasAlpha);
+        } else {
+            _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
+        }
+        painter->restore();
     }
 
     return true;
@@ -4893,26 +5175,57 @@ bool Style::drawPanelScrollAreaCornerPrimitive(const QStyleOption *option, QPain
 bool Style::drawPanelMenuPrimitive(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     /*
-     * do nothing if menu is embedded in another widget
-     * this corresponds to having a transparent background
+     * Skip drawing only for embedded QMenu (transparent background).
+     * Draw for toplevel menus and for non-menu widgets (e.g. Slint Qt backend
+     * NativeComboBoxPopup uses PE_PanelMenu with a plain QWidget, not a window).
      */
-    if (widget && !widget->isWindow())
+    if (widget && qobject_cast<const QMenu *>(widget) && !widget->isWindow())
         return true;
 
+    const bool isSlintPopup(widget && !widget->isWindow() && !qobject_cast<const QMenu *>(widget));
+    if (isSlintPopup && widget->window()) {
+        const QRect rectInWindow(widget->mapTo(widget->window(), option->rect.topLeft()), widget->mapTo(widget->window(), option->rect.bottomRight()));
+        _blurHelper->setSlintPopupRegion(widget->window(), rectInWindow.normalized());
+    }
+
     const auto &palette(option->palette);
-    const auto outline(_helper->isDarkTheme(palette) ? QColor(255, 255, 255, 30) : QColor());
-    const bool hasAlpha(_helper->hasAlphaChannel(widget));
-    // auto background( _helper->frameBackgroundColor( palette ) );
-    auto background(palette.color(QPalette::Base));
+    const auto outline(_helper->isDarkTheme(palette) ? QColor(255, 255, 255, 30) : QColor(0, 0, 0, 40));
+    bool hasAlpha(_helper->hasAlphaChannel(widget));
+    if (isSlintPopup)
+        hasAlpha = true;
+    auto background(_helper->frameBackgroundColor(palette));
 
     painter->save();
 
-    if (hasAlpha) {
-        painter->setCompositionMode(QPainter::CompositionMode_Source);
-        background.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+    if (isSlintPopup && widget->window()) {
+        const QRect rectInWindow(widget->mapTo(widget->window(), option->rect.topLeft()), widget->mapTo(widget->window(), option->rect.bottomRight()));
+        if (_helper->renderBlurredBackground(painter, widget->window(), rectInWindow.normalized(), option->rect, 12)) {
+            background.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+            painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+            painter->setBrush(background);
+            painter->setPen(Qt::NoPen);
+            painter->drawRoundedRect(option->rect, StyleConfigData::menuItemRadius(), StyleConfigData::menuItemRadius());
+            if (outline.isValid()) {
+                painter->setPen(outline);
+                painter->setBrush(Qt::NoBrush);
+                painter->drawRoundedRect(QRectF(option->rect).adjusted(0.5, 0.5, -0.5, -0.5),
+                                         StyleConfigData::menuItemRadius() + 0.5,
+                                         StyleConfigData::menuItemRadius() + 0.5);
+            }
+        } else {
+            if (hasAlpha) {
+                painter->setCompositionMode(QPainter::CompositionMode_Source);
+                background.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+            }
+            _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
+        }
+    } else {
+        if (hasAlpha) {
+            painter->setCompositionMode(QPainter::CompositionMode_Source);
+            background.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
+        }
+        _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
     }
-
-    _helper->renderMenuFrame(painter, option->rect, background, outline, hasAlpha);
 
     painter->restore();
 
@@ -4951,6 +5264,26 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
     const auto &palette(option->palette);
     auto rect(option->rect);
 
+    // For table/tree views with a viewport: keep drawing inside the visible area so we don't
+    // overflow right/bottom and so right/bottom rounded corners have room to show.
+    // Only apply to QTableView/QTreeView (main content); skip QListView (e.g. Dolphin Places sidebar).
+    // Don't clip for Dolphin - clipping cuts off the right corner and causes asymmetric rounding.
+    if (abstractItemView && (qobject_cast<const QTableView *>(widget) || qobject_cast<const QTreeView *>(widget))
+        && !(_isDolphin && qobject_cast<const QTableView *>(widget))) {
+        if (QWidget *vp = abstractItemView->viewport()) {
+            const int radius = StyleConfigData::itemViewRadius();
+            const QRect vpRect(0, 0, vp->width(), vp->height());
+            const QRect safeRect = vpRect.adjusted(0, 0, -qMax(1, radius), -qMax(1, radius));
+            rect = rect.intersected(safeRect);
+            if (!rect.isValid())
+                return true;
+        }
+    }
+
+    // Clip to item rect so we never draw outside the row/card
+    painter->save();
+    painter->setClipRect(rect, Qt::IntersectClip);
+
     // store flags
     const State &state(option->state);
     const bool mouseOver((state & State_MouseOver) && (!abstractItemView || abstractItemView->selectionMode() != QAbstractItemView::NoSelection));
@@ -4963,6 +5296,7 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
 
     // do nothing if no background is to be rendered
     if (!(mouseOver || selected || hasCustomBackground || hasAlternateBackground)) {
+        painter->restore();
         return true;
     }
 
@@ -4982,6 +5316,7 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
 
     // stop here if no highlight is needed
     if (!(mouseOver || selected || hasCustomBackground)) {
+        painter->restore();
         return true;
     }
 
@@ -4991,6 +5326,7 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
         painter->setBrush(viewItemOption->backgroundBrush);
         painter->setPen(Qt::NoPen);
         painter->drawRoundedRect(viewItemOption->rect, StyleConfigData::itemViewRadius(), StyleConfigData::itemViewRadius());
+        painter->restore();
         return true;
     }
 
@@ -5016,6 +5352,16 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
             painter->setPen(Qt::NoPen);
             painter->setBrush(color);
             painter->drawRoundedRect(rect, 4, 4);
+            painter->restore();
+            return true;
+        }
+
+        // Dolphin file list (KItemListContainer): bottom corners only, small radius for symmetric
+        // corners (avoids "left circle, right none" from viewItemPosition + large radius)
+        if (_isDolphin && (qobject_cast<const QTableView *>(widget) || widget->inherits("KItemListWidget"))) {
+            const qreal radius = 4;
+            _helper->renderSelection(painter, rect, color, CornersBottom, radius);
+            painter->restore();
             return true;
         }
 
@@ -5029,18 +5375,40 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
             }
 
             _helper->renderSelection(painter, rect, color, corners);
+            painter->restore();
             return true;
         }
     }
 
     _helper->renderSelection(painter, rect, color, AllCorners);
 
+    painter->restore();
     return true;
 }
 
 //___________________________________________________________________________________
 bool Style::drawIndicatorCheckBoxPrimitive(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
+    // when a switch overlay widget is present, it draws the indicator
+    if (widget) {
+        QObject *ov = widget->property("blossomui-switch-overlay").value<QObject *>();
+        if (ov && qobject_cast<BlossomUISwitchWidget *>(ov) && static_cast<BlossomUISwitchWidget *>(ov)->isVisible())
+            return true;
+    }
+
+    // Slint (and similar) may pass widget=null or the window instead of the checkbox; ensure overlay exists
+    if (isSwitchCheckBox(option, widget)) {
+        QWidget *window = widget ? widget->window() : dynamic_cast<QWidget *>(painter->device());
+        if (window)
+            window = window->window();
+        if (window)
+            for (QCheckBox *cb : window->findChildren<QCheckBox *>())
+                if (cb->text().contains(QLatin1String("Switch"), Qt::CaseInsensitive) && !cb->property("blossomui-switch-overlay").value<QObject *>()) {
+                    const_cast<Style *>(this)->polish(cb);
+                    break;
+                }
+    }
+
     // copy rect and palette
     const auto &rect(option->rect);
     const auto &palette(option->palette);
@@ -5072,7 +5440,10 @@ bool Style::drawIndicatorCheckBoxPrimitive(const QStyleOption *option, QPainter 
 
     // render
     //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
-    _helper->renderCheckBox(painter, rect, palette, false, sunken, mouseOver, checkBoxState, false, animation);
+    if (isSwitchCheckBox(option, widget))
+        _helper->renderSwitch(painter, rect, palette, sunken, mouseOver, checkBoxState, animation);
+    else
+        _helper->renderCheckBox(painter, rect, palette, false, sunken, mouseOver, checkBoxState, false, animation);
     return true;
 }
 
@@ -5768,12 +6139,12 @@ bool Style::drawComboBoxLabelControl(const QStyleOption *option, QPainter *paint
 
     QPalette::ColorRole textRole;
     if (flat) {
-        if (hasFocus && sunken)
+        if (sunken)
             textRole = QPalette::HighlightedText;
         else
             textRole = QPalette::WindowText;
 
-    } else if (option->state & State_HasFocus || sunken)
+    } else if (sunken || mouseOver)
         textRole = QPalette::HighlightedText;
     else
         textRole = QPalette::ButtonText;
@@ -6895,12 +7266,16 @@ bool Style::drawShapedFrameControl(const QStyleOption *option, QPainter *painter
         // return pixelMetric(PM_DefaultFrameWidth, option, widget) == 0;
 
         if (isQtQuickControl(option, widget)) {
-            // ComboBox popup frame
+            // ComboBox popup frame (Qt Quick Controls)
             drawFrameMenuPrimitive(option, painter, widget);
             return true;
-
-        } else
-            break;
+        }
+        if (widget && !qobject_cast<const QMenu *>(widget)) {
+            // Non-menu widget with StyledPanel (e.g. Slint NativeComboBoxPopup when SH_ComboBox_Popup is false)
+            drawFrameMenuPrimitive(option, painter, widget);
+            return true;
+        }
+        break;
     }
 
     default:
@@ -6959,7 +7334,8 @@ bool Style::drawHeaderSectionControl(const QStyleOption *option, QPainter *paint
         return true;
 
     const bool horizontal(headerOption->orientation == Qt::Horizontal);
-    const bool isFirst(horizontal && (headerOption->position == QStyleOptionHeader::Beginning));
+    const bool isFirst(horizontal && (headerOption->position == QStyleOptionHeader::Beginning || headerOption->position == QStyleOptionHeader::OnlyOneSection));
+    const bool isLast(horizontal && (headerOption->position == QStyleOptionHeader::End || headerOption->position == QStyleOptionHeader::OnlyOneSection));
     const bool isCorner(widget && widget->inherits("QTableCornerButton"));
     const bool reverseLayout(option->direction == Qt::RightToLeft);
 
@@ -6983,16 +7359,19 @@ bool Style::drawHeaderSectionControl(const QStyleOption *option, QPainter *paint
     else
         color = normal;
 
-    // make the top left corner of the first header rounded so that it doest poke out of the view
-    if (isFirst && horizontal) {
-        const int radius = StyleConfigData::cornerRadius();
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setBrush(color);
-        painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(QRect(rect.topLeft().x(), rect.topLeft().y(), radius + 2, radius + 2), radius + 1, radius + 1);
-        painter->drawRect(rect.topLeft().x(), rect.topLeft().y() + radius, rect.width(), rect.height() - radius);
-        painter->drawRect(rect.topLeft().x() + radius, rect.topLeft().y(), rect.width() - radius, rect.height());
-        painter->setRenderHint(QPainter::Antialiasing, false);
+    // Table topbar: round top-left and top-right with same radius for consistent corners
+    const int radius = 6;
+    Corners corners = Corners();
+    if (horizontal) {
+        if (isFirst && isLast)
+            corners = CornersTop;
+        else if (isFirst)
+            corners = reverseLayout ? CornerTopRight : CornerTopLeft;
+        else if (isLast)
+            corners = reverseLayout ? CornerTopLeft : CornerTopRight;
+    }
+    if (corners) {
+        _helper->renderSelection(painter, rect, color, corners, radius);
     } else {
         painter->setRenderHint(QPainter::Antialiasing, false);
         painter->setBrush(color);
@@ -7000,7 +7379,7 @@ bool Style::drawHeaderSectionControl(const QStyleOption *option, QPainter *paint
         painter->drawRect(rect);
     }
 
-    // outline
+    // outline - skip bottom line for Dolphin table header so header and content blend (no visible gap)
     painter->setBrush(Qt::NoBrush);
     painter->setPen(_helper->alphaColor(palette.color(QPalette::WindowText), 0.1));
 
@@ -7010,10 +7389,10 @@ bool Style::drawHeaderSectionControl(const QStyleOption *option, QPainter *paint
         else
             painter->drawPoint(rect.bottomRight());
 
-    } else if (horizontal) {
+    } else if (horizontal && !_isDolphin) {
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());
 
-    } else {
+    } else if (!horizontal) {
         if (reverseLayout)
             painter->drawLine(rect.topLeft(), rect.bottomLeft());
         else
@@ -7560,8 +7939,16 @@ bool Style::drawTabBarTabShapeControl(const QStyleOption *option, QPainter *pain
     } else if (selected) {
         QRegion oldRegion(painter->clipRegion());
 
-        painter->setClipRect(option->rect, Qt::IntersectClip);
-        //_helper->renderTabBarTab( painter, rect, color, outline, corners );
+        // thin light border on selected tab (mockup: distinct border, subtle shadow)
+        const QColor tabOutlineColor(_helper->isDarkTheme(palette) ? _helper->alphaColor(Qt::white, 0.15) : _helper->alphaColor(Qt::black, 0.12));
+        const qreal tabRadius(_helper->tabFrameRadius());
+        // sliding pill animation: use animated rect when selected tab is changing
+        const QTabBar *tabBar = qobject_cast<const QTabBar *>(widget);
+        const bool pillAnimated = tabBar && documentMode && _animations->tabBarEngine().isSelectedAnimated(tabBar);
+        const QRect pillRect = pillAnimated ? _animations->tabBarEngine().selectedPillRect(tabBar, const_cast<QTabBar *>(tabBar)).adjusted(4, 4, -4, -4) : rect;
+
+        // when pill is animating, clip to whole bar so pill can slide across
+        painter->setClipRect(pillAnimated && tabBar ? tabBar->rect() : option->rect, Qt::IntersectClip);
 
         if (documentMode) {
             // konsole's tab
@@ -7576,42 +7963,52 @@ bool Style::drawTabBarTabShapeControl(const QStyleOption *option, QPainter *pain
 
                 // erase alpha
                 painter->setCompositionMode(QPainter::CompositionMode_DestinationOut);
-                _helper->renderTabBarTab(painter, rect, Qt::black, corners);
+                _helper->renderTabBarTab(painter, pillRect, Qt::black, AllCorners, tabRadius);
                 painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
 
                 // no shadow for translucent tab
                 if (!(color.alphaF() < 1))
-                    _helper->renderBoxShadow(painter, rect /*.adjusted(0,0,0,4)*/, 0, 1, 4, QColor(0, 0, 0, 220), StyleConfigData::cornerRadius(), true);
-                _helper->renderTabBarTab(painter, rect, color, corners);
+                    _helper->renderBoxShadow(painter, pillRect, 0, 1, 2, QColor(0, 0, 0, 80), qRound(tabRadius), true);
+                _helper->renderTabBarTab(painter, pillRect, color, AllCorners, tabRadius);
+                if (color.alphaF() >= 1)
+                    _helper->renderTabBarTabOutline(painter, pillRect, tabOutlineColor, AllCorners, tabRadius);
             } else {
                 // render dark background and shadow
                 _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
                 _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0, 0, 0, 220), StyleConfigData::cornerRadius(), true);
 
-                _helper->renderBoxShadow(painter, rect /*.adjusted(0,0,0,4)*/, 0, 1, 4, QColor(0, 0, 0, 220), StyleConfigData::cornerRadius(), true);
-                _helper->renderTabBarTab(painter, rect, _isLibreoffice ? palette.color(QPalette::Highlight) : color, corners);
+                // subtle shadow on selected tab (less pronounced), thin light border
+                _helper->renderBoxShadow(painter, pillRect, 0, 1, 2, QColor(0, 0, 0, 80), qRound(tabRadius), true);
+                _helper->renderTabBarTab(painter,
+                                         pillRect,
+                                         _isLibreoffice ? palette.color(QPalette::Highlight) : color,
+                                         pillAnimated ? AllCorners : corners,
+                                         tabRadius);
+                _helper->renderTabBarTabOutline(painter, pillRect, tabOutlineColor, pillAnimated ? AllCorners : corners, tabRadius);
             }
 
-            // highlight
+            // highlight (slides with pill, uses tab radius)
             if (StyleConfigData::tabDrawHighlight()) {
                 constexpr int hh = 2; // highlight height
+                const QRect &hlRect = pillRect;
 
                 // render only whats inside the highlight rect
-                painter->setClipRect(rect.adjusted(side == SideRight ? rect.width() - hh : 0,
-                                                   side == SideBottom ? rect.height() - hh : 0,
-                                                   side == SideLeft ? -rect.width() + hh : 0,
-                                                   side == SideTop ? -rect.height() + hh : 0),
+                painter->setClipRect(hlRect.adjusted(side == SideRight ? hlRect.width() - hh : 0,
+                                                     side == SideBottom ? hlRect.height() - hh : 0,
+                                                     side == SideLeft ? -hlRect.width() + hh : 0,
+                                                     side == SideTop ? -hlRect.height() + hh : 0),
                                      Qt::IntersectClip);
 
                 // when the highlight is too thin, it's not rendered properly,
                 // so we increase its size by one, the extra part will not be rendered anyway.
                 _helper->renderTabBarTab(painter,
-                                         rect.adjusted(side == SideRight ? rect.width() - (hh + 1) : 0,
-                                                       side == SideBottom ? rect.height() - (hh + 1) : 0,
-                                                       side == SideLeft ? -rect.width() + (hh + 1) : 0,
-                                                       side == SideTop ? -rect.height() + (hh + 1) : 0),
+                                         hlRect.adjusted(side == SideRight ? hlRect.width() - (hh + 1) : 0,
+                                                         side == SideBottom ? hlRect.height() - (hh + 1) : 0,
+                                                         side == SideLeft ? -hlRect.width() + (hh + 1) : 0,
+                                                         side == SideTop ? -hlRect.height() + (hh + 1) : 0),
                                          _helper->focusColor(palette),
-                                         corners);
+                                         pillAnimated ? AllCorners : corners,
+                                         tabRadius);
             }
 
         }
@@ -7625,16 +8022,17 @@ bool Style::drawTabBarTabShapeControl(const QStyleOption *option, QPainter *pain
                 backgroundRect.adjust(5, 6, -5, -6);
             else
                 backgroundRect.adjust(4, 4, -4, -4);
-            _helper->renderBoxShadow(painter, backgroundRect, 0, 1, 6, QColor(0, 0, 0, 100), StyleConfigData::cornerRadius(), true);
+            _helper->renderBoxShadow(painter, backgroundRect, 0, 1, 2, QColor(0, 0, 0, 60), qRound(tabRadius), true);
             painter->setBrush(color);
-            painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+            painter->drawRoundedRect(backgroundRect, tabRadius, tabRadius);
 
             // Don't lighten the highlight color
             if (!StyleConfigData::tabUseHighlightColor()) {
                 if (StyleConfigData::documentModeTabs())
                     painter->setBrush(QColor(255, 255, 255, 20));
-                painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+                painter->drawRoundedRect(backgroundRect, tabRadius, tabRadius);
             }
+            _helper->renderTabBarTabOutline(painter, backgroundRect, tabOutlineColor, AllCorners, tabRadius);
         }
 
         painter->setClipRegion(oldRegion);
@@ -7937,6 +8335,21 @@ bool Style::drawToolButtonComplexControl(const QStyleOptionComplex *option, QPai
     const auto buttonRect(subControlRect(CC_ToolButton, option, SC_ToolButton, widget));
     const auto menuRect(subControlRect(CC_ToolButton, option, SC_ToolButtonMenu, widget));
 
+    // Dolphin back/forward buttons: skip drawing the dropdown chevron (history menu indicator).
+    // Dolphin uses icons for the main chevron; detect by objectName (widget or its action, from KXmlGui).
+    bool isDolphinNavButton = false;
+    if (_isDolphin && (hasPopupMenu || hasInlineIndicator) && widget) {
+        const QString name(widget->objectName());
+        if (name == QLatin1String("go_back") || name == QLatin1String("go_forward"))
+            isDolphinNavButton = true;
+        else if (const auto *toolButton = qobject_cast<const QToolButton *>(widget)) {
+            if (const QAction *action = toolButton->defaultAction()) {
+                const QString actionName(action->objectName());
+                isDolphinNavButton = (actionName == QLatin1String("go_back") || actionName == QLatin1String("go_forward"));
+            }
+        }
+    }
+
     // frame
     if (toolButtonOption->subControls & SC_ToolButton) {
         if (!flat)
@@ -7947,22 +8360,24 @@ bool Style::drawToolButtonComplexControl(const QStyleOptionComplex *option, QPai
             drawPrimitive(PE_PanelButtonTool, &copy, painter, widget);
     }
 
-    // arrow
-    if (hasPopupMenu) {
-        copy.rect = menuRect;
-        if (!flat)
-            drawPrimitive(PE_IndicatorButtonDropDown, &copy, painter, widget);
+    // arrow (skip dropdown chevron for Dolphin back/forward buttons)
+    if (!isDolphinNavButton) {
+        if (hasPopupMenu) {
+            copy.rect = menuRect;
+            if (!flat)
+                drawPrimitive(PE_IndicatorButtonDropDown, &copy, painter, widget);
 
-        if (sunken && !flat)
-            copy.rect.translate(1, 1);
-        drawPrimitive(PE_IndicatorArrowDown, &copy, painter, widget);
+            if (sunken && !flat)
+                copy.rect.translate(1, 1);
+            drawPrimitive(PE_IndicatorArrowDown, &copy, painter, widget);
 
-    } else if (hasInlineIndicator) {
-        copy.rect = menuRect;
+        } else if (hasInlineIndicator) {
+            copy.rect = menuRect;
 
-        if (sunken && !flat)
-            copy.rect.translate(1, 1);
-        drawIndicatorArrowPrimitive(ArrowDown_Small, &copy, painter, widget);
+            if (sunken && !flat)
+                copy.rect.translate(1, 1);
+            drawIndicatorArrowPrimitive(ArrowDown_Small, &copy, painter, widget);
+        }
     }
 
     // contents
@@ -8051,13 +8466,11 @@ bool Style::drawComboBoxComplexControl(const QStyleOptionComplex *option, QPaint
                 _helper->renderToolButtonFrame(painter, rect, color, sunken);
 
             } else {
-                // define colors
-                // const auto shadow( _helper->shadowColor( palette ) );
-                // const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
-                const auto background(_helper->buttonBackgroundColor(palette, mouseOver, hasFocus, false, opacity, mode));
+                // define colors - don't use accent for focus on combobox trigger (too prominent when item selected)
+                const auto background(_helper->buttonBackgroundColor(palette, mouseOver, false, false, opacity, mode));
 
                 // render
-                _helper->renderButtonFrame(painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive);
+                _helper->renderButtonFrame(painter, rect, background, palette, false, sunken, mouseOver, enabled, windowActive);
             }
         }
     }
@@ -8305,13 +8718,14 @@ bool Style::drawSliderComplexControl(const QStyleOptionComplex *option, QPainter
         // const AnimationMode mode( _animations->widgetStateEngine().buttonAnimationMode( widget ) );
         // const qreal opacity( _animations->widgetStateEngine().buttonOpacity( widget ) );
 
-        // define colors
+        // define colors (solid opaque, like shadcn thumb)
         QColor background(palette.color(QPalette::Button));
         if (hasFocus || mouseOver) {
             background = KColorUtils::mix(background, palette.color(QPalette::Highlight), 0.15);
         }
         background.setAlpha(255);
-        const auto outline = KColorUtils::mix(background, palette.color(QPalette::WindowText), 0.2);
+        QColor outline(KColorUtils::mix(background, palette.color(QPalette::WindowText), 0.2));
+        outline.setAlpha(255);
 
         // render
         _helper->renderSliderHandle(painter, handleRect, background, outline, (hasFocus || mouseOver), sunken);

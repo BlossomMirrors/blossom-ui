@@ -54,6 +54,7 @@ enum Metrics {
 
     // line editors
     LineEdit_FrameWidth = 5 + Frame_FrameWidth,
+    LineEdit_HPadding = 4,
 
     // menu items
     Menu_FrameWidth = 4,
@@ -88,6 +89,11 @@ enum Metrics {
     CheckBox_Size = 16 + (Frame_FrameWidth - 1) * 2,
     CheckBox_FocusMarginWidth = 2,
     CheckBox_ItemSpacing = 4,
+
+    // switch (pill-style toggle, e.g. Slint Switch / shadcn-style)
+    Switch_Width = 36,
+    Switch_Height = 20,
+    Switch_ThumbMargin = 2,
 
     // menubar items
     MenuBarItem_MarginWidth = 10,
@@ -130,7 +136,7 @@ enum Metrics {
     TabBar_TabMinWidth = 85,
     TabBar_TabMinHeight = 36,
     TabBar_TabItemSpacing = 8,
-    TabBar_TabOverlap = 0,
+    TabBar_TabOverlap = -8, // negative = gap between tabs (8px), pill-style with parallel radii
     TabBar_BaseOverlap = 2,
 
     // tab widget

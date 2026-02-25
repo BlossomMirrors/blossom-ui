@@ -45,7 +45,9 @@
 
 #include "blossomuitabbardata.h"
 
+#include <QEasingCurve>
 #include <QHoverEvent>
+#include <QPropertyAnimation>
 #include <QTabBar>
 
 namespace BlossomUI
@@ -62,6 +64,22 @@ TabBarData::TabBarData(QObject *parent, QWidget *target, int duration)
     _previous._animation = new Animation(duration, this);
     setupAnimation(previousIndexAnimation(), "previousOpacity");
     previousIndexAnimation().data()->setDirection(Animation::Backward);
+
+    _selectedAnimation = new Animation(duration, this);
+    setupAnimation(_selectedAnimation, "selectedProgress");
+    _selectedAnimation.data()->setStartValue(0.0);
+    _selectedAnimation.data()->setEndValue(1.0);
+    _selectedAnimation.data()->setEasingCurve(QEasingCurve::OutCubic);
+    // ensure repaint on every frame during slide
+    connect(_selectedAnimation.data(), &QPropertyAnimation::valueChanged, this, [this]() {
+        setDirty();
+    });
+
+    if (QTabBar *tabBar = qobject_cast<QTabBar *>(target)) {
+        _selectedIndex = tabBar->currentIndex();
+        _previousSelectedIndex = _selectedIndex;
+        connect(tabBar, &QTabBar::currentChanged, this, &TabBarData::onCurrentChanged);
+    }
 }
 
 //______________________________________________
@@ -122,6 +140,39 @@ bool TabBarData::updateState(const QPoint &position, bool hovered)
 
     } else
         return false;
+}
+
+//______________________________________________
+void TabBarData::onCurrentChanged(int index)
+{
+    if (!enabled() || index < 0)
+        return;
+    if (index == _selectedIndex)
+        return;
+    _previousSelectedIndex = _selectedIndex;
+    _selectedIndex = index;
+    _selectedProgress = 0;
+    _selectedAnimation.data()->restart();
+}
+
+//______________________________________________
+bool TabBarData::isSelectedAnimated() const
+{
+    return enabled() && _selectedAnimation && _selectedAnimation.data()->isRunning();
+}
+
+//______________________________________________
+QRect TabBarData::selectedPillRect(const QTabBar *tabBar) const
+{
+    if (!tabBar || _previousSelectedIndex < 0 || _selectedIndex < 0)
+        return tabBar && _selectedIndex >= 0 ? tabBar->tabRect(_selectedIndex) : QRect();
+    QRect prevRect(tabBar->tabRect(_previousSelectedIndex));
+    QRect currRect(tabBar->tabRect(_selectedIndex));
+    const qreal t = _selectedProgress;
+    return QRect(qRound(prevRect.x() + t * (currRect.x() - prevRect.x())),
+                 qRound(prevRect.y() + t * (currRect.y() - prevRect.y())),
+                 qRound(prevRect.width() + t * (currRect.width() - prevRect.width())),
+                 qRound(prevRect.height() + t * (currRect.height() - prevRect.height())));
 }
 
 //______________________________________________

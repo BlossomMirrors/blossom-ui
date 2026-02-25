@@ -36,7 +36,10 @@
 
 #include <QHash>
 #include <QObject>
+#include <QPointer>
+#include <QRect>
 #include <QSet>
+#include <QTimer>
 
 namespace BlossomUI
 {
@@ -64,6 +67,9 @@ public:
             update(widget);
     }
 
+    //! Set blur region for Slint (or other) combobox popup drawn inside a window (not a separate popup window).
+    void setSlintPopupRegion(QWidget *window, const QRect &rectInWindowCoords);
+
     void setTranslucentTitlebar(bool value)
     {
         _translucentTitlebar = value;
@@ -87,9 +93,15 @@ protected:
     //! update blur regions for given widget
     void update(QWidget *) const;
 
+private Q_SLOTS:
+    void _clearSlintPopupRegion();
+
 private:
     bool _isDolphin = false;
     bool _translucentTitlebar = false;
+    mutable QPointer<QWidget> _slintPopupWindow;
+    mutable QRect _slintPopupRect;
+    QTimer *_slintPopupClearTimer = nullptr;
 };
 
 }

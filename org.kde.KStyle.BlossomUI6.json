@@ -23,7 +23,7 @@
       "sources": [
         {
           "type": "git",
-          "url": "https://git.blossomos.org/Blossom/blossomui",
+          "url": "https://git.blossomos.org/Blossom/ui",
           "branch": "main"
         }
       ]

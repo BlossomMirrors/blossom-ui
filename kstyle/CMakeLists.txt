@@ -46,6 +46,7 @@ set(blossomui_PART_SRCS
     blossomuipropertynames.cpp
     blossomuishadowhelper.cpp
     blossomuisplitterproxy.cpp
+    blossomuiswitchwidget.cpp
     blossomuistyle.cpp
     blossomuistyleplugin.cpp
     blossomuitileset.cpp

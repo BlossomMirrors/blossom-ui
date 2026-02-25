@@ -3,10 +3,7 @@
   "KPlugin": {
     "Authors": [
       {
-        "Email": "info@blossomos.org",
-        "Name": "Blossom"
-      },
-      {
+        "Email": "hello@blossomos.org",
         "Name": "Yannik Ain"
       }
     ],
@@ -17,8 +14,9 @@
     "License": "GPL-2.0-or-later",
     "Name": "BlossomUI Dark OLED",
     "Name[en_GB]": "BlossomUI Dark OLED",
-    "Website": "https://github.com/Bali10050/BlossomUI"
+    "Website": "https://blossomos.org"
   },
   "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;Dark;OLED;Theme;",
-  "X-KDE-PluginInfo-Version": "1.0"
+  "X-KDE-PluginInfo-Version": "1.0",
+  "X-Plasma-IconTheme": "BlossomUI Icons"
 }

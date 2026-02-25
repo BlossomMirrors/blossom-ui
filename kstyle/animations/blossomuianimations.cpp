@@ -21,6 +21,9 @@
 #include "blossomuipropertynames.h"
 #include "blossomuistyleconfigdata.h"
 
+#include <KConfigGroup>
+#include <KSharedConfig>
+
 #include <QAbstractItemView>
 #include <QCheckBox>
 #include <QComboBox>
@@ -33,6 +36,8 @@
 #include <QRadioButton>
 #include <QScrollBar>
 #include <QSpinBox>
+#include <QTabBar>
+#include <QTabWidget>
 #include <QTextEdit>
 #include <QToolBox>
 #include <QToolButton>
@@ -63,11 +68,16 @@ Animations::Animations(QObject *parent)
 //____________________________________________________________
 void Animations::setupEngines()
 {
+    // apply KDE global animation speed (kdeglobals [General] AnimationDurationFactor)
+    const KConfigGroup generalGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("General"));
+    const qreal globalFactor = generalGroup.readEntry("AnimationDurationFactor", 1.0);
+    const int baseDuration = StyleConfigData::animationsDuration();
+    const int animationsDuration = qRound(baseDuration * qBound(0.0, globalFactor, 10.0));
+
     // animation steps
-    AnimationData::setSteps(StyleConfigData::animationsDuration() / 1000.0 * 60);
+    AnimationData::setSteps(animationsDuration / 1000.0 * 60);
 
     const bool animationsEnabled(StyleConfigData::animationsEnabled());
-    const int animationsDuration(StyleConfigData::animationsDuration());
     // const int animationsDuration( 1000 );
 
     _widgetEnabilityEngine->setEnabled(animationsEnabled);
@@ -204,6 +214,13 @@ void Animations::registerWidget(QWidget *widget) const
     // stacked widgets
     if (QStackedWidget *stack = qobject_cast<QStackedWidget *>(widget)) {
         _stackedWidgetEngine->registerWidget(stack);
+    }
+
+    // QTabWidget: ensure tab bar is registered for sliding pill animation (tab bar may not get polished directly)
+    if (QTabWidget *tabWidget = qobject_cast<QTabWidget *>(widget)) {
+        if (QTabBar *tabBar = tabWidget->tabBar()) {
+            _tabBarEngine->registerWidget(tabBar);
+        }
     }
 }
 

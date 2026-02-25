@@ -44,9 +44,6 @@ configure_dolphin() {
     $KWRITECONFIG --file ~/.config/dolphinrc --group KDE --key MenuBar --type string "Disabled"
     $KWRITECONFIG --file ~/.config/dolphinrc --key MenuBar --type string "Disabled"
 
-    # enable single-click
-    $KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key SingleClick --type bool true
-
     # hide recent files/locations from places panel
     if [ -f ~/.local/share/user-places.xbel ]; then
         sed -i 's|<GroupState-RecentlySaved-IsHidden>false</GroupState-RecentlySaved-IsHidden>|<GroupState-RecentlySaved-IsHidden>true</GroupState-RecentlySaved-IsHidden>|g' ~/.local/share/user-places.xbel
@@ -59,6 +56,13 @@ configure_dolphin() {
 }
 
 echo "applying blossomui $MODE theme..."
+
+# install icon pack (requires sudo)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "${SCRIPT_DIR}/icons/install.sh" ]; then
+    echo "installing BlossomUI Icons..."
+    bash "${SCRIPT_DIR}/icons/install.sh"
+fi
 
 # set default light/dark/oled themes
 $KWRITECONFIG --file ~/.config/kdeglobals --group General --key LightColorScheme --type string "BlossomUI Light"
@@ -89,6 +93,7 @@ fi
 
 plasma-apply-lookandfeel -a "$THEME_ID" --apply 2>/dev/null
 plasma-apply-colorscheme "$COLOR_SCHEME_NO_SPACE" 2>/dev/null
+$KWRITECONFIG --file ~/.config/kdeglobals --group Icons --key Theme --type string "BlossomUI Icons"
 
 # refresh window decorations
 if command -v qdbus6 >/dev/null 2>&1; then

@@ -5,7 +5,7 @@ widgetStyle=BlossomUI
 ColorScheme=BlossomUI Dark
 
 [kdeglobals][Icons]
-Theme=breeze-dark
+Theme=BlossomUI Icons
 
 [plasmarc][Theme]
 name=default

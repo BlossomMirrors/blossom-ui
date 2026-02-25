@@ -32,6 +32,8 @@
 #include "blossomuipropertynames.h"
 #include "blossomuistyleconfigdata.h"
 
+#include <KConfigGroup>
+#include <KSharedConfig>
 #include <KWindowEffects>
 
 #include <QComboBox>
@@ -40,6 +42,7 @@
 #include <QMenu>
 #include <QPair>
 #include <QRegularExpression>
+#include <QTimer>
 #include <QToolBar>
 #include <QVector>
 // #include <QDebug>
@@ -116,6 +119,39 @@ void BlurHelper::unregisterWidget(QWidget *widget)
 }
 
 //___________________________________________________________
+void BlurHelper::setSlintPopupRegion(QWidget *window, const QRect &rectInWindowCoords)
+{
+    if (!window || !window->isWindow())
+        return;
+    _slintPopupWindow = window;
+    _slintPopupRect = rectInWindowCoords;
+    if (rectInWindowCoords.isValid()) {
+        forceUpdate(window);
+        if (!_slintPopupClearTimer) {
+            _slintPopupClearTimer = new QTimer(this);
+            _slintPopupClearTimer->setSingleShot(true);
+            connect(_slintPopupClearTimer, &QTimer::timeout, this, &BlurHelper::_clearSlintPopupRegion);
+        }
+        int delay = 50;
+        const KConfigGroup unitsGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("Units"));
+        const int longDuration = unitsGroup.readEntry("longDuration", 200);
+        if (longDuration > 0)
+            delay = qBound(20, longDuration / 4, 150);
+        _slintPopupClearTimer->start(delay);
+    }
+}
+
+//___________________________________________________________
+void BlurHelper::_clearSlintPopupRegion()
+{
+    QWidget *w = _slintPopupWindow;
+    _slintPopupWindow = nullptr;
+    _slintPopupRect = QRect();
+    if (w)
+        update(w);
+}
+
+//___________________________________________________________
 bool BlurHelper::eventFilter(QObject *object, QEvent *event)
 {
     switch (event->type()) {
@@ -159,8 +195,12 @@ QRegion BlurHelper::blurRegion(QWidget *widget) const
         return roundedRegion(rect, StyleConfigData::cornerRadius() + 1, true, true, true, true);
     } else {
         // blur entire window
-        if (widget->palette().color(QPalette::Window).alpha() < 255)
-            return roundedRegion(rect, StyleConfigData::cornerRadius(), false, false, true, true);
+        if (widget->palette().color(QPalette::Window).alpha() < 255) {
+            QRegion region = roundedRegion(rect, StyleConfigData::cornerRadius(), false, false, true, true);
+            if (widget == _slintPopupWindow && _slintPopupRect.isValid())
+                region += roundedRegion(_slintPopupRect, StyleConfigData::cornerRadius() + 1, true, true, true, true);
+            return region;
+        }
 
         // blur specific widgets
         QRegion region;
@@ -305,6 +345,9 @@ QRegion BlurHelper::blurRegion(QWidget *widget) const
         // settings
 
         region += blurSettingsDialogRegion(widget);
+
+        if (widget == _slintPopupWindow && _slintPopupRect.isValid())
+            region += roundedRegion(_slintPopupRect, StyleConfigData::cornerRadius() + 1, true, true, true, true);
 
         return region;
     }

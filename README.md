@@ -1,6 +1,12 @@
 # BlossomUI
 
-BlossomUI is a fork of Darkly (GPL-2.0-or-later). The license is preserved in `COPYING`.
+BlossomUI is a fork of [Darkly](https://github.com/Bali10050/Darkly), which is a fork of [Lightly](https://github.com/Luwx/Lightly), which is a fork of [KDE Breeze](https://invent.kde.org/frameworks/breeze).
+
+**License:** GPL-2.0-or-later. See [LICENSE.md](LICENSE.md) for details and attribution. The full license text is in [COPYING](COPYING).
+
+### Future
+
+We plan to adopt [KDE Union](https://invent.kde.org/plasma/union), KDE’s unified SVG-based theming engine, once it is mature—to simplify and modernize the codebase. See [“Moving KDE's styling into the future”](https://quantumproductions.info/articles/2025-02/moving-kdes-styling-future) for an overview.
 
 ## Installation
 
@@ -69,30 +75,7 @@ sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative
 ```
 
 ```
-git clone --single-branch --depth=1 https://github.com/Bali10050/BlossomUI.git
-cd BlossomUI
-./install.sh
-```
-
----
-
-#### <u>Fedora</u>
-
-##### Fedora 40/41
-
-```
-sudo dnf install -y git cmake extra-cmake-modules "cmake(KDecoration3)" kwin-devel \
-      kf6-kcolorscheme-devel kf6-kguiaddons-devel kf6-ki18n-devel kf6-kiconthemes-devel \
-      kf6-kirigami-devel kf6-kcmutils-devel kf6-frameworkintegration-devel \
-      libepoxy-devel "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(KF5GuiAddons)" \
-      "cmake(KF5WindowSystem)" "cmake(KF5I18n)" "cmake(KF5CoreAddons)" "cmake(KF5ConfigWidgets)" \
-      "cmake(Qt5UiTools)" "cmake(KF5GlobalAccel)" "cmake(KF5IconThemes)" "cmake(KF5Init)" \
-      "cmake(KF5KIO)" kf5-kpackage-devel kf5-kcmutils-devel qt5-qtquickcontrols2-devel \
-      kf5-kirigami2-devel "cmake(KF5FrameworkIntegration)"
-```
-
-```
-git clone --single-branch --depth=1 https://github.com/Bali10050/BlossomUI.git
-cd BlossomUI
+git clone --single-branch --depth=1 https://git.blossomos.org/Blossom/ui.git
+cd ui
 ./install.sh
 ```

@@ -40,8 +40,11 @@
 #include <QStyleOption>
 #include <QWidget>
 
+#include <QPointer>
+
 #include <functional>
 
+class QCheckBox;
 class QDialogButtonBox;
 
 namespace BlossomUIPrivate
@@ -145,6 +148,7 @@ public:
     bool eventFilterCommandLinkButton(QCommandLinkButton *, QEvent *);
     bool eventFilterDialogButtonBox(QDialogButtonBox *, QEvent *);
     bool eventFilterPageViewHeader(QWidget *, QEvent *);
+    bool eventFilterSwitchCheckBox(QCheckBox *, QEvent *);
 
     //* install event filter to object, in a unique way
     void addEventFilter(QObject *object)
@@ -173,6 +177,9 @@ protected:
 private:
     //* load configuration
     void loadConfiguration();
+
+    //* load KDE global animation settings (AnimationDurationFactor from System Settings)
+    void loadGlobalAnimationSettings();
 
     //*@name subelementRect specialized functions
     //@{
@@ -214,6 +221,11 @@ private:
     QRect scrollBarSubControlRect(const QStyleOptionComplex *, SubControl, const QWidget *) const;
     QRect dialSubControlRect(const QStyleOptionComplex *, SubControl, const QWidget *) const;
     QRect sliderSubControlRect(const QStyleOptionComplex *, SubControl, const QWidget *) const;
+
+    /** Returns true if the widget is a switch (e.g. Slint Switch with accessible role Switch). */
+    bool isSwitchWidget(const QWidget *) const;
+    /** Returns true if this checkbox draw/size is for a switch (uses widget and/or option text for Slint when widget is null). */
+    bool isSwitchCheckBox(const QStyleOption *option, const QWidget *widget) const;
 
     //@}
 

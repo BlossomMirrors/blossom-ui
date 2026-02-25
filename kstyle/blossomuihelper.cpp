@@ -35,7 +35,12 @@
 #include <KWindowSystem>
 
 #include <QApplication>
+#include <QGraphicsBlurEffect>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QPainter>
+#include <QPainterPath>
+#include <QPolygon>
 #include <QtMath>
 
 #if __has_include(<KX11Extras>)
@@ -47,6 +52,7 @@
 #endif
 
 #include <QDialog>
+#include <QRegion>
 #include <algorithm>
 
 #include <QEvent>
@@ -577,6 +583,31 @@ void Helper::renderMenuFrame(QPainter *painter, const QRect &rect, const QColor 
 }
 
 //______________________________________________________________________________
+bool Helper::renderBlurredBackground(QPainter *painter, QWidget *window, const QRect &sourceRectInWindow, const QRect &targetRect, int blurRadius) const
+{
+    if (!window || !window->isWindow() || sourceRectInWindow.isEmpty() || targetRect.isEmpty())
+        return false;
+
+    QPixmap grab = window->grab(sourceRectInWindow);
+    if (grab.isNull() || grab.size().isEmpty())
+        return false;
+
+    QGraphicsScene scene;
+    QGraphicsPixmapItem *item = scene.addPixmap(grab);
+    if (!item)
+        return false;
+
+    auto *effect = new QGraphicsBlurEffect;
+    effect->setBlurRadius(blurRadius);
+    effect->setBlurHints(QGraphicsBlurEffect::QualityHint);
+    item->setGraphicsEffect(effect);
+
+    scene.setSceneRect(0, 0, grab.width(), grab.height());
+    scene.render(painter, targetRect, scene.sceneRect());
+    return true;
+}
+
+//______________________________________________________________________________
 void Helper::renderOutline(QPainter *painter, const QRectF &rect, const int radius, const int outlineStrength) const
 {
     painter->setPen(QColor(0, 0, 0, outlineStrength));
@@ -857,11 +888,17 @@ void Helper::renderTabWidgetFrame(QPainter *painter, const QRect &rect, const QC
 //______________________________________________________________________________
 void Helper::renderSelection(QPainter *painter, const QRect &rect, const QColor &color, Corners corners) const
 {
+    renderSelection(painter, rect, color, corners, StyleConfigData::itemViewRadius());
+}
+
+//______________________________________________________________________________
+void Helper::renderSelection(QPainter *painter, const QRect &rect, const QColor &color, Corners corners, qreal radius) const
+{
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setPen(Qt::NoPen);
     painter->setBrush(color);
 
-    QPainterPath path(roundedPath(rect, corners, StyleConfigData::itemViewRadius()));
+    QPainterPath path(roundedPath(rect, corners, radius));
     painter->drawPath(path);
 }
 
@@ -895,31 +932,32 @@ void Helper::renderLineEdit(QPainter *painter,
                             const qreal opacity) const
 {
     painter->setRenderHint(QPainter::Antialiasing);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform);
 
     QRectF frameRect(rect.adjusted(Metrics::Frame_FrameWidth, Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth));
     qreal radius(inputFrameRadius(PenWidth::NoPen, -1));
 
     QColor border(KColorUtils::mix(background, outline, 0.15));
-    if (mouseOver)
+    if (mouseOver && !hasFocus)
         border = KColorUtils::mix(background, outline, 0.3);
-    if (hasFocus)
+    if (hasFocus && mode != AnimationFocus)
         border = KColorUtils::mix(background, outline, 0.65);
-    if (mode == AnimationFocus && opacity > 0) {
-        const qreal base = hasFocus ? 0.3 : 0.15;
-        const qreal target = hasFocus ? 0.65 : 0.3;
-        border = KColorUtils::mix(background, outline, base + (target - base) * opacity);
+    if (mode == AnimationFocus && opacity >= 0) {
+        // Smooth fade in both directions: opacity 0 = unfocused, 1 = focused
+        border = KColorUtils::mix(background, outline, 0.15 + 0.5 * opacity);
     }
 
     if (!enabled)
         border = KColorUtils::mix(background, outline, 0.08);
 
-    // focus ring
+    // focus ring - stroked path for smooth corners (avoids jagged fill in Slint/Qt Quick)
     if (enabled && (hasFocus || (mode == AnimationFocus && opacity > 0))) {
-        const qreal ringOpacity = (mode == AnimationFocus && !hasFocus) ? opacity : 1.0;
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(alphaColor(outline, 0.5 * ringOpacity));
-        const QRectF ringRect(frameRect.adjusted(-2, -2, 2, 2));
-        painter->drawRoundedRect(ringRect, radius + 2, radius + 2);
+        const qreal ringOpacity = (mode == AnimationFocus) ? opacity : 1.0;
+        painter->setBrush(Qt::NoBrush);
+        QPen ringPen(alphaColor(outline, 0.5 * ringOpacity), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        painter->setPen(ringPen);
+        const QRectF ringPath(frameRect.adjusted(-1, -1, 1, 1));
+        painter->drawRoundedRect(ringPath, radius + 1, radius + 1);
     }
 
     // base fill + border
@@ -1064,6 +1102,63 @@ void Helper::renderCheckBox(QPainter *painter,
         painter->drawPath(check);
     }
     Q_UNUSED(windowActive)
+}
+
+//______________________________________________________________________________
+void Helper::renderSwitch(QPainter *painter,
+                          const QRect &rect,
+                          const QPalette &palette,
+                          bool sunken,
+                          const bool mouseOver,
+                          CheckBoxState state,
+                          qreal animation) const
+{
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setPen(Qt::NoPen);
+
+    QRectF trackRect(rect);
+    trackRect.adjust(Metrics::Frame_FrameWidth - 1, Metrics::Frame_FrameWidth - 1, -Metrics::Frame_FrameWidth + 1, -Metrics::Frame_FrameWidth + 1);
+    if (sunken)
+        trackRect.translate(1, 1);
+
+    const qreal radius = trackRect.height() / 2.0;
+    const int margin = Metrics::Switch_ThumbMargin;
+    const qreal thumbDiameter = trackRect.height() - 2 * margin;
+    const qreal travel = trackRect.width() - thumbDiameter - 2 * margin;
+
+    // Thumb position: 0 = off (left), 1 = on (right)
+    qreal t = 0.0;
+    if (state == CheckOn)
+        t = 1.0;
+    else if (state == CheckAnimated)
+        t = (animation >= 0) ? qBound(0.0, animation, 1.0) : 1.0;
+
+    QColor trackColor = palette.color(QPalette::Button);
+    if (state == CheckOn || state == CheckAnimated) {
+        QColor accent = palette.color(QPalette::Highlight);
+        if (state == CheckAnimated && animation >= 0)
+            trackColor = KColorUtils::mix(palette.color(QPalette::Button), accent, qBound(0.0, animation, 1.0));
+        else
+            trackColor = accent;
+    }
+    if (mouseOver)
+        trackColor = trackColor.lighter(105);
+
+    QColor borderColor = KColorUtils::mix(trackColor, palette.color(QPalette::WindowText), mouseOver ? 0.16 : 0.1);
+    painter->setBrush(trackColor);
+    painter->setPen(QPen(borderColor, 1));
+    painter->drawRoundedRect(trackRect, radius, radius);
+
+    // Thumb (circle)
+    const qreal thumbX = trackRect.x() + margin + t * travel;
+    const qreal thumbY = trackRect.y() + margin;
+    QRectF thumbRect(thumbX, thumbY, thumbDiameter, thumbDiameter);
+
+    QColor thumbColor = palette.color(QPalette::Window);
+    QColor thumbBorder = KColorUtils::mix(thumbColor, palette.color(QPalette::WindowText), 0.12);
+    painter->setBrush(thumbColor);
+    painter->setPen(QPen(thumbBorder, 1));
+    painter->drawEllipse(thumbRect);
 }
 
 //______________________________________________________________________________
@@ -1229,18 +1324,19 @@ void Helper::renderSliderHandle(QPainter *painter, const QRect &rect, const QCol
         fill.setAlpha(255);
     painter->setBrush(fill);
 
-    // focus ring
-    if (focus) {
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(alphaColor(outline, 0.35));
+    // render main handle first (solid fill, like shadcn)
+    painter->setPen(outline.isValid() ? QPen(outline, 1) : Qt::NoPen);
+    painter->drawEllipse(frameRect);
+
+    // focus/hover ring: solid thin stroke (shadcn-style ring-1), not translucent glow
+    if (focus && outline.isValid()) {
+        QColor ringColor(outline);
+        ringColor.setAlpha(255);
+        painter->setBrush(Qt::NoBrush);
+        painter->setPen(QPen(ringColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         const QRectF ringRect(frameRect.adjusted(-2, -2, 2, 2));
         painter->drawEllipse(ringRect);
     }
-
-    painter->setPen(outline.isValid() ? QPen(outline, 1) : Qt::NoPen);
-
-    // render
-    painter->drawEllipse(frameRect);
 }
 
 //______________________________________________________________________________
@@ -1341,13 +1437,16 @@ void Helper::renderScrollBarBorder(QPainter *painter, const QRect &rect, const Q
 }
 
 //______________________________________________________________________________
-void Helper::renderTabBarTab(QPainter *painter, const QRect &rect, const QColor &color, Corners corners) const
+void Helper::renderTabBarTab(QPainter *painter, const QRect &rect, const QColor &color, Corners corners, qreal radius) const
 {
     // setup painter
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     QRectF frameRect(rect);
-    qreal radius(frameRadius(PenWidth::NoPen, -1));
+    if (radius < 0)
+        radius = frameRadius(PenWidth::NoPen, -1);
+    else
+        radius = qMin(radius, 0.5 * qMin(frameRect.width(), frameRect.height()));
 
     painter->setPen(Qt::NoPen);
 
@@ -1359,6 +1458,27 @@ void Helper::renderTabBarTab(QPainter *painter, const QRect &rect, const QColor 
 
     // render
     QPainterPath path(roundedPath(frameRect, corners, radius));
+    painter->drawPath(path);
+}
+
+//______________________________________________________________________________
+void Helper::renderTabBarTabOutline(QPainter *painter, const QRect &rect, const QColor &outlineColor, Corners corners, qreal radius) const
+{
+    if (!outlineColor.isValid() || outlineColor.alphaF() <= 0)
+        return;
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    QRectF frameRect(rect);
+    if (radius < 0)
+        radius = frameRadius(PenWidth::NoPen, -1);
+    else
+        radius = qMin(radius, 0.5 * qMin(frameRect.width(), frameRect.height()));
+
+    QPainterPath path(roundedPath(frameRect, corners, radius));
+
+    painter->setBrush(Qt::NoBrush);
+    painter->setPen(QPen(outlineColor, 1));
     painter->drawPath(path);
 }
 
@@ -1560,6 +1680,57 @@ QPainterPath Helper::roundedPath(const QRectF &rect, Corners corners, qreal radi
 
     path.closeSubpath();
     return path;
+}
+
+//______________________________________________________________________________
+QRegion Helper::roundedRectRegion(int w, int h, int radius)
+{
+    return roundedRectRegion(w, h, radius, 1.0);
+}
+
+//______________________________________________________________________________
+QRegion Helper::roundedRectRegion(int w, int h, int radius, qreal devicePixelRatio)
+{
+    if (w <= 0 || h <= 0)
+        return QRegion();
+    if (devicePixelRatio > 1.0) {
+        // Align to physical pixels for fractional scaling
+        const int pw = qRound(qRound((w)*devicePixelRatio) / devicePixelRatio);
+        const int ph = qRound(qRound((h)*devicePixelRatio) / devicePixelRatio);
+        w = qMax(1, pw);
+        h = qMax(1, ph);
+    }
+    radius = qBound(0, radius, qMin(w, h) / 2);
+    QPainterPath path;
+    path.addRoundedRect(QRectF(0, 0, w, h), qreal(radius), qreal(radius));
+    return QRegion(path.toFillPolygon().toPolygon());
+}
+
+//______________________________________________________________________________
+QRegion Helper::roundedRectRegionBottomCorners(int w, int h, int radius, qreal devicePixelRatio)
+{
+    if (w <= 0 || h <= 0)
+        return QRegion();
+    if (devicePixelRatio > 1.0) {
+        const int pw = qRound(qRound(w * devicePixelRatio) / devicePixelRatio);
+        const int ph = qRound(qRound(h * devicePixelRatio) / devicePixelRatio);
+        w = qMax(1, pw);
+        h = qMax(1, ph);
+    }
+    radius = qBound(0, radius, qMin(w, h) / 2);
+    const QRectF rect(0, 0, w, h);
+    const qreal r = qreal(radius);
+    const QSizeF cornerSize(2 * r, 2 * r);
+    QPainterPath path;
+    path.moveTo(rect.topLeft());
+    path.lineTo(rect.bottomLeft() - QPointF(0, r));
+    path.arcTo(QRectF(rect.bottomLeft() - QPointF(0, 2 * r), cornerSize), 180, 90);
+    path.lineTo(rect.bottomRight() - QPointF(r, 0));
+    path.arcTo(QRectF(rect.bottomRight() - QPointF(2 * r, 2 * r), cornerSize), 270, 90);
+    path.lineTo(rect.topRight());
+    path.lineTo(rect.topLeft());
+    path.closeSubpath();
+    return QRegion(path.toFillPolygon().toPolygon());
 }
 
 //________________________________________________________________________________________________________

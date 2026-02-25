@@ -31,6 +31,7 @@
 #include <KStatefulBrush>
 #include <QIcon>
 #include <QPainterPath>
+#include <QRegion>
 #include <QToolBar>
 #include <QWidget>
 
@@ -205,6 +206,9 @@ public:
     //* menu frame
     void renderMenuFrame(QPainter *, const QRect &, const QColor &color, const QColor &outline, bool roundCorners = true) const;
 
+    //* blurred background for in-window popups (e.g. Slint combobox) - grabs window content, blurs, draws
+    bool renderBlurredBackground(QPainter *painter, QWidget *window, const QRect &sourceRectInWindow, const QRect &targetRect, int blurRadius = 12) const;
+
     //* outline for widgets
     void renderOutline(QPainter *painter, const QRectF &rect, const int radius, const int outlineStrength) const;
 
@@ -272,6 +276,8 @@ public:
 
     //* selection frame
     void renderSelection(QPainter *, const QRect &, const QColor &, Corners) const;
+    //* selection frame with custom radius (e.g. for Dolphin list rows)
+    void renderSelection(QPainter *, const QRect &, const QColor &, Corners, qreal radius) const;
 
     //* separator
     void renderSeparator(QPainter *, const QRect &, const QColor &, bool vertical = false) const;
@@ -301,6 +307,15 @@ public:
                         CheckBoxState state,
                         const bool windowActive,
                         qreal animation = AnimationData::OpacityInvalid) const;
+
+    //* switch (pill-style toggle with accent when on, for QAccessible::Switch / Slint Switch)
+    void renderSwitch(QPainter *,
+                      const QRect &,
+                      const QPalette &,
+                      bool sunken,
+                      const bool mouseOver,
+                      CheckBoxState state,
+                      qreal animation = AnimationData::OpacityInvalid) const;
 
     //* radio button
     void renderRadioButton(QPainter *,
@@ -360,8 +375,11 @@ public:
     //* separator between scrollbar and contents
     void renderScrollBarBorder(QPainter *, const QRect &, const QColor &) const;
 
-    //* tabbar tab
-    void renderTabBarTab(QPainter *, const QRect &, const QColor &color, Corners) const;
+    //* tabbar tab (radius < 0 = use frameRadius; radius >= 0 = use for pill shape with parallel radii)
+    void renderTabBarTab(QPainter *, const QRect &, const QColor &color, Corners, qreal radius = -1) const;
+
+    //* tabbar tab outline (radius < 0 = use frameRadius, must match fill for parallel border)
+    void renderTabBarTabOutline(QPainter *, const QRect &, const QColor &outlineColor, Corners, qreal radius = -1) const;
 
     //* generic arrow
     void renderArrow(QPainter *, const QRect &, const QColor &, ArrowOrientation) const;
@@ -424,6 +442,12 @@ public:
         return qMax(StyleConfigData::inputRadius() - (0.5 * penWidth) + bias, 0.0);
     }
 
+    //* tab bar tab frame radius
+    qreal tabFrameRadius(const int penWidth = PenWidth::NoPen) const
+    {
+        return qMax(qMax(StyleConfigData::cornerRadius() - 4, 2) - (0.5 * penWidth), 0.0);
+    }
+
     //* frame radius with new pen width
     constexpr qreal frameRadiusForNewPenWidth(const qreal oldRadius, const int penWidth) const
     {
@@ -448,6 +472,13 @@ public:
 
     // MenuBar, ToolBar, TabBar background color opacity
     QColor transparentBarBgColor(QColor, QPainter *, const QRect &, BarType) const;
+
+    //* Rounded rect as QRegion for viewport mask (integer-aligned for pixel-perfect edges).
+    static QRegion roundedRectRegion(int w, int h, int radius);
+    //* DPR-aware overload for fractional scaling: rounds dimensions to align with physical pixels.
+    static QRegion roundedRectRegion(int w, int h, int radius, qreal devicePixelRatio);
+    //* Bottom corners only (for file list card - top stays straight under header).
+    static QRegion roundedRectRegionBottomCorners(int w, int h, int radius, qreal devicePixelRatio = 1.0);
 
 protected:
     //* return rounded path in a given rect, with only selected corners rounded, and for a given radius

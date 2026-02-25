@@ -22,6 +22,7 @@
 
 #include "blossomuianimationdata.h"
 
+#include <QRect>
 #include <QTabBar>
 
 namespace BlossomUI
@@ -35,6 +36,8 @@ class TabBarData : public AnimationData
     //* declare opacity property
     Q_PROPERTY(qreal currentOpacity READ currentOpacity WRITE setCurrentOpacity)
     Q_PROPERTY(qreal previousOpacity READ previousOpacity WRITE setPreviousOpacity)
+    //* selected tab change animation (pill sliding)
+    Q_PROPERTY(qreal selectedProgress READ selectedProgress WRITE setSelectedProgress)
 
 public:
     //* constructor
@@ -45,6 +48,7 @@ public:
     {
         currentIndexAnimation().data()->setDuration(duration);
         previousIndexAnimation().data()->setDuration(duration);
+        selectedAnimation().data()->setDuration(duration);
     }
 
     //* update state
@@ -132,6 +136,44 @@ public:
     //* return opacity associated to action at given position, if any
     qreal opacity(const QPoint &position) const;
 
+    //*@name selected tab animation (pill sliding to active state)
+    //@{
+
+    //* true if selected tab change is animating
+    bool isSelectedAnimated() const;
+
+    //* interpolated rect for pill (lerp between previous and current tab rects)
+    QRect selectedPillRect(const QTabBar *tabBar) const;
+
+    qreal selectedProgress() const
+    {
+        return _selectedProgress;
+    }
+    void setSelectedProgress(qreal value)
+    {
+        if (qAbs(_selectedProgress - value) < 1e-6)
+            return;
+        _selectedProgress = value;
+        setDirty();
+    }
+    int selectedIndex() const
+    {
+        return _selectedIndex;
+    }
+    int previousSelectedIndex() const
+    {
+        return _previousSelectedIndex;
+    }
+    const Animation::Pointer &selectedAnimation() const
+    {
+        return _selectedAnimation;
+    }
+
+    //@}
+
+private Q_SLOTS:
+    void onCurrentChanged(int index);
+
 private:
     //* container for needed animation data
     class Data
@@ -154,6 +196,12 @@ private:
 
     //* previous tab animations data (for hover leave animations)
     Data _previous;
+
+    //* selected tab change animation
+    Animation::Pointer _selectedAnimation;
+    int _selectedIndex = -1;
+    int _previousSelectedIndex = -1;
+    qreal _selectedProgress = 1.0;
 };
 
 }

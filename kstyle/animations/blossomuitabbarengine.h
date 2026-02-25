@@ -25,6 +25,8 @@
 #include "blossomuidatamap.h"
 #include "blossomuitabbardata.h"
 
+#include <QRect>
+
 namespace BlossomUI
 {
 
@@ -54,6 +56,10 @@ public:
     {
         return isAnimated(object, point, mode) ? data(object, mode).data()->opacity(point) : AnimationData::OpacityInvalid;
     }
+
+    //* selected tab pill animation (sliding pill to active state)
+    bool isSelectedAnimated(const QObject *object) const;
+    QRect selectedPillRect(const QObject *object, const QTabBar *tabBar) const;
 
     //* enability
     void setEnabled(bool value) override
