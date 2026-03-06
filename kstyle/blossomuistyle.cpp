@@ -259,14 +259,14 @@ public:
             }
         } else if (type == QEvent::DragEnter) {
             m_dragging = true;
-            const QPoint pos = static_cast<QDragMoveEvent *>(event)->position().toPoint();
+            const QPoint pos = static_cast<QDragMoveEvent *>(event)->pos();
             if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
                 m_view->update(idx);
             if (m_dragSourceIndex.isValid())
                 m_view->update(m_dragSourceIndex);
         } else if (type == QEvent::DragMove) {
             m_dragging = true;
-            const QPoint pos = static_cast<QDragMoveEvent *>(event)->position().toPoint();
+            const QPoint pos = static_cast<QDragMoveEvent *>(event)->pos();
             if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
                 m_view->update(idx);
             if (m_dragSourceIndex.isValid())
@@ -287,7 +287,7 @@ public:
 
     void sendMouseRedirected(QObject *watched, const QMouseEvent *original, const QPoint &target) const
     {
-        const QPointF globalTarget = m_view->viewport()->mapToGlobal(QPointF(target));
+        const QPointF globalTarget = m_view->viewport()->mapToGlobal(target);
         m_redirectingEvent = true;
         QMouseEvent redirected(original->type(), QPointF(target), globalTarget, original->button(), original->buttons(), original->modifiers());
         QApplication::sendEvent(watched, &redirected);
