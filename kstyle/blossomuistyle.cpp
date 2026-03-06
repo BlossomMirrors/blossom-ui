@@ -7716,7 +7716,7 @@ bool Style::drawTabBarTabShapeControl(const QStyleOption *option, QPainter *pain
     Corners backgroundCorners;
 
     // store tab shape
-    Side side;
+    Side side = SideTop;
 
     if (StyleConfigData::oldTabbar()) {
         switch (tabOption->shape) {
