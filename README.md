@@ -74,6 +74,29 @@ sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative
       kirigami2 kwindowsystem5
 ```
 
+#### <u>Fedora</u>
+
+```
+sudo dnf install -y \
+      cmake extra-cmake-modules \
+      git gcc make \
+      qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtsvg-devel qt6-qttools-devel \
+      kf6-ki18n-devel \
+      kf6-kcoreaddons-devel \
+      kf6-kconfig-devel \
+      kf6-kcmutils-devel \
+      kf6-kcolorscheme-devel \
+      kf6-kguiaddons-devel \
+      kf6-kiconthemes-devel \
+      kf6-kwindowsystem-devel \
+      kf6-kirigami-devel \
+      kf6-kio-devel \
+      libepoxy-devel \
+      mesa-libGL-devel \
+      mesa-libEGL-devel \
+      kdecoration-devel
+```
+
 ```
 git clone --single-branch --depth=1 https://git.blossomos.org/Blossom/ui.git
 cd ui
