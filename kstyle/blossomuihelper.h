@@ -29,9 +29,13 @@
 #include <KColorScheme>
 #include <KSharedConfig>
 #include <KStatefulBrush>
+#include <QAbstractItemView>
+#include <QFrame>
 #include <QIcon>
+#include <QMargins>
 #include <QPainterPath>
 #include <QRegion>
+#include <QStyleOption>
 #include <QToolBar>
 #include <QWidget>
 
@@ -273,6 +277,9 @@ public:
 
     //* tab widget frame
     void renderTabWidgetFrame(QPainter *, const QRect &, const QColor &color, Corners corners, const bool windowActive) const;
+
+    //* item view item margins
+    QMargins itemViewItemMargins(const QStyleOptionViewItem *) const;
 
     //* selection frame
     void renderSelection(QPainter *, const QRect &, const QColor &, Corners) const;

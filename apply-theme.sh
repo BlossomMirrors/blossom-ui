@@ -93,13 +93,28 @@ fi
 
 plasma-apply-lookandfeel -a "$THEME_ID" --apply 2>/dev/null
 plasma-apply-colorscheme "$COLOR_SCHEME_NO_SPACE" 2>/dev/null
+if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
+    plasma-apply-desktoptheme BlossomUI 2>/dev/null
+else
+    $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key name --type string "BlossomUI"
+fi
 $KWRITECONFIG --file ~/.config/kdeglobals --group Icons --key Theme --type string "BlossomUI Icons"
+$KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key widgetStyle --type string "BlossomUI"
+$KWRITECONFIG --file ~/.config/kwinrc --group "org.kde.kdecoration2" --key library --type string "org.kde.blossomui"
+$KWRITECONFIG --file ~/.config/kwinrc --group "org.kde.kdecoration2" --key theme --type string "BlossomUI"
 
-# refresh window decorations
+# reload KWin for decoration changes
 if command -v qdbus6 >/dev/null 2>&1; then
-    qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null
+    qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null || true
 elif command -v qdbus >/dev/null 2>&1; then
-    qdbus org.kde.KWin /KWin reconfigure 2>/dev/null
+    qdbus org.kde.KWin /KWin reconfigure 2>/dev/null || true
+fi
+
+# notify running Qt apps of widget style change (3 = StyleChanged)
+if command -v qdbus6 >/dev/null 2>&1; then
+    qdbus6 org.kde.KGlobalSettings /KGlobalSettings org.kde.KGlobalSettings.notifyChange 3 0 2>/dev/null || true
+elif command -v qdbus >/dev/null 2>&1; then
+    qdbus org.kde.KGlobalSettings /KGlobalSettings org.kde.KGlobalSettings.notifyChange 3 0 2>/dev/null || true
 fi
 
 configure_dolphin

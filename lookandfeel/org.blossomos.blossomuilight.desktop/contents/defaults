@@ -8,7 +8,7 @@ ColorScheme=BlossomUI Light
 Theme=BlossomUI Icons
 
 [plasmarc][Theme]
-name=default
+name=BlossomUI
 
 [org.kde.plasma.desktop][Containments][1][General]
 panelOpacity=2

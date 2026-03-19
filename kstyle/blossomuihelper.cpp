@@ -269,23 +269,23 @@ QColor Helper::buttonOutlineColor(const QPalette &palette, bool mouseOver, bool 
 //____________________________________________________________________
 QColor Helper::buttonBackgroundColor(const QPalette &palette, bool mouseOver, bool hasFocus, bool sunken, qreal opacity, AnimationMode mode) const
 {
-    QColor background(sunken ? KColorUtils::mix(palette.color(QPalette::Button), palette.color(QPalette::ButtonText), 0.2) : palette.color(QPalette::Button));
+    const QColor base(palette.color(QPalette::Button));
+    QColor background(sunken ? KColorUtils::mix(base, palette.color(QPalette::ButtonText), 0.2) : base);
+    const QColor tinted(KColorUtils::mix(base, focusColor(palette), 0.28));
+    const QColor tintedHover(KColorUtils::mix(base, focusColor(palette), 0.38));
 
     if (mode == AnimationHover) {
-        const QColor focus(focusColor(palette));
-        const QColor hover(focusColor(palette).lighter(115));
         if (hasFocus)
-            background = KColorUtils::mix(focus, hover, opacity);
+            background = KColorUtils::mix(tinted, tintedHover, opacity);
 
     } else if (mouseOver && hasFocus) {
-        background = focusColor(palette).lighter(115);
+        background = tintedHover;
 
     } else if (mode == AnimationFocus) {
-        const QColor focus(focusColor(palette));
-        background = KColorUtils::mix(background, focus, opacity);
+        background = KColorUtils::mix(background, tinted, opacity);
 
     } else if (hasFocus) {
-        background = focusColor(palette);
+        background = tinted;
     }
 
     return background;
@@ -733,6 +733,10 @@ void Helper::renderButtonFrame(QPainter *painter,
     qreal maxRadius = qMin(frameRect.height(), frameRect.width()) / 2.0;
     qreal radius = qMin(buttonFrameRadius() - qreal(Metrics::Frame_FrameWidth), maxRadius);
 
+    // shift the whole frame down 1px when pressed
+    if (sunken)
+        frameRect.translate(0, 1);
+
     QColor fill(color.isValid() ? color : palette.color(QPalette::Button));
     if (sunken)
         fill = fill.darker(105);
@@ -743,15 +747,11 @@ void Helper::renderButtonFrame(QPainter *painter,
     if (!enabled) {
         fill = KColorUtils::mix(fill, palette.color(QPalette::Window), 0.4);
         outline = alphaColor(outline, 0.5);
-    }
-
-    // focus ring
-    if (enabled && (hasFocus || (mode == AnimationFocus && opacity > 0))) {
-        const qreal ringOpacity = (mode == AnimationFocus && !hasFocus) ? opacity : 1.0;
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(alphaColor(focusColor(palette), 0.25 * ringOpacity));
-        const QRectF ringRect(frameRect.adjusted(-2, -2, 2, 2));
-        painter->drawRoundedRect(ringRect, radius + 2, radius + 2);
+    } else if (hasFocus && !sunken) {
+        // use accent-colored border for focus, no separate halo needed
+        outline = mode == AnimationFocus
+            ? KColorUtils::mix(alphaColor(palette.color(QPalette::WindowText), 0.16), focusColor(palette), opacity)
+            : focusColor(palette);
     }
 
     // base fill
@@ -759,7 +759,7 @@ void Helper::renderButtonFrame(QPainter *painter,
     painter->setPen(Qt::NoPen);
     painter->drawRoundedRect(frameRect, radius, radius);
 
-    // border (1px from theme)
+    // border
     if (outline.isValid()) {
         QPen borderPen(outline, 1);
         borderPen.setCosmetic(true);
@@ -771,21 +771,24 @@ void Helper::renderButtonFrame(QPainter *painter,
 
     // pressed animation
     if (mode == AnimationPressed) {
-        QRegion oldRegion(painter->clipRegion());
-        // constrain ripple effect area
-        painter->setClipRect(frameRect, Qt::IntersectClip);
+        painter->save();
+        // constrain ripple to rounded button shape
+        QPainterPath clipPath;
+        clipPath.addRoundedRect(frameRect, radius, radius);
+        painter->setClipPath(clipPath, Qt::IntersectClip);
 
         // ripple color
         const QColor rippleBase(fill.darker(115));
+        painter->setPen(Qt::NoPen);
         painter->setBrush(alphaColor(rippleBase, sunken ? 0.35 : 0.35 * (1 - opacity)));
 
         // Pythagorean theorem
         int finalRadius = qCeil(qSqrt(qPow(frameRect.width() / 2.0, 2) + qPow(frameRect.height() / 2.0, 2)));
 
-        // the animaiton looks choppy if the initial radius is 0, we choose something else
+        // the animation looks choppy if the initial radius is 0, we choose something else
         int initRadius = qCeil(frameRect.height() / 2.0);
         painter->drawEllipse(frameRect.center(), initRadius + (finalRadius - initRadius) * opacity, initRadius + (finalRadius - initRadius) * opacity);
-        painter->setClipRegion(oldRegion);
+        painter->restore();
     }
 
     Q_UNUSED(windowActive)
@@ -883,6 +886,51 @@ void Helper::renderTabWidgetFrame(QPainter *painter, const QRect &rect, const QC
     // render
     QPainterPath path(roundedPath(frameRect, corners, radius));
     painter->drawPath(path);
+}
+
+//______________________________________________________________________________
+QMargins Helper::itemViewItemMargins(const QStyleOptionViewItem *option) const
+{
+    QMargins margins(Metrics::ItemView_ItemMarginLeft,
+                     Metrics::ItemView_ItemMarginTop,
+                     Metrics::ItemView_ItemMarginRight,
+                     Metrics::ItemView_ItemMarginBottom);
+    if (!option) {
+        return margins;
+    }
+
+    const QFrame *frame = qobject_cast<const QFrame *>(option->widget);
+    const QAbstractItemView *abstractItemView = qobject_cast<const QAbstractItemView *>(option->widget);
+
+    const bool isFirst = option->index.row() == 0;
+    const bool hasFrame = frame && frame->frameShape() == QFrame::StyledPanel;
+    const bool reverse = option->direction == Qt::RightToLeft;
+
+    if (isFirst) {
+        margins.setTop(Metrics::ItemView_FirstItemTopMarginHeight);
+    }
+
+    // Breeze frame has one extra white pixel
+    if (hasFrame) {
+        margins -= QMargins(1, isFirst ? 1 : 0, 1, 0);
+    }
+
+    if (abstractItemView && abstractItemView->selectionBehavior() != QAbstractItemView::SelectRows) {
+        return margins;
+    }
+
+    if ((reverse && option->viewItemPosition == QStyleOptionViewItem::End)
+        || (!reverse && option->viewItemPosition == QStyleOptionViewItem::Beginning)
+        || option->viewItemPosition == QStyleOptionViewItem::Middle) {
+        margins.setRight(0);
+    }
+    if ((reverse && option->viewItemPosition == QStyleOptionViewItem::Beginning)
+        || (!reverse && option->viewItemPosition == QStyleOptionViewItem::End)
+        || option->viewItemPosition == QStyleOptionViewItem::Middle) {
+        margins.setLeft(0);
+    }
+
+    return margins;
 }
 
 //______________________________________________________________________________

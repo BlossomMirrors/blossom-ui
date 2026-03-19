@@ -77,10 +77,13 @@ sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative
 #### <u>Fedora</u>
 
 ```
-sudo dnf install -y git cmake extra-cmake-modules "cmake(KDecoration3)" kwin-devel \
-      kf6-kcolorscheme-devel kf6-kguiaddons-devel kf6-ki18n-devel kf6-kiconthemes-devel \
-      kf6-kirigami-devel kf6-kcmutils-devel kf6-frameworkintegration-devel \
-      libepoxy-devel "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(KF5GuiAddons)" \
+sudo dnf install -y git cmake extra-cmake-modules gcc-c++ make \
+      qt6-qtbase-devel qt6-qtsvg-devel \
+      kf6-kcoreaddons-devel kf6-kcolorscheme-devel kf6-kconfig-devel \
+      kf6-kguiaddons-devel kf6-ki18n-devel kf6-kiconthemes-devel \
+      kf6-kwindowsystem-devel kf6-kcmutils-devel kf6-frameworkintegration-devel \
+      kf6-kirigami-devel "cmake(KDecoration3)" kwin-devel libepoxy-devel \
+      "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(KF5GuiAddons)" \
       "cmake(KF5WindowSystem)" "cmake(KF5I18n)" "cmake(KF5CoreAddons)" "cmake(KF5ConfigWidgets)" \
       "cmake(Qt5UiTools)" "cmake(KF5GlobalAccel)" "cmake(KF5IconThemes)" "cmake(KF5Init)" \
       "cmake(KF5KIO)" kf5-kpackage-devel kf5-kcmutils-devel qt5-qtquickcontrols2-devel \

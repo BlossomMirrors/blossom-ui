@@ -158,6 +158,14 @@ enum Metrics {
     // tree view
     ItemView_ArrowSize = 10,
     ItemView_ItemMarginWidth = 12,
+    ItemView_ItemMarginLeft = 2,
+    ItemView_ItemMarginRight = 2,
+    ItemView_ItemMarginTop = 1,
+    ItemView_ItemMarginBottom = 1,
+    ItemView_FirstItemTopMarginHeight = 2,
+    ItemView_ItemPaddingWidth = 4,
+    ItemView_ItemPaddingHeight = 3,
+    ItemView_IconTextSpacing = 6,
     SidePanel_ItemMarginWidth = 16,
 
     // splitter

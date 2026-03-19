@@ -67,6 +67,7 @@
 #include <QPushButton>
 #include <QQuickWidget>
 #include <QRadioButton>
+#include <QFrame>
 #include <QRegion>
 #include <QScrollBar>
 #include <QSplitterHandle>
@@ -179,12 +180,21 @@ private:
     int _itemMargin;
 };
 
-//* extra icon-to-text spacing in Dolphin's places sidebar
+//* Wrapper around KFilePlacesViewDelegate that adds:
+//*   - extra vertical padding per item via sizeHint
+//*   - mouse-snapping so clicks in the gaps between items still work
 class DolphinPlacesDelegate : public QStyledItemDelegate
 {
-    //* mirrors KFilePlacesViewDelegate's hardcoded s_lateralMargin
+    //* mirrors KFilePlacesViewDelegate's hardcoded s_lateralMargin (background inset)
     static constexpr int s_lateralMargin = 4;
-    static constexpr int s_extraGap = 2;
+    //* extra left padding between background edge and icon (makes icon sit inside the background visually)
+    static constexpr int s_iconLeftPad = 4;
+    //* gap between icon right edge and text left edge
+    static constexpr int s_extraGap = 1;
+    //* extra height added to the item content row (makes items taller than the original delegate)
+    static constexpr int s_heightExtra = 2;
+    //* gap added above and below each item background (1px each = 2px visual gap between adjacent items)
+    static constexpr int s_itemGap = 1;
     //* KFilePlacesModel::CapacityBarRecommendedRole
     static constexpr int s_capacityBarRole = 0x1548C5C4;
     //* KFilePlacesModel::UrlRole
@@ -202,6 +212,125 @@ public:
         , m_original(original)
     {
         view->viewport()->installEventFilter(this);
+    }
+
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        QSize s = m_original ? m_original->sizeHint(option, index)
+                             : QStyledItemDelegate::sizeHint(option, index);
+        s.rheight() += 2 * s_itemGap + s_heightExtra;
+        return s;
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
+    {
+        if (!m_original || !m_view) {
+            QStyledItemDelegate::paint(painter, option, index);
+            return;
+        }
+
+        // during active drag the view manages drag and drop state (drop targets, active states) itself.
+        // our custom rendering misinterprets those transient states and causes multiple accent colored items.
+        if (m_dragging) {
+            m_original->paint(painter, option, index);
+            return;
+        }
+
+        const QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
+        if (icon.isNull()) {
+            m_original->paint(painter, option, index);
+            return;
+        }
+
+        const int iconSize  = m_view->iconSize().width();
+        const bool isLTR    = option.direction == Qt::LeftToRight;
+        const int iconAreaW = s_lateralMargin + s_iconLeftPad + iconSize;
+        const int stdH      = qMax(iconSize, option.fontMetrics.height()) + s_lateralMargin + s_heightExtra;
+        const int headerH   = qMax(0, option.rect.height() - stdH - 2 * s_itemGap);
+        const int itemTop   = option.rect.top() + headerH + s_itemGap;
+        const QRect itemRect(option.rect.left(), itemTop, option.rect.width(), stdH);
+
+        if (headerH > 0) {
+            const qreal dpr = painter->device()->devicePixelRatioF();
+            QPixmap hdrBuf(qRound(option.rect.width() * dpr), qRound(headerH * dpr));
+            hdrBuf.setDevicePixelRatio(dpr);
+            hdrBuf.fill(Qt::transparent);
+            {
+                QPainter hp(&hdrBuf);
+                QStyleOptionViewItem hopt = option;
+
+                hopt.rect = QRect(0, 0, option.rect.width(), option.rect.height());
+                m_original->paint(&hp, hopt, index);
+            }
+            painter->drawPixmap(option.rect.topLeft(), hdrBuf);
+        }
+
+        painter->save();
+
+        const bool selected = option.state & QStyle::State_Selected;
+        const bool mouseOver = option.state & QStyle::State_MouseOver;
+        if (selected || mouseOver) {
+            const QPalette::ColorGroup cg = (option.state & QStyle::State_Enabled) ? QPalette::Active : QPalette::Disabled;
+            QColor color = option.palette.color(cg, QPalette::Highlight);
+            if (mouseOver && !selected)
+                color.setAlphaF(0.2);
+            else if (mouseOver && selected)
+                color = color.lighter(110);
+            painter->setRenderHint(QPainter::Antialiasing);
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(color);
+
+            painter->drawRoundedRect(QRectF(itemRect).adjusted(s_lateralMargin + 0.5, 0.5, -s_lateralMargin - 0.5, -0.5), 4, 4);
+        }
+
+        const QIcon::Mode iconMode = !(option.state & QStyle::State_Enabled) ? QIcon::Disabled
+                                     : selected                               ? QIcon::Selected
+                                                                             : QIcon::Normal;
+        auto *winHandle = m_view->window() ? m_view->window()->windowHandle() : nullptr;
+        const QPixmap pm = winHandle ? icon.pixmap(winHandle, QSize(iconSize, iconSize), iconMode)
+                                     : icon.pixmap(QSize(iconSize, iconSize), iconMode);
+        const int iconX = isLTR ? option.rect.left() + s_lateralMargin + s_iconLeftPad
+                                : option.rect.right() - s_lateralMargin - s_iconLeftPad - iconSize;
+        painter->drawPixmap(iconX, itemTop + (stdH - iconSize) / 2, pm);
+
+        const int textLeft  = (isLTR ? iconAreaW : 0) + s_lateralMargin + s_extraGap;
+        const int textWidth = option.rect.width() - iconAreaW - 2 * s_lateralMargin - s_extraGap - s_iconLeftPad;
+
+        painter->save();
+        painter->setFont(option.font);
+        painter->setPen(selected ? option.palette.highlightedText().color()
+                                 : option.palette.text().color());
+
+        const bool hasCapacityBar = index.data(s_capacityBarRole).toBool();
+        if (hasCapacityBar) {
+            const int barH  = static_cast<int>(std::ceil(iconSize / 6.0));
+            const int textH = option.fontMetrics.height();
+            const int textY = itemTop + (stdH - textH - barH - 2) / 2;
+            const QRect textRect(textLeft, textY, textWidth, textH);
+            painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter,
+                option.fontMetrics.elidedText(index.data(Qt::DisplayRole).toString(), Qt::ElideRight, textWidth));
+            painter->restore();
+
+            const QPersistentModelIndex pIdx(index);
+            const QUrl url = index.data(s_urlRole).toUrl();
+            if (!m_freeSpaceCache.contains(pIdx) && url.isLocalFile()) {
+                const QStorageInfo si(url.toLocalFile());
+                if (si.isValid() && si.bytesTotal() > 0)
+                    m_freeSpaceCache[pIdx] = {quint64(si.bytesTotal() - si.bytesAvailable()), quint64(si.bytesTotal())};
+            }
+            const auto it = m_freeSpaceCache.constFind(pIdx);
+            if (it != m_freeSpaceCache.constEnd() && it->size > 0)
+                drawCapacityBar(painter, option, QRect(textLeft, textY, textWidth, textH),
+                                it->used / qreal(it->size), iconSize);
+            painter->restore();
+            return;
+        } else {
+            painter->drawText(QRect(textLeft, itemTop, textWidth, stdH), Qt::AlignLeft | Qt::AlignVCenter,
+                option.fontMetrics.elidedText(index.data(Qt::DisplayRole).toString(), Qt::ElideRight, textWidth));
+            painter->restore();
+        }
+
+        painter->restore();
     }
 
     bool eventFilter(QObject *watched, QEvent *event) override
@@ -236,9 +365,7 @@ public:
                 if (!pressedIdx.isValid())
                     pressedIdx = nearestItemAt(me->pos());
                 m_dragSourceIndex = QPersistentModelIndex(pressedIdx);
-
                 if (!m_view->indexAt(me->pos()).isValid()) {
-                    // press in a gap: snap to nearest item and remember the position
                     const QModelIndex nearest = nearestItemAt(me->pos());
                     if (nearest.isValid()) {
                         m_redirectedPressPos = snapToItem(me->pos(), nearest);
@@ -257,16 +384,9 @@ public:
                 m_hasRedirectedPress = false;
                 return true;
             }
-        } else if (type == QEvent::DragEnter) {
+        } else if (type == QEvent::DragEnter || type == QEvent::DragMove) {
             m_dragging = true;
-            const QPoint pos = static_cast<QDragMoveEvent *>(event)->pos();
-            if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
-                m_view->update(idx);
-            if (m_dragSourceIndex.isValid())
-                m_view->update(m_dragSourceIndex);
-        } else if (type == QEvent::DragMove) {
-            m_dragging = true;
-            const QPoint pos = static_cast<QDragMoveEvent *>(event)->pos();
+            const QPoint pos = static_cast<QDragMoveEvent *>(event)->position().toPoint();
             if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
                 m_view->update(idx);
             if (m_dragSourceIndex.isValid())
@@ -278,6 +398,38 @@ public:
         }
 
         return QStyledItemDelegate::eventFilter(watched, event);
+    }
+
+private:
+    void drawCapacityBar(QPainter *painter, const QStyleOptionViewItem &option, const QRect &textRect, qreal usedSpace, int iconSize) const
+    {
+        const qreal barHeight = std::ceil(iconSize / 6.0);
+        const qreal radius = barHeight / 2.0;
+        const QRectF bgRect(textRect.x(), textRect.bottom() + 2.0, textRect.width(), barHeight);
+        QRectF fillRect = bgRect;
+        fillRect.setWidth(bgRect.width() * usedSpace);
+
+        const bool selected = option.state & QStyle::State_Selected;
+        QColor bgColor(option.palette.color(QPalette::Active, QPalette::WindowText));
+        bgColor.setAlphaF(0.2);
+
+        QColor fillColor;
+        const int pct = qRound(usedSpace * 100);
+        if (pct >= BlossomUI::StyleConfigData::capacityBarCritThreshold())
+            fillColor = BlossomUI::StyleConfigData::capacityBarCritColor();
+        else if (pct >= BlossomUI::StyleConfigData::capacityBarWarnThreshold())
+            fillColor = BlossomUI::StyleConfigData::capacityBarWarnColor();
+        else
+            fillColor = selected ? option.palette.color(QPalette::Active, QPalette::HighlightedText) : option.palette.color(QPalette::Active, QPalette::Highlight);
+
+        painter->save();
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(bgColor);
+        painter->drawRoundedRect(bgRect, radius, radius);
+        painter->setBrush(fillColor);
+        painter->drawRoundedRect(fillRect, radius, radius);
+        painter->restore();
     }
 
     QPoint snapToItem(const QPoint &pos, const QModelIndex &idx) const
@@ -304,7 +456,7 @@ public:
         for (int row = 0, rows = model->rowCount(); row < rows; ++row) {
             const QModelIndex idx = model->index(row, 0);
             if (idx.data(Qt::DecorationRole).value<QIcon>().isNull())
-                continue; // skip pure section-header rows
+                continue;
             const QRect vr = m_view->visualRect(idx);
             if (!vr.isValid())
                 continue;
@@ -333,7 +485,6 @@ public:
             m_lastHoveredIndex = QPersistentModelIndex();
             return;
         }
-
         const QRect itemR(vr.left(), vr.bottom() - stdH + 1, vr.width(), stdH);
         const bool onItem = itemR.contains(pos);
         const QPersistentModelIndex pidx(idx);
@@ -344,165 +495,14 @@ public:
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
-    {
-        if (!m_original || !m_view) {
-            QStyledItemDelegate::paint(painter, option, index);
-            return;
-        }
-
-        const QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
-        if (icon.isNull()) {
-            m_original->paint(painter, option, index);
-            return;
-        }
-
-        const int iconSize = m_view->iconSize().width();
-        const bool isLTR = option.direction == Qt::LeftToRight;
-        const int iconAreaWidth = s_lateralMargin + iconSize;
-
-        const int standardHeight = qMax(iconSize, option.fontMetrics.height()) + s_lateralMargin;
-        const int headerHeight = qMax(0, option.rect.height() - standardHeight);
-        const int itemTop = option.rect.top() + headerHeight;
-
-        const bool hasCapacityBar = index.data(s_capacityBarRole).toBool();
-
-        QRect textClipRect;
-        QRect textDrawRect;
-        if (hasCapacityBar) {
-            const int barHeight = static_cast<int>(std::ceil(iconSize / 6.0));
-            const int textTop = itemTop + (standardHeight - option.fontMetrics.height() - barHeight) / 2;
-            textClipRect = QRect(isLTR ? iconAreaWidth : 0, textTop, option.rect.width() - iconAreaWidth, option.fontMetrics.height() + barHeight + 4);
-            textDrawRect = QRect((isLTR ? iconAreaWidth : 0) + s_lateralMargin,
-                                 textTop,
-                                 option.rect.width() - iconAreaWidth - 2 * s_lateralMargin,
-                                 option.fontMetrics.height());
-        } else {
-            textClipRect =
-                QRect((isLTR ? iconAreaWidth : 0) + s_lateralMargin, itemTop, option.rect.width() - iconAreaWidth - 2 * s_lateralMargin, standardHeight);
-            textDrawRect = textClipRect;
-        }
-
-        const QRect itemRect(option.rect.left(), itemTop, option.rect.width(), standardHeight);
-
-        // Clamp all rects to option.rect so content never overflows the cell
-        const QRect cellRect = option.rect;
-        const QRect clampedItemRect = itemRect.intersected(cellRect);
-        const QRect clampedTextClipRect = textClipRect.intersected(cellRect);
-        const QRect clampedTextDrawRect = textDrawRect.intersected(cellRect);
-        const QPoint cursorInView = m_view->viewport()->mapFromGlobal(QCursor::pos());
-        const bool hoverOnItem = clampedItemRect.contains(cursorInView);
-
-        const bool isDragSource = m_dragging && m_dragSourceIndex.isValid() && QPersistentModelIndex(index) == m_dragSourceIndex;
-
-        QStyleOptionViewItem bgOption = option;
-        bgOption.rect = clampedItemRect;
-        if (!hoverOnItem)
-            bgOption.state &= ~QStyle::State_MouseOver;
-        if (!isDragSource && (bgOption.state & QStyle::State_Selected))
-            bgOption.state |= QStyle::State_Active;
-        painter->save();
-        const QRegion baseClip = painter->hasClipping() ? painter->clipRegion() : QRegion(option.rect);
-        painter->setClipRegion(baseClip.intersected(QRegion(clampedTextClipRect)));
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &bgOption, painter, m_view);
-        painter->restore();
-
-        QStyleOptionViewItem delegateOption = option;
-        if (!hoverOnItem)
-            delegateOption.state &= ~QStyle::State_MouseOver;
-        if (!isDragSource && (delegateOption.state & QStyle::State_Selected))
-            delegateOption.state |= QStyle::State_Active;
-        painter->save();
-        painter->setClipRegion(baseClip.subtracted(QRegion(clampedTextClipRect)));
-        m_original->paint(painter, delegateOption, index);
-        painter->restore();
-
-        const QRect shiftedTextRect = clampedTextDrawRect.adjusted(s_extraGap, 0, 0, 0);
-        const QString text = index.data(Qt::DisplayRole).toString();
-        const QString elidedText = option.fontMetrics.elidedText(text, Qt::ElideRight, shiftedTextRect.width());
-        const bool selected = option.state & QStyle::State_Selected;
-
-        painter->save();
-        painter->setFont(option.font);
-
-        painter->setPen(selected && !isDragSource ? option.palette.highlightedText().color() : option.palette.text().color());
-        // clip to textClipRect so glyph left-bearings dont bleed into the icon area (gets weird blue artifact pixels then)
-        painter->setClipRegion(baseClip.intersected(QRegion(clampedTextClipRect)));
-        painter->drawText(shiftedTextRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
-        painter->restore();
-
-        if (hasCapacityBar) {
-            const QPersistentModelIndex pIdx(index);
-            const QUrl url = index.data(s_urlRole).toUrl();
-            if (!m_freeSpaceCache.contains(pIdx) && url.isLocalFile()) {
-                const QStorageInfo si(url.toLocalFile());
-                if (si.isValid() && si.bytesTotal() > 0)
-                    m_freeSpaceCache[pIdx] = {quint64(si.bytesTotal() - si.bytesAvailable()), quint64(si.bytesTotal())};
-            }
-            const auto it = m_freeSpaceCache.constFind(pIdx);
-            if (it != m_freeSpaceCache.constEnd() && it->size > 0) {
-                painter->save();
-                painter->setClipRect(cellRect, Qt::IntersectClip);
-                const qreal usedSpace = it->used / qreal(it->size);
-                drawCapacityBar(painter, option, shiftedTextRect, usedSpace, iconSize);
-                painter->restore();
-            }
-        }
-    }
-
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
-    {
-        if (m_original)
-            return m_original->sizeHint(option, index);
-        return QStyledItemDelegate::sizeHint(option, index);
-    }
-
-    void drawCapacityBar(QPainter *painter, const QStyleOptionViewItem &option, const QRect &textRect, qreal usedSpace, int iconSize) const
-    {
-        const qreal barHeight = std::ceil(iconSize / 6.0);
-        const qreal radius = barHeight / 2.0;
-
-        const QRectF bgRect(textRect.x(), textRect.bottom() + 2.0, textRect.width(), barHeight);
-        QRectF fillRect = bgRect;
-        fillRect.setWidth(bgRect.width() * usedSpace);
-
-        const bool selected = option.state & QStyle::State_Selected;
-
-        QColor bgColor(option.palette.color(QPalette::Active, QPalette::WindowText));
-        bgColor.setAlphaF(0.2);
-
-        QColor fillColor;
-        const int pct = qRound(usedSpace * 100);
-        if (pct >= BlossomUI::StyleConfigData::capacityBarCritThreshold())
-            fillColor = BlossomUI::StyleConfigData::capacityBarCritColor();
-        else if (pct >= BlossomUI::StyleConfigData::capacityBarWarnThreshold())
-            fillColor = BlossomUI::StyleConfigData::capacityBarWarnColor();
-        else
-            fillColor =
-                selected ? option.palette.color(QPalette::Active, QPalette::HighlightedText) : option.palette.color(QPalette::Active, QPalette::Highlight);
-
-        painter->save();
-        painter->setRenderHint(QPainter::Antialiasing);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(bgColor);
-        painter->drawRoundedRect(bgRect, radius, radius);
-        painter->setBrush(fillColor);
-        painter->drawRoundedRect(fillRect, radius, radius);
-        painter->restore();
-    }
-
-private:
     QPointer<QAbstractItemView> m_view;
     QPointer<QAbstractItemDelegate> m_original;
     mutable QHash<QPersistentModelIndex, FreeSpaceInfo> m_freeSpaceCache;
     mutable bool m_dragging = false;
     mutable QPersistentModelIndex m_dragSourceIndex;
-
     mutable bool m_hasRedirectedPress = false;
     mutable QPoint m_redirectedPressPos;
-
     mutable bool m_redirectingEvent = false;
-
     mutable QPersistentModelIndex m_lastHoveredIndex;
     mutable bool m_lastHoverOnItem = false;
 };
@@ -1505,6 +1505,50 @@ QRect Style::subElementRect(SubElement element, const QStyleOption *option, cons
         return tabWidgetCornerRect(SE_TabWidgetRightCorner, option, widget);
     case SE_ToolBoxTabContents:
         return toolBoxTabContentsRect(option, widget);
+
+    case SE_ItemViewItemCheckIndicator:
+    case SE_ItemViewItemDecoration: {
+        QRect baseRect = ParentStyleClass::subElementRect(element, option, widget);
+        const auto viewOption = qstyleoption_cast<const QStyleOptionViewItem *>(option);
+        const QMargins margins = _helper->itemViewItemMargins(viewOption);
+
+        int marginAdjust = 0;
+        const auto frame = viewOption ? qobject_cast<const QFrame *>(viewOption->widget) : nullptr;
+        if (frame && frame->frameShape() == QFrame::StyledPanel) {
+            marginAdjust = 1;
+        }
+
+        if (viewOption
+            && (viewOption->decorationPosition == QStyleOptionViewItem::Left
+                || viewOption->decorationPosition == QStyleOptionViewItem::Right)) {
+            if ((option->direction == Qt::RightToLeft) != (viewOption->decorationPosition == QStyleOptionViewItem::Right)) {
+                const auto adjustment = baseRect.right() - margins.right() - Metrics::ItemView_ItemPaddingWidth + marginAdjust;
+                if (viewOption->rect.width() > adjustment) {
+                    baseRect.moveLeft(adjustment);
+                }
+            } else {
+                const auto adjustment = baseRect.left() + margins.left() + Metrics::ItemView_ItemPaddingWidth - marginAdjust;
+                if (viewOption->rect.width() > adjustment) {
+                    baseRect.moveLeft(adjustment);
+                }
+            }
+        }
+
+        baseRect.moveTop(baseRect.top() + margins.top() - margins.bottom());
+        return baseRect;
+    }
+
+    case SE_ItemViewItemText: {
+        auto viewItem = qstyleoption_cast<const QStyleOptionViewItem *>(option);
+        QRect rect = ParentStyleClass::subElementRect(element, option, widget);
+        if (viewItem) {
+            const QMargins margins = _helper->itemViewItemMargins(viewItem);
+            rect.setRight(rect.right() - margins.right() - Metrics::ItemView_ItemPaddingWidth);
+            rect.setLeft(rect.left() + margins.left() + Metrics::ItemView_ItemPaddingWidth + Metrics::ItemView_IconTextSpacing);
+            rect.moveTop(rect.top() + margins.top() - margins.bottom());
+        }
+        return rect;
+    }
 
     // fallback
     default:
@@ -4439,7 +4483,17 @@ QSize Style::itemViewItemSizeFromContents(const QStyleOption *option, const QSiz
 {
     // call base class
     const QSize size(ParentStyleClass::sizeFromContents(CT_ItemViewItem, option, contentsSize, widget));
-    return expandSize(size, Metrics::ItemView_ItemMarginWidth);
+    if (widget && widget->inherits("KFilePlacesView"))
+        return size;
+    if (!qobject_cast<const QTableView *>(widget)) {
+        const QMargins margins = _helper->itemViewItemMargins(qstyleoption_cast<const QStyleOptionViewItem *>(option));
+        return size
+            + QSize(margins.left() + margins.right() + Metrics::ItemView_ItemPaddingWidth * 2,
+                    margins.top() + margins.bottom() + Metrics::ItemView_ItemPaddingHeight * 2);
+    }
+    return expandSize(size,
+                      Metrics::ItemView_ItemMarginLeft + Metrics::ItemView_ItemMarginRight,
+                      Metrics::ItemView_ItemMarginBottom + Metrics::ItemView_ItemMarginTop);
 }
 
 //______________________________________________________________
@@ -5820,13 +5874,7 @@ bool Style::drawPushButtonLabelControl(const QStyleOption *option, QPainter *pai
         else
             textRole = QPalette::WindowText;
 
-    } else if (hasFocus || (hasFocus && mouseOver))
-        textRole = QPalette::HighlightedText;
-    // Fixes kinfocentor energy tab "Charge Percentage" button color error
-    // when the button is checked, the text label should be a light color (HighlightedText)
-    else if (state & State_On)
-        textRole = QPalette::HighlightedText;
-    else
+    } else
         textRole = QPalette::ButtonText;
 
     // menu arrow
