@@ -91,7 +91,7 @@ else
     $KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key DefaultDarkLookAndFeel --type string "$DARK_THEME_ID"
 fi
 
-plasma-apply-lookandfeel -a "$THEME_ID" --apply 2>/dev/null
+plasma-apply-lookandfeel --apply "$THEME_ID" 2>/dev/null
 plasma-apply-colorscheme "$COLOR_SCHEME_NO_SPACE" 2>/dev/null
 if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
     plasma-apply-desktoptheme BlossomUI 2>/dev/null
