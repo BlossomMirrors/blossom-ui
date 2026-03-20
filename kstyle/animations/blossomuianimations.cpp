@@ -127,7 +127,7 @@ void Animations::registerWidget(QWidget *widget) const
     // buttons
     if (qobject_cast<QToolButton *>(widget)) {
         _toolButtonEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-        _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus);
+        _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);
 
     } else if (qobject_cast<QCheckBox *>(widget) || qobject_cast<QRadioButton *>(widget)) {
         _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);

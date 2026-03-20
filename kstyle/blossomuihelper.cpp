@@ -295,7 +295,7 @@ QColor Helper::buttonBackgroundColor(const QPalette &palette, bool mouseOver, bo
 QColor Helper::toolButtonColor(const QPalette &palette, bool mouseOver, bool hasFocus, bool sunken, qreal opacity, AnimationMode mode) const
 {
     QColor outline;
-    const QColor hoverColor(this->hoverColor(palette));
+    const QColor hoverColor = alphaColor(palette.color(QPalette::WindowText), 0.1);
     const QColor focusColor(this->focusColor(palette));
     const QColor sunkenColor = alphaColor(palette.color(QPalette::WindowText), 0.2);
 
@@ -470,27 +470,18 @@ void Helper::renderFrame(QPainter *painter, const QRect &rect, const QColor &col
 {
     painter->setRenderHint(QPainter::Antialiasing);
 
-    const int extraMargin = StyleConfigData::fancyMargins() ? 8 : Metrics::Frame_FrameWidth;
-    const int bottomMargin = StyleConfigData::fancyMargins() ? 6 : Metrics::Frame_FrameWidth;
-    QRectF frameRect = rect.adjusted(Metrics::Frame_FrameWidth, Metrics::Frame_FrameWidth, -extraMargin, -bottomMargin);
-    QRectF fillRect = frameRect.adjusted(-1, -1, 1, 1);
-
-    qreal radius(frameRadius(PenWidth::NoPen, -1));
+    const qreal radius = frameRadius(PenWidth::NoPen);
 
     painter->setPen(Qt::NoPen);
     painter->setBrush(color);
-
-    // render background
-    painter->drawRoundedRect(fillRect, radius, radius);
+    painter->drawRoundedRect(QRectF(rect), radius, radius);
 
     const QColor borderColor(alphaColor(QApplication::palette().color(QPalette::WindowText), enabled ? 0.12 : 0.08));
     QPen borderPen(borderColor, 1);
     borderPen.setCosmetic(true);
     painter->setPen(borderPen);
     painter->setBrush(Qt::NoBrush);
-
-    QRectF borderRect = fillRect.adjusted(0.5, 0.5, -0.5, -0.5);
-    painter->drawRoundedRect(borderRect, radius, radius);
+    painter->drawRoundedRect(QRectF(rect).adjusted(0.5, 0.5, -0.5, -0.5), radius - 0.5, radius - 0.5);
 
     Q_UNUSED(windowActive)
 }
@@ -723,7 +714,9 @@ void Helper::renderButtonFrame(QPainter *painter,
                                const bool enabled,
                                const bool windowActive,
                                const AnimationMode mode,
-                               const qreal opacity) const
+                               const qreal opacity,
+                               const QPointF &ripplePos,
+                               const qreal pressOpacity) const
 {
     // setup painter
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -769,25 +762,37 @@ void Helper::renderButtonFrame(QPainter *painter,
         painter->drawRoundedRect(borderRect, radius, radius);
     }
 
-    // pressed animation
-    if (mode == AnimationPressed) {
+    const qreal pOpacity = (pressOpacity >= 0.0) ? pressOpacity
+                         : (mode == AnimationPressed) ? opacity
+                         : -1.0;
+    if (pOpacity >= 0.0) {
         painter->save();
-        // constrain ripple to rounded button shape
         QPainterPath clipPath;
         clipPath.addRoundedRect(frameRect, radius, radius);
         painter->setClipPath(clipPath, Qt::IntersectClip);
-
-        // ripple color
-        const QColor rippleBase(fill.darker(115));
         painter->setPen(Qt::NoPen);
-        painter->setBrush(alphaColor(rippleBase, sunken ? 0.35 : 0.35 * (1 - opacity)));
 
-        // Pythagorean theorem
-        int finalRadius = qCeil(qSqrt(qPow(frameRect.width() / 2.0, 2) + qPow(frameRect.height() / 2.0, 2)));
+        const QPointF center = (ripplePos.isNull() || !frameRect.contains(ripplePos))
+                               ? frameRect.center()
+                               : ripplePos;
 
-        // the animation looks choppy if the initial radius is 0, we choose something else
-        int initRadius = qCeil(frameRect.height() / 2.0);
-        painter->drawEllipse(frameRect.center(), initRadius + (finalRadius - initRadius) * opacity, initRadius + (finalRadius - initRadius) * opacity);
+        qreal maxDist = 0;
+        for (const QPointF &c : {frameRect.topLeft(), frameRect.topRight(), frameRect.bottomLeft(), frameRect.bottomRight()}) {
+            const QPointF d = c - center;
+            maxDist = qMax(maxDist, qSqrt(d.x() * d.x() + d.y() * d.y()));
+        }
+        const qreal finalRadius = maxDist;
+        const qreal initRadius = qMin(frameRect.width(), frameRect.height()) / 4.0;
+
+        if (sunken) {
+            const qreal r = initRadius + (finalRadius - initRadius) * pOpacity;
+            painter->setBrush(alphaColor(focusColor(palette), 0.4 * (1.0 - pOpacity)));
+            painter->drawEllipse(center, r, r);
+        } else {
+            painter->setBrush(alphaColor(focusColor(palette), 0.2 * qSin(pOpacity * M_PI)));
+            painter->drawRoundedRect(frameRect, radius, radius);
+        }
+
         painter->restore();
     }
 
@@ -806,22 +811,10 @@ void Helper::renderToolButtonFrame(QPainter *painter, const QRect &rect, const Q
 
     const QRectF baseRect(rect.adjusted(1, 1, -1, -1));
 
-    if (sunken) {
-        const qreal radius(buttonFrameRadius(PenWidth::NoPen));
-
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(color);
-
-        painter->drawRoundedRect(baseRect, radius, radius);
-
-    } else {
-        const qreal radius(buttonFrameRadius(PenWidth::Frame));
-
-        painter->setPen(color);
-        painter->setBrush(Qt::NoBrush);
-        const QRectF outlineRect(strokedRect(baseRect));
-        painter->drawRoundedRect(outlineRect, radius, radius);
-    }
+    const qreal radius = qMin(buttonFrameRadius(PenWidth::NoPen), 0.5 * qMin(baseRect.width(), baseRect.height()));
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(color);
+    painter->drawRoundedRect(baseRect, radius, radius);
 }
 
 //______________________________________________________________________________
@@ -1678,6 +1671,8 @@ QRectF Helper::strokedRect(const QRectF &rect, const qreal penWidth) const
 //______________________________________________________________________________
 QPainterPath Helper::roundedPath(const QRectF &rect, Corners corners, qreal radius) const
 {
+    radius = qMin(radius, 0.5 * qMin(rect.width(), rect.height()));
+
     QPainterPath path;
 
     // simple cases

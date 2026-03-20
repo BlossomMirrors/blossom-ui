@@ -2,6 +2,8 @@
 build/
 .clang-format
 
+*.rpm
+
 result*
 
 local

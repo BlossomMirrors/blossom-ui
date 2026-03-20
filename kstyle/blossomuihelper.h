@@ -267,7 +267,9 @@ public:
                            const bool enabled,
                            const bool windowActive,
                            const AnimationMode mode = AnimationNone,
-                           const qreal opacity = AnimationData::OpacityInvalid) const;
+                           const qreal opacity = AnimationData::OpacityInvalid,
+                           const QPointF &ripplePos = QPointF(),
+                           const qreal pressOpacity = AnimationData::OpacityInvalid) const;
 
     //* toolbutton frame
     void renderToolButtonFrame(QPainter *, const QRect &, const QColor &color, bool sunken) const;

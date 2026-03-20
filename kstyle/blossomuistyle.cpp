@@ -280,7 +280,11 @@ public:
             painter->setPen(Qt::NoPen);
             painter->setBrush(color);
 
-            painter->drawRoundedRect(QRectF(itemRect).adjusted(s_lateralMargin + 0.5, 0.5, -s_lateralMargin - 0.5, -0.5), 4, 4);
+            {
+                const QRectF bgRect = QRectF(itemRect).adjusted(s_lateralMargin + 0.5, 0.5, -s_lateralMargin - 0.5, -0.5);
+                const qreal r = qMin(4.0, 0.5 * qMin(bgRect.width(), bgRect.height()));
+                painter->drawRoundedRect(bgRect, r, r);
+            }
         }
 
         const QIcon::Mode iconMode = !(option.state & QStyle::State_Enabled) ? QIcon::Disabled
@@ -667,6 +671,17 @@ void Style::polish(QWidget *widget)
         widget->setAttribute(Qt::WA_Hover);
     }
 
+    if (widget->inherits("QLineEditIconButton")) {
+        widget->setAttribute(Qt::WA_Hover);
+        addEventFilter(widget);
+    }
+
+    if (qobject_cast<QPushButton *>(widget) || qobject_cast<QToolButton *>(widget)) {
+        addEventFilter(widget);
+        QObject::connect(static_cast<QAbstractButton *>(widget), &QAbstractButton::pressed,
+                         widget, [widget]() { widget->repaint(); }, Qt::DirectConnection);
+    }
+
     // switch (pill) checkboxes: replace indicator with actual switch widget (draggable)
     if (auto checkBox = qobject_cast<QCheckBox *>(widget)) {
         if (isSwitchWidget(checkBox)) {
@@ -990,7 +1005,17 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
         scrollArea->setAttribute(Qt::WA_Hover);
     }
 
-    if (scrollArea->viewport() && scrollArea->inherits("KItemListContainer") && scrollArea->frameShape() == QFrame::NoFrame) {
+    if (scrollArea->frameShape() == QFrame::StyledPanel
+            && scrollArea->frameShadow() == QFrame::Sunken
+            && !qobject_cast<QAbstractItemView *>(scrollArea)) {
+        scrollArea->setAutoFillBackground(false);
+        if (scrollArea->viewport())
+            scrollArea->viewport()->setAutoFillBackground(false);
+    }
+
+    if (scrollArea->viewport() && scrollArea->inherits("KItemListContainer")) {
+        if (auto *frame = qobject_cast<QFrame *>(scrollArea))
+            frame->setFrameShape(QFrame::NoFrame);
         scrollArea->viewport()->setBackgroundRole(QPalette::Window);
         scrollArea->viewport()->setForegroundRole(QPalette::WindowText);
     }
@@ -1003,23 +1028,39 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
             if (auto viewport = scrollArea->viewport()) {
                 viewport->setContentsMargins(0, 0, 0, 0);
             }
-            // Viewbox mask: apply to scroll area (whole card incl. header) so all corners have same radius
             const int radius = 8;
-            scrollArea->setProperty("_blossomui_viewport_inset", 0);
             scrollArea->setProperty("_blossomui_viewport_radius", radius);
+            scrollArea->setProperty("_blossomui_card", true);
             scrollArea->installEventFilter(this);
-            const qreal dpr = scrollArea->devicePixelRatioF();
-            const int w = scrollArea->width();
-            const int h = scrollArea->height();
-            if (w > 0 && h > 0)
-                scrollArea->setMask(_helper->roundedRectRegion(w, h, radius, dpr));
-            QTimer::singleShot(100, scrollArea, [this, scrollArea, radius]() {
-                const qreal dpr = scrollArea->devicePixelRatioF();
-                const int w = scrollArea->width();
-                const int h = scrollArea->height();
-                if (w > 0 && h > 0)
-                    scrollArea->setMask(_helper->roundedRectRegion(w, h, radius, dpr));
-            });
+
+            auto applyCardColor = [scrollArea]() {
+                auto *vp = scrollArea->viewport();
+                if (!vp)
+                    return;
+                const QColor win = QApplication::palette().color(QPalette::Window);
+                const bool isDark = win.lightness() < 128;
+                const QColor cardColor = isDark ? KColorUtils::mix(win, QColor(255, 255, 255), 0.12)
+                                                : KColorUtils::mix(win, QColor(0, 0, 0), 0.04);
+                QPalette pal = vp->palette();
+                pal.setColor(QPalette::Window, cardColor);
+                pal.setColor(QPalette::Base, cardColor);
+                vp->setPalette(pal);
+                vp->setAutoFillBackground(true);
+                vp->update();
+            };
+            QTimer::singleShot(0, scrollArea, applyCardColor);
+            QTimer::singleShot(100, scrollArea, applyCardColor);
+
+            auto *cardOverlay = new QWidget(scrollArea);
+            cardOverlay->setAttribute(Qt::WA_TransparentForMouseEvents);
+            cardOverlay->setAttribute(Qt::WA_TranslucentBackground);
+            cardOverlay->setAttribute(Qt::WA_NoSystemBackground);
+            cardOverlay->setGeometry(scrollArea->rect());
+            cardOverlay->raise();
+            cardOverlay->setProperty("_blossomui_card_overlay", true);
+            cardOverlay->installEventFilter(this);
+            scrollArea->setProperty("_blossomui_card_overlay_widget",
+                                    QVariant::fromValue(static_cast<QObject *>(cardOverlay)));
 
             // Apply margins to the entire Dolphin window
             QWidget *mainWindow = parent;
@@ -2085,6 +2126,15 @@ void Style::drawItemText(QPainter *painter,
 
 bool Style::eventFilter(QObject *object, QEvent *event)
 {
+    if (event->type() == QEvent::MouseButtonPress) {
+        if (qobject_cast<QPushButton *>(object) || qobject_cast<QToolButton *>(object)) {
+            const auto *me = static_cast<QMouseEvent *>(event);
+            if (me->button() == Qt::LeftButton)
+                static_cast<QWidget *>(object)->setProperty("blossomui-ripple-pos", me->position());
+        }
+
+    }
+
     if (auto dockWidget = qobject_cast<QDockWidget *>(object)) {
         return eventFilterDockWidget(dockWidget, event);
     } else if (auto subWindow = qobject_cast<QMdiSubWindow *>(object)) {
@@ -2111,6 +2161,52 @@ bool Style::eventFilter(QObject *object, QEvent *event)
     // cast to QWidget
     if (object->isWidgetType()) {
         QWidget *widget = static_cast<QWidget *>(object);
+
+        if (widget->inherits("QLineEditIconButton") && event->type() == QEvent::Paint) {
+            if (widget->underMouse() && widget->isEnabled()) {
+                const QColor hoverColor = _helper->alphaColor(widget->palette().color(QPalette::WindowText), 0.1);
+                if (hoverColor.isValid()) {
+                    QPainter painter(widget);
+                    painter.setRenderHint(QPainter::Antialiasing);
+                    const QRectF r = QRectF(widget->rect()).adjusted(1, 1, -1, -1);
+                    const qreal radius = qMin(3.0, 0.5 * qMin(r.width(), r.height()));
+                    painter.setPen(Qt::NoPen);
+                    painter.setBrush(hoverColor);
+                    painter.drawRoundedRect(r, radius, radius);
+                }
+            }
+            return false; // let Qt draw the icon on top
+        }
+
+        if (widget->property("_blossomui_card_overlay").toBool()) {
+            if (event->type() == QEvent::WindowActivate || event->type() == QEvent::WindowDeactivate) {
+                widget->update();
+                return false;
+            }
+            if (event->type() == QEvent::Paint) {
+                const int radius = 8;
+                QPainter painter(widget);
+                painter.setRenderHint(QPainter::Antialiasing);
+
+                const QPalette::ColorGroup cg = widget->isActiveWindow() ? QPalette::Active : QPalette::Inactive;
+                const QColor win = QApplication::palette().color(cg, QPalette::Window);
+                QPainterPath cardShape;
+                cardShape.addRoundedRect(QRectF(widget->rect()), radius, radius);
+                QPainterPath full;
+                full.addRect(widget->rect());
+                painter.fillPath(full.subtracted(cardShape), win);
+
+                const bool isDark = QApplication::palette().color(QPalette::Active, QPalette::Window).lightness() < 128;
+                const QColor borderColor = isDark ? QColor(255, 255, 255, 35) : QColor(0, 0, 0, 22);
+                painter.setPen(QPen(borderColor, 1));
+                painter.setBrush(Qt::NoBrush);
+                painter.drawRoundedRect(QRectF(widget->rect()).adjusted(0.5, 0.5, -0.5, -0.5),
+                                        radius - 0.5, radius - 0.5);
+                return true;
+            }
+            return false;
+        }
+
         // Viewport mask for non-KItemListContainer scroll areas (KItemListContainer uses scroll-area-level mask)
         if (QWidget *parent = widget->parentWidget()) {
             if (QAbstractScrollArea *sa = qobject_cast<QAbstractScrollArea *>(parent)) {
@@ -2306,18 +2402,32 @@ bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event)
     auto scrollArea = qobject_cast<QAbstractScrollArea *>(widget);
     if (scrollArea) {
         const QEvent::Type t = event->type();
+        if (t == QEvent::ApplicationPaletteChange && scrollArea->property("_blossomui_card").toBool()) {
+            QTimer::singleShot(0, scrollArea, [scrollArea]() {
+                auto *vp = scrollArea->viewport();
+                if (!vp)
+                    return;
+                const QColor win = QApplication::palette().color(QPalette::Window);
+                const bool isDark = win.lightness() < 128;
+                const QColor cardColor = isDark ? KColorUtils::mix(win, QColor(255, 255, 255), 0.12)
+                                                : KColorUtils::mix(win, QColor(0, 0, 0), 0.04);
+                QPalette pal = vp->palette();
+                pal.setColor(QPalette::Window, cardColor);
+                pal.setColor(QPalette::Base, cardColor);
+                vp->setPalette(pal);
+                vp->setAutoFillBackground(true);
+                vp->update();
+            });
+        }
         if ((t == QEvent::Resize || t == QEvent::Show) && scrollArea->property("_blossomui_viewport_radius").isValid()) {
             QTimer::singleShot(0, scrollArea, [this, scrollArea]() {
                 const int radius = scrollArea->property("_blossomui_viewport_radius").toInt();
                 if (_isDolphin && scrollArea->inherits("KItemListContainer")) {
-                    // Viewbox mask on scroll area (whole card) - all corners same radius
-                    const qreal dpr = scrollArea->devicePixelRatioF();
-                    const int w = scrollArea->width();
-                    const int h = scrollArea->height();
-                    if (w > 0 && h > 0)
-                        scrollArea->setMask(_helper->roundedRectRegion(w, h, radius, dpr));
-                    else
-                        scrollArea->clearMask();
+                    if (auto *ov = qobject_cast<QWidget *>(
+                            scrollArea->property("_blossomui_card_overlay_widget").value<QObject *>())) {
+                        ov->setGeometry(scrollArea->rect());
+                        ov->raise();
+                    }
                 } else if (scrollArea->property("_blossomui_viewport_inset").isValid()) {
                     const int inset = scrollArea->property("_blossomui_viewport_inset").toInt();
                     QWidget *vp = scrollArea->viewport();
@@ -2397,17 +2507,13 @@ bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event)
             background = _helper->frameBackgroundColor(viewport->palette());
         else
             background = viewport->palette().color(role);
-        painter.setBrush(background);
-
         if (_isDolphin && scrollArea->inherits("KItemListContainer")) {
-            const auto cardColor = KColorUtils::mix(background, viewport->palette().color(QPalette::WindowText), 0.18);
-            painter.setBrush(cardColor);
-            const int radius = scrollArea->property("_blossomui_viewport_radius").toInt();
-            if (radius > 0)
-                painter.drawRoundedRect(scrollArea->rect(), radius, radius);
-            else
-                painter.drawRect(scrollArea->rect());
+            const QColor win = QApplication::palette().color(QPalette::Window);
+            const bool isDark = win.lightness() < 128;
+            background = isDark ? KColorUtils::mix(win, QColor(255, 255, 255), 0.12)
+                                : KColorUtils::mix(win, QColor(0, 0, 0), 0.04);
         }
+        painter.setBrush(background);
 
         // render
         // foreach( auto* child, children )
@@ -4499,6 +4605,9 @@ QSize Style::itemViewItemSizeFromContents(const QStyleOption *option, const QSiz
 //______________________________________________________________
 bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
+    if (_isDolphin && widget && widget->inherits("KItemListContainer"))
+        return true;
+
     // copy palette and rect
     const auto &palette(option->palette);
     const auto &rect(option->rect);
@@ -4947,55 +5056,18 @@ bool Style::drawIndicatorArrowPrimitive(ArrowOrientation orientation, const QSty
         color = _helper->arrowColor(palette, mouseOver, hasFocus, opacity, mode);
 
     } else if (mouseOver && !inToolButton) {
-        // fixes dolphin arrow bug, use focusColor(dark color) instead of hoverColor(light color)
-        color = _helper->focusColor(palette);
+        color = _helper->arrowColor(palette, QPalette::WindowText);
 
     } else if (inToolButton) {
         const bool flat(state & State_AutoRaise);
-
-        // cast option
-        const QStyleOptionToolButton *toolButtonOption(static_cast<const QStyleOptionToolButton *>(option));
-        const bool hasMenu(
-            (toolButtonOption->subControls & SC_ToolButtonMenu)
-            || (toolButtonOption->features & QStyleOptionToolButton::HasMenu && toolButtonOption->features & QStyleOptionToolButton::PopupDelay));
-        const bool sunken(state & (State_On | State_Sunken));
-        if (flat && hasMenu) {
-            if (sunken && !mouseOver)
-                color = palette.color(QPalette::HighlightedText);
-            else {
-                // for menu arrows in flat toolbutton one uses animations to get the arrow color
-                // handle arrow over animation
-                const bool arrowHover(mouseOver && (toolButtonOption->activeSubControls & SC_ToolButtonMenu));
-                _animations->toolButtonEngine().updateState(widget, AnimationHover, arrowHover);
-
-                const bool animated(_animations->toolButtonEngine().isAnimated(widget, AnimationHover));
-                const qreal opacity(_animations->toolButtonEngine().opacity(widget, AnimationHover));
-
-                color = _helper->arrowColor(palette, arrowHover, false, opacity, animated ? AnimationHover : AnimationNone);
-            }
-
-        } else if (flat) {
-            if (sunken && hasFocus && !mouseOver)
-                color = palette.color(QPalette::HighlightedText);
-            else
-                color = _helper->arrowColor(palette, QPalette::WindowText);
-
-        } else if (hasFocus && !mouseOver) {
-            color = palette.color(QPalette::HighlightedText);
-
-        } else if (sunken) {
-            color = palette.color(QPalette::HighlightedText);
-
-        } else {
-            color = _helper->arrowColor(palette, QPalette::ButtonText);
-        }
+        color = flat ? _helper->arrowColor(palette, QPalette::WindowText)
+                     : _helper->arrowColor(palette, QPalette::ButtonText);
 
     } else
         color = _helper->arrowColor(palette, QPalette::WindowText);
 
     // render
-    auto arrowRect(rect.adjusted(-3, 0, -3, 0));
-    _helper->renderArrow(painter, arrowRect, color, orientation);
+    _helper->renderArrow(painter, rect, color, orientation);
 
     return true;
 }
@@ -5077,10 +5149,15 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option, QPainter
             palette.setColor(QPalette::Button, KColorUtils::mix(button, base, 0.7));
         }
 
-        const auto background(_helper->buttonBackgroundColor(palette, mouseOver, hasFocus, sunken, opacity, mode));
+        const qreal pressOpacity = _animations->widgetStateEngine().opacity(widget, AnimationPressed);
+        const QPointF ripplePos = widget ? widget->property("blossomui-ripple-pos").toPointF() : QPointF();
+        const bool pressAnimActive = pressOpacity >= 0.0;
+
+        const bool hasFocusForRender = hasFocus && !sunken && !pressAnimActive;
+        const auto background(_helper->buttonBackgroundColor(palette, mouseOver, hasFocusForRender, sunken, opacity, mode));
 
         // render
-        _helper->renderButtonFrame(painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive, mode, opacity);
+        _helper->renderButtonFrame(painter, rect, background, palette, hasFocusForRender, sunken, mouseOver, enabled, windowActive, mode, opacity, ripplePos, pressOpacity);
     }
 
     return true;
@@ -5106,18 +5183,20 @@ bool Style::drawPanelButtonToolPrimitive(const QStyleOption *option, QPainter *p
      * get animation state
      * no need to update, this was already done in drawToolButtonComplexControl
      */
+    _animations->widgetStateEngine().updateState(widget, AnimationPressed, sunken, AnimationForwardOnly | AnimationLongDuration);
     const AnimationMode mode(_animations->widgetStateEngine().buttonAnimationMode(widget));
     const qreal opacity(_animations->widgetStateEngine().buttonOpacity(widget));
+    const qreal pressOpacity = _animations->widgetStateEngine().opacity(widget, AnimationPressed);
+    const bool pressAnimActive = pressOpacity >= 0.0;
 
     if (!autoRaise) {
         // need to check widget for popup mode, because option is not set properly
         const auto toolButton(qobject_cast<const QToolButton *>(widget));
         const bool hasPopupMenu(toolButton && toolButton->popupMode() == QToolButton::MenuButtonPopup);
 
-        // render as push button
-        // const auto shadow( _helper->shadowColor( palette ) );
-        // const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
-        const auto background(_helper->buttonBackgroundColor(palette, mouseOver, hasFocus, sunken, opacity, mode));
+        const bool hasFocusForRender = hasFocus && !sunken && !pressAnimActive;
+        const auto background(_helper->buttonBackgroundColor(palette, mouseOver, hasFocusForRender, sunken, opacity, mode));
+        const QPointF ripplePos = widget ? widget->property("blossomui-ripple-pos").toPointF() : QPointF();
 
         // adjust frame in case of menu
         if (hasPopupMenu) {
@@ -5127,11 +5206,26 @@ bool Style::drawPanelButtonToolPrimitive(const QStyleOption *option, QPainter *p
         }
 
         // render
-        _helper->renderButtonFrame(painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive);
+        _helper->renderButtonFrame(painter, rect, background, palette, hasFocusForRender, sunken, mouseOver, enabled, windowActive, mode, opacity, ripplePos, pressOpacity);
 
     } else {
+        if (widget && widget->parentWidget()) {
+            const QWidget *p = widget->parentWidget();
+            if (qobject_cast<const QAbstractItemView *>(p) || qobject_cast<const QAbstractItemView *>(p->parentWidget())) {
+                return true;
+            }
+        }
         const auto color(_helper->toolButtonColor(palette, mouseOver, hasFocus, sunken, opacity, mode));
-        _helper->renderToolButtonFrame(painter, rect, color, sunken);
+        QRect hoverRect = rect;
+        const auto tbOption = qstyleoption_cast<const QStyleOptionToolButton *>(option);
+        const bool isSplitButton = tbOption && (tbOption->features & QStyleOptionToolButton::MenuButtonPopup);
+        if (isSplitButton) {
+            hoverRect.adjust(0, 0, 1, 0);
+        } else if (tbOption && tbOption->toolButtonStyle == Qt::ToolButtonIconOnly && rect.width() != rect.height()) {
+            const int size = qMin(rect.width(), rect.height());
+            hoverRect = QRect(rect.x() + (rect.width() - size) / 2, rect.y() + (rect.height() - size) / 2, size, size);
+        }
+        _helper->renderToolButtonFrame(painter, hoverRect, color, sunken);
     }
 
     return true;
@@ -5405,7 +5499,8 @@ bool Style::drawPanelItemViewItemPrimitive(const QStyleOption *option, QPainter 
             painter->setRenderHint(QPainter::Antialiasing);
             painter->setPen(Qt::NoPen);
             painter->setBrush(color);
-            painter->drawRoundedRect(rect, 4, 4);
+            const qreal r = qMin(4.0, 0.5 * qMin(rect.width(), rect.height()));
+            painter->drawRoundedRect(QRectF(rect), r, r);
             painter->restore();
             return true;
         }
@@ -5782,7 +5877,7 @@ bool Style::drawIndicatorBranchPrimitive(const QStyleOption *option, QPainter *p
         // state
         const bool expanderOpen(state & State_Open);
         const bool enabled(state & State_Enabled);
-        const bool mouseOver(enabled && (state & State_MouseOver));
+        Q_UNUSED(enabled)
 
         // expander rect
         int expanderSize = qMin(rect.width(), rect.height());
@@ -5799,8 +5894,7 @@ bool Style::drawIndicatorBranchPrimitive(const QStyleOption *option, QPainter *p
         else
             orientation = ArrowRight;
 
-        // color
-        const auto arrowColor(mouseOver ? _helper->hoverColor(palette) : _helper->arrowColor(palette, QPalette::Text));
+        const auto arrowColor(_helper->arrowColor(palette, QPalette::Text));
 
         // render
         _helper->renderArrow(painter, arrowRect, arrowColor, orientation);
@@ -6081,8 +6175,6 @@ bool Style::drawToolButtonLabelControl(const QStyleOption *option, QPainter *pai
             iconMode = QIcon::Disabled;
         else if ((!flat && (hasFocus || sunken)) || (flat && (state & State_Sunken) && !mouseOver))
             iconMode = QIcon::Selected;
-        else if (mouseOver && flat)
-            iconMode = QIcon::Active;
         else
             iconMode = QIcon::Normal;
 
@@ -7318,8 +7410,10 @@ bool Style::drawShapedFrameControl(const QStyleOption *option, QPainter *painter
             drawFrameMenuPrimitive(option, painter, widget);
             return true;
         }
+        if (widget && qobject_cast<const QAbstractScrollArea *>(widget)) {
+            return drawFramePrimitive(option, painter, widget);
+        }
         if (widget && !qobject_cast<const QMenu *>(widget)) {
-            // Non-menu widget with StyledPanel (e.g. Slint NativeComboBoxPopup when SH_ComboBox_Popup is false)
             drawFrameMenuPrimitive(option, painter, widget);
             return true;
         }
@@ -8417,6 +8511,8 @@ bool Style::drawToolButtonComplexControl(const QStyleOptionComplex *option, QPai
 
             if (sunken && !flat)
                 copy.rect.translate(1, 1);
+            if (flat)
+                copy.rect.translate(-Metrics::MenuButton_IndicatorWidth / 4, 0);
             drawPrimitive(PE_IndicatorArrowDown, &copy, painter, widget);
 
         } else if (hasInlineIndicator) {
@@ -8542,19 +8638,7 @@ bool Style::drawComboBoxComplexControl(const QStyleOptionComplex *option, QPaint
                 const bool animated(enabled && _animations->comboBoxEngine().isAnimated(widget, AnimationHover));
                 const qreal opacity(_animations->comboBoxEngine().opacity(widget, AnimationHover));
 
-                // color
-                const auto normal(_helper->arrowColor(palette, QPalette::WindowText));
-                // combo box arrow should use focusColor (dark) when hovered
-                const auto hover(_helper->focusColor(palette));
-
-                if (animated) {
-                    arrowColor = KColorUtils::mix(normal, hover, opacity);
-
-                } else if (subControlHover) {
-                    arrowColor = hover;
-
-                } else
-                    arrowColor = normal;
+                arrowColor = _helper->arrowColor(palette, QPalette::WindowText);
             }
 
         } else if (flat) {

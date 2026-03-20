@@ -618,27 +618,33 @@ void Decoration::paint(QPainter *painter, const QRectF &repaintRegion)
 
     calculateWindowAndTitleBarShapes();
 
-    // paint background
-    painter->fillRect(rect(), Qt::transparent);
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
     painter->setRenderHint(QPainter::TextAntialiasing, true);
     painter->setPen(Qt::NoPen);
-    painter->setBrush(c->color(c->isActive() ? ColorGroup::Active : ColorGroup::Inactive, ColorRole::Frame));
 
-    if (s->isAlphaChannelSupported()) {
-        // adjust by 1.0 pixel to prevent inset appearance from antialiasing
-        QRectF adjustedRect = rect().adjusted(-1.0, -1.0, 1.0, 1.0);
-        painter->drawRoundedRect(adjustedRect, m_scaledCornerRadius, m_scaledCornerRadius);
+    if (s->isAlphaChannelSupported() && !isMaximized()) {
+        painter->setCompositionMode(QPainter::CompositionMode_Source);
+        painter->fillRect(rect(), Qt::transparent);
+        QPainterPath roundedClip;
+        roundedClip.addRoundedRect(QRectF(rect()), m_scaledCornerRadius, m_scaledCornerRadius);
+        painter->setClipPath(roundedClip);
+        painter->setBrush(c->color(c->isActive() ? ColorGroup::Active : ColorGroup::Inactive, ColorRole::Frame));
+        painter->drawRect(QRectF(rect()));
+        painter->setClipping(false);
+        painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter->setClipRect(rect());
     } else {
+        painter->fillRect(rect(), Qt::transparent);
+        painter->setBrush(c->color(c->isActive() ? ColorGroup::Active : ColorGroup::Inactive, ColorRole::Frame));
         painter->drawRect(rect());
     }
 
-    painter->restore();
-
     if (!hideTitleBar())
         paintTitleBar(painter, repaintRegion);
+
+    painter->restore();
 }
 
 //________________________________________________________________
