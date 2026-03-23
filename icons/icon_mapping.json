@@ -1,0 +1,3790 @@
+{
+  "icons": [
+    {
+      "source_file": "source/ac-adapter-symbolic.svgz",
+      "phosphor_name": "battery-charging-vertical",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/ac-adapter-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/alarm-symbolic.svgz",
+      "phosphor_name": "alarm",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/alarm-symbolic.svgz",
+        "status/symbolic/kalarm-disabled-symbolic.svgz",
+        "status/symbolic/kalarm-partdisabled-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/application-menu.svgz",
+      "phosphor_name": "dots-three-outline",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/application-menu-symbolic.svgz",
+        "actions/symbolic/application-menu.svgz",
+        "actions/symbolic/open-menu-symbolic.svgz",
+        "actions/symbolic/open-menu.svgz",
+        "actions/symbolic/overflow-menu.svgz"
+      ],
+      "weight": "fill"
+    },
+    {
+      "source_file": "source/applications-education.svgz",
+      "phosphor_name": "books",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-education-symbolic.svgz",
+        "categories/16/applications-education.svgz",
+        "categories/22/applications-education-symbolic.svgz",
+        "categories/22/applications-education.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-games.svgz",
+      "phosphor_name": "game-controller",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-games-symbolic.svgz",
+        "categories/16/applications-games.svgz",
+        "categories/22/applications-games-symbolic.svgz",
+        "categories/22/applications-games.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-graphics.svgz",
+      "phosphor_name": "paint-brush",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-graphics-symbolic.svgz",
+        "categories/16/applications-graphics.svgz",
+        "categories/22/applications-graphics-symbolic.svgz",
+        "categories/22/applications-graphics.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-multimedia.svgz",
+      "phosphor_name": "film-strip",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-multimedia-symbolic.svgz",
+        "categories/16/applications-multimedia.svgz",
+        "categories/22/applications-multimedia-symbolic.svgz",
+        "categories/22/applications-multimedia.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-office.svgz",
+      "phosphor_name": "briefcase",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-office.svgz",
+        "categories/22/applications-office.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-other.svgz",
+      "phosphor_name": "squares-four",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-other.svgz",
+        "categories/22/applications-other.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-science.svgz",
+      "phosphor_name": "flask",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-education-science-symbolic.svgz",
+        "categories/16/applications-science.svgz",
+        "categories/22/applications-education-science-symbolic.svgz",
+        "categories/22/applications-science.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/applications-utilities.svgz",
+      "phosphor_name": "wrench",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-development.svgz",
+        "categories/16/applications-utilities.svgz",
+        "categories/22/applications-utilities.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/appointment-symbolic.svgz",
+      "phosphor_name": "calendar",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/appointment-symbolic.svgz",
+        "status/symbolic/appointment-missed-symbolic.svgz",
+        "status/symbolic/appointment-soon-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/arrow-down.svgz",
+      "phosphor_name": "arrow-down",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/arrow-down.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/arrow-up.svgz",
+      "phosphor_name": "arrow-up",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/arrow-up.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/audio-headphones-symbolic.svgz",
+      "phosphor_name": "headphones",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/audio-headphones-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/audio-speakers-symbolic.svgz",
+      "phosphor_name": "speaker-high",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/audio-speakers-symbolic.svgz",
+        "status/symbolic/audio-volume-high-danger-symbolic.svgz",
+        "status/symbolic/audio-volume-high-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/audio-volume-low-symbolic.svgz",
+      "phosphor_name": "speaker-none",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/audio-volume-low-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/audio-volume-medium-symbolic.svgz",
+      "phosphor_name": "speaker-low",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/audio-volume-medium-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/audio-volume-muted-symbolic.svgz",
+      "phosphor_name": "speaker-x",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/audio-volume-muted-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/avatar-default-symbolic.svgz",
+      "phosphor_name": "user",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/avatar-default-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/battery-000-charging.svgz",
+      "phosphor_name": "battery-charging",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-000-charging-profile-balanced.svgz",
+        "status/symbolic/battery-000-charging-profile-performance.svgz",
+        "status/symbolic/battery-000-charging-profile-powersave.svgz",
+        "status/symbolic/battery-000-charging.svgz",
+        "status/symbolic/battery-010-charging-profile-balanced.svgz",
+        "status/symbolic/battery-010-charging-profile-performance.svgz",
+        "status/symbolic/battery-010-charging-profile-powersave.svgz",
+        "status/symbolic/battery-010-charging.svgz",
+        "status/symbolic/battery-020-charging-profile-balanced.svgz",
+        "status/symbolic/battery-020-charging-profile-performance.svgz",
+        "status/symbolic/battery-020-charging-profile-powersave.svgz",
+        "status/symbolic/battery-020-charging.svgz",
+        "status/symbolic/battery-030-charging-profile-balanced.svgz",
+        "status/symbolic/battery-030-charging-profile-performance.svgz",
+        "status/symbolic/battery-030-charging-profile-powersave.svgz",
+        "status/symbolic/battery-030-charging.svgz",
+        "status/symbolic/battery-040-charging-profile-balanced.svgz",
+        "status/symbolic/battery-040-charging-profile-performance.svgz",
+        "status/symbolic/battery-040-charging-profile-powersave.svgz",
+        "status/symbolic/battery-040-charging.svgz",
+        "status/symbolic/battery-050-charging-profile-balanced.svgz",
+        "status/symbolic/battery-050-charging-profile-performance.svgz",
+        "status/symbolic/battery-050-charging-profile-powersave.svgz",
+        "status/symbolic/battery-050-charging.svgz",
+        "status/symbolic/battery-060-charging-profile-balanced.svgz",
+        "status/symbolic/battery-060-charging-profile-performance.svgz",
+        "status/symbolic/battery-060-charging-profile-powersave.svgz",
+        "status/symbolic/battery-060-charging.svgz",
+        "status/symbolic/battery-070-charging-profile-balanced.svgz",
+        "status/symbolic/battery-070-charging-profile-performance.svgz",
+        "status/symbolic/battery-070-charging-profile-powersave.svgz",
+        "status/symbolic/battery-070-charging.svgz",
+        "status/symbolic/battery-080-charging-profile-balanced.svgz",
+        "status/symbolic/battery-080-charging-profile-performance.svgz",
+        "status/symbolic/battery-080-charging-profile-powersave.svgz",
+        "status/symbolic/battery-080-charging.svgz",
+        "status/symbolic/battery-090-charging-profile-balanced.svgz",
+        "status/symbolic/battery-090-charging-profile-performance.svgz",
+        "status/symbolic/battery-090-charging-profile-powersave.svgz",
+        "status/symbolic/battery-090-charging.svgz",
+        "status/symbolic/battery-100-charging-profile-balanced.svgz",
+        "status/symbolic/battery-100-charging-profile-performance.svgz",
+        "status/symbolic/battery-100-charging-profile-powersave.svgz",
+        "status/symbolic/battery-100-charging.svgz",
+        "status/symbolic/battery-charging-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/battery-010.svgz",
+      "phosphor_name": "battery-empty",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/battery-symbolic.svgz",
+        "status/symbolic/battery-000-charging-symbolic.svgz",
+        "status/symbolic/battery-000-symbolic.svgz",
+        "status/symbolic/battery-010-charging-symbolic.svgz",
+        "status/symbolic/battery-010-profile-balanced.svgz",
+        "status/symbolic/battery-010-profile-performance.svgz",
+        "status/symbolic/battery-010-profile-powersave.svgz",
+        "status/symbolic/battery-010-symbolic.svgz",
+        "status/symbolic/battery-010.svgz",
+        "status/symbolic/battery-020-charging-symbolic.svgz",
+        "status/symbolic/battery-020-profile-balanced.svgz",
+        "status/symbolic/battery-020-profile-performance.svgz",
+        "status/symbolic/battery-020-profile-powersave.svgz",
+        "status/symbolic/battery-020-symbolic.svgz",
+        "status/symbolic/battery-020.svgz",
+        "status/symbolic/battery-030-charging-symbolic.svgz",
+        "status/symbolic/battery-030-profile-balanced.svgz",
+        "status/symbolic/battery-030-profile-performance.svgz",
+        "status/symbolic/battery-030-profile-powersave.svgz",
+        "status/symbolic/battery-030-symbolic.svgz",
+        "status/symbolic/battery-030.svgz",
+        "status/symbolic/battery-040-charging-symbolic.svgz",
+        "status/symbolic/battery-040-profile-balanced.svgz",
+        "status/symbolic/battery-040-profile-performance.svgz",
+        "status/symbolic/battery-040-profile-powersave.svgz",
+        "status/symbolic/battery-040-symbolic.svgz",
+        "status/symbolic/battery-040.svgz",
+        "status/symbolic/battery-050-charging-symbolic.svgz",
+        "status/symbolic/battery-050-profile-balanced.svgz",
+        "status/symbolic/battery-050-profile-performance.svgz",
+        "status/symbolic/battery-050-profile-powersave.svgz",
+        "status/symbolic/battery-050-symbolic.svgz",
+        "status/symbolic/battery-050.svgz",
+        "status/symbolic/battery-060-charging-symbolic.svgz",
+        "status/symbolic/battery-060-profile-balanced.svgz",
+        "status/symbolic/battery-060-profile-performance.svgz",
+        "status/symbolic/battery-060-profile-powersave.svgz",
+        "status/symbolic/battery-060-symbolic.svgz",
+        "status/symbolic/battery-060.svgz",
+        "status/symbolic/battery-070-charging-symbolic.svgz",
+        "status/symbolic/battery-070-profile-balanced.svgz",
+        "status/symbolic/battery-070-profile-performance.svgz",
+        "status/symbolic/battery-070-profile-powersave.svgz",
+        "status/symbolic/battery-070-symbolic.svgz",
+        "status/symbolic/battery-070.svgz",
+        "status/symbolic/battery-080-charging-symbolic.svgz",
+        "status/symbolic/battery-080-profile-balanced.svgz",
+        "status/symbolic/battery-080-profile-performance.svgz",
+        "status/symbolic/battery-080-profile-powersave.svgz",
+        "status/symbolic/battery-080-symbolic.svgz",
+        "status/symbolic/battery-080.svgz",
+        "status/symbolic/battery-090-charging-symbolic.svgz",
+        "status/symbolic/battery-090-profile-balanced.svgz",
+        "status/symbolic/battery-090-profile-performance.svgz",
+        "status/symbolic/battery-090-profile-powersave.svgz",
+        "status/symbolic/battery-090-symbolic.svgz",
+        "status/symbolic/battery-090.svgz",
+        "status/symbolic/battery-100-charging-symbolic.svgz",
+        "status/symbolic/battery-100-profile-balanced.svgz",
+        "status/symbolic/battery-100-profile-performance.svgz",
+        "status/symbolic/battery-100-profile-powersave.svgz",
+        "status/symbolic/battery-100-symbolic.svgz",
+        "status/symbolic/battery-100.svgz",
+        "status/symbolic/battery-ac-adapter-symbolic.svgz",
+        "status/symbolic/battery-caution-charging-symbolic.svgz",
+        "status/symbolic/battery-empty-charging-symbolic.svgz",
+        "status/symbolic/battery-empty-symbolic.svgz",
+        "status/symbolic/battery-full-charged-symbolic.svgz",
+        "status/symbolic/battery-full-charging-symbolic.svgz",
+        "status/symbolic/battery-good-charging-symbolic.svgz",
+        "status/symbolic/battery-good-symbolic.svgz",
+        "status/symbolic/battery-level-0-charging-symbolic.svgz",
+        "status/symbolic/battery-level-0-symbolic.svgz",
+        "status/symbolic/battery-level-10-charging-symbolic.svgz",
+        "status/symbolic/battery-level-10-symbolic.svgz",
+        "status/symbolic/battery-level-100-charged-symbolic.svgz",
+        "status/symbolic/battery-level-100-symbolic.svgz",
+        "status/symbolic/battery-level-20-charging-symbolic.svgz",
+        "status/symbolic/battery-level-20-symbolic.svgz",
+        "status/symbolic/battery-level-30-charging-symbolic.svgz",
+        "status/symbolic/battery-level-30-symbolic.svgz",
+        "status/symbolic/battery-level-40-charging-symbolic.svgz",
+        "status/symbolic/battery-level-40-symbolic.svgz",
+        "status/symbolic/battery-level-50-charging-symbolic.svgz",
+        "status/symbolic/battery-level-50-symbolic.svgz",
+        "status/symbolic/battery-level-60-charging-symbolic.svgz",
+        "status/symbolic/battery-level-60-symbolic.svgz",
+        "status/symbolic/battery-level-70-charging-symbolic.svgz",
+        "status/symbolic/battery-level-70-symbolic.svgz",
+        "status/symbolic/battery-level-80-charging-symbolic.svgz",
+        "status/symbolic/battery-level-80-symbolic.svgz",
+        "status/symbolic/battery-level-90-charging-symbolic.svgz",
+        "status/symbolic/battery-level-90-symbolic.svgz",
+        "status/symbolic/battery-low-charging-symbolic.svgz",
+        "status/symbolic/battery-medium-charging-symbolic.svgz",
+        "status/symbolic/battery-medium-symbolic.svgz",
+        "status/symbolic/battery-missing-symbolic.svgz",
+        "status/symbolic/battery-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/battery-caution-symbolic.svgz",
+      "phosphor_name": "battery-warning",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-caution-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/battery-full-symbolic.svgz",
+      "phosphor_name": "battery-full",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-full-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/battery-low-symbolic.svgz",
+      "phosphor_name": "battery-low",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-low-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/bluetooth-offline.svgz",
+      "phosphor_name": "bluetooth-slash",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/bluetooth-disabled-symbolic.svgz",
+        "status/symbolic/bluetooth-disabled.svgz",
+        "status/symbolic/bluetooth-disconnected-symbolic.svgz",
+        "status/symbolic/bluetooth-disconnected.svgz",
+        "status/symbolic/bluetooth-hardware-disabled-symbolic.svgz",
+        "status/symbolic/bluetooth-hardware-disabled.svgz",
+        "status/symbolic/bluetooth-offline.svgz",
+        "status/symbolic/network-bluetooth-inactive-symbolic.svgz",
+        "status/symbolic/network-bluetooth-inactive.svgz",
+        "status/symbolic/preferences-system-bluetooth-inactive.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/bluetooth-paired.svgz",
+      "phosphor_name": "bluetooth-connected",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/bluetooth-paired-symbolic.svgz",
+        "status/symbolic/bluetooth-paired.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/bluetooth.svgz",
+      "phosphor_name": "bluetooth",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/cs-bluetooth.svgz",
+        "actions/symbolic/dcc_navi_bluetooth.svgz",
+        "actions/symbolic/preferences-system-bluetooth.svgz",
+        "devices/symbolic/bluetooth-symbolic.svgz",
+        "devices/symbolic/bluetooth.svgz",
+        "devices/symbolic/bluetoothradio.svgz",
+        "status/symbolic/bluetooth-48.svgz",
+        "status/symbolic/bluetooth-active-symbolic.svgz",
+        "status/symbolic/bluetooth-active.svgz",
+        "status/symbolic/bluetooth-online.svgz",
+        "status/symbolic/bluetooth-symbolic.svgz",
+        "status/symbolic/bluetooth.svgz",
+        "status/symbolic/network-bluetooth-activated-locked-symbolic.svgz",
+        "status/symbolic/network-bluetooth-activated-symbolic.svgz",
+        "status/symbolic/network-bluetooth-activated.svgz",
+        "status/symbolic/network-bluetooth-symbolic.svgz",
+        "status/symbolic/network-bluetooth.svgz",
+        "status/symbolic/preferences-system-bluetooth-active.svgz",
+        "status/symbolic/xsi-bluetooth-active-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/bolt-symbolic.svgz",
+      "phosphor_name": "lightning",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/bolt-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/book-search.svgz",
+      "phosphor_name": "book-open",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/bookmark.svgz",
+      "phosphor_name": "heart",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/bookmark-add.svgz",
+        "actions/symbolic/bookmark-remove.svgz",
+        "actions/symbolic/bookmark.svgz",
+        "actions/symbolic/bookmarks.svgz",
+        "status/symbolic/non-starred-symbolic.svgz",
+        "status/symbolic/starred-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/bookmarks-symbolic.svgz",
+      "phosphor_name": "heart",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/bookmarks-bookmarked-symbolic.svgz",
+        "actions/symbolic/bookmarks-symbolic.svgz",
+        "actions/symbolic/ephy-bookmark-tag-symbolic.svgz",
+        "actions/symbolic/ephy-bookmarks-symbolic.svgz",
+        "emblems/symbolic/emblem-default-symbolic.svgz",
+        "emblems/symbolic/emblem-ok-symbolic.svgz",
+        "status/symbolic/network-cellular-secure-signal-ok-symbolic.svgz",
+        "status/symbolic/network-cellular-signal-ok-secure-symbolic.svgz",
+        "status/symbolic/network-cellular-signal-ok-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/brightness-low-symbolic.svgz",
+      "phosphor_name": "sun-dim",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/brightness-low-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/brightness-medium-symbolic.svgz",
+      "phosphor_name": "sun",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/brightness-medium-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/bug.svgz",
+      "phosphor_name": "bug",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/tools-report-bug-symbolic.svgz",
+        "actions/symbolic/tools-report-bug.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/calendar-go-today-symbolic.svgz",
+      "phosphor_name": "calendar-check",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/calendar-go-today-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/call-start-symbolic.svgz",
+      "phosphor_name": "phone-call",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/call-start-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/call-stop-symbolic.svgz",
+      "phosphor_name": "phone-x",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/call-stop-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/camera-symbolic.svgz",
+      "phosphor_name": "camera",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/camera-switch-symbolic.svgz",
+        "devices/symbolic/camera-photo-symbolic.svgz",
+        "devices/symbolic/camera-symbolic.svgz",
+        "devices/symbolic/camera-video-symbolic.svgz",
+        "devices/symbolic/camera-web-symbolic.svgz",
+        "status/symbolic/camera-disabled-symbolic.svgz",
+        "status/symbolic/camera-hardware-disabled-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/cancel.svgz",
+      "phosphor_name": "x-circle",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/cancel.svgz",
+        "actions/symbolic/dialog-cancel.svgz",
+        "actions/symbolic/process-stop.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/circle-question-mark.svgz",
+      "phosphor_name": "question",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/help-contents-symbolic.svgz",
+        "actions/symbolic/help-contents-vmware.svgz",
+        "actions/symbolic/help-contents.svgz",
+        "actions/symbolic/help-contextual.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/cloud-download.svgz",
+      "phosphor_name": "cloud-arrow-down",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/cloud-download.svgz",
+        "actions/symbolic/get-hot-new-stuff.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/compass.svgz",
+      "phosphor_name": "compass",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/compass.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/computer-symbolic.svgz",
+      "phosphor_name": "monitor",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/computer-apple-ipad-symbolic.svgz",
+        "devices/symbolic/computer-symbolic.svgz",
+        "status/symbolic/computer-fail-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/configure.svgz",
+      "phosphor_name": "sliders-horizontal",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/configuration.svgz",
+        "actions/symbolic/configure-toolbars.svgz",
+        "actions/symbolic/configure.svgz",
+        "actions/symbolic/settings-configure.svgz",
+        "actions/symbolic/user-group-properties-symbolic.svgz",
+        "categories/16/applications-system-symbolic.svgz",
+        "categories/16/applications-system.svgz",
+        "categories/22/applications-system-symbolic.svgz",
+        "categories/22/applications-system.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/copy.svgz",
+      "phosphor_name": "copy",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/edit-copy-symbolic.svgz",
+        "actions/symbolic/edit-copy.svgz",
+        "actions/symbolic/editcopy.svgz",
+        "actions/symbolic/gtk-copy.svgz",
+        "actions/symbolic/stock-copy.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/cpu-symbolic.svgz",
+      "phosphor_name": "cpu",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/cpu-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/7-z.svgz",
+      "phosphor_name": "7-z",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/XTerm.svgz",
+      "phosphor_name": "XTerm",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/accessories-calculator.svgz",
+      "phosphor_name": "accessories-calculator",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/accessories_text_editor.svgz",
+      "phosphor_name": "accessories_text_editor",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/arduino.svgz",
+      "phosphor_name": "arduino",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/bleachbit-indicator.svgz",
+      "phosphor_name": "bleachbit-indicator",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/bluedun.svgz",
+      "phosphor_name": "bluedun",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/bookmarks.svgz",
+      "phosphor_name": "bookmarks",
+      "links_only": true,
+      "target_paths": [
+        "places/64/bookmarks.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/cantata-symbolic.svgz",
+      "phosphor_name": "cantata-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/certificate-server.svgz",
+      "phosphor_name": "lock",
+      "links_only": false,
+      "target_paths": [
+        "places/64/certificate-server.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/chmsee-icon.svgz",
+      "phosphor_name": "chmsee-icon",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/desktop.svgz",
+      "phosphor_name": "desktop",
+      "links_only": true,
+      "target_paths": [
+        "places/64/desktop.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/devhelp.svgz",
+      "phosphor_name": "devhelp",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/device-notifier-symbolic.svgz",
+      "phosphor_name": "usb",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/disks.svgz",
+      "phosphor_name": "hard-drives",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/distributor-logo-MicroOS.svgz",
+      "phosphor_name": "distributor-logo-MicroOS",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-archlinux.svgz",
+      "phosphor_name": "distributor-logo-archlinux",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-chakra.svgz",
+      "phosphor_name": "distributor-logo-chakra",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-debian.svgz",
+      "phosphor_name": "distributor-logo-debian",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-deepin.svgz",
+      "phosphor_name": "distributor-logo-deepin",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-kali-linux.svgz",
+      "phosphor_name": "distributor-logo-kali-linux",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-manjaro.svgz",
+      "phosphor_name": "distributor-logo-manjaro",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-opensuse.svgz",
+      "phosphor_name": "distributor-logo-opensuse",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-pclinuxos.svgz",
+      "phosphor_name": "distributor-logo-pclinuxos",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-pop-os.svgz",
+      "phosphor_name": "distributor-logo-pop-os",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo-ubuntu.svgz",
+      "phosphor_name": "distributor-logo-ubuntu",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/distributor-logo.svgz",
+      "phosphor_name": "distributor-logo",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/docker.svgz",
+      "phosphor_name": "docker",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/dog.unix.cantata.Cantata.svgz",
+      "phosphor_name": "dog.unix.cantata.Cantata",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/elisa-symbolic.svgz",
+      "phosphor_name": "elisa-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/favorites.svgz",
+      "phosphor_name": "heart",
+      "links_only": false,
+      "target_paths": [
+        "places/64/favorites.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/fdm.svgz",
+      "phosphor_name": "fdm",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/fedora-logo-icon.svgz",
+      "phosphor_name": "fedora-logo-icon",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/flameshot.svgz",
+      "phosphor_name": "flameshot",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/flash.svgz",
+      "phosphor_name": "monitor-play",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/flashplayer.svgz",
+      "phosphor_name": "flashplayer",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/folder-Github.svgz",
+      "phosphor_name": "folder-Github",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-Github.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-KDE.svgz",
+      "phosphor_name": "folder-KDE",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-KDE.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-Manjaro.svgz",
+      "phosphor_name": "folder-Manjaro",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-Manjaro.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-Neon.svgz",
+      "phosphor_name": "folder-Neon",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-Neon.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-Pop_OS.svgz",
+      "phosphor_name": "folder-Pop_OS",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-Pop_OS.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-Reddit.svgz",
+      "phosphor_name": "folder-Reddit",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-Reddit.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-activities.svgz",
+      "phosphor_name": "folder-activities",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-activities.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-arch.svgz",
+      "phosphor_name": "folder-arch",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-arch.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-black.svgz",
+      "phosphor_name": "folder",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-black.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-blue.svgz",
+      "phosphor_name": "folder-blue",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-blue.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-bookmark.svgz",
+      "phosphor_name": "heart",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-bookmark.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-brown.svgz",
+      "phosphor_name": "folder-brown",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-brown.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-cloud.svgz",
+      "phosphor_name": "cloud",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-cloud.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-cyan.svgz",
+      "phosphor_name": "folder-cyan",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-cyan.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-decrypted.svgz",
+      "phosphor_name": "folder-decrypted",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-decrypted.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-design.svgz",
+      "phosphor_name": "paint-brush",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-design.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-desktop.svgz",
+      "phosphor_name": "desktop",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-desktop.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-download.svgz",
+      "phosphor_name": "download-simple",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-download.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-dropbox.svgz",
+      "phosphor_name": "cloud",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-dropbox.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-encrypted.svgz",
+      "phosphor_name": "folder-lock",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-encrypted.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-favorites.svgz",
+      "phosphor_name": "heart",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-favorites.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-games.svgz",
+      "phosphor_name": "game-controller",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-games.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-gdrive.svgz",
+      "phosphor_name": "cloud",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-gdrive.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-gimp.svgz",
+      "phosphor_name": "folder-gimp",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-gimp.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-green.svgz",
+      "phosphor_name": "folder-green",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-green.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-grey.svgz",
+      "phosphor_name": "folder-grey",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-grey.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-html.svgz",
+      "phosphor_name": "globe",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-html.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-image-people.svgz",
+      "phosphor_name": "user",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-image-people.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-image.svgz",
+      "phosphor_name": "image",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-image.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-images.svgz",
+      "phosphor_name": "image",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-images.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-important.svgz",
+      "phosphor_name": "exclamation-mark",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-important.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-locked.svgz",
+      "phosphor_name": "lock",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-locked.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-magenta.svgz",
+      "phosphor_name": "folder-magenta",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-magenta.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-mail.svgz",
+      "phosphor_name": "envelope",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-mail.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-onedrive.svgz",
+      "phosphor_name": "cloud",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-onedrive.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-openSUSE.svgz",
+      "phosphor_name": "folder-openSUSE",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-openSUSE.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-orange.svgz",
+      "phosphor_name": "folder-orange",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-orange.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-owncloud.svgz",
+      "phosphor_name": "cloud",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-owncloud.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-picture.svgz",
+      "phosphor_name": "image",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-picture.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-print.svgz",
+      "phosphor_name": "printer",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-print.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-publicshare.svgz",
+      "phosphor_name": "users",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-publicshare.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-recent.svgz",
+      "phosphor_name": "clock",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-recent.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-red.svgz",
+      "phosphor_name": "folder-red",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-red.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-remote.svgz",
+      "phosphor_name": "globe",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-remote.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-root.svgz",
+      "phosphor_name": "terminal",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-root.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-script.svgz",
+      "phosphor_name": "terminal",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-script.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-sound.svgz",
+      "phosphor_name": "headphones",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-sound.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-tar.svgz",
+      "phosphor_name": "file-archive",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-tar.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-temp.svgz",
+      "phosphor_name": "clock",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-temp.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-text.svgz",
+      "phosphor_name": "text-align-left",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-text.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-txt.svgz",
+      "phosphor_name": "text-align-left",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-txt.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-unlocked.svgz",
+      "phosphor_name": "lock-open",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-unlocked.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-video.svgz",
+      "phosphor_name": "film-strip",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder-video.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/folder-violet.svgz",
+      "phosphor_name": "folder-violet",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-violet.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder-yellow.svgz",
+      "phosphor_name": "folder-yellow",
+      "links_only": true,
+      "target_paths": [
+        "places/64/folder-yellow.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/folder_html.svgz",
+      "phosphor_name": "globe",
+      "links_only": false,
+      "target_paths": [
+        "places/64/folder_html.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/gnome-disk-utility.svgz",
+      "phosphor_name": "gnome-disk-utility",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/gnome-disks.svgz",
+      "phosphor_name": "gnome-disks",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/gpk-repo.svgz",
+      "phosphor_name": "gpk-repo",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/gwenview.svgz",
+      "phosphor_name": "gwenview",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/hwinfo.svgz",
+      "phosphor_name": "hwinfo",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/inode-directory.svgz",
+      "phosphor_name": "folder",
+      "links_only": false,
+      "target_paths": [
+        "places/64/inode-directory.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/internet.svgz",
+      "phosphor_name": "planet",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/kaffeine-symbolic.svgz",
+      "phosphor_name": "kaffeine-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/kate-symbolic.svgz",
+      "phosphor_name": "kate-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/kate.svgz",
+      "phosphor_name": "kate",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/konqueror.svgz",
+      "phosphor_name": "konqueror",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/krunner.svgz",
+      "phosphor_name": "krunner",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/ktimetracker.svgz",
+      "phosphor_name": "ktimetracker",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/kvantum.svgz",
+      "phosphor_name": "kvantum",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/kwrite.svgz",
+      "phosphor_name": "kwrite",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/lftp.svgz",
+      "phosphor_name": "lftp",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/library-music.svgz",
+      "phosphor_name": "headphones",
+      "links_only": false,
+      "target_paths": [
+        "places/64/library-music.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/marble.svgz",
+      "phosphor_name": "headphones",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/mintsources.svgz",
+      "phosphor_name": "mintsources",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/mpd.svgz",
+      "phosphor_name": "mpd",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/network-server.svgz",
+      "phosphor_name": "hard-drives",
+      "links_only": false,
+      "target_paths": [
+        "places/64/network-server.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/obconf.svgz",
+      "phosphor_name": "obconf",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/org.gnome.DiskUtility.svgz",
+      "phosphor_name": "org.gnome.DiskUtility",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/org.kde.dolphin.svgz",
+      "phosphor_name": "org.kde.dolphin",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-basis-addon.svgz",
+      "phosphor_name": "pattern-basis-addon",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-basis-devel.svgz",
+      "phosphor_name": "pattern-basis-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-basis.svgz",
+      "phosphor_name": "pattern-basis",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-c-devel.svgz",
+      "phosphor_name": "pattern-c-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-cinnamon.svgz",
+      "phosphor_name": "pattern-cinnamon",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-deepin.svgz",
+      "phosphor_name": "pattern-deepin",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-documentation.svgz",
+      "phosphor_name": "pattern-documentation",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-e17.svgz",
+      "phosphor_name": "pattern-e17",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-generic.svgz",
+      "phosphor_name": "pattern-generic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-gnome-wayland.svgz",
+      "phosphor_name": "pattern-gnome-wayland",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-gnome-xorg.svgz",
+      "phosphor_name": "pattern-gnome-xorg",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-gnome.svgz",
+      "phosphor_name": "pattern-gnome",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-java-devel.svgz",
+      "phosphor_name": "pattern-java-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-kde-addon.svgz",
+      "phosphor_name": "pattern-kde-addon",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-kde-devel.svgz",
+      "phosphor_name": "pattern-kde-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-kde.svgz",
+      "phosphor_name": "pattern-kde",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-kubic.svgz",
+      "phosphor_name": "pattern-kubic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-laptop.svgz",
+      "phosphor_name": "pattern-laptop",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-lxde.svgz",
+      "phosphor_name": "pattern-lxde",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-lxqt.svgz",
+      "phosphor_name": "pattern-lxqt",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-mate.svgz",
+      "phosphor_name": "pattern-mate",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-mono.svgz",
+      "phosphor_name": "pattern-mono",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-obs-devel.svgz",
+      "phosphor_name": "pattern-obs-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-perl-devel.svgz",
+      "phosphor_name": "pattern-perl-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-python-devel.svgz",
+      "phosphor_name": "pattern-python-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-qt-devel.svgz",
+      "phosphor_name": "pattern-qt-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-rpm-devel.svgz",
+      "phosphor_name": "pattern-rpm-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-ruby-devel.svgz",
+      "phosphor_name": "pattern-ruby-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-tcltk-devel.svgz",
+      "phosphor_name": "pattern-tcltk-devel",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-tests.svgz",
+      "phosphor_name": "pattern-tests",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pattern-xfce.svgz",
+      "phosphor_name": "pattern-xfce",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/plasmavault-symbolic.svgz",
+      "phosphor_name": "plasmavault-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/plasmavault.svgz",
+      "phosphor_name": "plasmavault",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/process-working.svgz",
+      "phosphor_name": "process-working",
+      "links_only": true,
+      "target_paths": [
+        "animations/16/process-working.svgz",
+        "animations/22/process-working.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/puddletag.svgz",
+      "phosphor_name": "puddletag",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/pulseeffects.svgz",
+      "phosphor_name": "pulseeffects",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/qbittorrent-symbolic.svgz",
+      "phosphor_name": "qbittorrent-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/quassel-symbolic.svgz",
+      "phosphor_name": "quassel-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/reddit.svgz",
+      "phosphor_name": "reddit",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/redhat.svgz",
+      "phosphor_name": "redhat",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/ring.svgz",
+      "phosphor_name": "ring",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/softwarecenter.svgz",
+      "phosphor_name": "softwarecenter",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/start-here-kde-symbolic.svgz",
+      "phosphor_name": "start-here-kde-symbolic",
+      "links_only": true,
+      "target_paths": [
+        "start-here-kde-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/steam_tray_mono.svgz",
+      "phosphor_name": "steam_tray_mono",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/stock_folder.svgz",
+      "phosphor_name": "folder",
+      "links_only": false,
+      "target_paths": [
+        "places/64/stock_folder.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/synaptic.svgz",
+      "phosphor_name": "synaptic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/system-help.svgz",
+      "phosphor_name": "question",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/systemsettings.svgz",
+      "phosphor_name": "systemsettings",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/tigervnc.svgz",
+      "phosphor_name": "tigervnc",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/tools-report-bug.svgz",
+      "phosphor_name": "bug",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/twitter.svgz",
+      "phosphor_name": "twitter",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/typora.svgz",
+      "phosphor_name": "typora",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/umbrello.svgz",
+      "phosphor_name": "umbrello",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/user-trash-full.svgz",
+      "phosphor_name": "trash",
+      "links_only": true,
+      "target_paths": [
+        "places/64/user-trash-full.svgz"
+      ]
+    },
+    {
+      "source_file": "source/custom/utilities-log-viewer.svgz",
+      "phosphor_name": "utilities-log-viewer",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/utilities-terminal_su.svgz",
+      "phosphor_name": "utilities-terminal_su",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/window-new-symbolic.svgz",
+      "phosphor_name": "browsers",
+      "links_only": false,
+      "target_paths": [],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/custom/wine.svgz",
+      "phosphor_name": "wine",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/xscreensaver.svgz",
+      "phosphor_name": "xscreensaver",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/yakuake-symbolic.svgz",
+      "phosphor_name": "yakuake-symbolic",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/yast-disk.svgz",
+      "phosphor_name": "yast-disk",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/yast-sw_single.svgz",
+      "phosphor_name": "yast-sw_single",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/yast-update.svgz",
+      "phosphor_name": "yast-update",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/custom/yast.svgz",
+      "phosphor_name": "yast",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/daytime-sunset-symbolic.svgz",
+      "phosphor_name": "sun-horizon",
+      "links_only": false,
+      "target_paths": [
+        "categories/symbolic/applications-multimedia-symbolic.svgz",
+        "status/symbolic/daytime-sunrise-symbolic.svgz",
+        "status/symbolic/daytime-sunset-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/delete.svgz",
+      "phosphor_name": "trash",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/clear_left.svgz",
+        "actions/symbolic/edit-clear-list.svgz",
+        "actions/symbolic/edit-clear-locationbar-rtl.svgz",
+        "actions/symbolic/edit-clear-rtl.svgz",
+        "actions/symbolic/edit-clear.svgz",
+        "actions/symbolic/editclear.svgz",
+        "actions/symbolic/gtk-clear.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/dialog-cancel-symbolic.svgz",
+      "phosphor_name": "x-circle",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/dialog-password-symbolic.svgz",
+      "phosphor_name": "password",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/dialog-password-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/dialog-warning-symbolic.svgz",
+      "phosphor_name": "warning",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/audio-volume-high-warning-symbolic.svgz",
+        "status/symbolic/dialog-warning-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/document-edit-symbolic.svgz",
+      "phosphor_name": "note-pencil",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-edit-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/document-export-symbolic.svgz",
+      "phosphor_name": "export",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-export-rtl-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/documentation-symbolic.svgz",
+      "phosphor_name": "file-text",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-page-setup-symbolic.svgz",
+        "actions/symbolic/document-properties-symbolic.svgz",
+        "actions/symbolic/document-revert-rtl-symbolic.svgz",
+        "actions/symbolic/document-revert-symbolic.svgz",
+        "actions/symbolic/documentation-symbolic.svgz",
+        "actions/symbolic/nautilus-file-chooser-options-symbolic.svgz",
+        "actions/symbolic/twitter-profile-symbolic.svgz",
+        "emblems/symbolic/emblem-documents-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/download-symbolic.svgz",
+      "phosphor_name": "download-simple",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/browser-download-symbolic.svgz",
+        "actions/symbolic/document-import-rtl-symbolic.svgz",
+        "actions/symbolic/mail-mark-important-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/draw-arrow-back.svgz",
+      "phosphor_name": "arrow-left",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/back.svgz",
+        "actions/symbolic/draw-arrow-back.svgz",
+        "actions/symbolic/go-left.svgz",
+        "actions/symbolic/go-previous.svgz",
+        "actions/symbolic/gtk-go-forward-rtl.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/draw-arrow-down.svgz",
+      "phosphor_name": "arrow-down-left",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/draw-arrow-down.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/draw-arrow-forward.svgz",
+      "phosphor_name": "arrow-right",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/draw-arrow-forward.svgz",
+        "actions/symbolic/go-next.svgz",
+        "actions/symbolic/go-right.svgz",
+        "actions/symbolic/gtk-go-forward-ltr.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/draw-arrow-up.svgz",
+      "phosphor_name": "arrow-up-right",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/draw-arrow-up.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/draw-arrow.svgz",
+      "phosphor_name": "arrow-right",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/draw-arrow.svgz"
+      ]
+    },
+    {
+      "source_file": "source/drive-harddisk-symbolic.svgz",
+      "phosphor_name": "hard-drive",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/drive-harddisk-ieee1394-symbolic.svgz",
+        "devices/symbolic/drive-harddisk-solidstate-symbolic.svgz",
+        "devices/symbolic/drive-harddisk-symbolic.svgz",
+        "devices/symbolic/drive-harddisk-system-symbolic.svgz",
+        "devices/symbolic/drive-harddisk-usb-symbolic.svgz",
+        "places/24/drive-harddisk-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/drive-harddisk.svgz",
+      "phosphor_name": "hard-drives",
+      "links_only": false,
+      "target_paths": [
+        "places/24/drive-harddisk.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/edit-copy-symbolic.svgz",
+      "phosphor_name": "copy",
+      "links_only": true,
+      "target_paths": []
+    },
+    {
+      "source_file": "source/edit-cut-symbolic.svgz",
+      "phosphor_name": "scissors",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/media-playlist-consecutive-rtl-symbolic.svgz",
+        "status/symbolic/media-playlist-consecutive-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/edit-delete-symbolic.svgz",
+      "phosphor_name": "trash",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/format-text-remove-formatting-symbolic.svgz",
+        "actions/symbolic/list-remove-all-symbolic.svgz",
+        "actions/symbolic/list-remove-symbolic.svgz",
+        "actions/symbolic/ymuse-delete-symbolic.svgz",
+        "actions/symbolic/ymuse-delete-track-symbolic.svgz",
+        "status/symbolic/user-trash-full-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/edit-find-mail.svgz",
+      "phosphor_name": "magnifying-glass",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/cm_search.svgz",
+        "actions/symbolic/edit-find-mail.svgz",
+        "actions/symbolic/edit-find-project.svgz",
+        "actions/symbolic/edit-find-symbolic.svgz",
+        "actions/symbolic/edit-find.svgz",
+        "actions/symbolic/file-search-symbolic.svgz",
+        "actions/symbolic/filefind.svgz",
+        "actions/symbolic/find.svgz",
+        "actions/symbolic/gtk-find.svgz",
+        "actions/symbolic/search-icon.svgz",
+        "actions/symbolic/search-symbolic.svgz",
+        "actions/symbolic/search.svgz",
+        "actions/symbolic/spacefm-find.svgz",
+        "actions/symbolic/stock_search.svgz",
+        "actions/symbolic/system-search-symbolic.svgz",
+        "actions/symbolic/system-search.svgz",
+        "actions/symbolic/ymuse-search-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/edit-paste.svgz",
+      "phosphor_name": "clipboard",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/edit-paste.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/edit-symbolic.svgz",
+      "phosphor_name": "pencil-simple",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/edit-clear-all-symbolic.svgz",
+        "actions/symbolic/edit-clear-rtl-symbolic.svgz",
+        "actions/symbolic/edit-clear-symbolic.svgz",
+        "actions/symbolic/edit-cut-symbolic.svgz",
+        "actions/symbolic/edit-delete-symbolic.svgz",
+        "actions/symbolic/edit-find-replace-symbolic.svgz",
+        "actions/symbolic/edit-none-symbolic.svgz",
+        "actions/symbolic/edit-paste-symbolic.svgz",
+        "actions/symbolic/edit-redo-rtl-symbolic.svgz",
+        "actions/symbolic/edit-redo-symbolic.svgz",
+        "actions/symbolic/edit-select-all-symbolic.svgz",
+        "actions/symbolic/edit-select-symbolic.svgz",
+        "actions/symbolic/edit-symbolic.svgz",
+        "actions/symbolic/edit-tag-symbolic.svgz",
+        "actions/symbolic/edit-undo-rtl-symbolic.svgz",
+        "actions/symbolic/edit-undo-symbolic.svgz",
+        "actions/symbolic/ymuse-edit-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/emblem-shared-symbolic.svgz",
+      "phosphor_name": "share-network",
+      "links_only": false,
+      "target_paths": [
+        "emblems/symbolic/emblem-shared-symbolic.svgz",
+        "status/symbolic/screen-shared-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/emoji-flags-symbolic.svgz",
+      "phosphor_name": "flag",
+      "links_only": false,
+      "target_paths": [
+        "categories/symbolic/emoji-flags-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/error-symbolic.svgz",
+      "phosphor_name": "x-circle",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/error-correct-symbolic.svgz",
+        "actions/symbolic/error-symbolic.svgz",
+        "status/symbolic/arch-error-symbolic.svgz",
+        "status/symbolic/dialog-error-symbolic.svgz",
+        "status/symbolic/network-cellular-error-symbolic.svgz",
+        "status/symbolic/network-error-symbolic.svgz",
+        "status/symbolic/network-vpn-error-symbolic.svgz",
+        "status/symbolic/process-error-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/eye-off.svgz",
+      "phosphor_name": "eye-slash",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/hint.svgz",
+        "actions/symbolic/view-hidden.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/file-down.svgz",
+      "phosphor_name": "file-arrow-down",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-download.svgz",
+        "actions/symbolic/document-export-ocal.svgz",
+        "actions/symbolic/document-export-symbolic-rtl.svgz",
+        "actions/symbolic/document-export-symbolic.svgz",
+        "actions/symbolic/document-export-table.svgz",
+        "actions/symbolic/document-export.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/file-up.svgz",
+      "phosphor_name": "file-arrow-up",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-import-ocal.svgz",
+        "actions/symbolic/document-import-symbolic-rtl.svgz",
+        "actions/symbolic/document-import-symbolic.svgz",
+        "actions/symbolic/document-import.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/firewall-applet-shields_up-symbolic.svgz",
+      "phosphor_name": "shield-check",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/firewall-applet-shields_up-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/fm-details.svgz",
+      "phosphor_name": "list-bullets",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/fm-details.svgz",
+        "actions/symbolic/view-list-details.svgz",
+        "actions/symbolic/view_detailed.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/fm-icons.svgz",
+      "phosphor_name": "grid-four",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/fm-icons.svgz",
+        "actions/symbolic/view-icon.svgz",
+        "actions/symbolic/view-list-icons.svgz",
+        "actions/symbolic/view_icon.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-development.svgz",
+      "phosphor_name": "folder-simple",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-development.svgz",
+        "places/64/folder-development.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-documents-symbolic.svgz",
+      "phosphor_name": "folder-simple",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-documents-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-documents.svgz",
+      "phosphor_name": "folder-simple",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-documents.svgz",
+        "places/64/folder-documents.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-downloads-symbolic.svgz",
+      "phosphor_name": "download-simple",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-downloads-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-downloads.svgz",
+      "phosphor_name": "download-simple",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-downloads.svgz",
+        "places/64/folder-downloads.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-drag-accept-symbolic.svgz",
+      "phosphor_name": "folder-simple-plus",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/folder-drag-accept-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-music-symbolic.svgz",
+      "phosphor_name": "headphones",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-music-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-music.svgz",
+      "phosphor_name": "headphones",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-music.svgz",
+        "places/64/folder-music.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-network.svgz",
+      "phosphor_name": "folder-simple",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-network.svgz",
+        "places/64/folder-network.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-new-symbolic.svgz",
+      "phosphor_name": "folder-simple-plus",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/folder-new-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-open-symbolic.svgz",
+      "phosphor_name": "folder-open",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-open-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-open.svgz",
+      "phosphor_name": "folder-open",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-open.svgz",
+        "places/64/folder-open.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-pictures-symbolic.svgz",
+      "phosphor_name": "image",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-pictures-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-pictures.svgz",
+      "phosphor_name": "image",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-pictures.svgz",
+        "places/64/folder-pictures.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-public-symbolic.svgz",
+      "phosphor_name": "folder-simple-user",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-public-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-public.svgz",
+      "phosphor_name": "users",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-public.svgz",
+        "places/24/folder-publicshare.svgz",
+        "places/64/folder-public.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-symbolic.svgz",
+      "phosphor_name": "folder-simple",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-symbolic.svgz",
+        "places/24/inode-directory-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-templates-symbolic.svgz",
+      "phosphor_name": "folder-simple-star",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-templates-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/folder-templates.svgz",
+      "phosphor_name": "star",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-templates.svgz",
+        "places/64/folder-templates.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-up.svgz",
+      "phosphor_name": "monitor-arrow-up",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/albumfolder-importdir.svgz",
+        "actions/symbolic/albumfolder-importdir2.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-videos-symbolic.svgz",
+      "phosphor_name": "film-strip",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-videos-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder-videos.svgz",
+      "phosphor_name": "film-strip",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder-videos.svgz",
+        "places/64/folder-videos.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folder.svgz",
+      "phosphor_name": "folder-simple",
+      "links_only": false,
+      "target_paths": [
+        "places/24/folder.svgz",
+        "places/24/inode-directory.svgz",
+        "places/24/stock_older.svgz",
+        "places/64/folder.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/folders.svgz",
+      "phosphor_name": "folders",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/folder-copy.svgz",
+        "actions/symbolic/stock_folder-copy.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/globe-symbolic.svgz",
+      "phosphor_name": "globe",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/globe-symbolic.svgz",
+        "actions/symbolic/internet-services-symbolic.svgz",
+        "categories/16/applications-internet-symbolic.svgz",
+        "categories/16/applications-internet.svgz",
+        "categories/22/applications-internet-symbolic.svgz",
+        "categories/22/applications-internet.svgz",
+        "categories/symbolic/applications-internet-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/go-down-symbolic.svgz",
+      "phosphor_name": "arrow-down",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/go-down-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/go-first-symbolic.svgz",
+      "phosphor_name": "skip-back",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/go-first-rtl-symbolic.svgz",
+        "actions/symbolic/go-first-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/go-home-symbolic.svgz",
+      "phosphor_name": "house",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/go-home-symbolic.svgz",
+        "actions/symbolic/twitter-home-symbolic.svgz",
+        "actions/symbolic/ymuse-home-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/go-jump-symbolic.svgz",
+      "phosphor_name": "arrow-bend-right-down",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/go-jump-rtl-symbolic.svgz",
+        "actions/symbolic/go-jump-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/go-last-symbolic.svgz",
+      "phosphor_name": "skip-forward",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/go-last-rtl-symbolic.svgz",
+        "actions/symbolic/go-last-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/go-next-symbolic.svgz",
+      "phosphor_name": "arrow-right",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/arrow-right-symbolic.svgz",
+        "actions/symbolic/go-next-rtl-symbolic.svgz",
+        "actions/symbolic/go-next-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/go-previous-symbolic.svgz",
+      "phosphor_name": "arrow-left",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/go-previous-rtl-symbolic.svgz",
+        "actions/symbolic/go-previous-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/go-up-symbolic.svgz",
+      "phosphor_name": "arrow-up",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/go-up-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/help-about-symbolic.svgz",
+      "phosphor_name": "info",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/info-outline-symbolic.svgz",
+        "status/symbolic/dialog-information-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/help-faq-symbolic.svgz",
+      "phosphor_name": "seal-question",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/help-about-symbolic.svgz",
+        "actions/symbolic/help-donate-symbolic.svgz",
+        "actions/symbolic/help-info-symbolic.svgz",
+        "categories/symbolic/system-help-symbolic.svgz",
+        "status/symbolic/dialog-question-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/highlighter.svgz",
+      "phosphor_name": "highlighter",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/draw-highlight.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/image-up.svgz",
+      "phosphor_name": "image",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/albumfolder-importimages.svgz"
+      ]
+    },
+    {
+      "source_file": "source/input-mouse-symbolic.svgz",
+      "phosphor_name": "mouse-simple",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/input-mouse-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/keyboard-symbolic.svgz",
+      "phosphor_name": "keyboard",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/keyboard-caps-lock-filled-symbolic.svgz",
+        "actions/symbolic/keyboard-enter-symbolic.svgz",
+        "actions/symbolic/keyboard-hide-symbolic.svgz",
+        "actions/symbolic/keyboard-layout-filled-symbolic.svgz",
+        "actions/symbolic/keyboard-shift-filled-symbolic.svgz",
+        "devices/symbolic/input-keyboard-symbolic.svgz",
+        "devices/symbolic/keyboard-symbolic.svgz",
+        "status/symbolic/input-keyboard-battery-symbolic.svgz",
+        "status/symbolic/input-keyboard-brightness-symbolic.svgz",
+        "status/symbolic/input-keyboard-color-symbolic.svgz",
+        "status/symbolic/keyboard-battery-good-symbolic.svgz",
+        "status/symbolic/keyboard-brightness-symbolic.svgz",
+        "status/symbolic/keyboard-layout-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/klipper-symbolic.svgz",
+      "phosphor_name": "clipboard",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/clipboard-symbolic.svgz",
+        "status/symbolic/klipper-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/laptop-symbolic.svgz",
+      "phosphor_name": "laptop",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/laptop-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/link-2.svgz",
+      "phosphor_name": "link-simple-horizontal",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/url-copy.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/link-symbolic.svgz",
+      "phosphor_name": "link",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/link-symbolic.svgz",
+        "emblems/symbolic/emblem-symbolic-link-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/link.svgz",
+      "phosphor_name": "link",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/insert-link-symbolic.svgz",
+        "actions/symbolic/insert-link.svgz",
+        "actions/symbolic/itmages-copy-link.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/list-remove-symbolic.svgz",
+      "phosphor_name": "x",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/window-minimize-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/lock.svgz",
+      "phosphor_name": "lock",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/cards-block-symbolic.svgz",
+        "actions/symbolic/changes-prevent.svgz",
+        "actions/symbolic/lock-symbolic.svgz",
+        "actions/symbolic/lock.svgz",
+        "actions/symbolic/system-lock-screen-symbolic.svgz",
+        "actions/symbolic/system-lock-screen.svgz",
+        "emblems/symbolic/emblem-readonly-symbolic.svgz",
+        "status/symbolic/audio-volume-muted-blocking-symbolic.svgz",
+        "status/symbolic/auth-sim-locked-symbolic.svgz",
+        "status/symbolic/caps-lock-symbolic.svgz",
+        "status/symbolic/capslock-disabled-symbolic.svgz",
+        "status/symbolic/capslock-enabled-symbolic.svgz",
+        "status/symbolic/lock-symbolic.svgz",
+        "status/symbolic/lock.svgz",
+        "status/symbolic/num-lock-symbolic.svgz",
+        "status/symbolic/numlock-disabled-symbolic.svgz",
+        "status/symbolic/numlock-enabled-symbolic.svgz",
+        "status/symbolic/rotation-locked-symbolic.svgz",
+        "status/symbolic/security-high-symbolic.svgz",
+        "status/symbolic/security-high.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/mail-attachment-symbolic.svgz",
+      "phosphor_name": "paperclip",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/mail-attachment-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/mail-flag-symbolic.svgz",
+      "phosphor_name": "flag",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/mail-flag-symbolic.svgz",
+        "actions/symbolic/mail-forward-rtl-symbolic.svgz",
+        "actions/symbolic/mail-mark-junk-symbolic.svgz",
+        "actions/symbolic/mail-mark-notjunk-symbolic.svgz",
+        "actions/symbolic/mail-mark-unread-symbolic.svgz",
+        "actions/symbolic/mail-reply-all-rtl-symbolic.svgz",
+        "actions/symbolic/mail-reply-all-symbolic.svgz",
+        "actions/symbolic/mail-reply-rtl-symbolic.svgz",
+        "actions/symbolic/mail-spam-symbolic.svgz",
+        "status/symbolic/mail-read-symbolic.svgz",
+        "status/symbolic/mail-replied-symbolic.svgz",
+        "status/symbolic/mail-unread-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/mail-forward-symbolic.svgz",
+      "phosphor_name": "envelope",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/mail-forward-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/mail-mark-read-symbolic.svgz",
+      "phosphor_name": "envelope-open",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/mail-mark-read-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/mail-reply-symbolic.svgz",
+      "phosphor_name": "arrow-bend-up-left",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/mail-reply-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/media-eject-symbolic.svgz",
+      "phosphor_name": "eject",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/media-eject-symbolic.svgz",
+        "devices/symbolic/drive-optical-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/media-record-symbolic.svgz",
+      "phosphor_name": "record",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/media-record-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/media-removable-symbolic.svgz",
+      "phosphor_name": "usb",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/drive-removable-media-pendrive-symbolic.svgz",
+        "devices/symbolic/drive-removable-media-symbolic.svgz",
+        "devices/symbolic/drive-removable-media-usb-pendrive-symbolic.svgz",
+        "devices/symbolic/drive-removable-media-usb-symbolic.svgz",
+        "devices/symbolic/media-removable-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/media-seek-backward-symbolic.svgz",
+      "phosphor_name": "rewind",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/media-seek-backward-rtl-symbolic.svgz",
+        "actions/symbolic/media-seek-backward-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/media-seek-forward-symbolic.svgz",
+      "phosphor_name": "fast-forward",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/media-seek-forward-rtl-symbolic.svgz",
+        "actions/symbolic/media-seek-forward-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/media-skip-backward-symbolic.svgz",
+      "phosphor_name": "skip-back",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/media-skip-backward-rtl-symbolic.svgz",
+        "actions/symbolic/media-skip-backward-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/media-skip-forward-symbolic.svgz",
+      "phosphor_name": "skip-forward",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/media-skip-forward-rtl-symbolic.svgz",
+        "actions/symbolic/media-skip-forward-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/microphone-sensitivity-high-symbolic.svgz",
+      "phosphor_name": "microphone",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/microphone-sensitivity-high-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/microphone-sensitivity-muted-symbolic.svgz",
+      "phosphor_name": "microphone-slash",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/microphone-sensitivity-muted-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/monitor-down.svgz",
+      "phosphor_name": "cloud-arrow-down",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/download-amarok.svgz",
+        "actions/symbolic/download.svgz",
+        "actions/symbolic/edit-download.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/network-server-symbolic.svgz",
+      "phosphor_name": "hard-drives",
+      "links_only": true,
+      "target_paths": [
+        "devices/symbolic/network-server-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-vpn-symbolic.svgz",
+      "phosphor_name": "shield",
+      "links_only": false,
+      "target_paths": [
+        "categories/16/applications-network-symbolic.svgz",
+        "categories/22/applications-network-symbolic.svgz",
+        "categories/symbolic/applications-network-symbolic.svgz",
+        "status/symbolic/network-acquiring-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/network-wired-disconnected-symbolic.svgz",
+      "phosphor_name": "plugs",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/network-wired-disconnected-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-wired-error-symbolic.svgz",
+      "phosphor_name": "plugs",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/network-wired-error-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-wired.svgz",
+      "phosphor_name": "path",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/preferences-system-network.svgz",
+        "status/symbolic/network-wired-activated-symbolic.svgz",
+        "status/symbolic/network-wired-activated.svgz",
+        "status/symbolic/network-wired-symbolic.svgz",
+        "status/symbolic/network-wired.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/network-wireless-0-symbolic.svgz",
+      "phosphor_name": "wifi-none",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/network-wireless-0-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-wireless-20-symbolic.svgz",
+      "phosphor_name": "wifi-low",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/network-wireless-20-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/network-wireless-40-symbolic.svgz",
+      "phosphor_name": "wifi-medium",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/network-wireless-40-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/network-wireless-60-symbolic.svgz",
+      "phosphor_name": "wifi-high",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/network-wireless-60-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-wireless-80-symbolic.svgz",
+      "phosphor_name": "wifi-high",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/network-wireless-80-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-wireless-symbolic.svgz",
+      "phosphor_name": "wifi-high",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/network-wireless-100-symbolic.svgz",
+        "status/symbolic/network-wireless-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/network-workgroup-symbolic.svgz",
+      "phosphor_name": "network",
+      "links_only": true,
+      "target_paths": [
+        "places/24/network-workgroup-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/network-workgroup.svgz",
+      "phosphor_name": "network",
+      "links_only": false,
+      "target_paths": [
+        "places/24/network-workgroup.svgz",
+        "places/64/network-workgroup.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/notification-disabled-symbolic.svgz",
+      "phosphor_name": "bell-slash",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/notification-disabled-symbolic.svgz",
+        "status/symbolic/notifications-disabled-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/notification-new-symbolic.svgz",
+      "phosphor_name": "bell-ringing",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/notification-new-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/notification-symbolic.svgz",
+      "phosphor_name": "bell",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/preferences-desktop-notification.svgz",
+        "status/symbolic/notification-symbolic.svgz",
+        "status/symbolic/notifications-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/open-menu-symbolic.svgz",
+      "phosphor_name": "list",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/document-open-recent-symbolic.svgz",
+        "actions/symbolic/document-open-symbolic.svgz",
+        "status/symbolic/folder-open-symbolic.svgz",
+        "status/symbolic/folder-visiting-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/package-plus.svgz",
+      "phosphor_name": "package",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/extension-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/phone-symbolic.svgz",
+      "phosphor_name": "phone",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/audio-input-microphone-symbolic.svgz",
+        "devices/symbolic/microphone-symbolic.svgz",
+        "devices/symbolic/phone-apple-iphone-symbolic.svgz",
+        "devices/symbolic/phone-google-nexus-one-symbolic.svgz",
+        "devices/symbolic/phone-htc-g1-white-symbolic.svgz",
+        "devices/symbolic/phone-old-symbolic.svgz",
+        "devices/symbolic/phone-palm-pre-symbolic.svgz",
+        "devices/symbolic/phone-samsung-galaxy-s-symbolic.svgz",
+        "devices/symbolic/phone-symbolic.svgz",
+        "devices/symbolic/smartphone-symbolic.svgz",
+        "status/symbolic/audio-input-microphone-high-symbolic.svgz",
+        "status/symbolic/audio-input-microphone-low-symbolic.svgz",
+        "status/symbolic/audio-input-microphone-medium-symbolic.svgz",
+        "status/symbolic/audio-input-microphone-muted-symbolic.svgz",
+        "status/symbolic/audio-volume-headphones-symbolic.svgz",
+        "status/symbolic/audio-volume-muted-blocking-headphones-symbolic.svgz",
+        "status/symbolic/audio-volume-muted-headphones-symbolic.svgz",
+        "status/symbolic/microphone-disabled-symbolic.svgz",
+        "status/symbolic/microphone-hardware-disabled-symbolic.svgz",
+        "status/symbolic/microphone-sensitivity-low-symbolic.svgz",
+        "status/symbolic/microphone-sensitivity-medium-symbolic.svgz",
+        "status/symbolic/microphone-sensitivity-none-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/pin.svgz",
+      "phosphor_name": "push-pin",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/pin.svgz",
+        "actions/symbolic/window-pin.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/power-profile-balanced-symbolic.svgz",
+      "phosphor_name": "scales",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-000-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-010-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-020-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-030-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-040-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-050-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-060-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-070-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-080-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-090-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-100-profile-balanced-symbolic.svgz",
+        "status/symbolic/battery-profile-balanced-symbolic.svgz",
+        "status/symbolic/power-profile-balanced-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/power-profile-performance-symbolic.svgz",
+      "phosphor_name": "rocket",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-000-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-010-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-020-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-030-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-040-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-050-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-060-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-070-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-080-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-090-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-100-profile-performance-symbolic.svgz",
+        "status/symbolic/battery-profile-performance-symbolic.svgz",
+        "status/symbolic/power-profile-performance-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/power-profile-powersave-symbolic.svgz",
+      "phosphor_name": "plant",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/battery-000-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-010-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-020-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-030-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-040-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-050-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-060-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-070-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-080-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-090-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-100-profile-powersave-symbolic.svgz",
+        "status/symbolic/battery-profile-powersave-symbolic.svgz",
+        "status/symbolic/power-profile-power-saver-symbolic.svgz",
+        "status/symbolic/power-profile-powersave-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/preferences-other-symbolic.svgz",
+      "phosphor_name": "dots-three-outline",
+      "links_only": false,
+      "target_paths": [
+        "categories/symbolic/credentials-preferences-symbolic.svgz"
+      ],
+      "weight": "fill"
+    },
+    {
+      "source_file": "source/printer-symbolic.svgz",
+      "phosphor_name": "printer",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-print-preview-symbolic.svgz",
+        "actions/symbolic/document-print-symbolic.svgz",
+        "devices/symbolic/auth-fingerprint-symbolic.svgz",
+        "devices/symbolic/printer-network-symbolic.svgz",
+        "devices/symbolic/printer-symbolic.svgz",
+        "status/symbolic/printer-error-symbolic.svgz",
+        "status/symbolic/printer-printing-symbolic.svgz",
+        "status/symbolic/printer-warning-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/process-working-symbolic.svgz",
+      "phosphor_name": "circle-notch",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/process-working-symbolic.svgz"
+      ],
+      "weight": "regular"
+    },
+    {
+      "source_file": "source/radio-symbolic.svgz",
+      "phosphor_name": "radio",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/radio-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/scanner-symbolic.svgz",
+      "phosphor_name": "qr-code",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/qrscanner-symbolic.svgz",
+        "devices/symbolic/scanner-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/search-symbolic.svgz",
+      "phosphor_name": "magnifying-glass",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/category-search-symbolic.svgz",
+        "actions/symbolic/find-location-symbolic.svgz",
+        "actions/symbolic/nautilus-folder-search-symbolic.svgz",
+        "actions/symbolic/nautilus-search-filters-symbolic.svgz",
+        "actions/symbolic/xapp-search-entire-word-symbolic.svgz",
+        "actions/symbolic/xapp-search-wrap-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/semi-starred-symbolic.svgz",
+      "phosphor_name": "star-half",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/semi-starred-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/send-to-symbolic.svgz",
+      "phosphor_name": "share-fat",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-send-symbolic.svgz",
+        "actions/symbolic/mail-reply-sender-rtl-symbolic.svgz",
+        "actions/symbolic/mail-reply-sender-symbolic.svgz",
+        "actions/symbolic/mail-send-receive-symbolic.svgz",
+        "actions/symbolic/mail-send-symbolic.svgz",
+        "actions/symbolic/send-to-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/share.svgz",
+      "phosphor_name": "share-network",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-share-symbolic.svgz",
+        "actions/symbolic/document-share.svgz",
+        "actions/symbolic/emblem-shared-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/starred-symbolic.svgz",
+      "phosphor_name": "star",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/favorite-favorited-symbolic.svgz",
+        "actions/symbolic/favorite-symbolic.svgz",
+        "actions/symbolic/kstars_stars-symbolic.svgz",
+        "actions/symbolic/pan-start-rtl-symbolic.svgz",
+        "actions/symbolic/pan-start-symbolic.svgz",
+        "actions/symbolic/selection-start-rtl-symbolic.svgz",
+        "actions/symbolic/selection-start-symbolic.svgz",
+        "actions/symbolic/system-restart-symbolic.svgz",
+        "emblems/symbolic/emblem-favorite-symbolic.svgz",
+        "emblems/symbolic/emblem-important-symbolic.svgz",
+        "status/symbolic/semi-starred-rtl-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/system-log-out.svgz",
+      "phosphor_name": "sign-out",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/system-log-out-symbolic.svgz",
+        "actions/symbolic/system-log-out.svgz",
+        "status/symbolic/system-log-out-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/system-reboot-symbolic.svgz",
+      "phosphor_name": "arrows-clockwise",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/system-reboot-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/system-reboot.svgz",
+      "phosphor_name": "arrows-clockwise",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/system-reboot.svgz",
+        "status/symbolic/software-updater-symbolic.svgz",
+        "status/symbolic/system-reboot-symbolic.svgz",
+        "status/symbolic/system-restart-panel.svgz",
+        "status/symbolic/system-shutdown-panel-restart.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/system-run-symbolic.svgz",
+      "phosphor_name": "monitor-play",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/media-playback-pause-symbolic.svgz",
+        "actions/symbolic/media-playback-start-rtl-symbolic.svgz",
+        "actions/symbolic/media-playback-start-symbolic.svgz",
+        "actions/symbolic/media-playback-stop-symbolic.svgz",
+        "actions/symbolic/music-playlist-symbolic.svgz",
+        "actions/symbolic/system-run-symbolic.svgz",
+        "actions/symbolic/xapp-prefs-display-symbolic.svgz",
+        "actions/symbolic/ymuse-now-playing-symbolic.svgz",
+        "actions/symbolic/ymuse-play-symbolic.svgz",
+        "devices/symbolic/display-projector-symbolic.svgz",
+        "devices/symbolic/multimedia-player-apple-ipod-touch-symbolic.svgz",
+        "devices/symbolic/multimedia-player-symbolic.svgz",
+        "devices/symbolic/video-display-symbolic.svgz",
+        "devices/symbolic/video-joined-displays-symbolic.svgz",
+        "devices/symbolic/video-single-display-symbolic.svgz",
+        "status/symbolic/display-brightness-high-symbolic.svgz",
+        "status/symbolic/display-brightness-low-symbolic.svgz",
+        "status/symbolic/display-brightness-medium-symbolic.svgz",
+        "status/symbolic/display-brightness-off-symbolic.svgz",
+        "status/symbolic/display-brightness-symbolic.svgz",
+        "status/symbolic/gser-icon-playing-symbolic.svgz",
+        "status/symbolic/media-playback-playing-symbolic.svgz",
+        "status/symbolic/media-playlist-no-repeat-symbolic.svgz",
+        "status/symbolic/media-playlist-no-shuffle-rtl-symbolic.svgz",
+        "status/symbolic/media-playlist-no-shuffle-symbolic.svgz",
+        "status/symbolic/media-playlist-repeat-one-rtl-symbolic.svgz",
+        "status/symbolic/media-playlist-repeat-one-symbolic.svgz",
+        "status/symbolic/media-playlist-repeat-rtl-symbolic.svgz",
+        "status/symbolic/media-playlist-repeat-song-rtl-symbolic.svgz",
+        "status/symbolic/media-playlist-repeat-song-symbolic.svgz",
+        "status/symbolic/media-playlist-repeat-symbolic.svgz",
+        "status/symbolic/media-playlist-shuffle-rtl-symbolic.svgz",
+        "status/symbolic/media-playlist-shuffle-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/system-shutdown.svgz",
+      "phosphor_name": "power",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/system-shutdown-symbolic.svgz",
+        "actions/symbolic/system-shutdown.svgz",
+        "devices/symbolic/uninterruptible-power-supply-symbolic.svgz",
+        "status/symbolic/system-shutdown-panel.svgz",
+        "status/symbolic/system-shutdown-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/system-suspend.svgz",
+      "phosphor_name": "moon",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/system-suspend-hibernate-symbolic.svgz",
+        "actions/symbolic/system-suspend-symbolic.svgz",
+        "actions/symbolic/system-suspend.svgz",
+        "status/symbolic/system-sleep-symbolic.svgz",
+        "status/symbolic/system-suspend-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/system-users.svgz",
+      "phosphor_name": "users",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/system-switch-user-symbolic.svgz",
+        "actions/symbolic/system-switch-user.svgz",
+        "actions/symbolic/system-users.svgz",
+        "status/symbolic/system-switch-user-symbolic.svgz",
+        "status/symbolic/system-switch-user.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/tab-close-symbolic.svgz",
+      "phosphor_name": "x",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/window-close-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/tab-new-symbolic.svgz",
+      "phosphor_name": "tabs",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/add-files-to-archive-symbolic.svgz",
+        "actions/symbolic/address-book-new-symbolic.svgz",
+        "actions/symbolic/appointment-new-symbolic.svgz",
+        "actions/symbolic/bookmark-new-symbolic.svgz",
+        "actions/symbolic/chat-message-new-symbolic.svgz",
+        "actions/symbolic/contact-new-symbolic.svgz",
+        "actions/symbolic/document-new-symbolic.svgz",
+        "actions/symbolic/list-add-symbolic.svgz",
+        "actions/symbolic/mail-message-new-symbolic.svgz",
+        "actions/symbolic/new-window-symbolic.svgz",
+        "actions/symbolic/star-new-symbolic.svgz",
+        "actions/symbolic/tab-new-symbolic.svgz",
+        "actions/symbolic/view-pim-news-symbolic.svgz",
+        "actions/symbolic/ymuse-add-symbolic.svgz",
+        "status/symbolic/notification-disabled-new-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/tablet-symbolic.svgz",
+      "phosphor_name": "device-tablet",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/tablet-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/tag-symbolic.svgz",
+      "phosphor_name": "tag",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/tag-symbolic.svgz",
+        "emblems/symbolic/tag-new-symbolic.svgz",
+        "emblems/symbolic/tag-symbolic.svgz",
+        "status/symbolic/freon-voltage-symbolic.svgz",
+        "status/symbolic/sensors-voltage-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/timer-symbolic.svgz",
+      "phosphor_name": "timer",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/timer-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/tv-symbolic.svgz",
+      "phosphor_name": "television-simple",
+      "links_only": false,
+      "target_paths": [
+        "devices/symbolic/tv-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/unlock.svgz",
+      "phosphor_name": "lock-open",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/unlock.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/user-available-symbolic.svgz",
+      "phosphor_name": "user-check",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/user-available-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/user-away-symbolic.svgz",
+      "phosphor_name": "moon",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/system-user-list-symbolic.svgz",
+        "actions/symbolic/system-user-prompt-symbolic.svgz",
+        "status/symbolic/user-away-symbolic.svgz",
+        "status/symbolic/user-idle-symbolic.svgz",
+        "status/symbolic/user-invisible-symbolic.svgz",
+        "status/symbolic/user-not-tracked-symbolic.svgz",
+        "status/symbolic/user-offline-symbolic.svgz",
+        "status/symbolic/user-status-pending-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-busy-symbolic.svgz",
+      "phosphor_name": "minus-circle",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/user-busy-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-desktop-symbolic.svgz",
+      "phosphor_name": "desktop-tower",
+      "links_only": true,
+      "target_paths": [
+        "places/24/user-desktop-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-desktop.svgz",
+      "phosphor_name": "desktop-tower",
+      "links_only": true,
+      "target_paths": [
+        "places/24/user-desktop.svgz",
+        "places/64/user-desktop.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-home-symbolic.svgz",
+      "phosphor_name": "house",
+      "links_only": true,
+      "target_paths": [
+        "places/24/folder-home-symbolic.svgz",
+        "places/24/user-home-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-home.svgz",
+      "phosphor_name": "house",
+      "links_only": true,
+      "target_paths": [
+        "places/24/user-home.svgz",
+        "places/64/user-home.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-trash-symbolic.svgz",
+      "phosphor_name": "trash",
+      "links_only": true,
+      "target_paths": [
+        "places/24/user-trash-full-symbolic.svgz",
+        "places/24/user-trash-full.svgz",
+        "places/24/user-trash-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/user-trash.svgz",
+      "phosphor_name": "trash",
+      "links_only": true,
+      "target_paths": [
+        "places/24/user-trash.svgz",
+        "places/64/user-trash.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-dual-symbolic.svgz",
+      "phosphor_name": "columns",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/view-dual-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/view-filter-symbolic.svgz",
+      "phosphor_name": "funnel",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/image-filter-symbolic.svgz",
+        "actions/symbolic/tool-filters-symbolic.svgz",
+        "actions/symbolic/view-filter-symbolic.svgz",
+        "actions/symbolic/ymuse-filter-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/view-grid-symbolic.svgz",
+      "phosphor_name": "grid-four",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/view-grid-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-hidden-symbolic.svgz",
+      "phosphor_name": "eye-slash",
+      "links_only": true,
+      "target_paths": [
+        "emblems/symbolic/emblem-unreadable-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-list-icons-symbolic.svgz",
+      "phosphor_name": "grid-four",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/applications-all-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-list-symbolic.svgz",
+      "phosphor_name": "list",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/view-list-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-more-symbolic.svgz",
+      "phosphor_name": "dots-three",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/view-more-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-pin-symbolic.svgz",
+      "phosphor_name": "push-pin",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/media-view-subtitles-symbolic.svgz",
+        "actions/symbolic/view-app-grid-symbolic.svgz",
+        "actions/symbolic/view-bottom-pane-symbolic.svgz",
+        "actions/symbolic/view-column-symbolic.svgz",
+        "actions/symbolic/view-compact-symbolic.svgz",
+        "actions/symbolic/view-conceal-symbolic.svgz",
+        "actions/symbolic/view-continuous-symbolic.svgz",
+        "actions/symbolic/view-conversation-balloon-symbolic.svgz",
+        "actions/symbolic/view-coverflow-symbolic.svgz",
+        "actions/symbolic/view-filter-rtl-symbolic.svgz",
+        "actions/symbolic/view-fullscreen-symbolic.svgz",
+        "actions/symbolic/view-left-pane-rtl-symbolic.svgz",
+        "actions/symbolic/view-left-pane-symbolic.svgz",
+        "actions/symbolic/view-list-bullet-symbolic.svgz",
+        "actions/symbolic/view-list-compact-symbolic.svgz",
+        "actions/symbolic/view-list-images-symbolic.svgz",
+        "actions/symbolic/view-list-ordered-symbolic.svgz",
+        "actions/symbolic/view-list-video-symbolic.svgz",
+        "actions/symbolic/view-mirror-symbolic.svgz",
+        "actions/symbolic/view-more-horizontal-symbolic.svgz",
+        "actions/symbolic/view-paged-symbolic.svgz",
+        "actions/symbolic/view-pin-symbolic.svgz",
+        "actions/symbolic/view-private-symbolic.svgz",
+        "actions/symbolic/view-restore-symbolic.svgz",
+        "actions/symbolic/view-reveal-symbolic.svgz",
+        "actions/symbolic/view-right-pane-rtl-symbolic.svgz",
+        "actions/symbolic/view-right-pane-symbolic.svgz",
+        "actions/symbolic/view-sort-ascending-symbolic.svgz",
+        "actions/symbolic/view-sort-descending-symbolic.svgz",
+        "actions/symbolic/view-top-pane-symbolic.svgz",
+        "actions/symbolic/xapp-prefs-preview-symbolic.svgz",
+        "status/symbolic/view-wrapped-rtl-symbolic.svgz",
+        "status/symbolic/view-wrapped-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-refresh-symbolic.svgz",
+      "phosphor_name": "arrows-clockwise",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/view-refresh-symbolic.svgz",
+        "status/symbolic/software-update-available-symbolic.svgz",
+        "status/symbolic/system-software-update-symbolic.svgz",
+        "status/symbolic/update-notifier-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-restore-symbolic.svgz",
+      "phosphor_name": "arrows-in",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/window-restore-rtl-symbolic.svgz",
+        "actions/symbolic/window-restore-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view-sort-symbolic.svgz",
+      "phosphor_name": "sort-ascending",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/view-sort-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/view_tree.svgz",
+      "phosphor_name": "tree-structure",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/view-list-tree.svgz",
+        "actions/symbolic/view_tree.svgz"
+      ]
+    },
+    {
+      "source_file": "source/weather-clear-symbolic.svgz",
+      "phosphor_name": "sun",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/brightness-high-symbolic.svgz",
+        "status/symbolic/weather-clear-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/weather-few-clouds-symbolic.svgz",
+      "phosphor_name": "cloud-sun",
+      "links_only": false,
+      "target_paths": [
+        "status/symbolic/weather-few-clouds-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/xsi-bluetooth-acquiring-symbolic.svgz",
+      "phosphor_name": "bluetooth",
+      "links_only": true,
+      "target_paths": [
+        "status/symbolic/xsi-bluetooth-acquiring-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/ymuse-pause-symbolic.svgz",
+      "phosphor_name": "pause",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/ymuse-pause-symbolic.svgz",
+        "status/symbolic/media-playback-paused-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/ymuse-save-symbolic.svgz",
+      "phosphor_name": "floppy-disk",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/document-save-as-symbolic.svgz",
+        "actions/symbolic/document-save-symbolic.svgz",
+        "actions/symbolic/system-save-session-symbolic.svgz",
+        "actions/symbolic/ymuse-save-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/zoom-fit-best-symbolic.svgz",
+      "phosphor_name": "arrows-out",
+      "links_only": true,
+      "target_paths": [
+        "actions/symbolic/window-maximize-rtl-symbolic.svgz",
+        "actions/symbolic/window-maximize-symbolic.svgz",
+        "actions/symbolic/zoom-fit-best-symbolic.svgz"
+      ]
+    },
+    {
+      "source_file": "source/zoom-in-symbolic.svgz",
+      "phosphor_name": "magnifying-glass-plus",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/zoom-in-symbolic.svgz",
+        "actions/symbolic/zoom-original-symbolic.svgz"
+      ],
+      "weight": "light"
+    },
+    {
+      "source_file": "source/zoom-out-symbolic.svgz",
+      "phosphor_name": "magnifying-glass-minus",
+      "links_only": false,
+      "target_paths": [
+        "actions/symbolic/zoom-out-symbolic.svgz"
+      ],
+      "weight": "light"
+    }
+  ]
+}
