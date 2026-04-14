@@ -61,6 +61,9 @@ public:
         return m_internalSettings;
     }
 
+    //* animation duration scaled by KDE global animation speed factor
+    int animationDuration() const;
+
     //* caption height
     int captionHeight() const;
 

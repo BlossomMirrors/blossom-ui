@@ -431,17 +431,26 @@ qreal Decoration::borderSize(bool bottom, qreal scale) const
     }
 }
 
-//________________________________________________________________
+int Decoration::animationDuration() const
+{
+    KConfigGroup kdeConfig(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("KDE"));
+    const qreal factor = kdeConfig.readEntry(QStringLiteral("AnimationDurationFactor"), 1.0);
+    if (factor == 0.0)
+        return 0;
+    return qRound(m_internalSettings->animationsDuration() * factor);
+}
+
 void Decoration::reconfigure()
 {
     SettingsProvider::self()->reconfigure();
+    KSharedConfig::openConfig(QStringLiteral("kdeglobals"))->reparseConfiguration();
 
     m_internalSettings = SettingsProvider::self()->internalSettings(this);
 
     setScaledCornerRadius();
 
     // animation
-    m_animation->setDuration(m_internalSettings->animationsDuration());
+    m_animation->setDuration(animationDuration());
 
     // borders
     recalculateBorders();

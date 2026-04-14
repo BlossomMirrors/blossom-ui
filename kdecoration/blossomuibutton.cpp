@@ -384,8 +384,6 @@ void Button::drawIconWithMask(QPainter *painter) const
     }
     qreal bgOpacity = m_opacity * 0.6;
 
-    QRect pixelRect = drawRect.toAlignedRect();
-
     if (bgOpacity > 0.0 && bgColor.isValid()) {
         painter->save();
         painter->setPen(Qt::NoPen);
@@ -393,7 +391,7 @@ void Button::drawIconWithMask(QPainter *painter) const
         QColor fillColor = bgColor;
         fillColor.setAlphaF(bgOpacity);
         painter->setBrush(fillColor);
-        painter->drawRoundedRect(pixelRect, 3, 3);
+        painter->drawRoundedRect(drawRect, 3, 3);
 
         QColor outlineColor = bgColor;
         outlineColor.setAlphaF(bgOpacity / 0.6);
@@ -401,12 +399,13 @@ void Button::drawIconWithMask(QPainter *painter) const
         outlinePen.setWidthF(1.0);
         painter->setPen(outlinePen);
         painter->setBrush(Qt::NoBrush);
-        painter->drawRoundedRect(pixelRect.adjusted(0, 0, -1, -1), 3, 3);
+        painter->drawRoundedRect(drawRect.adjusted(0, 0, -1, -1), 3, 3);
 
         painter->restore();
     }
 
-    QPoint iconPos(pixelRect.x() + (pixelRect.width() - iconWidth) / 2, pixelRect.y() + (pixelRect.height() - iconHeight) / 2);
+    QPoint iconPos(qRound(drawRect.x() + (drawRect.width() - iconWidth) / 2.0),
+                   qRound(drawRect.y() + (drawRect.height() - iconHeight) / 2.0));
     painter->drawImage(iconPos, iconImage);
 }
 
@@ -505,7 +504,7 @@ void Button::reconfigure()
         break;
     }
 
-    m_animation->setDuration(d->internalSettings()->animationsDuration());
+    m_animation->setDuration(d->animationDuration());
 }
 
 void Button::updateAnimationState(bool hovered)
