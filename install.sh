@@ -31,7 +31,6 @@ build_qt6() {
         exit 1
     fi
     cd "$SRC_DIR"
-    install_desktoptheme
 }
 
 build_qt5() {
@@ -47,7 +46,6 @@ build_qt5() {
         exit 1
     fi
     cd "$SRC_DIR"
-    install_desktoptheme
 }
 
 has_qt5() {
@@ -71,16 +69,6 @@ has_kf5() {
     fi
 
     pkg-config --exists KF5CoreAddons KF5Config KF5GuiAddons KF5I18n KF5IconThemes KF5WindowSystem
-}
-
-install_desktoptheme() {
-    echo " *** Installing Plasma desktop theme *** "
-    sudo mkdir -p /usr/share/plasma/desktoptheme
-    sudo cp -r "$SRC_DIR/desktoptheme" /usr/share/plasma/desktoptheme/BlossomUI
-}
-
-remove_desktoptheme() {
-    sudo rm -rf /usr/share/plasma/desktoptheme/BlossomUI
 }
 
 build_flatpak() {
@@ -115,25 +103,18 @@ build_flatpak() {
 
 build_default() {
     echo " *** Building with QT5 && QT6 *** "
-    if has_qt5 && has_kf5; then
-        remove_qt5_files
-        remove_qt6_files
-        if cmake "${CMAKE_OPTS[@]}" \
-            && cmake --build $BUILD_DIR -j $(nproc) \
-            && cd $BUILD_DIR \
-            && sudo cmake --install .; then
-            echo "Installation completed!"
-        else
-            echo "Installation failed!"
-            exit 1
-        fi
-        cd "$SRC_DIR"
-        install_desktoptheme
+    remove_qt5_files
+    remove_qt6_files
+    if cmake "${CMAKE_OPTS[@]}" \
+        && cmake --build $BUILD_DIR -j $(nproc) \
+        && cd $BUILD_DIR \
+        && sudo cmake --install .; then
+        echo "Installation completed!"
     else
-        echo "QT5/KF5 deps not found, building QT6 only."
-        build_qt6
+        echo "Installation failed!"
+        exit 1
     fi
-    build_flatpak
+    cd "$SRC_DIR"
 }
 
 remove_build() {
@@ -213,7 +194,6 @@ flatpak | FLATPAK)
 remove)
     remove_qt5_files
     remove_qt6_files
-    remove_desktoptheme
     ;;
 *)
     build_default

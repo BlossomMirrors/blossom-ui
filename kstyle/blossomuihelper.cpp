@@ -800,7 +800,7 @@ void Helper::renderButtonFrame(QPainter *painter,
 }
 
 //______________________________________________________________________________
-void Helper::renderToolButtonFrame(QPainter *painter, const QRect &rect, const QColor &color, bool sunken) const
+void Helper::renderToolButtonFrame(QPainter *painter, const QRect &rect, const QColor &color, bool /*sunken*/) const
 {
     // do nothing for invalid color
     if (!color.isValid())

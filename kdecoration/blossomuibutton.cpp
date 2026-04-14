@@ -31,6 +31,7 @@
 #include <QStandardPaths>
 #include <QVariantAnimation>
 #include <QtSvg/QSvgRenderer>
+#include <kdecoration3/decorationdefines.h>
 
 namespace BlossomUI
 {
@@ -344,9 +345,12 @@ void Button::drawIconWithMask(QPainter *painter) const
         drawIcon(painter);
         return;
     }
+    const bool isDarkMode = d->window()->palette().color(QPalette::Window).lightness() < 128;
+    const QColor hoverIconColor = (type() == DecorationButtonType::Close && isDarkMode)
+        ? d->fontColor()
+        : d->titleBarColor();
 
-    QColor iconColor = KColorUtils::mix(d->fontColor(), d->titleBarColor(), m_opacity);
-
+    const QColor iconColor = KColorUtils::mix(d->fontColor(), hoverIconColor, m_opacity);
     QString svgContent = QString::fromUtf8(svgFile.readAll());
     svgFile.close();
 
@@ -378,7 +382,6 @@ void Button::drawIconWithMask(QPainter *painter) const
     } else {
         bgColor = d->fontColor();
     }
-
     qreal bgOpacity = m_opacity * 0.6;
 
     QRect pixelRect = drawRect.toAlignedRect();

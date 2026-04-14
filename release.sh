@@ -111,8 +111,12 @@ forked from Darkly (which is itself a fork of Lightly/KDE Breeze).
 - $CHANGELOG
 EOF
 
-rpmbuild -ba "$RPMBUILD/SPECS/$NAME.spec"
-find "$RPMBUILD/RPMS" -name "$NAME-$VERSION-$RELEASE*.rpm" -exec cp {} release/ \;
+if command -v rpmbuild >/dev/null 2>&1; then
+    rpmbuild -ba "$RPMBUILD/SPECS/$NAME.spec"
+    find "$RPMBUILD/RPMS" -name "$NAME-$VERSION-$RELEASE*.rpm" -exec cp {} release/ \;
+else
+    echo "rpmbuild not found, skipping RPM release."
+fi
 
 # Flatpak
 echo " *** Building Flatpak extensions *** "

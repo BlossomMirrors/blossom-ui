@@ -291,8 +291,13 @@ public:
                                      : selected                               ? QIcon::Selected
                                                                              : QIcon::Normal;
         auto *winHandle = m_view->window() ? m_view->window()->windowHandle() : nullptr;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const qreal dpr = winHandle ? winHandle->devicePixelRatio() : m_view->devicePixelRatioF();
+        const QPixmap pm = icon.pixmap(QSize(iconSize, iconSize), dpr, iconMode);
+#else
         const QPixmap pm = winHandle ? icon.pixmap(winHandle, QSize(iconSize, iconSize), iconMode)
                                      : icon.pixmap(QSize(iconSize, iconSize), iconMode);
+#endif
         const int iconX = isLTR ? option.rect.left() + s_lateralMargin + s_iconLeftPad
                                 : option.rect.right() - s_lateralMargin - s_iconLeftPad - iconSize;
         painter->drawPixmap(iconX, itemTop + (stdH - iconSize) / 2, pm);
@@ -1037,13 +1042,7 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
                 auto *vp = scrollArea->viewport();
                 if (!vp)
                     return;
-                const QColor win = QApplication::palette().color(QPalette::Window);
-                const bool isDark = win.lightness() < 128;
-                const QColor cardColor = isDark ? KColorUtils::mix(win, QColor(255, 255, 255), 0.12)
-                                                : KColorUtils::mix(win, QColor(0, 0, 0), 0.04);
                 QPalette pal = vp->palette();
-                pal.setColor(QPalette::Window, cardColor);
-                pal.setColor(QPalette::Base, cardColor);
                 vp->setPalette(pal);
                 vp->setAutoFillBackground(true);
                 vp->update();
@@ -8191,7 +8190,10 @@ bool Style::drawTabBarTabShapeControl(const QStyleOption *option, QPainter *pain
                     backgroundRect.adjust(4, 4, -4, -4);
             }
             painter->setBrush(_helper->alphaColor(_helper->hoverColor(palette), 0.2));
-            painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+            painter->setRenderHint(QPainter::Antialiasing, true);
+            painter->setPen(Qt::NoPen);
+            const qreal hoverRadius(_helper->tabFrameRadius());
+            painter->drawRoundedRect(backgroundRect, hoverRadius, hoverRadius);
         }
     }
 
@@ -8634,9 +8636,6 @@ bool Style::drawComboBoxComplexControl(const QStyleOptionComplex *option, QPaint
                 // check animation state
                 const bool subControlHover(enabled && mouseOver && comboBoxOption->activeSubControls & SC_ComboBoxArrow);
                 _animations->comboBoxEngine().updateState(widget, AnimationHover, subControlHover);
-
-                const bool animated(enabled && _animations->comboBoxEngine().isAnimated(widget, AnimationHover));
-                const qreal opacity(_animations->comboBoxEngine().opacity(widget, AnimationHover));
 
                 arrowColor = _helper->arrowColor(palette, QPalette::WindowText);
             }
@@ -9446,8 +9445,6 @@ QIcon Style::titleBarButtonIcon(StandardPixmap standardPixmap, const QStyleOptio
     palette.setCurrentColorGroup(QPalette::Active);
     const auto base(palette.color(QPalette::WindowText));
     const auto selected(palette.color(QPalette::HighlightedText));
-    const auto negative(buttonType == ButtonClose ? _helper->negativeText(palette) : base);
-    const auto negativeSelected(buttonType == ButtonClose ? _helper->negativeText(palette) : selected);
 
     const bool invertNormalState(isCloseButton);
 
@@ -9467,27 +9464,27 @@ QIcon Style::titleBarButtonIcon(StandardPixmap standardPixmap, const QStyleOptio
         iconTypes = {// brighten the tab close icons
 
                      // state off icons
-                     {KColorUtils::mix(palette.color(QPalette::Window), base, 1.0), invertNormalState, QIcon::Normal, QIcon::Off},
-                     {KColorUtils::mix(palette.color(QPalette::Window), selected, 1.0), invertNormalState, QIcon::Selected, QIcon::Off},
-                     {KColorUtils::mix(palette.color(QPalette::Window), negative, 1.0), true, QIcon::Active, QIcon::Off},
-                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.5), invertNormalState, QIcon::Disabled, QIcon::Off},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.75), invertNormalState, QIcon::Normal, QIcon::Off},
+                     {KColorUtils::mix(palette.color(QPalette::Window), selected, 0.75), invertNormalState, QIcon::Selected, QIcon::Off},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 1.0), false, QIcon::Active, QIcon::Off},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.4), invertNormalState, QIcon::Disabled, QIcon::Off},
 
                      // state on icons
-                     {KColorUtils::mix(palette.color(QPalette::Window), negative, 1.0), true, QIcon::Normal, QIcon::On},
-                     {KColorUtils::mix(palette.color(QPalette::Window), negativeSelected, 1.0), true, QIcon::Selected, QIcon::On},
-                     {KColorUtils::mix(palette.color(QPalette::Window), negative, 1.0), true, QIcon::Active, QIcon::On},
-                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.5), invertNormalState, QIcon::Disabled, QIcon::On}};
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 1.0), false, QIcon::Normal, QIcon::On},
+                     {KColorUtils::mix(palette.color(QPalette::Window), selected, 1.0), false, QIcon::Selected, QIcon::On},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 1.0), false, QIcon::Active, QIcon::On},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.4), invertNormalState, QIcon::Disabled, QIcon::On}};
     } else {
         iconTypes = {// state off icons
                      {KColorUtils::mix(palette.color(QPalette::Window), base, 0.5), invertNormalState, QIcon::Normal, QIcon::Off},
                      {KColorUtils::mix(palette.color(QPalette::Window), selected, 0.5), invertNormalState, QIcon::Selected, QIcon::Off},
-                     {KColorUtils::mix(palette.color(QPalette::Window), negative, 0.5), true, QIcon::Active, QIcon::Off},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.85), false, QIcon::Active, QIcon::Off},
                      {KColorUtils::mix(palette.color(QPalette::Window), base, 0.2), invertNormalState, QIcon::Disabled, QIcon::Off},
 
                      // state on icons
-                     {KColorUtils::mix(palette.color(QPalette::Window), negative, 0.7), true, QIcon::Normal, QIcon::On},
-                     {KColorUtils::mix(palette.color(QPalette::Window), negativeSelected, 0.7), true, QIcon::Selected, QIcon::On},
-                     {KColorUtils::mix(palette.color(QPalette::Window), negative, 0.7), true, QIcon::Active, QIcon::On},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.85), false, QIcon::Normal, QIcon::On},
+                     {KColorUtils::mix(palette.color(QPalette::Window), selected, 0.85), false, QIcon::Selected, QIcon::On},
+                     {KColorUtils::mix(palette.color(QPalette::Window), base, 0.85), false, QIcon::Active, QIcon::On},
                      {KColorUtils::mix(palette.color(QPalette::Window), base, 0.2), invertNormalState, QIcon::Disabled, QIcon::On}};
     }
 
