@@ -6036,7 +6036,7 @@ bool Style::drawPushButtonLabelControl(const QStyleOption *option, QPainter *pai
         QIcon::Mode iconMode;
         if (!enabled)
             iconMode = QIcon::Disabled;
-        else if (!flat && hasFocus)
+        else if (!flat && hasFocus && !sunken)
             iconMode = QIcon::Selected;
         else if (mouseOver && flat)
             iconMode = QIcon::Active;
