@@ -24,11 +24,9 @@
 #include <KDecoration3/DecoratedWindow>
 #include <KIconLoader>
 
-#include <QDir>
 #include <QFile>
 #include <QPainter>
 #include <QPainterPath>
-#include <QStandardPaths>
 #include <QVariantAnimation>
 #include <QtSvg/QSvgRenderer>
 #include <kdecoration3/decorationdefines.h>
@@ -302,38 +300,23 @@ void Button::drawIconWithMask(QPainter *painter) const
     const int buttonMargin = 2;
     const QRectF drawRect = rect.adjusted(buttonMargin, buttonMargin, -buttonMargin, -buttonMargin);
 
-    QString iconFileName;
+    QString iconName;
     switch (type()) {
     case DecorationButtonType::Close:
-        iconFileName = QStringLiteral("close.svg");
+        iconName = QStringLiteral("window-close-symbolic");
         break;
     case DecorationButtonType::Maximize:
-        if (isChecked()) {
-            iconFileName = QStringLiteral("normalize.svg");
-        } else {
-            iconFileName = QStringLiteral("maximize.svg");
-        }
+        iconName = isChecked() ? QStringLiteral("window-restore-symbolic") : QStringLiteral("window-maximize-symbolic");
         break;
     case DecorationButtonType::Minimize:
-        iconFileName = QStringLiteral("minimize.svg");
+        iconName = QStringLiteral("window-minimize-symbolic");
         break;
     default:
         drawIcon(painter);
         return;
     }
 
-    QStringList searchPaths = {QStringLiteral("/usr/share/blossomui/icons/"),
-                               QStringLiteral("/usr/local/share/blossomui/icons/"),
-                               QDir::homePath() + QStringLiteral("/.local/share/blossomui/icons/")};
-
-    QString iconPath;
-    for (const QString &basePath : searchPaths) {
-        QString testPath = basePath + iconFileName;
-        if (QFile::exists(testPath)) {
-            iconPath = testPath;
-            break;
-        }
-    }
+    const QString iconPath = KIconLoader::global()->iconPath(iconName, KIconLoader::Small, true);
 
     if (iconPath.isEmpty()) {
         drawIcon(painter);
@@ -363,7 +346,7 @@ void Button::drawIconWithMask(QPainter *painter) const
         return;
     }
 
-    qreal iconScale = 0.85;
+    qreal iconScale = .85;
     int iconWidth = qRound(drawRect.width() * iconScale);
     int iconHeight = qRound(drawRect.height() * iconScale);
     QSize iconSize(iconWidth, iconHeight);
@@ -382,9 +365,9 @@ void Button::drawIconWithMask(QPainter *painter) const
     } else {
         bgColor = d->fontColor();
     }
-    qreal bgOpacity = m_opacity * 0.6;
+    qreal bgOpacity = m_opacity * .6;
 
-    if (bgOpacity > 0.0 && bgColor.isValid()) {
+    if (bgOpacity > 0 && bgColor.isValid()) {
         painter->save();
         painter->setPen(Qt::NoPen);
 
@@ -394,18 +377,18 @@ void Button::drawIconWithMask(QPainter *painter) const
         painter->drawRoundedRect(drawRect, 3, 3);
 
         QColor outlineColor = bgColor;
-        outlineColor.setAlphaF(bgOpacity / 0.6);
+        outlineColor.setAlphaF(bgOpacity / .6);
         QPen outlinePen(outlineColor);
-        outlinePen.setWidthF(1.0);
+        outlinePen.setWidthF(1);
         painter->setPen(outlinePen);
         painter->setBrush(Qt::NoBrush);
-        painter->drawRoundedRect(drawRect.adjusted(0, 0, -1, -1), 3, 3);
+        painter->drawRoundedRect(drawRect.adjusted(0, 0, -.5, -.5), 3, 3);
 
         painter->restore();
     }
 
-    QPoint iconPos(qRound(drawRect.x() + (drawRect.width() - iconWidth) / 2.0),
-                   qRound(drawRect.y() + (drawRect.height() - iconHeight) / 2.0));
+    QPoint iconPos(qRound(drawRect.x() + (drawRect.width() - iconWidth) / 2),
+                   qRound(drawRect.y() + (drawRect.height() - iconHeight) / 2));
     painter->drawImage(iconPos, iconImage);
 }
 

@@ -44,10 +44,4 @@ target_link_libraries(blossomuidecoration
 install(TARGETS blossomuidecoration DESTINATION ${KDE_INSTALL_PLUGINDIR}/${KDECORATION_PLUGIN_DIR})
 install(FILES config/blossomuidecorationconfig.desktop DESTINATION  ${KDE_INSTALL_DATADIR}/kservices6)
 
-install(FILES ${CMAKE_SOURCE_DIR}/icons/close.svg
-              ${CMAKE_SOURCE_DIR}/icons/maximize.svg
-              ${CMAKE_SOURCE_DIR}/icons/normalize.svg
-              ${CMAKE_SOURCE_DIR}/icons/minimize.svg
-    DESTINATION ${KDE_INSTALL_DATADIR}/blossomui/icons)
-
 add_subdirectory(config)
