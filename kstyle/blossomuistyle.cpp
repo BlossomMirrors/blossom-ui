@@ -1027,9 +1027,10 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
 
     if (_isDolphin && scrollArea->inherits("KItemListContainer")) {
         if (QWidget *parent = scrollArea->parentWidget(); parent && parent->inherits("DolphinView")) {
-            // Card margins: top, right, bottom
+            // Card margins: left aligns with toolbar item inset (ToolBar_FrameWidth=2 + PM_ToolBarItemMargin=2 = 4)
             const int margin = 8;
-            parent->setContentsMargins(0, margin, margin, margin);
+            const int leftMargin = 4;
+            parent->setContentsMargins(leftMargin, margin, margin, margin);
             if (auto viewport = scrollArea->viewport()) {
                 viewport->setContentsMargins(0, 0, 0, 0);
             }
@@ -4719,11 +4720,6 @@ bool Style::drawFrameLineEditPrimitive(const QStyleOption *option, QPainter *pai
     if (_isDolphin && !isControl) {
         // take precautions only change this on the Dolphin location bar
         if (widget->inherits("DolphinUrlNavigator")) {
-            // check if the Dolphin URL location bar is visible
-
-            // only change the alpha channel if the  Dolphin URL location bar is hidden
-            // otherwise the rectangle doesn't render rounded eges
-
             if (widget->findChild<QComboBox *>()) {
                 isVisible = widget->findChild<QComboBox *>()->isVisible();
 
@@ -4775,18 +4771,7 @@ bool Style::drawFrameLineEditPrimitive(const QStyleOption *option, QPainter *pai
         } else {
             outline = palette.color(QPalette::WindowText);
         }
-
-        // Fix needed: if Dolphin location is Editable
-
-        // render
-        if (isVisible) {
-            QLineEdit *dolphinLineEdit = widget->findChild<QLineEdit *>();
-            if (dolphinLineEdit->isVisible()) {
-                _helper->renderLineEdit(painter, rect.adjusted(0, -2, 0, 2), background, outline, hasFocus, mouseOver, enabled, windowActive, mode, opacity);
-            }
-        } else {
-            _helper->renderLineEdit(painter, rect, background, outline, hasFocus, mouseOver, enabled, windowActive, mode, opacity);
-        }
+        _helper->renderLineEdit(painter, rect, background, outline, hasFocus, mouseOver, enabled, windowActive, mode, opacity);
     }
 
     return true;
