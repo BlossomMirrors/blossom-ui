@@ -49,10 +49,9 @@ def apply_kde_theme_colors(svg_content):
     root.set('width', '16')
     root.set('height', '16')
     root.set('viewBox', new_viewbox)
-    root.set('class', 'ColorScheme-Text')
-
-    if root.get('fill') and root.get('fill') != 'none':
-        root.set('fill', 'currentColor')
+    root.attrib.pop('class', None)
+    root.attrib.pop('fill', None)
+    root.attrib.pop('style', None)
 
     defs = root.find('svg:defs', ns)
     if defs is None:
@@ -85,6 +84,8 @@ def apply_kde_theme_colors(svg_content):
 
         fill = elem.get('fill')
         if fill is not None and fill != 'none':
+            elem.set('fill', 'currentColor')
+        elif fill is None and elem.get('stroke') is None:
             elem.set('fill', 'currentColor')
 
         style_attr = elem.get('style', '')

@@ -9,6 +9,12 @@ sudo rm -rf "${INSTALL_DIR}"
 sudo mkdir -p "${INSTALL_DIR}"
 sudo cp -r "${SCRIPT_DIR}/." "${INSTALL_DIR}/"
 sudo gtk-update-icon-cache -f -t "${INSTALL_DIR}"
+
+echo "Rebuilding icon cache..."
+rm -f ~/.cache/icon-cache.kcache
 kbuildsycoca6 --noincremental
 
-echo "Done. Log out and back in if icons don't update immediately."
+echo "Reloading KWin..."
+qdbus org.kde.KWin /KWin reconfigure 2>/dev/null || true
+
+echo "Done."
