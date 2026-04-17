@@ -6,17 +6,25 @@ configure_file(config-blossomui.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-bloss
 ################# includes #################
 include_directories(${CMAKE_SOURCE_DIR}/libblossomuicommon)
 include_directories(${CMAKE_BINARY_DIR}/libblossomuicommon)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 ################# newt target #################
 ### plugin classes
 set(blossomuidecoration_SRCS
-    blossomuibutton.cpp
     blossomuidecoration.cpp
-    blossomuiexceptionlist.cpp
-    blossomuisettingsprovider.cpp
+    core/blossomuidecoration.cpp
+    core/blossomuiexceptionlist.cpp
+    core/blossomuisettingsprovider.cpp
+    decoration/shadow.cpp
+    decoration/render.cpp
+    decoration/geometry.cpp
+    decoration/buttonlayout.cpp
+    button/blossomuibutton.cpp
+    button/colors.cpp
+    button/icons.cpp
 )
 ### build library
-kconfig_add_kcfg_files(blossomuidecoration_SRCS blossomuisettings.kcfgc)
+kconfig_add_kcfg_files(blossomuidecoration_SRCS config/blossomuisettings.kcfgc)
 add_library(blossomuidecoration MODULE
     ${blossomuidecoration_SRCS}
     ${blossomuidecoration_config_SRCS}
@@ -33,6 +41,7 @@ target_link_libraries(blossomuidecoration
         KDecoration3::KDecoration
      PRIVATE
         blossomuicommon6
+        ZLIB::ZLIB
         KF6::CoreAddons
         KF6::ConfigWidgets
         KF6::GuiAddons

@@ -49,7 +49,7 @@ public:
     using BaseEngine::registeredWidgets;
 
     //* true if widget hover state is changed
-    bool updateState(const QObject *object, AnimationMode mode, bool value, AnimationParameters parameters = AnimationDefaut);
+    bool updateState(const QObject *object, AnimationMode mode, bool value, AnimationParameters parameters = AnimationDefault);
 
     //* true if widget is animated
     bool isAnimated(const QObject *, AnimationMode);

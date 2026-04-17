@@ -110,6 +110,7 @@ function(build_qt6)
     option(WITH_DECORATIONS "Build BlossomUI window decorations for KWin" ON)
 
     find_package(Qt6 ${QT_MIN_VERSION} REQUIRED CONFIG COMPONENTS Widgets DBus Svg)
+    find_package(ZLIB REQUIRED)
     find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
             CoreAddons
             ColorScheme

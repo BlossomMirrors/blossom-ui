@@ -1,7 +1,9 @@
 ################# includes #################
 include_directories(
-    animations
-    debug
+    style
+    core/animations
+    core/debug
+    core/support
     ${CMAKE_SOURCE_DIR}/libblossomuicommon
     ${CMAKE_BINARY_DIR}/libblossomuicommon
 )
@@ -11,50 +13,74 @@ configure_file(config-blossomui.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-bloss
 
 ########### next target ###############
 set(blossomui_PART_SRCS
-    animations/blossomuianimation.cpp
-    animations/blossomuianimations.cpp
-    animations/blossomuianimationdata.cpp
-    animations/blossomuibaseengine.cpp
-    animations/blossomuibusyindicatordata.cpp
-    animations/blossomuibusyindicatorengine.cpp
-    animations/blossomuidialdata.cpp
-    animations/blossomuidialengine.cpp
-    animations/blossomuienabledata.cpp
-    animations/blossomuigenericdata.cpp
-    animations/blossomuiheaderviewdata.cpp
-    animations/blossomuiheaderviewengine.cpp
-    animations/blossomuiscrollbardata.cpp
-    animations/blossomuiscrollbarengine.cpp
-    animations/blossomuispinboxengine.cpp
-    animations/blossomuispinboxdata.cpp
-    animations/blossomuistackedwidgetdata.cpp
-    animations/blossomuistackedwidgetengine.cpp
-    animations/blossomuitabbarengine.cpp
-    animations/blossomuitabbardata.cpp
-    animations/blossomuitoolboxengine.cpp
-    animations/blossomuitransitiondata.cpp
-    animations/blossomuitransitionwidget.cpp
-    animations/blossomuiwidgetstateengine.cpp
-    animations/blossomuiwidgetstatedata.cpp
-    debug/blossomuiwidgetexplorer.cpp
-    blossomuiaddeventfilter.cpp
-    blossomuiblurhelper.cpp
-    blossomuiframeshadow.cpp
+    core/animations/blossomuianimation.cpp
+    core/animations/blossomuianimations.cpp
+    core/animations/blossomuianimationdata.cpp
+    core/animations/blossomuibaseengine.cpp
+    core/animations/blossomuibusyindicatordata.cpp
+    core/animations/blossomuibusyindicatorengine.cpp
+    core/animations/blossomuidialdata.cpp
+    core/animations/blossomuidialengine.cpp
+    core/animations/blossomuienabledata.cpp
+    core/animations/blossomuigenericdata.cpp
+    core/animations/blossomuiheaderviewdata.cpp
+    core/animations/blossomuiheaderviewengine.cpp
+    core/animations/blossomuiscrollbardata.cpp
+    core/animations/blossomuiscrollbarengine.cpp
+    core/animations/blossomuispinboxengine.cpp
+    core/animations/blossomuispinboxdata.cpp
+    core/animations/blossomuistackedwidgetdata.cpp
+    core/animations/blossomuistackedwidgetengine.cpp
+    core/animations/blossomuitabbarengine.cpp
+    core/animations/blossomuitabbardata.cpp
+    core/animations/blossomuitoolboxengine.cpp
+    core/animations/blossomuitransitiondata.cpp
+    core/animations/blossomuitransitionwidget.cpp
+    core/animations/blossomuiwidgetstateengine.cpp
+    core/animations/blossomuiwidgetstatedata.cpp
+    core/debug/blossomuiwidgetexplorer.cpp
+    core/support/blossomuiaddeventfilter.cpp
+    core/support/blossomuiblurhelper.cpp
+    core/support/blossomuiframeshadow.cpp
+    core/support/blossomuimdiwindowshadow.cpp
+    core/support/blossomuimnemonics.cpp
+    core/support/blossomuipropertynames.cpp
+    core/support/blossomuishadowhelper.cpp
+    core/support/blossomuisplitterproxy.cpp
+    core/support/blossomuistyleplugin.cpp
+    core/support/blossomuitileset.cpp
+    core/support/blossomuitoolsareamanager.cpp
+    core/support/blossomuiwindowmanager.cpp
     blossomuihelper.cpp
-    blossomuimdiwindowshadow.cpp
-    blossomuimnemonics.cpp
-    blossomuipropertynames.cpp
-    blossomuishadowhelper.cpp
-    blossomuisplitterproxy.cpp
-    blossomuiswitchwidget.cpp
-    blossomuistyle.cpp
-    blossomuistyleplugin.cpp
-    blossomuitileset.cpp
-    blossomuiwindowmanager.cpp
-    blossomuitoolsareamanager.cpp
+    style/widgets/switch.h
+    style/blossomuistyle.cpp
+    style/eventfilter.cpp
+    style/dolphin/dockwidget.cpp
+    style/dolphin/card.cpp
+    style/dolphin/urlinput.cpp
+    style/metrics.cpp
+    style/geometry.cpp
+    style/utils.cpp
+    style/primitives/frames.cpp
+    style/primitives/indicators.cpp
+    style/primitives/panels.cpp
+    style/widgets/button.cpp
+    style/widgets/checkbox.cpp
+    style/widgets/combobox.cpp
+    style/widgets/groupbox.cpp
+    style/widgets/header.cpp
+    style/widgets/menu.cpp
+    style/widgets/misc.cpp
+    style/widgets/progressbar.cpp
+    style/widgets/scrollbar.cpp
+    style/widgets/slider.cpp
+    style/widgets/spinbox.cpp
+    style/widgets/tabs.cpp
+    style/widgets/titlebar.cpp
+    style/widgets/toolbar.cpp
 )
 
-kconfig_add_kcfg_files(blossomui_PART_SRCS ../kdecoration/blossomuisettings.kcfgc)
+kconfig_add_kcfg_files(blossomui_PART_SRCS ../kdecoration/config/blossomuisettings.kcfgc)
 kconfig_add_kcfg_files(blossomui_PART_SRCS blossomuistyleconfigdata.kcfgc)
 
 add_library(blossomui${QT_MAJOR_VERSION} MODULE ${blossomui_PART_SRCS})

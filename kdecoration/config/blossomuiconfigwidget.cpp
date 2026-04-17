@@ -24,7 +24,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "blossomuiconfigwidget.h"
-#include "blossomuiexceptionlist.h"
+#include "core/blossomuiexceptionlist.h"
 #include "blossomuisettings.h"
 
 #include <KLocalizedString>

@@ -434,31 +434,31 @@ public:
     virtual qreal devicePixelRatio(const QPixmap &) const;
 
     //* frame radius
-    qreal frameRadius(const int penWidth = PenWidth::NoPen, const qreal bias = 0) const
+    qreal frameRadius(const qreal penWidth = PenWidth::NoPen, const qreal bias = 0) const
     {
         return qMax(StyleConfigData::cornerRadius() - (0.5 * penWidth) + bias, 0.0);
     }
 
     //* button frame radius
-    qreal buttonFrameRadius(const int penWidth = PenWidth::NoPen, const qreal bias = 0) const
+    qreal buttonFrameRadius(const qreal penWidth = PenWidth::NoPen, const qreal bias = 0) const
     {
         return qMax(StyleConfigData::buttonRadius() - (0.5 * penWidth) + bias, 0.0);
     }
 
     //* input field frame radius
-    qreal inputFrameRadius(const int penWidth = PenWidth::NoPen, const qreal bias = 0) const
+    qreal inputFrameRadius(const qreal penWidth = PenWidth::NoPen, const qreal bias = 0) const
     {
         return qMax(StyleConfigData::inputRadius() - (0.5 * penWidth) + bias, 0.0);
     }
 
     //* tab bar tab frame radius
-    qreal tabFrameRadius(const int penWidth = PenWidth::NoPen) const
+    qreal tabFrameRadius(const qreal penWidth = PenWidth::NoPen) const
     {
         return qMax(qMax(StyleConfigData::cornerRadius() - 4, 2) - (0.5 * penWidth), 0.0);
     }
 
     //* frame radius with new pen width
-    constexpr qreal frameRadiusForNewPenWidth(const qreal oldRadius, const int penWidth) const
+    constexpr qreal frameRadiusForNewPenWidth(const qreal oldRadius, const qreal penWidth) const
     {
         return qMax(oldRadius - (0.5 * penWidth), 0.0);
     }

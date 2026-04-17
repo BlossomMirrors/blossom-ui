@@ -1,7 +1,7 @@
 #####  config classes ææææææ
 
 set(blossomuidecoration_config_SRCS
-  ../blossomuiexceptionlist.cpp
+  ../core/blossomuiexceptionlist.cpp
     blossomuiconfigwidget.cpp
     blossomuidetectwidget.cpp
     blossomuiexceptiondialog.cpp
@@ -17,7 +17,7 @@ ki18n_wrap_ui(blossomuidecoration_config_SRCS
 )
 
 kcoreaddons_add_plugin(kcm_blossomuidecoration SOURCES kcm_blossomuidecoration.cpp ${blossomuidecoration_config_SRCS} INSTALL_NAMESPACE "${KDECORATION_KCM_PLUGIN_DIR}")
-kconfig_add_kcfg_files(kcm_blossomuidecoration ../blossomuisettings.kcfgc)
+kconfig_add_kcfg_files(kcm_blossomuidecoration blossomuisettings.kcfgc)
 target_include_directories(kcm_blossomuidecoration PRIVATE ${CMAKE_SOURCE_DIR}/kdecoration ${CMAKE_BINARY_DIR}/kdecoration/)
 target_link_libraries(kcm_blossomuidecoration
      PUBLIC

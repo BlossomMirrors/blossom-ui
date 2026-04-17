@@ -1545,7 +1545,7 @@ void Helper::renderArrow(QPainter *painter, const QRect &rect, const QColor &col
     case ArrowRight:
         arrow = QVector<QPointF>{QPointF(-1.5, -4.5), QPointF(3, 0), QPointF(-1.5, 4.5)};
         break;
-    case ArrowDown_Small:
+    case ArrowDownSmall:
         arrow = QVector<QPointF>{QPointF(1.5, 3.5), QPointF(3.5, 5.5), QPointF(5.5, 3.5)};
         break;
     default:

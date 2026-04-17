@@ -48,7 +48,7 @@ public:
     returns true if hover has Changed
     and starts timer accordingly
     */
-    virtual bool updateState(bool value, AnimationParameters parameters = AnimationDefaut);
+    virtual bool updateState(bool value, AnimationParameters parameters = AnimationDefault);
 
 private:
     bool _initialized;

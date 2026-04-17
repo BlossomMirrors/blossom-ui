@@ -37,34 +37,22 @@ class SettingsProvider : public QObject
     Q_OBJECT
 
 public:
-    //* destructor
     ~SettingsProvider();
 
-    //* singleton
     static SettingsProvider *self();
 
-    //* internal settings for given decoration
     InternalSettingsPtr internalSettings(Decoration *) const;
 
 public Q_SLOTS:
-
-    //* reconfigure
     void reconfigure();
 
 private:
-    //* constructor
     SettingsProvider();
 
-    //* default configuration
     InternalSettingsPtr m_defaultSettings;
-
-    //* exceptions
     InternalSettingsList m_exceptions;
-
-    //* config object
     KSharedConfigPtr m_config;
 
-    //* singleton
     static SettingsProvider *s_self;
 };
 
