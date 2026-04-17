@@ -220,6 +220,7 @@ void Button::drawIconWithMask(QPainter *painter) const
     const QColor iconColor = KColorUtils::mix(d->fontColor(), hoverIconColor, m_opacity);
     QString svgContent = QString::fromUtf8(svgData);
     svgContent.replace(QStringLiteral("color:#232629"), QStringLiteral("color:") + iconColor.name());
+    svgContent.replace(QStringLiteral("color: #232629"), QStringLiteral("color: ") + iconColor.name());
 
     QSvgRenderer renderer;
     renderer.load(svgContent.toUtf8());
@@ -228,10 +229,10 @@ void Button::drawIconWithMask(QPainter *painter) const
         return;
     }
 
-    const int buttonMargin = 2;
+    const int buttonMargin = 1;
     const QRectF drawRect = rect.adjusted(buttonMargin, buttonMargin, -buttonMargin, -buttonMargin);
 
-    qreal iconScale = .85;
+    qreal iconScale = 1.0;
     int iconWidth = qRound(drawRect.width() * iconScale);
     int iconHeight = qRound(drawRect.height() * iconScale);
 
