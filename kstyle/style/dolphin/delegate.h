@@ -239,7 +239,11 @@ public:
     } else if (type == QEvent::DragEnter || type == QEvent::DragMove) {
       m_dragging = true;
       const QPoint pos =
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
           static_cast<QDragMoveEvent *>(event)->position().toPoint();
+#else
+          static_cast<QDragMoveEvent *>(event)->pos();
+#endif
       if (const QModelIndex idx = m_view->indexAt(pos); idx.isValid())
         m_view->update(idx);
       if (m_dragSourceIndex.isValid())

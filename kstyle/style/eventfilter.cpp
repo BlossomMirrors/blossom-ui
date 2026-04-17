@@ -34,8 +34,14 @@ bool Style::eventFilter(QObject *object, QEvent *event) {
         qobject_cast<QToolButton *>(object)) {
       const auto *me = static_cast<QMouseEvent *>(event);
       if (me->button() == Qt::LeftButton)
-        static_cast<QWidget *>(object)->setProperty("blossomui-ripple-pos",
-                                                    me->position());
+        static_cast<QWidget *>(object)->setProperty(
+            "blossomui-ripple-pos",
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            me->position()
+#else
+            me->pos()
+#endif
+        );
     }
   }
 
