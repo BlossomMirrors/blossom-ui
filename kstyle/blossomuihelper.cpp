@@ -56,6 +56,7 @@
 #include <algorithm>
 
 #include <QEvent>
+#include <QSet>
 
 // #include <QDebug>
 
@@ -579,7 +580,15 @@ bool Helper::renderBlurredBackground(QPainter *painter, QWidget *window, const Q
     if (!window || !window->isWindow() || sourceRectInWindow.isEmpty() || targetRect.isEmpty())
         return false;
 
+    // Guard against re-entrancy: window->grab() triggers paint events on all child widgets, which can call back here before the grab completes.
+    // This fixes a crash in Konsole where blurred backgrounds are being rendered
+    static thread_local QSet<QWidget *> activeGrabs;
+    if (activeGrabs.contains(window))
+        return false;
+    activeGrabs.insert(window);
+
     QPixmap grab = window->grab(sourceRectInWindow);
+    activeGrabs.remove(window);
     if (grab.isNull() || grab.size().isEmpty())
         return false;
 
