@@ -2,7 +2,6 @@
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
 #include "blossomuitoolsareamanager.h"
-#include "private.h"
 
 #include <KColorUtils>
 #include <QApplication>

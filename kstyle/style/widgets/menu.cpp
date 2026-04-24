@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "blossomuianimations.h"
 #include "blossomuimnemonics.h"
-#include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
 #include "blossomuitoolsareamanager.h"
@@ -404,7 +403,7 @@ bool Style::drawMenuItemControl(const QStyleOption *option, QPainter *painter,
     // enabled && active ) ); const auto background(state == CheckOn ?
     // palette.color(QPalette::Highlight) : palette.color(QPalette::Button));
     //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color(
-    //QPalette::Window ), sunken );    //not needed
+    // QPalette::Window ), sunken );    //not needed
     _helper->renderCheckBox(painter, checkBoxRect, palette, true, sunken,
                             (selected || sunken), state, windowActive);
 
@@ -416,7 +415,7 @@ bool Style::drawMenuItemControl(const QStyleOption *option, QPainter *painter,
     // const auto color( _helper->checkBoxIndicatorColor( palette, false,
     // enabled && active ) );
     //_helper->renderRadioButtonBackground( painter, checkBoxRect,
-    //palette.color( QPalette::Window ), sunken ); //not needed
+    // palette.color( QPalette::Window ), sunken ); //not needed
     _helper->renderRadioButton(painter, checkBoxRect, palette,
                                (selected || sunken), sunken,
                                active ? RadioOn : RadioOff, true);

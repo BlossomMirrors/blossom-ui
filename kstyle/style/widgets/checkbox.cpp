@@ -3,7 +3,6 @@
 #include "blossomuihelper.h"
 #include "blossomuimnemonics.h"
 #include "blossomuistyle.h"
-#include "blossomuistyleconfigdata.h"
 #include "widgets/switch.h"
 
 #include <KColorUtils>

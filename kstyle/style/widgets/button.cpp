@@ -3,7 +3,6 @@
 #include "blossomuimnemonics.h"
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
-#include "blossomuistyleconfigdata.h"
 
 #include <KColorUtils>
 #include <QAbstractButton>

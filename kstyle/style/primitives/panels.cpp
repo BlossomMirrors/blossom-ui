@@ -4,7 +4,6 @@
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
-#include "private.h"
 
 #include <KColorUtils>
 #include <QAbstractScrollArea>
@@ -57,7 +56,7 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
                                                AnimationForwardOnly |
                                                    AnimationLongDuration);
   //_animations->widgetStateEngine().updateState( widget, AnimationFocus,
-  //hasFocus && !mouseOver );
+  // hasFocus && !mouseOver );
 
   const AnimationMode mode(
       _animations->widgetStateEngine().buttonAnimationMode(widget));

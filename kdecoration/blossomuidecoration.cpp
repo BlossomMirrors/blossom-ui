@@ -3,6 +3,8 @@
 #include "button/blossomuibutton.h"
 #include <KPluginFactory>
 
-K_PLUGIN_FACTORY_WITH_JSON(BlossomUIDecoFactory, "blossomui.json", registerPlugin<BlossomUI::Decoration>(); registerPlugin<BlossomUI::Button>();)
+K_PLUGIN_FACTORY_WITH_JSON(BlossomUIDecoFactory, "blossomui.json",
+                           registerPlugin<BlossomUI::Decoration>();
+                           registerPlugin<BlossomUI::Button>();)
 
 #include "blossomuidecoration.moc"

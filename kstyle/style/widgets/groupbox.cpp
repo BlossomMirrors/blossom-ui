@@ -2,7 +2,6 @@
 #include "blossomuianimations.h"
 #include "blossomuimnemonics.h"
 #include "blossomuistyle.h"
-#include "blossomuistyleconfigdata.h"
 
 #include <KColorUtils>
 #include <QApplication>

@@ -160,7 +160,7 @@ bool Style::drawFrameLineEditPrimitive(const QStyleOption *option,
     _animations->inputWidgetEngine().updateState(widget, AnimationFocus,
                                                  hasFocus);
     //_animations->inputWidgetEngine().updateState( widget, AnimationHover,
-    //mouseOver && !hasFocus );
+    // mouseOver && !hasFocus );
 
     // retrieve animation mode and opacity
     AnimationMode mode(

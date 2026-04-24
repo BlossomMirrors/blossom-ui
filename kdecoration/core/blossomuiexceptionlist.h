@@ -6,7 +6,6 @@
 
 #pragma once
 #include "blossomui.h"
-#include "blossomuisettings.h"
 
 #include <KSharedConfig>
 

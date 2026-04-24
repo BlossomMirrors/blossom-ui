@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "blossomuianimations.h"
-#include "blossomuiblurhelper.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
-#include "private.h"
 #include "widgets/switch.h"
 
 #include <KColorUtils>
@@ -163,15 +161,6 @@ bool Style::drawIndicatorCheckBoxPrimitive(const QStyleOption *option,
   const qreal animation(
       _animations->widgetStateEngine().opacity(widget, AnimationPressed));
 
-  // colors
-  // const AnimationMode mode( _animations->widgetStateEngine().isAnimated(
-  // widget, AnimationHover ) ? AnimationHover:AnimationNone ); const qreal
-  // opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover )
-  // );
-
-  // render
-  //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   //
-  //needed??
   if (isSwitchCheckBox(option, widget))
     _helper->renderSwitch(painter, rect, palette, sunken, mouseOver,
                           checkBoxState, animation);

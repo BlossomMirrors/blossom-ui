@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-#include "blossomuianimations.h"
-#include "blossomuimnemonics.h"
 #include "blossomuistyle.h"
-#include "blossomuistyleconfigdata.h"
 
 #include <KColorUtils>
 #include <QApplication>
