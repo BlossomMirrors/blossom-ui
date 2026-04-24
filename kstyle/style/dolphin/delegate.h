@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "blossomuistyleconfigdata.h"
 
+#include <cmath>
 #include <QAbstractItemDelegate>
 #include <QAbstractItemView>
 #include <QApplication>
