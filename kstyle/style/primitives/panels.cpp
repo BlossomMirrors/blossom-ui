@@ -35,8 +35,11 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
   if (!buttonOption)
     return true;
 
+  const QObject *styleObject(widget ? widget : option->styleObject);
+  isQtQuickControl(option, widget);
+
   // store window state
-  const bool windowActive(widget && widget->isActiveWindow());
+  const bool windowActive(widget ? widget->isActiveWindow() : true);
 
   // rect and palette
   const auto &rect(option->rect);
@@ -51,16 +54,14 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
   const bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
   // update animation state
-  // mouse over takes precedence over focus
-  _animations->widgetStateEngine().updateState(widget, AnimationPressed, sunken,
+  _animations->widgetStateEngine().updateState(styleObject, AnimationPressed,
+                                               sunken,
                                                AnimationForwardOnly |
                                                    AnimationLongDuration);
-  //_animations->widgetStateEngine().updateState( widget, AnimationFocus,
-  // hasFocus && !mouseOver );
 
   const AnimationMode mode(
-      _animations->widgetStateEngine().buttonAnimationMode(widget));
-  const qreal opacity(_animations->widgetStateEngine().buttonOpacity(widget));
+      _animations->widgetStateEngine().buttonAnimationMode(styleObject));
+  const qreal opacity(_animations->widgetStateEngine().buttonOpacity(styleObject));
 
   if (flat) {
     // define colors and render
@@ -79,10 +80,10 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
     }
 
     const qreal pressOpacity =
-        _animations->widgetStateEngine().opacity(widget, AnimationPressed);
+        _animations->widgetStateEngine().opacity(styleObject, AnimationPressed);
     const QPointF ripplePos =
-        widget ? widget->property("blossomui-ripple-pos").toPointF()
-               : QPointF();
+        styleObject ? styleObject->property("blossomui-ripple-pos").toPointF()
+                    : QPointF();
     const bool pressAnimActive = pressOpacity >= 0.0;
 
     const bool hasFocusForRender = hasFocus && !sunken && !pressAnimActive;

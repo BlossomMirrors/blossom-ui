@@ -1442,40 +1442,38 @@ void Helper::renderDialContents(QPainter *painter, const QRect &rect,
 //______________________________________________________________________________
 void Helper::renderSliderHandle(QPainter *painter, const QRect &rect,
                                 const QColor &color, const QColor &outline,
-                                const bool focus, bool sunken) const {
-  // setup painter
+                                qreal hoverOpacity, bool sunken) const {
   painter->setRenderHint(QPainter::Antialiasing, true);
 
-  // copy rect
+  // hover circle behind handle: grows from handle size outward
+  if (hoverOpacity > 0.0 && outline.isValid()) {
+    constexpr qreal maxExpand = Metrics::Slider_HoverMargin;
+    const qreal expand = maxExpand * hoverOpacity;
+    QRectF hoverRect = QRectF(rect).adjusted(-expand, -expand, expand, expand);
+    QColor hoverColor(outline);
+    hoverColor.setAlpha(qRound(50 * hoverOpacity));
+    painter->setBrush(hoverColor);
+    painter->setPen(Qt::NoPen);
+    painter->drawEllipse(hoverRect);
+  }
+
+  // handle circle on top
   QRectF frameRect(rect);
   frameRect.adjust(3, 3, -3, -3);
-
   if (sunken)
-    frameRect.translate(0, 1);
+    frameRect.translate(0, 2);
 
-  // set brush
   QColor fill(color.isValid() ? color : Qt::transparent);
   if (sunken)
     fill = fill.darker(103);
   if (fill.isValid())
     fill.setAlpha(255);
   painter->setBrush(fill);
-
-  // render main handle first (solid fill, like shadcn)
-  painter->setPen(outline.isValid() ? QPen(outline, 1) : Qt::NoPen);
+  if (outline.isValid())
+    painter->setPen(QPen(outline, 1));
+  else
+    painter->setPen(Qt::NoPen);
   painter->drawEllipse(frameRect);
-
-  // focus/hover ring: solid thin stroke (shadcn-style ring-1), not translucent
-  // glow
-  if (focus && outline.isValid()) {
-    QColor ringColor(outline);
-    ringColor.setAlpha(255);
-    painter->setBrush(Qt::NoBrush);
-    painter->setPen(
-        QPen(ringColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    const QRectF ringRect(frameRect.adjusted(-2, -2, 2, 2));
-    painter->drawEllipse(ringRect);
-  }
 }
 
 //______________________________________________________________________________

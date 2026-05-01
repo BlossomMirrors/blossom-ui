@@ -40,7 +40,7 @@ public:
         : QPropertyAnimation(parent)
     {
         setDuration(duration);
-        setEasingCurve(QEasingCurve::InQuint);
+        setEasingCurve(QEasingCurve::InOutCubic);
     }
 
     //* true if running

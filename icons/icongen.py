@@ -214,12 +214,11 @@ Examples:
         """
     )
 
-    parser.add_argument('icon_name', help='Lucide icon name to fetch, or output icon name when using --local')
+    parser.add_argument('icon_name', help='Lucide icon name to fetch')
     parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<icon-name>.svgz is always the source)')
     parser.add_argument('--map', metavar='FILE', help='Icon mapping JSON file to update')
     parser.add_argument('--from-map', action='store_true',
                         help='Use source and target paths from mapping file (requires --map)')
-    parser.add_argument('--local', metavar='FILE', help='Use a local SVG file instead of fetching from Lucide')
 
     args = parser.parse_args()
 
@@ -254,18 +253,9 @@ Examples:
         source_path = f"source/{args.icon_name}.svgz"
         target_paths = args.target_paths
 
-    # Fetch or load icon
-    if args.local:
-        print(f"Reading local file '{args.local}'...")
-        try:
-            with open(args.local, 'r', encoding='utf-8') as f:
-                svg_content = f.read()
-        except OSError as e:
-            print(f"Error reading '{args.local}': {e}", file=sys.stderr)
-            sys.exit(1)
-    else:
-        print(f"Fetching '{args.icon_name}' from Lucide...")
-        svg_content = fetch_lucide_icon(args.icon_name)
+    # Fetch and process icon
+    print(f"Fetching '{args.icon_name}' from Lucide...")
+    svg_content = fetch_lucide_icon(args.icon_name)
 
     if not svg_content:
         sys.exit(1)
@@ -287,8 +277,7 @@ Examples:
         save_mapping(mapping, args.map)
         print(f"Updated mapping file: {args.map}")
 
-    source_label = args.local if args.local else f"Lucide/{args.icon_name}"
-    print(f"\n✓ Icon '{args.icon_name}' generated successfully! (source: {source_label})")
+    print(f"\n✓ Icon '{args.icon_name}' generated successfully!")
 
 
 if __name__ == '__main__':

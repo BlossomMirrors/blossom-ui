@@ -40,8 +40,8 @@ public:
     {
     }
 
-    //* register widget
-    bool registerWidget(QWidget *, AnimationModes);
+    //* register widget or Qt Quick object
+    bool registerWidget(QObject *, AnimationModes);
 
     //* returns registered widgets
     WidgetList registeredWidgets(AnimationModes) const;

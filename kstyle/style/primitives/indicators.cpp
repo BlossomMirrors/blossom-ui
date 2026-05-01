@@ -152,14 +152,16 @@ bool Style::drawIndicatorCheckBoxPrimitive(const QStyleOption *option,
     checkBoxState = CheckOn;
 
   // animation state
-  _animations->widgetStateEngine().updateState(widget, AnimationHover,
+  const QObject *styleObject(widget ? widget : option->styleObject);
+  isQtQuickControl(option, widget);
+  _animations->widgetStateEngine().updateState(styleObject, AnimationHover,
                                                mouseOver);
-  _animations->widgetStateEngine().updateState(widget, AnimationPressed,
+  _animations->widgetStateEngine().updateState(styleObject, AnimationPressed,
                                                checkBoxState != CheckOff);
-  if (_animations->widgetStateEngine().isAnimated(widget, AnimationPressed))
+  if (_animations->widgetStateEngine().isAnimated(styleObject, AnimationPressed))
     checkBoxState = CheckAnimated;
   const qreal animation(
-      _animations->widgetStateEngine().opacity(widget, AnimationPressed));
+      _animations->widgetStateEngine().opacity(styleObject, AnimationPressed));
 
   if (isSwitchCheckBox(option, widget))
     _helper->renderSwitch(painter, rect, palette, sunken, mouseOver,
@@ -188,27 +190,17 @@ bool Style::drawIndicatorRadioButtonPrimitive(const QStyleOption *option,
   RadioButtonState radioButtonState(state & State_On ? RadioOn : RadioOff);
 
   // animation state
-  _animations->widgetStateEngine().updateState(widget, AnimationHover,
+  const QObject *styleObject(widget ? widget : option->styleObject);
+  isQtQuickControl(option, widget);
+  _animations->widgetStateEngine().updateState(styleObject, AnimationHover,
                                                mouseOver);
   _animations->widgetStateEngine().updateState(
-      widget, AnimationPressed, radioButtonState != RadioOff, AnimationOutBack);
-  if (_animations->widgetStateEngine().isAnimated(widget, AnimationPressed))
+      styleObject, AnimationPressed, radioButtonState != RadioOff, AnimationOutBack);
+  if (_animations->widgetStateEngine().isAnimated(styleObject, AnimationPressed))
     radioButtonState = RadioAnimated;
   const qreal animation(
-      _animations->widgetStateEngine().opacity(widget, AnimationPressed));
+      _animations->widgetStateEngine().opacity(styleObject, AnimationPressed));
 
-  // colors
-  // const auto shadow( _helper->shadowColor( palette ) );
-  // const AnimationMode mode( _animations->widgetStateEngine().isAnimated(
-  // widget, AnimationHover ) ? AnimationHover:AnimationNone ); const qreal
-  // opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover )
-  // ); QColor background = itemViewParent( widget ) ? palette.color(
-  // QPalette::Base ) : palette.color( QPalette::Window ); const auto
-  // background( checked ? palette.color( QPalette::Highlight ) :
-  // _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity,
-  // mode ) ); const QColor color( palette.color( QPalette::HighlightedText ) );
-  // render
-  //_helper->renderRadioButtonBackground( painter, rect, background, sunken );
   _helper->renderRadioButton(painter, rect, palette, mouseOver, sunken,
                              radioButtonState, false, animation);
 

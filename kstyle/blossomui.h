@@ -121,6 +121,7 @@ static constexpr int Slider_TickLength = 8;
 static constexpr int Slider_TickMarginWidth = 2;
 static constexpr int Slider_GrooveThickness = 8;
 static constexpr int Slider_ControlThickness = 20;
+static constexpr int Slider_HoverMargin = 5;
 
 static constexpr int TabBar_TabMarginHeight = 8;
 static constexpr int TabBar_TabMarginWidth = 12;

@@ -1,6 +1,3 @@
-[AdaptiveTransparency]
-enabled=true
-
 [ContrastEffect]
 contrast=0.2
 enabled=false
@@ -8,13 +5,16 @@ intensity=0.4
 saturation=1.7
 
 [Desktop Entry]
-Comment=BlossomUI Plasma Theme with more margins, blur and rounded corners.
-Name=BlossomUI
-X-KDE-PluginInfo-Author=Yannik Ain
+Comment=A rounded theme for Plasma with transparency and blur that follows all color scheme
+Name=Utterly-Round
+X-KDE-PluginInfo-Author=Himprakash Deka
 X-KDE-PluginInfo-Category=Plasma Theme
-X-KDE-PluginInfo-Email=yannik@blossomos.org
+X-KDE-PluginInfo-Email=himprakashd@gmail.com
 X-KDE-PluginInfo-EnabledByDefault=true
-X-KDE-PluginInfo-License=GPLv2
-X-KDE-PluginInfo-Name=BlossomUI
-X-KDE-PluginInfo-Version=1.0.1
+X-KDE-PluginInfo-License=GPL-2.0+
+X-KDE-PluginInfo-Name=Utterly-Round
+X-KDE-PluginInfo-Version=2.1
 X-Plasma-API=5.0
+
+[AdaptiveTransparency]
+enabled=true

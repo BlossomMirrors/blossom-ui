@@ -221,9 +221,9 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
 
   // sliders
   case PM_SliderThickness:
-    return Metrics::Slider_ControlThickness;
+    return Metrics::Slider_ControlThickness + 2 * Metrics::Slider_HoverMargin;
   case PM_SliderControlThickness:
-    return Metrics::Slider_ControlThickness;
+    return Metrics::Slider_ControlThickness + 2 * Metrics::Slider_HoverMargin;
   case PM_SliderLength:
     return Metrics::Slider_ControlThickness;
 

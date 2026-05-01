@@ -45,8 +45,8 @@ public:
     //* constructor
     explicit Animations(QObject *);
 
-    //* register animations corresponding to given widget, depending on its type.
-    void registerWidget(QWidget *widget) const;
+    //* register animations corresponding to given widget or Qt Quick object.
+    void registerWidget(QObject *widget) const;
 
     /** unregister all animations associated to a widget */
     void unregisterWidget(QWidget *widget) const;

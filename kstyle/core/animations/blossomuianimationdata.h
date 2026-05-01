@@ -22,11 +22,19 @@
 
 #include "blossomuianimation.h"
 
+#if __has_include("config-blossomui.h")
+#include "config-blossomui.h"
+#else
+#define BLOSSOMUI_HAVE_QTQUICK 0
+#endif
+
 #include <QEvent>
 #include <QObject>
 #include <QWidget>
+#if BLOSSOMUI_HAVE_QTQUICK
+#include <QQuickItem>
+#endif
 
-#include <QDebug>
 #include <cmath>
 namespace BlossomUI
 {
@@ -38,7 +46,7 @@ class AnimationData : public QObject
 
 public:
     //* constructor
-    AnimationData(QObject *parent, QWidget *target)
+    AnimationData(QObject *parent, QObject *target)
         : QObject(parent)
         , _target(target)
     {
@@ -66,7 +74,7 @@ public:
     }
 
     //* target
-    const WeakPointer<QWidget> &target() const
+    const WeakPointer<QObject> &target() const
     {
         return _target;
     }
@@ -90,13 +98,19 @@ protected:
     //* trigger target update
     virtual void setDirty() const
     {
-        if (_target)
-            _target.data()->update();
+        if (!_target)
+            return;
+        if (auto widget = qobject_cast<QWidget *>(_target))
+            widget->update();
+#if BLOSSOMUI_HAVE_QTQUICK
+        else if (auto item = qobject_cast<QQuickItem *>(_target))
+            item->polish();
+#endif
     }
 
 private:
     //* guarded target
-    WeakPointer<QWidget> _target;
+    WeakPointer<QObject> _target;
 
     //* enability
     bool _enabled = true;

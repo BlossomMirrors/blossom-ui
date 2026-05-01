@@ -26,7 +26,7 @@ namespace BlossomUI
 {
 
 //____________________________________________________________
-bool WidgetStateEngine::registerWidget(QWidget *widget, AnimationModes mode)
+bool WidgetStateEngine::registerWidget(QObject *widget, AnimationModes mode)
 {
     if (!widget)
         return false;
@@ -56,33 +56,16 @@ BaseEngine::WidgetList WidgetStateEngine::registeredWidgets(AnimationModes mode)
 
     using Value = DataMap<WidgetStateData>::Value;
 
-    if (mode & AnimationHover) {
-        foreach (const Value &value, _hoverData) {
-            if (value)
-                out.insert(value.data()->target().data());
-        }
-    }
+    auto insertWidget = [&out](const Value &value) {
+        if (value)
+            if (auto *w = qobject_cast<QWidget *>(value.data()->target().data()))
+                out.insert(w);
+    };
 
-    if (mode & AnimationFocus) {
-        foreach (const Value &value, _focusData) {
-            if (value)
-                out.insert(value.data()->target().data());
-        }
-    }
-
-    if (mode & AnimationEnable) {
-        foreach (const Value &value, _enableData) {
-            if (value)
-                out.insert(value.data()->target().data());
-        }
-    }
-
-    if (mode & AnimationPressed) {
-        foreach (const Value &value, _pressedData) {
-            if (value)
-                out.insert(value.data()->target().data());
-        }
-    }
+    if (mode & AnimationHover) { foreach (const Value &value, _hoverData) insertWidget(value); }
+    if (mode & AnimationFocus) { foreach (const Value &value, _focusData) insertWidget(value); }
+    if (mode & AnimationEnable) { foreach (const Value &value, _enableData) insertWidget(value); }
+    if (mode & AnimationPressed) { foreach (const Value &value, _pressedData) insertWidget(value); }
 
     return out;
 }

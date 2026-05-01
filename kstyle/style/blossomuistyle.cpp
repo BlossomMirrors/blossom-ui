@@ -1208,32 +1208,8 @@ QIcon Style::standardIconImplementation(StandardPixmap standardPixmap,
   }
 }
 
-void Style::loadGlobalAnimationSettings() {
-  KSharedConfig::Ptr config = KSharedConfig::openConfig();
-  const KConfigGroup cg(config, QStringLiteral("KDE"));
-
-  // Don't override if it isn't set by the user
-  if (!cg.hasKey("AnimationDurationFactor")) {
-    return;
-  }
-
-  const int animationsDuration =
-      cg.readEntry("AnimationDurationFactor",
-                   StyleConfigData::animationsDuration() / 100.0f) *
-      100;
-  if (animationsDuration > 0) {
-    StyleConfigData::setAnimationsDuration(animationsDuration);
-    StyleConfigData::setAnimationsEnabled(true);
-  } else {
-    StyleConfigData::setAnimationsEnabled(false);
-  }
-}
-
 void Style::loadConfiguration() {
-  // load helper configuration
   _helper->loadConfig();
-
-  loadGlobalAnimationSettings();
 
   // update blurhelper
   _blurHelper->setTranslucentTitlebar(

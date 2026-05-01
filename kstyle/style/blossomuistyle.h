@@ -201,10 +201,6 @@ private:
   //* load configuration
   void loadConfiguration();
 
-  //* load KDE global animation settings (AnimationDurationFactor from System
-  // Settings)
-  void loadGlobalAnimationSettings();
-
   //*@name subelementRect specialized functions
   //@{
 

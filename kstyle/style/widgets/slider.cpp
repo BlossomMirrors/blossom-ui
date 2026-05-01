@@ -29,7 +29,9 @@ bool Style::drawSliderComplexControl(const QStyleOptionComplex *option,
   const State &state(option->state);
   const bool enabled(state & State_Enabled);
   const bool mouseOver(enabled && (state & State_MouseOver));
-  const bool hasFocus(enabled && (state & State_HasFocus));
+
+  const QObject *styleObject(widget ? widget : option->styleObject);
+  isQtQuickControl(option, widget);
 
   // direction
   const bool horizontal(sliderOption->orientation == Qt::Horizontal);
@@ -137,30 +139,26 @@ bool Style::drawSliderComplexControl(const QStyleOptionComplex *option,
 
       if (sliderOption->orientation == Qt::Horizontal) {
         auto leftRect(grooveRect);
-        leftRect.setRight(handleRect.right() -
-                          Metrics::Slider_ControlThickness / 2);
+        leftRect.setRight(handleRect.center().x());
         _helper->renderSliderGroove(
             painter, upsideDown ? leftRect.adjusted(0, 1, 0, -1) : leftRect,
             upsideDown ? grooveColor : highlight);
 
         auto rightRect(grooveRect);
-        rightRect.setLeft(handleRect.left() +
-                          Metrics::Slider_ControlThickness / 2);
+        rightRect.setLeft(handleRect.center().x());
         _helper->renderSliderGroove(
             painter, upsideDown ? rightRect : rightRect.adjusted(0, 1, 0, -1),
             upsideDown ? highlight : grooveColor);
 
       } else {
         auto topRect(grooveRect);
-        topRect.setBottom(handleRect.bottom() -
-                          Metrics::Slider_ControlThickness / 2);
+        topRect.setBottom(handleRect.center().y());
         _helper->renderSliderGroove(
             painter, upsideDown ? topRect.adjusted(1, 0, -1, 0) : topRect,
             upsideDown ? grooveColor : highlight);
 
         auto bottomRect(grooveRect);
-        bottomRect.setTop(handleRect.top() +
-                          Metrics::Slider_ControlThickness / 2);
+        bottomRect.setTop(handleRect.center().y());
         _helper->renderSliderGroove(
             painter, upsideDown ? bottomRect : bottomRect.adjusted(1, 0, -1, 0),
             upsideDown ? highlight : grooveColor);
@@ -178,30 +176,22 @@ bool Style::drawSliderComplexControl(const QStyleOptionComplex *option,
     const bool handleActive(sliderOption->activeSubControls & SC_SliderHandle);
     const bool sunken(state & (State_On | State_Sunken));
 
-    // animation state
-    _animations->widgetStateEngine().updateState(widget, AnimationHover,
-                                                 handleActive && mouseOver);
-    _animations->widgetStateEngine().updateState(widget, AnimationFocus,
-                                                 hasFocus);
-    // const AnimationMode mode(
-    // _animations->widgetStateEngine().buttonAnimationMode( widget ) ); const
-    // qreal opacity( _animations->widgetStateEngine().buttonOpacity( widget )
-    // );
+    const bool hovered(handleActive && mouseOver);
+    _animations->widgetStateEngine().updateState(styleObject, AnimationHover,
+                                                 hovered);
 
-    // define colors (solid opaque, like shadcn thumb)
-    QColor background(palette.color(QPalette::Button));
-    if (hasFocus || mouseOver) {
-      background = KColorUtils::mix(background,
-                                    palette.color(QPalette::Highlight), 0.15);
-    }
-    background.setAlpha(255);
-    QColor outline(
-        KColorUtils::mix(background, palette.color(QPalette::WindowText), 0.2));
-    outline.setAlpha(255);
+    const bool isHoverAnimated(
+        _animations->widgetStateEngine().isAnimated(styleObject, AnimationHover));
+    const qreal hoverOpacity =
+        isHoverAnimated
+            ? _animations->widgetStateEngine().opacity(styleObject, AnimationHover)
+            : (hovered ? 1.0 : 0.0);
 
-    // render
+    QColor background(palette.color(QPalette::Text));
+    QColor outline(palette.color(QPalette::Highlight));
+
     _helper->renderSliderHandle(painter, handleRect, background, outline,
-                                (hasFocus || mouseOver), sunken);
+                                hoverOpacity, sunken);
   }
 
   return true;
@@ -220,7 +210,6 @@ bool Style::drawDialComplexControl(const QStyleOptionComplex *option,
   const State &state(option->state);
   const bool enabled(state & State_Enabled);
   const bool mouseOver(enabled && (state & State_MouseOver));
-  const bool hasFocus(enabled && (state & State_HasFocus));
 
   // do not render tickmarks
   if (sliderOption->subControls & SC_DialTickmarks) {
@@ -273,23 +262,23 @@ bool Style::drawDialComplexControl(const QStyleOptionComplex *option,
         handleRect.contains(_animations->dialEngine().position(widget)));
     const bool sunken(state & (State_On | State_Sunken));
 
-    // animation state
+    const bool hovered(handleActive && mouseOver);
     _animations->dialEngine().setHandleRect(widget, handleRect);
-    _animations->dialEngine().updateState(widget, AnimationHover,
-                                          handleActive && mouseOver);
-    _animations->dialEngine().updateState(widget, AnimationFocus, hasFocus);
-    // const auto mode( _animations->dialEngine().buttonAnimationMode( widget )
-    // ); const qreal opacity( _animations->dialEngine().buttonOpacity( widget )
-    // );
+    _animations->dialEngine().updateState(widget, AnimationHover, hovered);
 
-    // define colors
+    const bool isHoverAnimated(
+        _animations->dialEngine().isAnimated(widget, AnimationHover));
+    const qreal hoverOpacity =
+        isHoverAnimated
+            ? _animations->dialEngine().opacity(widget, AnimationHover)
+            : (hovered ? 1.0 : 0.0);
+
     const auto background = palette.color(QPalette::Button);
     const auto outline =
         KColorUtils::mix(background, palette.color(QPalette::WindowText), 0.2);
 
-    // render
     _helper->renderSliderHandle(painter, handleRect, background, outline,
-                                (hasFocus || mouseOver), sunken);
+                                hoverOpacity, sunken);
   }
 
   return true;

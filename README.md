@@ -6,7 +6,7 @@ BlossomUI is a fork of [Darkly](https://github.com/Bali10050/Darkly), which is a
 
 ### Future
 
-We plan to adopt [KDE Union](https://invent.kde.org/plasma/union), KDE’s unified SVG-based theming engine, once it is mature—to simplify and modernize the codebase. See [“Moving KDE's styling into the future”](https://quantumproductions.info/articles/2025-02/moving-kdes-styling-future) for an overview.
+We plan to adopt [KDE Union](https://invent.kde.org/plasma/union), KDE’s unified SVG-based theming engine, once it is mature to simplify and modernize the codebase. See [“Moving KDE's styling into the future”](https://quantumproductions.info/articles/2025-02/moving-kdes-styling-future) for an overview.
 
 ## Installation
 

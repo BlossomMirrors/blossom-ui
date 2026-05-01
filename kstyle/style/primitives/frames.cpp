@@ -36,6 +36,8 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
           // not renaming area
           && !qobject_cast<QAbstractScrollArea *>(pw)
           // only Dolphin's view
+          //
+          //
           && QString(pw->metaObject()->className()).startsWith("Dolphin")) {
         if (widget->property("VISIBLE-SEPARATORS").toBool()) {
           QRect copy = rect.adjusted(12, 0, -12, 0);
@@ -155,17 +157,16 @@ bool Style::drawFrameLineEditPrimitive(const QStyleOption *option,
     const bool mouseOver(enabled && (state & State_MouseOver));
     const bool hasFocus(enabled && (state & State_HasFocus));
 
-    // focus takes precedence over mouse over (default duration, not
-    // AnimationLongDuration - was too slow)
-    _animations->inputWidgetEngine().updateState(widget, AnimationFocus,
+    const QObject *styleObject(widget ? widget : option->styleObject);
+
+    // focus takes precedence over mouse over
+    _animations->inputWidgetEngine().updateState(styleObject, AnimationFocus,
                                                  hasFocus);
-    //_animations->inputWidgetEngine().updateState( widget, AnimationHover,
-    // mouseOver && !hasFocus );
 
     // retrieve animation mode and opacity
     AnimationMode mode(
-        _animations->inputWidgetEngine().frameAnimationMode(widget));
-    qreal opacity(_animations->inputWidgetEngine().frameOpacity(widget));
+        _animations->inputWidgetEngine().frameAnimationMode(styleObject));
+    qreal opacity(_animations->inputWidgetEngine().frameOpacity(styleObject));
     if (hasFocus) {
       outline = palette.color(QPalette::Highlight);
     } else {

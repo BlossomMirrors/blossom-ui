@@ -108,7 +108,7 @@ void Animations::setupEngines()
 }
 
 //____________________________________________________________
-void Animations::registerWidget(QWidget *widget) const
+void Animations::registerWidget(QObject *widget) const
 {
     if (!widget)
         return;
@@ -118,97 +118,77 @@ void Animations::registerWidget(QWidget *widget) const
     if (propertyValue.isValid() && propertyValue.toBool())
         return;
 
+    // Qt Quick Controls: register by elementType property
+    const QString elementType = widget->property("elementType").toString();
+    if (!elementType.isEmpty()) {
+        if (elementType == QLatin1String("checkbox") || elementType == QLatin1String("radiobutton")) {
+            _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);
+        } else if (elementType == QLatin1String("button") || elementType == QLatin1String("toolbutton")) {
+            _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);
+        } else if (elementType == QLatin1String("slider") || elementType == QLatin1String("dial")) {
+            _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus);
+        } else if (elementType == QLatin1String("edit") || elementType == QLatin1String("combobox")
+                   || elementType == QLatin1String("spinbox")) {
+            _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
+        }
+        return;
+    }
+
+    // Qt Quick controls without an elementType are not QWidgets; skip widget-only engines
+    QWidget *w = qobject_cast<QWidget *>(widget);
+    if (!w)
+        return;
+
     // all widgets are registered to the enability engine.
-    _widgetEnabilityEngine->registerWidget(widget, AnimationEnable);
+    _widgetEnabilityEngine->registerWidget(w, AnimationEnable);
 
     // install animation timers
     // for optimization, one should put with most used widgets here first
 
     // buttons
-    if (qobject_cast<QToolButton *>(widget)) {
-        _toolButtonEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-        _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);
+    if (qobject_cast<QToolButton *>(w)) {
+        _toolButtonEngine->registerWidget(w, AnimationHover | AnimationFocus);
+        _widgetStateEngine->registerWidget(w, AnimationHover | AnimationFocus | AnimationPressed);
 
-    } else if (qobject_cast<QCheckBox *>(widget) || qobject_cast<QRadioButton *>(widget)) {
-        _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);
+    } else if (qobject_cast<QCheckBox *>(w) || qobject_cast<QRadioButton *>(w)) {
+        _widgetStateEngine->registerWidget(w, AnimationHover | AnimationFocus | AnimationPressed);
 
-    } else if (qobject_cast<QAbstractButton *>(widget)) {
-        // register to toolbox engine if needed
-        if (qobject_cast<QToolBox *>(widget->parent())) {
-            _toolBoxEngine->registerWidget(widget);
-        }
+    } else if (qobject_cast<QAbstractButton *>(w)) {
+        if (qobject_cast<QToolBox *>(w->parent()))
+            _toolBoxEngine->registerWidget(w);
+        _widgetStateEngine->registerWidget(w, AnimationHover | AnimationFocus | AnimationPressed);
 
-        _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus | AnimationPressed);
+    } else if (QGroupBox *groupBox = qobject_cast<QGroupBox *>(w)) {
+        if (groupBox->isCheckable())
+            _widgetStateEngine->registerWidget(w, AnimationHover | AnimationFocus);
 
-    }
-
-    // groupboxes
-    else if (QGroupBox *groupBox = qobject_cast<QGroupBox *>(widget)) {
-        if (groupBox->isCheckable()) {
-            _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-        }
-    }
-
-    // sliders
-    else if (qobject_cast<QScrollBar *>(widget)) {
-        _scrollBarEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    } else if (qobject_cast<QSlider *>(widget)) {
-        _widgetStateEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    } else if (qobject_cast<QDial *>(widget)) {
-        _dialEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    }
-
-    else if (qobject_cast<QMenu *>(widget)) {
-        _widgetStateEngine->registerWidget(widget, AnimationHover);
-    }
-
-    // progress bar
-    else if (qobject_cast<QProgressBar *>(widget)) {
-        _busyIndicatorEngine->registerWidget(widget);
-    }
-
-    // combo box
-    else if (qobject_cast<QComboBox *>(widget)) {
-        _comboBoxEngine->registerWidget(widget, AnimationHover);
-        _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    }
-
-    // spinbox
-    else if (qobject_cast<QSpinBox *>(widget)) {
-        _spinBoxEngine->registerWidget(widget);
-        _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    }
-
-    // editors
-    else if (qobject_cast<QLineEdit *>(widget)) {
-        _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    } else if (qobject_cast<QTextEdit *>(widget)) {
-        _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    } else if (widget->inherits("KTextEditor::View")) {
-        _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    }
-
-    // header views
-    // need to come before abstract item view, otherwise is skipped
-    else if (qobject_cast<QHeaderView *>(widget)) {
-        _headerViewEngine->registerWidget(widget);
-    }
-
-    // lists
-    else if (qobject_cast<QAbstractItemView *>(widget)) {
-        _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-    }
-
-    // tabbar
-    else if (qobject_cast<QTabBar *>(widget)) {
-        _tabBarEngine->registerWidget(widget);
-    }
-
-    // scrollarea
-    else if (QAbstractScrollArea *scrollArea = qobject_cast<QAbstractScrollArea *>(widget)) {
-        if (scrollArea->frameShadow() == QFrame::Sunken && (widget->focusPolicy() & Qt::StrongFocus)) {
-            _inputWidgetEngine->registerWidget(widget, AnimationHover | AnimationFocus);
-        }
+    } else if (qobject_cast<QScrollBar *>(w)) {
+        _scrollBarEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QSlider *>(w)) {
+        _widgetStateEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QDial *>(w)) {
+        _dialEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QMenu *>(w)) {
+        _widgetStateEngine->registerWidget(w, AnimationHover);
+    } else if (qobject_cast<QProgressBar *>(w)) {
+        _busyIndicatorEngine->registerWidget(w);
+    } else if (qobject_cast<QComboBox *>(w)) {
+        _comboBoxEngine->registerWidget(w, AnimationHover);
+        _inputWidgetEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QSpinBox *>(w)) {
+        _spinBoxEngine->registerWidget(w);
+        _inputWidgetEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QLineEdit *>(w) || qobject_cast<QTextEdit *>(w) || w->inherits("KTextEditor::View")) {
+        _inputWidgetEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QHeaderView *>(w)) {
+        _headerViewEngine->registerWidget(w);
+    } else if (qobject_cast<QAbstractItemView *>(w)) {
+        _inputWidgetEngine->registerWidget(w, AnimationHover | AnimationFocus);
+    } else if (qobject_cast<QTabBar *>(w)) {
+        _tabBarEngine->registerWidget(w);
+    } else if (QAbstractScrollArea *scrollArea = qobject_cast<QAbstractScrollArea *>(w)) {
+        if (scrollArea->frameShadow() == QFrame::Sunken && (w->focusPolicy() & Qt::StrongFocus))
+            _inputWidgetEngine->registerWidget(w, AnimationHover | AnimationFocus);
     }
 
     // stacked widgets

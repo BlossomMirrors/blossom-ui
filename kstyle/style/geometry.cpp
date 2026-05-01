@@ -1338,32 +1338,30 @@ QRect Style::sliderSubControlRect(const QStyleOptionComplex *option,
     QRect ret(centerRect(rect, Metrics::Slider_ControlThickness,
                          Metrics::Slider_ControlThickness));
 
-    constexpr int len = Metrics::Slider_ControlThickness;
+    constexpr int len = Metrics::Slider_ControlThickness + 2 * Metrics::Slider_HoverMargin;
     const int sliderPos = sliderPositionFromValue(
         sliderOption->minimum, sliderOption->maximum,
         sliderOption->sliderPosition,
         (horizontal ? rect.width() : rect.height()) - len,
         sliderOption->upsideDown);
     if (horizontal) {
-      ret.moveLeft(rect.x() + sliderPos);
+      ret.moveLeft(rect.x() + Metrics::Slider_HoverMargin + sliderPos);
     } else {
-      ret.moveTop(rect.y() + sliderPos);
+      ret.moveTop(rect.y() + Metrics::Slider_HoverMargin + sliderPos);
     }
     ret = visualRect(option->direction, rect, ret);
     return ret;
   }
   case SC_SliderGroove: {
-    // get base class rect
     auto grooveRect =
         insideMargin(rect, pixelMetric(PM_DefaultFrameWidth, option, widget));
 
-    // centering
     if (horizontal) {
-      grooveRect =
-          centerRect(rect, grooveRect.width(), Metrics::Slider_GrooveThickness);
+      grooveRect = centerRect(rect, grooveRect.width(), Metrics::Slider_GrooveThickness);
+      grooveRect.adjust(Metrics::Slider_HoverMargin, 0, -Metrics::Slider_HoverMargin, 0);
     } else {
-      grooveRect = centerRect(rect, Metrics::Slider_GrooveThickness,
-                              grooveRect.height());
+      grooveRect = centerRect(rect, Metrics::Slider_GrooveThickness, grooveRect.height());
+      grooveRect.adjust(0, Metrics::Slider_HoverMargin, 0, -Metrics::Slider_HoverMargin);
     }
     return grooveRect;
   }

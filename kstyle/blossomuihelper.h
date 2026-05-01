@@ -311,7 +311,7 @@ public:
 
   //* slider handle
   void renderSliderHandle(QPainter *, const QRect &, const QColor &,
-                          const QColor &, const bool focus, bool sunken) const;
+                          const QColor &, qreal hoverOpacity, bool sunken) const;
 
   //* dial groove
   void renderDialGroove(QPainter *, const QRect &, const QColor &, qreal first,

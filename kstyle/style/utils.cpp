@@ -530,9 +530,11 @@ bool Style::isQtQuickControl(const QStyleOption *option,
 #if BLOSSOMUI_HAVE_QTQUICK
   const bool is = (widget == nullptr) && option && option->styleObject &&
                   option->styleObject->inherits("QQuickItem");
-  if (is)
-    _windowManager->registerQuickItem(
-        static_cast<QQuickItem *>(option->styleObject));
+  if (is) {
+    auto *item = static_cast<QQuickItem *>(option->styleObject);
+    _windowManager->registerQuickItem(item);
+    _animations->registerWidget(item);
+  }
   return is;
 #else
   Q_UNUSED(widget);
