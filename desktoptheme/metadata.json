@@ -1,23 +1,24 @@
 {
-    "KPackageStructure": "Plasma/Theme",
-    "KPlugin": {
-        "Authors": [
-            {
-                "Email": "info@himdek.com",
-                "Name": "Himprakash Deka"
-            }
-        ],
-        "Category": "Plasma Theme",
-        "ServiceTypes": [
-            "Plasma/Theme"
-        ],
-        "EnabledByDefault": true,
-        "Name": "Utterly-Round",
-        "Description": "A rounded theme for Plasma with transparency and blur that follows all color scheme",
-        "Id": "Utterly-Round",
-        "Version": "2.1",
-        "License": "GPL-2.0+",
-        "X-KPackage-Dependencies": [
-        ]
-    }
+  "KPackageStructure": "Plasma/Theme",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "hello@blossomos.org",
+        "Name": "BlossomOS"
+      },
+      {
+        "Email": "yannik@blossomos.org",
+        "Name": "Yannik Ain"
+      }
+    ],
+    "Category": "Plasma Theme",
+    "ServiceTypes": ["Plasma/Theme"],
+    "EnabledByDefault": true,
+    "Name": "BlossomUI",
+    "Description": "BlossomUI Plasma Theme with more margins, blur and rounded corners.",
+    "Id": "BlossomUI",
+    "Version": "1.0",
+    "License": "GPLv2",
+    "X-KPackage-Dependencies": []
+  }
 }
