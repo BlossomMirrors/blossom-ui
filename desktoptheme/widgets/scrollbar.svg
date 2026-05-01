@@ -26,16 +26,15 @@
      inkscape:document-units="px"
      showgrid="true"
      shape-rendering="crispEdges"
-     inkscape:zoom="41.289524"
-     inkscape:cx="31.012709"
-     inkscape:cy="23.5653"
+     inkscape:zoom="37.814273"
+     inkscape:cx="28.124301"
+     inkscape:cy="25.81036"
      inkscape:current-layer="layer1"
-     inkscape:window-width="1536"
-     inkscape:window-height="779"
+     inkscape:window-width="2560"
+     inkscape:window-height="1362"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     showguides="false">
+     inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
        id="grid3767"
@@ -93,38 +92,60 @@
        y="553" />
     <rect
        class="ColorScheme-Highlight"
-       style="opacity:0.4;fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round"
-       id="slider-right"
-       width="2"
-       height="8"
+       style="opacity:0.4;fill:currentColor;fill-opacity:1;stroke-width:0.999999;stroke-linecap:round;stroke-linejoin:round"
+       id="slider-center"
+       width="1"
+       height="4"
        x="555"
-       y="548" />
+       y="550" />
+    <rect
+       class="ColorScheme-Highlight"
+       style="opacity:0.4;fill:currentColor;fill-opacity:1;stroke-width:0.999998;stroke-linecap:round;stroke-linejoin:round"
+       id="slider-top"
+       width="1"
+       height="4"
+       x="555"
+       y="546" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#slider-top"
+       id="slider-bottom"
+       transform="translate(0,7.9999995)" />
+    <rect
+       class="ColorScheme-Highlight"
+       style="fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;opacity:0.4"
+       id="slider-right"
+       width="4"
+       height="3.9999995"
+       x="556"
+       y="550" />
     <use
        x="0"
        y="0"
        xlink:href="#slider-right"
        id="slider-left"
-       transform="translate(-2)" />
+       transform="translate(-5)" />
     <path
        class="ColorScheme-Highlight"
-       style="opacity:0.4;fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.4;fill:currentColor;fill-opacity:1;stroke-width:0.999999;stroke-linecap:round;stroke-linejoin:round"
        id="slider-topright"
        sodipodi:type="arc"
-       sodipodi:cx="555"
-       sodipodi:cy="-548"
-       sodipodi:rx="2"
-       sodipodi:ry="2"
+       sodipodi:cx="556"
+       sodipodi:cy="-550"
+       sodipodi:rx="4"
+       sodipodi:ry="4"
        sodipodi:start="0"
        sodipodi:end="1.5707963"
        sodipodi:arc-type="slice"
-       d="m 557,-548 a 2,2 0 0 1 -2,2 v -2 z"
+       d="m 560,-550 a 4,4 0 0 1 -4,4 v -4 z"
        transform="scale(1,-1)" />
     <use
        x="0"
        y="0"
        xlink:href="#slider-topright"
        id="slider-topleft"
-       transform="matrix(-1,0,0,1,1110,-2.0000004e-7)" />
+       transform="matrix(-1,0,0,1,1111,-2.0000004e-7)" />
     <use
        x="0"
        y="0"
@@ -136,7 +157,7 @@
        y="0"
        xlink:href="#slider-topright"
        id="slider-bottomleft"
-       transform="rotate(180,555,552)" />
+       transform="rotate(180,555.5,552)" />
     <rect
        id="mouseover-slider-hint-right-inset"
        height="1"
@@ -169,19 +190,35 @@
        width="1"
        x="586"
        y="553" />
+    <rect
+       class="ColorScheme-Highlight"
+       style="opacity:1;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+       id="mouseover-slider-center"
+       width="1"
+       height="3.9999995"
+       x="570"
+       y="550" />
+    <rect
+       class="ColorScheme-Highlight"
+       style="opacity:1;fill:currentColor;fill-opacity:1;stroke-width:0.999996;stroke-linecap:round;stroke-linejoin:round"
+       id="mouseover-slider-top"
+       width="1"
+       height="4"
+       x="570"
+       y="546" />
     <path
        class="ColorScheme-Highlight"
-       style="opacity:1;fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:1;fill:currentColor;fill-opacity:1;stroke-width:0.999998;stroke-linecap:round;stroke-linejoin:round"
        id="mouseover-slider-topright"
        sodipodi:type="arc"
-       sodipodi:cx="570"
-       sodipodi:cy="-548"
-       sodipodi:rx="2"
-       sodipodi:ry="2"
+       sodipodi:cx="571"
+       sodipodi:cy="-550"
+       sodipodi:rx="4"
+       sodipodi:ry="4"
        sodipodi:start="0"
        sodipodi:end="1.5707963"
        sodipodi:arc-type="slice"
-       d="m 572,-548 a 2,2 0 0 1 -2,2 v -2 z"
+       d="m 575,-550 a 4,4 0 0 1 -4,4 v -4 z"
        transform="scale(1,-1)" />
     <rect
        id="background-vertical-hint-right-inset"
@@ -215,26 +252,32 @@
        width="1"
        x="586"
        y="568" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#mouseover-slider-top"
+       id="mouseover-slider-bottom"
+       transform="translate(0,7.9999997)" />
     <rect
        class="ColorScheme-Highlight"
-       style="fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="mouseover-slider-right"
-       width="2"
-       height="8"
-       x="570"
-       y="548" />
+       width="4"
+       height="4"
+       x="571"
+       y="550" />
     <use
        x="0"
        y="0"
        xlink:href="#mouseover-slider-right"
        id="mouseover-slider-left"
-       transform="translate(-2)" />
+       transform="translate(-5)" />
     <use
        x="0"
        y="0"
        xlink:href="#mouseover-slider-topright"
        id="mouseover-slider-topleft"
-       transform="matrix(-1,0,0,1,1140,-2.0000004e-7)" />
+       transform="matrix(-1,0,0,1,1141,-2.0000004e-7)" />
     <use
        x="0"
        y="0"
@@ -246,33 +289,54 @@
        y="0"
        xlink:href="#mouseover-slider-topright"
        id="mouseover-slider-bottomleft"
-       transform="rotate(180,570,552)" />
+       transform="rotate(180,570.5,552)" />
     <rect
        class="ColorScheme-Text"
-       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:0.999998;stroke-linecap:round;stroke-linejoin:round"
-       id="background-vertical-right"
-       width="2"
-       height="8"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+       id="background-vertical-center"
+       width="1"
+       height="3.9999993"
        x="570"
-       y="563" />
+       y="565" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#background-vertical-center"
+       id="background-vertical-top"
+       transform="translate(0,-4.0000007)"
+       style="opacity:1" />
+    <rect
+       class="ColorScheme-Text"
+       style="fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round;opacity:0.2"
+       id="background-vertical-right"
+       width="4"
+       height="3.9999993"
+       x="571"
+       y="565" />
     <use
        x="0"
        y="0"
        xlink:href="#background-vertical-topright"
        id="background-vertical-topleft"
-       transform="matrix(-1,0,0,1,1140,-6.9999999e-7)" />
+       transform="matrix(-1,0,0,1,1141,-6.9999999e-7)" />
     <use
        x="0"
        y="0"
        xlink:href="#background-vertical-right"
        id="background-vertical-left"
-       transform="translate(-2)" />
+       transform="translate(-5)" />
     <use
        x="0"
        y="0"
        xlink:href="#background-vertical-topright"
        id="background-vertical-bottomleft"
-       transform="rotate(180,570,567)" />
+       transform="rotate(180,570.5,567)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#background-vertical-center"
+       id="background-vertical-bottom"
+       transform="translate(0,3.999999)" />
     <use
        x="0"
        y="0"
@@ -289,17 +353,17 @@
        style="fill:currentColor;fill-rule:evenodd;stroke-width:0.999999" />
     <path
        class="ColorScheme-Text"
-       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:0.999998;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-topright"
        sodipodi:type="arc"
-       sodipodi:cx="570"
-       sodipodi:cy="-563"
-       sodipodi:rx="2"
-       sodipodi:ry="2"
+       sodipodi:cx="571"
+       sodipodi:cy="-565"
+       sodipodi:rx="4"
+       sodipodi:ry="4"
        sodipodi:start="0"
        sodipodi:end="1.5707963"
        sodipodi:arc-type="slice"
-       d="m 572,-563 a 2,2 0 0 1 -2,2 v -2 z"
+       d="m 575,-565 a 4,4 0 0 1 -4,4 v -4 z"
        transform="scale(1,-1)" />
   </g>
 </svg>
