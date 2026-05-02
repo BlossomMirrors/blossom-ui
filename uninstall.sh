@@ -53,3 +53,12 @@ rm -f /usr/share/color-schemes/${_PROJECT}DarkOLED.colors
 rm -rf /usr/share/plasma/look-and-feel/org.blossomos.${PROJECT}light.desktop
 rm -rf /usr/share/plasma/look-and-feel/org.blossomos.${PROJECT}dark.desktop
 rm -rf /usr/share/plasma/look-and-feel/org.blossomos.${PROJECT}darkoled.desktop
+
+# Plasma Desktop Theme
+rm -rf /usr/share/plasma/desktopthemes/${_PROJECT}
+
+# Wallpapers
+rm -rf /usr/share/wallpapers/Blossom\ Rays
+
+# Icons
+rm -rf "/usr/share/icons/${_PROJECT}-Icons"

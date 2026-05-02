@@ -206,9 +206,27 @@ function(build_lookandfeel)
     add_subdirectory(lookandfeel)
 endfunction()
 
+function(build_desktoptheme)
+    include(KDEInstallDirs)
+    add_subdirectory(desktoptheme)
+endfunction()
+
+function(build_wallpapers)
+    include(KDEInstallDirs)
+    add_subdirectory(wallpapers)
+endfunction()
+
+function(build_icons)
+    include(KDEInstallDirs)
+    add_subdirectory(icons)
+endfunction()
+
 if (NOT FOR_FLATPAK)
     build_colors()
     build_lookandfeel()
+    build_desktoptheme()
+    build_wallpapers()
+    build_icons()
 endif()
 
 # add clang-format target for all our real source files

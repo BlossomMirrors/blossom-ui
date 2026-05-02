@@ -57,8 +57,27 @@ configure_dolphin() {
 
 echo "applying blossomui $MODE theme..."
 
-# install icon pack (requires sudo)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# install desktop theme (requires sudo)
+if [ -d "${SCRIPT_DIR}/desktoptheme" ]; then
+    echo "installing BlossomUI Desktop Theme..."
+    sudo rm -rf "/usr/share/plasma/desktopthemes/BlossomUI"
+    sudo mkdir -p "/usr/share/plasma/desktopthemes/BlossomUI"
+    sudo cp -r "${SCRIPT_DIR}/desktoptheme/." "/usr/share/plasma/desktopthemes/BlossomUI/"
+fi
+
+# install wallpapers (requires sudo)
+if [ -d "${SCRIPT_DIR}/wallpapers" ]; then
+    echo "installing BlossomUI Wallpapers..."
+    for wall in "${SCRIPT_DIR}"/wallpapers/*/; do
+        name=$(basename "$wall")
+        sudo rm -rf "/usr/share/wallpapers/${name}"
+        sudo cp -r "$wall" "/usr/share/wallpapers/"
+    done
+fi
+
+# install icon pack (requires sudo)
 if [ -f "${SCRIPT_DIR}/icons/install.sh" ]; then
     echo "installing BlossomUI Icons..."
     bash "${SCRIPT_DIR}/icons/install.sh"
@@ -93,6 +112,11 @@ fi
 
 plasma-apply-lookandfeel --apply "$THEME_ID" 2>/dev/null
 plasma-apply-colorscheme "$COLOR_SCHEME_NO_SPACE" 2>/dev/null
+
+# set wallpaper explicitly
+if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
+    plasma-apply-wallpaperimage BlossomRays 2>/dev/null || true
+fi
 if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
     plasma-apply-desktoptheme BlossomUI 2>/dev/null
 else
