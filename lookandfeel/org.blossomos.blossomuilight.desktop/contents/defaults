@@ -5,7 +5,7 @@ widgetStyle=BlossomUI
 ColorScheme=BlossomUI Light
 
 [kdeglobals][Icons]
-Theme=BlossomUI Icons
+Theme=BlossomUI
 
 [plasmarc][Theme]
 name=BlossomUI
@@ -14,7 +14,7 @@ name=BlossomUI
 panelOpacity=2
 
 [Wallpaper]
-Image=BlossomRays
+Image=Blossom Rays
 
 [kcminputrc][Mouse]
 cursorTheme=Bibata-Modern-Classic

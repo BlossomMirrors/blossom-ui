@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment=BlossomUI Dark - A modern dark theme for Plasma
+Comment[en_GB]=BlossomUI Dark - A modern dark theme for Plasma
+Name=BlossomUI Dark
+Name[en_GB]=BlossomUI Dark
+Type=Service
+X-KDE-ServiceTypes=Plasma/LookAndFeel
+X-KDE-PluginInfo-Author=Yannik Ain
+X-KDE-PluginInfo-Category=Plasma Theme
+X-KDE-PluginInfo-Email=hello@blossomos.org
+X-KDE-PluginInfo-EnabledByDefault=false
+X-KDE-PluginInfo-License=GPL-2.0-or-later
+X-KDE-PluginInfo-Name=org.blossomos.blossomuidark.desktop
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://blossomos.org
+X-Plasma-IconTheme=BlossomUI
+X-Plasma-Wallpaper=BlossomRays
+X-Plasma-ColorScheme=BlossomUI Dark
+X-Plasma-LookAndFeelVersion=1.0

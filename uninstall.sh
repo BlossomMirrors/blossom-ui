@@ -61,4 +61,4 @@ rm -rf /usr/share/plasma/desktopthemes/${_PROJECT}
 rm -rf /usr/share/wallpapers/Blossom\ Rays
 
 # Icons
-rm -rf "/usr/share/icons/${_PROJECT}-Icons"
+rm -rf "/usr/share/icons/${_PROJECT}"

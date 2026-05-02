@@ -1,3 +1,3 @@
 install(DIRECTORY .
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/plasma/desktopthemes/BlossomUI
+        DESTINATION ${KDE_INSTALL_DATADIR}/plasma/desktoptheme/BlossomUI
         PATTERN "CMakeLists.txt" EXCLUDE)

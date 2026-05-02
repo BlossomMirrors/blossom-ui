@@ -1,17 +1,18 @@
 {
-    "KPlugin": {
-        "Authors": [
-            {
-                "Email": "hello@blossomos.org",
-                "Name": "BlossomOS",
-            }
-            {
-                "Email": "yannik@blossomos.org",
-                "Name": "Yannik Ain",
-            }
-        ],
-        "Id": "BlossomRays",
-        "License": "CC-BY-SA-4.0",
-        "Name": "Blossom Rays",
-    }
+  "KPackageStructure": "Plasma/Wallpaper",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "hello@blossomos.org",
+        "Name": "BlossomOS"
+      },
+      {
+        "Email": "yannik@blossomos.org",
+        "Name": "Yannik Ain"
+      }
+    ],
+    "Id": "Blossom Rays",
+    "License": "CC-BY-SA-4.0",
+    "Name": "Blossom Rays"
+  }
 }
