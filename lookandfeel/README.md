@@ -4,7 +4,7 @@ This directory contains the KDE Plasma Look and Feel packages for BlossomUI, pro
 
 ## Available Themes
 
-### BlossomUI Light (`org.blossomos.blossomuilight.desktop`)
+### BlossomUI Light (`org.blossomos.ui.light.desktop`)
 A modern light theme featuring:
 - **Widget Style**: BlossomUI
 - **Color Scheme**: BlossomUI Light
@@ -13,7 +13,7 @@ A modern light theme featuring:
 - **Window Decorations**: BlossomUI
 - **Sound Theme**: Ocean
 
-### BlossomUI Dark (`org.blossomos.blossomuidark.desktop`)
+### BlossomUI Dark (`org.blossomos.ui.dark.desktop`)
 A modern dark theme featuring:
 - **Widget Style**: BlossomUI
 - **Color Scheme**: BlossomUI Dark
@@ -55,14 +55,14 @@ To manually set up automatic switching after installation:
 
 ```bash
 # Set light and dark themes for automatic switching
-kwriteconfig6 --file ~/.config/plasmarc --group Theme --key LightLookAndFeel "org.blossomos.blossomuilight.desktop"
-kwriteconfig6 --file ~/.config/plasmarc --group Theme --key DarkLookAndFeel "org.blossomos.blossomuidark.desktop"
+kwriteconfig6 --file ~/.config/plasmarc --group Theme --key LightLookAndFeel "org.blossomos.ui.light.desktop"
+kwriteconfig6 --file ~/.config/plasmarc --group Theme --key DarkLookAndFeel "org.blossomos.ui.dark.desktop"
 kwriteconfig6 --file ~/.config/plasmarc --group Theme --key LightColorScheme "BlossomUI Light"
 kwriteconfig6 --file ~/.config/plasmarc --group Theme --key DarkColorScheme "BlossomUI Dark"
 
 # Apply a theme immediately
-plasma-apply-lookandfeel -a org.blossomos.blossomuilight.desktop  # For Light
-plasma-apply-lookandfeel -a org.blossomos.blossomuidark.desktop   # For Dark
+plasma-apply-lookandfeel -a org.blossomos.ui.light.desktop  # For Light
+plasma-apply-lookandfeel -a org.blossomos.ui.dark.desktop   # For Dark
 ```
 
 ### Enable Automatic Switching
@@ -115,11 +115,11 @@ Each theme's configuration is stored in the `contents/defaults` file within its 
 
 ```
 lookandfeel/
-├── org.blossomos.blossomuilight.desktop/
+├── org.blossomos.ui.light.desktop/
 │   ├── metadata.json           # Theme metadata and information
 │   └── contents/
 │       └── defaults            # Default configuration values
-├── org.blossomos.blossomuidark.desktop/
+├── org.blossomos.ui.dark.desktop/
 │   ├── metadata.json
 │   └── contents/
 │       └── defaults
@@ -137,10 +137,10 @@ lookandfeel/
 - The Look and Feel packages are not built when compiling for Flatpak (`-DFOR_FLATPAK=ON`)
 - Custom icon theme support will be added in a future release
 - Wallpaper is set to "Next" which uses the default Plasma wallpaper rotation
-- The `org.blossomos` namespace is used for BlossomUI-specific components
+- The `org.blossomos.ui` namespace is used for BlossomUI-specific components
 - KDE system integration points (like `org.kde.kdecoration2`) remain unchanged for compatibility
 - Automatic theme switching requires Plasma 5.24+ or Plasma 6.0+
-- Theme IDs use reverse domain notation: `org.blossomos.blossomuilight.desktop` and `org.blossomos.blossomuidark.desktop`
+- Theme IDs use reverse domain notation: `org.blossomos.ui.light.desktop` and `org.blossomos.ui.dark.desktop`
 
 ## Troubleshooting
 
@@ -163,8 +163,8 @@ kreadconfig6 --file ~/.config/plasmarc --group Theme --key DarkLookAndFeel
 plasma-apply-lookandfeel --list
 
 # Apply BlossomUI Light
-plasma-apply-lookandfeel -a org.blossomos.blossomuilight.desktop
+plasma-apply-lookandfeel -a org.blossomos.ui.light.desktop
 
 # Apply BlossomUI Dark
-plasma-apply-lookandfeel -a org.blossomos.blossomuidark.desktop
+plasma-apply-lookandfeel -a org.blossomos.ui.dark.desktop
 ```

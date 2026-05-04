@@ -7,9 +7,9 @@ if [[ "$MODE" != "light" && "$MODE" != "dark" && "$MODE" != "oled" ]]; then
     exit 1
 fi
 
-LIGHT_THEME_ID="org.blossomos.blossomuilight.desktop"
-DARK_THEME_ID="org.blossomos.blossomuidark.desktop"
-OLED_THEME_ID="org.blossomos.blossomuidarkoled.desktop"
+LIGHT_THEME_ID="org.blossomos.ui.light.desktop"
+DARK_THEME_ID="org.blossomos.ui.dark.desktop"
+OLED_THEME_ID="org.blossomos.ui.darkoled.desktop"
 
 if [[ "$MODE" == "dark" ]]; then
     THEME_ID="$DARK_THEME_ID"

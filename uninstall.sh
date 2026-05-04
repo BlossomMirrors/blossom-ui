@@ -31,9 +31,9 @@ rm -f /usr/bin/${PROJECT}-settings6
 rm -f /usr/share/icons/hicolor/scalable/apps/${PROJECT}-settings.svgz
 
 # KDecoration
-rm -f /usr/lib/qt6/plugins/org.kde.kdecoration3/org.kde.${PROJECT}.so*
-rm -f /usr/lib64/qt6/plugins/org.kde.kdecoration3/org.kde.${PROJECT}.so*
-rm -f /usr/lib/x86_64-linux-gnu/qt6/plugins/org.kde.kdecoration3/org.kde.${PROJECT}.so*
+rm -f /usr/lib/qt6/plugins/org.kde.kdecoration3/org.blossomos.ui.so*
+rm -f /usr/lib64/qt6/plugins/org.kde.kdecoration3/org.blossomos.ui.so*
+rm -f /usr/lib/x86_64-linux-gnu/qt6/plugins/org.kde.kdecoration3/org.blossomos.ui.so*
 rm -f /usr/share/kservices6/${PROJECT}decorationconfig.desktop
 rm -f /usr/lib/qt6/plugins/org.kde.kdecoration3.kcm/kcm_${PROJECT}decoration.so*
 rm -f /usr/lib64/qt6/plugins/org.kde.kdecoration3.kcm/kcm_${PROJECT}decoration.so*
@@ -50,9 +50,9 @@ rm -f /usr/share/color-schemes/${_PROJECT}Light.colors
 rm -f /usr/share/color-schemes/${_PROJECT}DarkOLED.colors
 
 # Plasma Look and Feel
-rm -rf /usr/share/plasma/look-and-feel/org.blossomos.${PROJECT}light.desktop
-rm -rf /usr/share/plasma/look-and-feel/org.blossomos.${PROJECT}dark.desktop
-rm -rf /usr/share/plasma/look-and-feel/org.blossomos.${PROJECT}darkoled.desktop
+rm -rf /usr/share/plasma/look-and-feel/org.blossomos.ui.light.desktop
+rm -rf /usr/share/plasma/look-and-feel/org.blossomos.ui.dark.desktop
+rm -rf /usr/share/plasma/look-and-feel/org.blossomos.ui.darkoled.desktop
 
 # Plasma Desktop Theme
 rm -rf /usr/share/plasma/desktopthemes/${_PROJECT}

@@ -45,13 +45,13 @@ build_flatpak() {
     arch=$(uname -m)
     local repo="$SRC_DIR/local"
 
-    $builder "$SRC_DIR/flatpak-build-qt6" --repo="$repo" --force-clean --ccache "$SRC_DIR/org.kde.KStyle.BlossomUI6.json" \
-        && $builder "$SRC_DIR/flatpak-build-qt5" --repo="$repo" --force-clean --ccache "$SRC_DIR/org.kde.KStyle.BlossomUI5.json"
+    $builder "$SRC_DIR/flatpak-build-qt6" --repo="$repo" --force-clean --ccache "$SRC_DIR/flatpak/org.blossomos.ui-qt6.json" \
+        && $builder "$SRC_DIR/flatpak-build-qt5" --repo="$repo" --force-clean --ccache "$SRC_DIR/flatpak/org.blossomos.ui-qt5.json"
 
     echo " *** Installing Flatpak extensions *** "
     flatpak remote-add --user --no-gpg-verify --if-not-exists blossomui-local "$repo"
-    flatpak install --user --or-update --noninteractive blossomui-local "org.kde.KStyle.BlossomUI/$arch/6.9"
-    flatpak install --user --or-update --noninteractive blossomui-local "org.kde.KStyle.BlossomUI/$arch/5.15-24.08"
+    flatpak install --user --or-update --noninteractive blossomui-local "org.blossomos.ui/$arch/6.9"
+    flatpak install --user --or-update --noninteractive blossomui-local "org.blossomos.ui/$arch/5.15-24.08"
 }
 
 build_default() {

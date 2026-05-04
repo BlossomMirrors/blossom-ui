@@ -141,7 +141,7 @@ void ConfigWidget::save()
 
     // needed for blossomui style to reload shadows
     {
-        QDBusMessage message(QDBusMessage::createSignal("/BlossomUIDecoration", "org.kde.BlossomUI.Style", "reparseConfiguration"));
+        QDBusMessage message(QDBusMessage::createSignal("/BlossomUIDecoration", "org.blossomos.ui.style", "reparseConfiguration"));
         QDBusConnection::sessionBus().send(message);
     }
 }

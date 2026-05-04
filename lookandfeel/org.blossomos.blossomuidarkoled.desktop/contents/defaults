@@ -18,7 +18,7 @@ cursorTheme=Bibata-Modern-Classic
 cursorThemeFallback=breeze_cursors
 
 [kwinrc][org.kde.kdecoration2]
-library=org.kde.blossomui
+library=org.blossomos.ui
 theme=BlossomUI
 
 [ksplashrc][KSplash]

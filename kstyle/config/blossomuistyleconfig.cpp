@@ -180,7 +180,7 @@ void StyleConfig::save()
 
     // emit dbus signal
     QDBusMessage message(
-        QDBusMessage::createSignal(QStringLiteral("/BlossomUIStyle"), QStringLiteral("org.kde.BlossomUI.Style"), QStringLiteral("reparseConfiguration")));
+        QDBusMessage::createSignal(QStringLiteral("/BlossomUIStyle"), QStringLiteral("org.blossomos.ui"), QStringLiteral("reparseConfiguration")));
     QDBusConnection::sessionBus().send(message);
 }
 

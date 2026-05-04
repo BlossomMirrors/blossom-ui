@@ -31,7 +31,7 @@ add_library(blossomuidecoration MODULE
     ${blossomuidecoration_config_PART_FORMS_HEADERS})
 
 set_target_properties(blossomuidecoration PROPERTIES
-    OUTPUT_NAME org.kde.blossomui
+    OUTPUT_NAME org.blossomos.ui
 )
 
 target_link_libraries(blossomuidecoration

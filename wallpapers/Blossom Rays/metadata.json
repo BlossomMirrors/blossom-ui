@@ -3,12 +3,12 @@
   "KPlugin": {
     "Authors": [
       {
-        "Email": "hello@blossomos.org",
-        "Name": "BlossomOS"
-      },
-      {
         "Email": "yannik@blossomos.org",
         "Name": "Yannik Ain"
+      },
+      {
+        "Email": "hello@blossomos.org",
+        "Name": "BlossomOS"
       }
     ],
     "Id": "Blossom Rays",

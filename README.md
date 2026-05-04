@@ -8,28 +8,14 @@ BlossomUI is a fork of [Darkly](https://github.com/Bali10050/Darkly), which is a
 
 We plan to adopt [KDE Union](https://invent.kde.org/plasma/union), KDE’s unified SVG-based theming engine, once it is mature to simplify and modernize the codebase. See [“Moving KDE's styling into the future”](https://quantumproductions.info/articles/2025-02/moving-kdes-styling-future) for an overview.
 
-## Installation
-
-## Automatic
-
-coming soon...
-
-## Manual
-
-### To ensure this application style works on applications still using QT5 both QT5 and QT6 dependencies are required to be installed before building from source.
-
-### Installation script
+## Installation script
 
 > [!NOTE]
 > A script called `install.sh` is now available which both builds and installs this application style.
 
 `./install.sh` will remove if existing, build and install BlossomUI using both QT5/QT6 dependencies.
 
-`./install.sh QT5` will build & install using only QT5/KF5 dependencies.
-
-`./install.sh QT6` will build & install using only QT6/KF6 dependencies.
-
-`./install.sh remove` will remove BlossomUI.
+`./uninstall.sh` will remove BlossomUI.
 
 ***
 
@@ -49,16 +35,9 @@ This brings some untentended behaviour (for any application style, not BlossomUI
 
 Manifests should have the latest versions of KDE Runtime and SDK. Change the version accordingly. (you can find the version of runtime for each app by running `flatpak list --app --columns=app,runtime`)
 
-#### Build with:
-```
-org.flatpak.Builder flatpak-build --repo=local --force-clean --ccache org.kde.KStyle.BlossomUI6.json
-```
-
-use `org.kde.KStyle.BlossomUI5.json` for KF5
-
-#### Bundle with:
-```
-flatpak build-bundle local/ blossomui.flatpak runtime/org.kde.KStyle.BlossomUI/x86_64/<runtime_version>
+### Bundle both flatpak and rpm:
+``` sh
+./release.sh
 ```
 
 ***
@@ -66,7 +45,7 @@ flatpak build-bundle local/ blossomui.flatpak runtime/org.kde.KStyle.BlossomUI/x
 
 #### <u>Arch Linux</u>
 
-```
+``` sh
 sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative kcoreaddons \
       kcmutils kcolorscheme kconfig kguiaddons kiconthemes kwindowsystem git \
       qt5-declarative qt5-x11extras gcc make kcmutils5 \
@@ -76,7 +55,7 @@ sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative
 
 #### <u>Fedora</u>
 
-```
+``` sh
 sudo dnf install -y git cmake extra-cmake-modules gcc-c++ make \
       qt6-qtbase-devel qt6-qtsvg-devel \
       kf6-kcoreaddons-devel kf6-kcolorscheme-devel kf6-kconfig-devel \
@@ -90,7 +69,7 @@ sudo dnf install -y git cmake extra-cmake-modules gcc-c++ make \
       kf5-kirigami2-devel "cmake(KF5FrameworkIntegration)"
 ```
 
-```
+``` sh
 git clone --single-branch --depth=1 https://git.blossomos.org/Blossom/ui.git
 cd ui
 ./install.sh

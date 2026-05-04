@@ -1,5 +1,5 @@
 {
-  "id": "org.kde.KStyle.BlossomUI",
+  "id": "org.blossomos.ui",
   "branch": "5.15-24.08",
   "runtime": "org.kde.Platform",
   "build-extension": true,
@@ -13,7 +13,11 @@
       "buildsystem": "cmake",
       "builddir": true,
       "config-opts": [
-        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DCMAKE_INSTALL_PREFIX=/app",
+        "-DKDE_INSTALL_PLUGINDIR=/app/lib/plugins",
+        "-DKDE_INSTALL_KCONFMODULEDIR=/app/lib/plugins",
+        "-DKDE_INSTALL_KCMMODULEDIR=/app/lib/qt5/plugins",
+        "-DKDE_INSTALL_DATADIR=/app/share",
         "-DBUILD_QT6=OFF",
         "-DBUILD_QT5=ON",
         "-DWITH_DECORATIONS=OFF",
@@ -21,9 +25,8 @@
       ],
       "sources": [
         {
-          "type": "git",
-          "url": "https://git.blossomos.org/Blossom/ui",
-          "branch": "main"
+          "type": "archive",
+          "path": "blossomui-flatpak-source.tar.gz"
         }
       ]
     }

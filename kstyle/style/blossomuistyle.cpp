@@ -122,12 +122,12 @@ Style::Style()
   // use DBus connection to update on blossomui configuration change
   auto dbus = QDBusConnection::sessionBus();
   dbus.connect(QString(), QStringLiteral("/BlossomUIStyle"),
-               QStringLiteral("org.kde.BlossomUI.Style"),
+               QStringLiteral("org.blossomos.ui.style"),
                QStringLiteral("reparseConfiguration"), this,
                SLOT(configurationChanged()));
 
   dbus.connect(QString(), QStringLiteral("/BlossomUIDecoration"),
-               QStringLiteral("org.kde.BlossomUI.Style"),
+               QStringLiteral("org.blossomos.ui.style"),
                QStringLiteral("reparseConfiguration"), this,
                SLOT(configurationChanged()));
 
