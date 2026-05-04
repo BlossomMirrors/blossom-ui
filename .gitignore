@@ -3,6 +3,7 @@ build/
 .clang-format
 
 *.rpm
+*.flatpak
 
 result*
 
