@@ -114,7 +114,9 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
     });
   }
 
-  if ((t == QEvent::Resize || t == QEvent::Show) &&
+  if ((t == QEvent::Resize || t == QEvent::Show || t == QEvent::Paint ||
+       t == QEvent::Hide || t == QEvent::FocusIn || t == QEvent::FocusOut ||
+       t == QEvent::WindowActivate || t == QEvent::WindowDeactivate) &&
       scrollArea->property("_blossomui_viewport_radius").isValid()) {
     QTimer::singleShot(0, scrollArea, [this, scrollArea]() {
       const int radius =
@@ -125,6 +127,23 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
                     .value<QObject *>())) {
           ov->setGeometry(scrollArea->rect());
           ov->raise();
+          ov->show(); // ensure overlay is visible after dialog interactions
+        }
+        // reapply margins to parent DolphinView if needed
+        if (QWidget *parent = scrollArea->parentWidget();
+            parent && parent->inherits("DolphinView")) {
+          const int margin = 8;
+          const int leftMargin = 4;
+          parent->setContentsMargins(leftMargin, margin, margin, margin);
+        }
+        // reapply margins to the entire Dolphin window
+        QWidget *mainWindow = scrollArea->window();
+        if (mainWindow) {
+          mainWindow->setContentsMargins(8, 8, 8, 8);
+        }
+        // ensure viewport has autoFillBackground enabled
+        if (auto *vp = scrollArea->viewport()) {
+          vp->setAutoFillBackground(true);
         }
       } else if (scrollArea->property("_blossomui_viewport_inset").isValid()) {
         const int inset =
@@ -140,6 +159,10 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
           else
             vp->clearMask();
         }
+      }
+      // ensure viewport has autoFillBackground enabled for both card and detail views
+      if (auto *vp = scrollArea->viewport()) {
+        vp->setAutoFillBackground(true);
       }
     });
   }

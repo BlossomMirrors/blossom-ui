@@ -1,10 +1,5 @@
-.vscode/
 build/
+release/
+.flatpak-builder
 .clang-format
-
-*.rpm
-*.flatpak
-
-result*
-
 local
