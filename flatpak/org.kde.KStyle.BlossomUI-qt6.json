@@ -1,5 +1,5 @@
 {
-  "id": "org.blossomos.ui",
+  "id": "org.kde.KStyle.BlossomUI",
   "branch": "6.9",
   "runtime": "org.kde.Platform",
   "build-extension": true,
@@ -20,7 +20,7 @@
         "-DKDE_INSTALL_DATADIR=/app/share",
         "-DBUILD_QT6=ON",
         "-DBUILD_QT5=OFF",
-        "-DWITH_DECORATIONS=ON",
+        "-DWITH_DECORATIONS=OFF",
         "-DFOR_FLATPAK=OFF"
       ],
       "sources": [

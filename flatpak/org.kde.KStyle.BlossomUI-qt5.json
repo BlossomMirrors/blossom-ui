@@ -1,5 +1,5 @@
 {
-  "id": "org.blossomos.ui",
+  "id": "org.kde.KStyle.BlossomUI",
   "branch": "5.15-24.08",
   "runtime": "org.kde.Platform",
   "build-extension": true,

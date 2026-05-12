@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <component type="addon">
-  <id>org.blossomos.ui</id>
+  <id>org.kde.KStyle.BlossomUI</id>
   <extends>org.kde.Platform</extends>
   <name>BlossomUI</name>
   <summary>Modern global theme for Qt/KDE applications</summary>

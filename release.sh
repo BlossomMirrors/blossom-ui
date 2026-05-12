@@ -18,7 +18,7 @@ RPMBUILD=~/rpmbuild
 mkdir -p "$RPMBUILD"/{SPECS,SOURCES,BUILD,RPMS,SRPMS} release
 
 # create source tarball excluding build artifacts and version control
-tar -czf "$RPMBUILD/SOURCES/$NAME-$VERSION.tar.gz" \
+tar --warning=no-file-changed -czf "$RPMBUILD/SOURCES/$NAME-$VERSION.tar.gz" \
     --transform "s|^\./|$NAME-$VERSION/|" \
     --exclude=./.git \
     --exclude=./.flatpak-builder \
@@ -80,6 +80,8 @@ Requires:       qt6-qtbase
 Requires:       qt5-qtbase
 Requires:       kf6-kcoreaddons
 Requires:       kf5-kcoreaddons
+Requires:       kf6-kconfig
+Requires:       bibata-cursor-themes
 
 %description
 BlossomUI is a modern global theme for Qt and KDE applications,
@@ -109,6 +111,48 @@ This package includes both Qt5 and Qt6 application styles:
 
 %install
 %cmake_install
+
+%post
+if command -v kwriteconfig6 >/dev/null 2>&1; then
+    KWRITE=kwriteconfig6
+elif command -v kwriteconfig5 >/dev/null 2>&1; then
+    KWRITE=kwriteconfig5
+else
+    exit 0
+fi
+\$KWRITE --file /etc/xdg/kdeglobals --group KDE --key LookAndFeelPackage 'org.blossomos.ui.light.desktop'
+\$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultLightLookAndFeel 'org.blossomos.ui.light.desktop'
+\$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultDarkLookAndFeel 'org.blossomos.ui.dark.desktop'
+\$KWRITE --file /etc/xdg/kdeglobals --group General --key ColorScheme 'BlossomUI Light'
+\$KWRITE --file /etc/xdg/kdeglobals --group General --key LightColorScheme 'BlossomUI Light'
+\$KWRITE --file /etc/xdg/kdeglobals --group General --key DarkColorScheme 'BlossomUI Dark'
+\$KWRITE --file /etc/xdg/plasmarc --group Theme --key name 'BlossomUI'
+\$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightColorScheme 'BlossomUI Light'
+\$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkColorScheme 'BlossomUI Dark'
+\$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightLookAndFeel 'org.blossomos.ui.light.desktop'
+\$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkLookAndFeel 'org.blossomos.ui.dark.desktop'
+
+%postun
+if [ \$1 -eq 0 ]; then
+    if command -v kwriteconfig6 >/dev/null 2>&1; then
+        KWRITE=kwriteconfig6
+    elif command -v kwriteconfig5 >/dev/null 2>&1; then
+        KWRITE=kwriteconfig5
+    else
+        exit 0
+    fi
+    \$KWRITE --file /etc/xdg/kdeglobals --group KDE --key LookAndFeelPackage --delete
+    \$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultLightLookAndFeel --delete
+    \$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultDarkLookAndFeel --delete
+    \$KWRITE --file /etc/xdg/kdeglobals --group General --key ColorScheme --delete
+    \$KWRITE --file /etc/xdg/kdeglobals --group General --key LightColorScheme --delete
+    \$KWRITE --file /etc/xdg/kdeglobals --group General --key DarkColorScheme --delete
+    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key name --delete
+    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightColorScheme --delete
+    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkColorScheme --delete
+    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightLookAndFeel --delete
+    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkLookAndFeel --delete
+fi
 
 %files
 # License files
@@ -187,7 +231,7 @@ REPO="$SRC_DIR/local"
 mkdir -p "$REPO"
 
 # create flatpak source archive (clean, no transform)
-tar -czf "$SRC_DIR/blossomui-flatpak-source.tar.gz" \
+tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.tar.gz" \
     --exclude=./.git \
     --exclude=./.flatpak-builder \
     --exclude=./release \
@@ -197,21 +241,21 @@ tar -czf "$SRC_DIR/blossomui-flatpak-source.tar.gz" \
     --exclude=./local \
     --exclude=./RPMS \
     --exclude=./SRPMS \
-    --exclude=./blossomui-flatpak-source.tar.gz \
+    --exclude=./flatpak/blossomui-flatpak-source.tar.gz \
     .
 
 
 echo "Building Qt6 Flatpak extension with all theme components..."
-$builder "$SRC_DIR/flatpak/build/qt6" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.blossomos.ui-qt6.json"
+$builder "$SRC_DIR/flatpak/build/qt6" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt6.json"
 
 echo "Building Qt5 Flatpak extension with all theme components..."
-$builder "$SRC_DIR/flatpak/build/qt5" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.blossomos.ui-qt5.json"
+$builder "$SRC_DIR/flatpak/build/qt5" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt5.json"
 
-flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt5.flatpak" "runtime/org.blossomos.ui/$ARCH/5.15-24.08" --runtime
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt5.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/5.15-24.08" --runtime
 echo "Qt5 Flatpak bundle created"
 
 # Create Qt6 bundle
-flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}.flatpak" "runtime/org.blossomos.ui/$ARCH/6.9" --runtime
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.9" --runtime
 echo "Qt6 Flatpak bundle created with all theme components"
 
 
