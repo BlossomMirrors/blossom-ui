@@ -131,6 +131,7 @@ This package includes both Qt5 and Qt6 application styles:
 %{_datadir}/color-schemes/BlossomUIDark.colors
 %{_datadir}/color-schemes/BlossomUILight.colors
 %{_datadir}/color-schemes/BlossomUIDarkOLED.colors
+%{_datadir}/konsole/BlossomUI.colorscheme
 # Desktop Entries
 %{_datadir}/applications/blossomuistyleconfig.desktop
 %{_datadir}/applications/kcm_blossomuidecoration.desktop
