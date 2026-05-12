@@ -56,8 +56,8 @@ sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative
 #### <u>Fedora</u>
 
 ``` sh
-sudo dnf install -y git cmake extra-cmake-modules gcc-c++ make \
-      qt6-qtbase-devel qt6-qtsvg-devel \
+sudo dnf install -y git bibata-cursor-themes cmake extra-cmake-modules gcc-c++ make \
+      qt6-qtbase-devel qt5-qtsvg-devel qt6-qtsvg-devel \
       kf6-kcoreaddons-devel kf6-kcolorscheme-devel kf6-kconfig-devel \
       kf6-kguiaddons-devel kf6-ki18n-devel kf6-kiconthemes-devel \
       kf6-kwindowsystem-devel kf6-kcmutils-devel kf6-frameworkintegration-devel \
