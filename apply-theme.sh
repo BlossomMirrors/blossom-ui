@@ -57,7 +57,23 @@ configure_dolphin() {
 
 echo "applying blossomui $MODE theme..."
 
+# drop stale per-user color-scheme copies that shadow the system files,
+# and clear plasma/ksycoca caches so the new schemes get picked up
+rm -f ~/.local/share/color-schemes/BlossomUILight.colors \
+      ~/.local/share/color-schemes/BlossomUIDark.colors \
+      ~/.local/share/color-schemes/BlossomUIDarkOLED.colors
 
+rm -rf ~/.cache/plasma-svgelements-* \
+       ~/.cache/plasma_theme_*.kcache \
+       ~/.cache/icon-cache.kcache \
+       ~/.cache/ksycoca6* \
+       ~/.cache/ksycoca5*
+
+if command -v kbuildsycoca6 >/dev/null 2>&1; then
+    kbuildsycoca6 --noincremental >/dev/null 2>&1 || true
+elif command -v kbuildsycoca5 >/dev/null 2>&1; then
+    kbuildsycoca5 --noincremental >/dev/null 2>&1 || true
+fi
 
 # set default light/dark/oled themes
 $KWRITECONFIG --file ~/.config/kdeglobals --group General --key LightColorScheme --type string "BlossomUI Light"
@@ -87,6 +103,27 @@ else
 fi
 
 plasma-apply-lookandfeel --apply "$THEME_ID" 2>/dev/null
+
+# force-reapply the color scheme so kdeglobals' ColorSchemeHash updates and
+# running apps reload the freshly installed system color file
+if command -v plasma-apply-colorscheme >/dev/null 2>&1; then
+    plasma-apply-colorscheme "$COLOR_SCHEME" 2>/dev/null || true
+fi
+
+# plasma-apply-colorscheme is a no-op when the scheme name is unchanged, so
+# write the sha1 of the active scheme file into ColorSchemeHash ourselves —
+# matches what KColorSchemeManager does and is what running apps compare against
+for _dir in "$HOME/.local/share/color-schemes" /usr/share/color-schemes /usr/local/share/color-schemes; do
+    if [ -f "$_dir/$COLOR_SCHEME_NO_SPACE.colors" ]; then
+        _scheme_path="$_dir/$COLOR_SCHEME_NO_SPACE.colors"
+        break
+    fi
+done
+if [ -n "$_scheme_path" ] && command -v sha1sum >/dev/null 2>&1; then
+    _hash=$(sha1sum "$_scheme_path" | awk '{print $1}')
+    $KWRITECONFIG --file ~/.config/kdeglobals --group General --key ColorScheme --type string "$COLOR_SCHEME"
+    $KWRITECONFIG --file ~/.config/kdeglobals --group General --key ColorSchemeHash --type string "$_hash"
+fi
 
 
 # reload KWin for decoration changes
