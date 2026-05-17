@@ -1,57 +1,42 @@
 <script lang="ts">
-	import HelloWorld from "$lib/registry/blocks/hello-world/hello-world.svelte";
-	import ExampleForm from "$lib/registry/blocks/example-form/example-form.svelte";
-	import PokemonPage from "$lib/registry/blocks/complex-component/+page.svelte";
-	import ExampleCard from "$lib/registry/blocks/example-with-css/example-card.svelte";
+	import { Button } from "$lib/registry/ui/button";
+	import { mode, toggleMode } from "mode-watcher";
 
-	// This page displays items from the custom registry.
-	// You are free to implement this with your design as needed.
+	const variants = ["default", "primary", "destructive", "ghost", "link"] as const;
+	const sizes = ["sm", "default", "lg", "icon"] as const;
 </script>
 
 <div class="mx-auto flex min-h-svh max-w-3xl flex-col gap-8 px-4 py-8">
-	<header class="flex flex-col gap-1">
-		<h1 class="text-3xl font-bold tracking-tight">Custom Registry</h1>
-		<p class="text-muted-foreground">
-			A custom registry for distributing code using shadcn-svelte.
-		</p>
+	<header class="flex items-start justify-between gap-4">
+		<div class="flex flex-col gap-1">
+			<h1 class="text-3xl font-bold tracking-tight">Blossom UI Registry</h1>
+			<p class="text-muted-foreground">
+				Shadcn-svelte component registry for BlossomOS. Colors compile from
+				<code class="bg-muted rounded px-1 py-0.5 text-xs">colors.json</code>.
+			</p>
+		</div>
+		<Button size="sm" onclick={toggleMode}>
+			{mode.current === "dark" ? "Light" : "Dark"} mode
+		</Button>
 	</header>
+
 	<main class="flex flex-1 flex-col gap-8">
-		<div class="relative flex min-h-[450px] flex-col gap-4 rounded-lg border p-4">
-			<div class="flex items-center justify-between">
-				<h2 class="text-muted-foreground text-sm sm:ps-3">A simple hello world component</h2>
+		<section class="flex flex-col gap-4 rounded-(--radius-card) border bg-card p-6">
+			<h2 class="text-sm font-medium">Variants</h2>
+			<div class="flex flex-wrap gap-3">
+				{#each variants as variant (variant)}
+					<Button {variant}>{variant}</Button>
+				{/each}
 			</div>
-			<div class="relative flex min-h-[400px] items-center justify-center">
-				<HelloWorld />
-			</div>
-		</div>
+		</section>
 
-		<div class="relative flex min-h-[450px] flex-col gap-4 rounded-lg border p-4">
-			<div class="flex items-center justify-between">
-				<h2 class="text-muted-foreground text-sm sm:ps-3">A contact form with Zod validation.</h2>
+		<section class="flex flex-col gap-4 rounded-(--radius-card) border bg-card p-6">
+			<h2 class="text-sm font-medium">Sizes</h2>
+			<div class="flex flex-wrap items-center gap-3">
+				{#each sizes as size (size)}
+					<Button {size}>{size === "icon" ? "+" : size}</Button>
+				{/each}
 			</div>
-			<div class="relative flex min-h-[500px] items-center justify-center">
-				<ExampleForm />
-			</div>
-		</div>
-
-		<div class="relative flex min-h-[450px] flex-col gap-4 rounded-lg border p-4">
-			<div class="flex items-center justify-between">
-				<h2 class="text-muted-foreground text-sm sm:ps-3">
-					A complex component showing hooks, libs and components.
-				</h2>
-			</div>
-			<div class="relative flex min-h-[400px] items-center justify-center">
-				<PokemonPage />
-			</div>
-		</div>
-
-		<div class="relative flex min-h-[450px] flex-col gap-4 rounded-lg border p-4">
-			<div class="flex items-center justify-between">
-				<h2 class="text-muted-foreground text-sm sm:ps-3">A login form with a CSS file.</h2>
-			</div>
-			<div class="relative flex min-h-[400px] items-center justify-center">
-				<ExampleCard />
-			</div>
-		</div>
+		</section>
 	</main>
 </div>

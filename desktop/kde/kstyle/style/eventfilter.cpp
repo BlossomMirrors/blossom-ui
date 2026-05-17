@@ -6,9 +6,11 @@
 
 #include <QApplication>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QCoreApplication>
 #include <QDialogButtonBox>
 #include <QDockWidget>
+#include <QHoverEvent>
 #include <QList>
 #include <QListView>
 #include <QMenu>
@@ -18,6 +20,9 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QPen>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QRadioButton>
 #include <QScrollBar>
 #include <QStyleOptionButton>
 #include <QTimer>
@@ -39,6 +44,24 @@ bool Style::eventFilter(QObject *object, QEvent *event) {
                                                     me->pos()
 #endif
         );
+    }
+  }
+
+  if (event->type() == QEvent::HoverEnter) {
+    if (qobject_cast<QPushButton *>(object) ||
+        qobject_cast<QToolButton *>(object) ||
+        qobject_cast<QCheckBox *>(object) ||
+        qobject_cast<QRadioButton *>(object) ||
+        qobject_cast<QComboBox *>(object)) {
+      static_cast<QWidget *>(object)->setCursor(Qt::PointingHandCursor);
+    }
+  } else if (event->type() == QEvent::HoverLeave) {
+    if (qobject_cast<QPushButton *>(object) ||
+        qobject_cast<QToolButton *>(object) ||
+        qobject_cast<QCheckBox *>(object) ||
+        qobject_cast<QRadioButton *>(object) ||
+        qobject_cast<QComboBox *>(object)) {
+      static_cast<QWidget *>(object)->unsetCursor();
     }
   }
 
@@ -115,8 +138,7 @@ bool Style::eventFilter(QObject *object, QEvent *event) {
       return false;
     }
 
-    // Viewport mask for non-KItemListContainer scroll areas (KItemListContainer
-    // uses scroll-area-level mask)
+    // Viewport mask for non-KItemListContainer scroll areas
     if (QWidget *parent = widget->parentWidget()) {
       if (QAbstractScrollArea *sa =
               qobject_cast<QAbstractScrollArea *>(parent)) {

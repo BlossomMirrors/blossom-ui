@@ -52,7 +52,7 @@ configure_dolphin() {
     # copy toolbar config
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     mkdir -p ~/.local/share/kxmlgui5/dolphin
-    cp "$SCRIPT_DIR/dolphin/dolphinui.rc" ~/.local/share/kxmlgui5/dolphin/dolphinui.rc
+    cp "$SCRIPT_DIR/kde/dolphin/dolphinui.rc" ~/.local/share/kxmlgui5/dolphin/dolphinui.rc
 }
 
 echo "applying blossomui $MODE theme..."

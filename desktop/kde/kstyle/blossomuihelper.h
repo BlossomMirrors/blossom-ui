@@ -87,6 +87,11 @@ public:
     return _windowAlternateBackgroundBrush.brush(palette).color();
   }
 
+  //* alternate button background (used for hover)
+  QColor buttonAlternateBackground(const QPalette &palette) const {
+    return _buttonAlternateBackgroundBrush.brush(palette).color();
+  }
+
   //* shadow
   QColor shadowColor(const QPalette &palette) const {
     return alphaColor(palette.color(QPalette::Shadow), 0.15);
@@ -487,6 +492,7 @@ private:
   KStatefulBrush _viewHoverBrush;
   KStatefulBrush _viewNegativeTextBrush;
   KStatefulBrush _windowAlternateBackgroundBrush;
+  KStatefulBrush _buttonAlternateBackgroundBrush;
   //@}
 
   //* event filter

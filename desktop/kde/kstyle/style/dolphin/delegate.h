@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QDragMoveEvent>
 #include <QHash>
+#include <QHoverEvent>
 #include <QIcon>
 #include <QMouseEvent>
 #include <QPainter>
@@ -98,7 +99,7 @@ public:
     painter->save();
 
     const bool selected = option.state & QStyle::State_Selected;
-    const bool mouseOver = option.state & QStyle::State_MouseOver;
+    const bool mouseOver = (QPersistentModelIndex(index) == m_lastHoveredIndex && m_lastHoverOnItem);
     if (selected || mouseOver) {
       const QPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                           ? QPalette::Active
@@ -204,6 +205,56 @@ public:
       return QStyledItemDelegate::eventFilter(watched, event);
 
     const auto type = event->type();
+
+    // handle cursor: show pointer when mouse is over an item or in small gaps between items
+    if (type == QEvent::MouseMove || type == QEvent::HoverMove || type == QEvent::HoverEnter) {
+      const QPoint pos =
+          type == QEvent::MouseMove
+              ? static_cast<QMouseEvent *>(event)->pos()
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+              : static_cast<QHoverEvent *>(event)->position().toPoint();
+#else
+              : static_cast<QHoverEvent *>(event)->pos();
+#endif
+      const QModelIndex idx = m_view->indexAt(pos);
+      bool onItem = false;
+      if (idx.isValid()) {
+        const QRect vr = m_view->visualRect(idx);
+        const int iconSize = m_view->iconSize().width();
+        const int stdH = qMax(iconSize, m_view->fontMetrics().height()) + s_lateralMargin;
+        if (vr.height() > stdH) {
+          // match the item rect from paint(): headerH + s_itemGap above, item fills bottom
+          const int headerH = qMax(0, vr.height() - stdH - 2 * s_itemGap);
+          const QRect itemR(vr.left(), vr.top() + headerH + s_itemGap, vr.width(), stdH);
+          onItem = itemR.contains(pos);
+          if (!onItem && pos.y() < itemR.top() && pos.y() >= vr.top()) {
+            // above item rect: only treat as clickable if it's small padding, not a section header
+            if (headerH <= s_heightExtra)
+              onItem = true;
+          } else if (!onItem && pos.y() > itemR.bottom() && pos.y() <= vr.bottom()) {
+            // below item rect: small bottom padding, treat as clickable
+            onItem = true;
+          }
+        } else {
+          onItem = vr.contains(pos);
+        }
+        // section headers have no icon and should not be clickable
+        if (onItem && idx.data(Qt::DecorationRole).value<QIcon>().isNull())
+          onItem = false;
+      } else {
+        // in the spacing between items, redirect to the nearest item
+        onItem = nearestItemAt(pos).isValid();
+      }
+      static_cast<QWidget *>(watched)->setCursor(onItem ? Qt::PointingHandCursor : Qt::ArrowCursor);
+    } else if (type == QEvent::HoverLeave) {
+      static_cast<QWidget *>(watched)->setCursor(Qt::ArrowCursor);
+      if (m_lastHoveredIndex.isValid()) {
+        const QModelIndex oldHover = m_lastHoveredIndex;
+        m_lastHoveredIndex = QPersistentModelIndex();
+        m_lastHoverOnItem = false;
+        m_view->update(oldHover);
+      }
+    }
 
     if (type == QEvent::MouseMove) {
       const auto *me = static_cast<QMouseEvent *>(event);
@@ -352,23 +403,66 @@ private:
       return;
     const QModelIndex idx = m_view->indexAt(pos);
     if (!idx.isValid()) {
-      m_lastHoveredIndex = QPersistentModelIndex();
+      const QModelIndex nearest = nearestItemAt(pos);
+      if (nearest.isValid()) {
+        const QPersistentModelIndex pidx(nearest);
+        if (pidx != m_lastHoveredIndex || m_lastHoverOnItem != true) {
+          const QModelIndex oldHover = m_lastHoveredIndex;
+          m_lastHoveredIndex = pidx;
+          m_lastHoverOnItem = true;
+          if (oldHover.isValid())
+            m_view->update(oldHover);
+          m_view->update(nearest);
+        }
+      } else {
+        if (m_lastHoveredIndex.isValid()) {
+          const QModelIndex oldHover = m_lastHoveredIndex;
+          m_lastHoveredIndex = QPersistentModelIndex();
+          m_lastHoverOnItem = false;
+          m_view->update(oldHover);
+        }
+      }
       return;
     }
+    const bool idxHasIcon = !idx.data(Qt::DecorationRole).value<QIcon>().isNull();
     const QRect vr = m_view->visualRect(idx);
     const int iconSize = m_view->iconSize().width();
     const int stdH =
         qMax(iconSize, m_view->fontMetrics().height()) + s_lateralMargin;
-    if (vr.height() <= stdH) {
-      m_lastHoveredIndex = QPersistentModelIndex();
+    bool onItem;
+    if (vr.height() > stdH) {
+      const int headerH = qMax(0, vr.height() - stdH - 2 * s_itemGap);
+      const QRect itemR(vr.left(), vr.top() + headerH + s_itemGap, vr.width(), stdH);
+      onItem = itemR.contains(pos);
+      if (!onItem && pos.y() < itemR.top() && pos.y() >= vr.top()) {
+        if (headerH <= s_heightExtra)
+          onItem = true;
+      } else if (!onItem && pos.y() > itemR.bottom() && pos.y() <= vr.bottom()) {
+        onItem = true;
+      }
+    } else {
+      onItem = vr.contains(pos);
+    }
+    // section headers have no icon, clear hover when over them
+    if (onItem && !idxHasIcon)
+      onItem = false;
+    // when in the header/padding area of an icon item, or on a section header, clear hover
+    if (!onItem) {
+      if (m_lastHoveredIndex.isValid()) {
+        const QModelIndex oldHover = m_lastHoveredIndex;
+        m_lastHoveredIndex = QPersistentModelIndex();
+        m_lastHoverOnItem = false;
+        m_view->update(oldHover);
+      }
       return;
     }
-    const QRect itemR(vr.left(), vr.bottom() - stdH + 1, vr.width(), stdH);
-    const bool onItem = itemR.contains(pos);
     const QPersistentModelIndex pidx(idx);
     if (pidx != m_lastHoveredIndex || onItem != m_lastHoverOnItem) {
+      const QModelIndex oldHover = m_lastHoveredIndex;
       m_lastHoveredIndex = pidx;
       m_lastHoverOnItem = onItem;
+      if (oldHover.isValid())
+        m_view->update(oldHover);
       m_view->update(idx);
     }
   }

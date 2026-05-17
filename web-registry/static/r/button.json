@@ -1,0 +1,22 @@
+{
+	"$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+	"name": "button",
+	"title": "Button",
+	"type": "registry:ui",
+	"description": "Blossom UI button matching the BlossomOS design system.",
+	"devDependencies": [
+		"tailwind-variants@^1.0.0"
+	],
+	"files": [
+		{
+			"content": "<script lang=\"ts\" module>\n\timport { tv, type VariantProps } from \"tailwind-variants\";\n\n\texport const buttonVariants = tv({\n\t\tbase: \"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive\",\n\t\tvariants: {\n\t\t\tvariant: {\n\t\t\t\tdefault: \"bg-primary text-primary-foreground shadow-xs hover:bg-primary/90\",\n\t\t\t\tdestructive:\n\t\t\t\t\t\"bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40\",\n\t\t\t\toutline:\n\t\t\t\t\t\"border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50\",\n\t\t\t\tsecondary: \"bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80\",\n\t\t\t\tghost: \"hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50\",\n\t\t\t\tlink: \"text-link underline-offset-4 hover:underline\",\n\t\t\t},\n\t\t\tsize: {\n\t\t\t\tdefault: \"h-9 px-4 py-2 has-[>svg]:px-3\",\n\t\t\t\tsm: \"h-8 gap-1.5 px-3 has-[>svg]:px-2.5\",\n\t\t\t\tlg: \"h-10 px-6 has-[>svg]:px-4\",\n\t\t\t\ticon: \"size-9\",\n\t\t\t},\n\t\t},\n\t\tdefaultVariants: {\n\t\t\tvariant: \"default\",\n\t\t\tsize: \"default\",\n\t\t},\n\t});\n</script>\n\n<script lang=\"ts\">\n\timport { cn } from \"$UTILS$.js\";\n\timport type { HTMLButtonAttributes } from \"svelte/elements\";\n\timport type { Snippet } from \"svelte\";\n\n\tlet {\n\t\tref = $bindable(null),\n\t\tvariant,\n\t\tsize,\n\t\tchild,\n\t\tchildren,\n\t\tclass: className,\n\t\t...restProps\n\t}: HTMLButtonAttributes &\n\t\tVariantProps<typeof buttonVariants> & {\n\t\t\tchild?: Snippet<[{ props: Record<string, unknown> }]>;\n\t\t\tref?: HTMLElement | null;\n\t\t} = $props();\n\n\tconst mergedProps = $derived({\n\t\t...restProps,\n\t\tclass: cn(buttonVariants({ variant, size }), className),\n\t\t\"data-slot\": \"button\",\n\t});\n</script>\n\n{#if child}\n\t{@render child({ props: mergedProps })}\n{:else if children}\n\t<button {...mergedProps} bind:this={ref}>\n\t\t{@render children?.()}\n\t</button>\n{/if}\n",
+			"type": "registry:ui",
+			"target": "button/button.svelte"
+		},
+		{
+			"content": "import Button from \"./button.svelte\";\nexport { buttonVariants } from \"./button.svelte\";\n\nexport { Button, Button as Root };\n",
+			"type": "registry:ui",
+			"target": "button/index.ts"
+		}
+	]
+}

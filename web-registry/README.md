@@ -1,22 +1,29 @@
-# registry-template
+# Blossom UI Registry
 
-You can use the `shadcn-svelte` CLI to run your own component registry. Running your own
-component registry allows you to distribute your custom components, hooks, pages, and
-other files to any Svelte project.
+A shadcn-svelte component registry for [BlossomOS](https://github.com/vaporvee/blossom). Colors, radii and semantic tokens are derived from the project-wide [`colors.json`](../colors.json).
 
-## Getting Started
+## Color pipeline
 
-This is a template for creating a custom registry using SvelteKit.
+`colors.json` (at the repo root) is the single source of truth. `scripts/compile-colors.mjs` reads it and writes `src/styles/theme.css` containing `:root` (light mode) and `.dark` (dark mode) CSS custom properties consumed by `src/app.css`. The mapping follows the semantic roles documented in the top-level [`README.md`](../README.md).
 
-- The template uses a `registry.json` file to define components and their files.
-- The `shadcn-svelte build` command is used to build the registry.
-- The registry items are served as static files under `public/r/[name].json`.
-- Every registry item is compatible with the `shadcn-svelte` CLI.
-- The `card`, `button`, `input`, `label`, `textarea` components here would come from the `shadcn-svelte` registry, but the `stepper` component is a custom `ui` component you can use as a reference for creating and referencing "local" `ui` components.
+```bash
+bun run compile:colors
+```
 
-> [!IMPORTANT]
-> Don't forget to replace the version of `shadcn-svelte` in the `package.json` file with the version you want to use.
+The script runs automatically before `dev`, `build`, and `build:registry`. The generated `src/styles/theme.css` is gitignored.
 
-## Documentation
+## Building the registry
 
-Visit the [shadcn-svelte documentation](https://shadcn-svelte.com/docs/registry) to view the full documentation.
+```bash
+bun run build:registry
+```
+
+Registry items output to `static/r/[name].json` and are consumable via the `shadcn-svelte` CLI.
+
+## Items
+
+| Name   | Type           |
+| ------ | -------------- |
+| button | `registry:ui`  |
+
+More components will be added as the BlossomOS design system grows.

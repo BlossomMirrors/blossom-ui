@@ -116,6 +116,8 @@ void Helper::loadConfig() {
       KStatefulBrush(KColorScheme::View, KColorScheme::NegativeText);
   _windowAlternateBackgroundBrush =
       KStatefulBrush(KColorScheme::Window, KColorScheme::AlternateBackground);
+  _buttonAlternateBackgroundBrush =
+      KStatefulBrush(KColorScheme::Button, KColorScheme::AlternateBackground);
 
   const QPalette palette(QApplication::palette());
 
@@ -149,10 +151,7 @@ void Helper::loadConfig() {
 QColor Helper::frameOutlineColor(const QPalette &palette, bool mouseOver,
                                  bool hasFocus, qreal opacity,
                                  AnimationMode mode) const {
-  QColor outline(KColorUtils::mix(
-      palette.color(QPalette::Window), palette.color(QPalette::WindowText),
-      isDarkTheme(palette) ? 0.08 : 0.12));
-  // QColor outline( palette.color( QPalette::QPalette::AlternateBase ) );
+  QColor outline = windowAlternateBackground(palette);
 
   // focus takes precedence over hover
   if (mode == AnimationFocus) {
@@ -325,33 +324,36 @@ QColor Helper::toolButtonColor(const QPalette &palette, bool mouseOver,
                                bool hasFocus, bool sunken, qreal opacity,
                                AnimationMode mode) const {
   QColor outline;
-  const QColor hoverColor = palette.color(QPalette::Button);
+  const QColor hoverColor = alphaColor(palette.color(QPalette::WindowText), 0.1);
   const QColor focusColor(this->focusColor(palette));
-  const QColor sunkenColor = palette.color(QPalette::AlternateBase);
+  const QColor sunkenColor = alphaColor(palette.color(QPalette::WindowText), 0.2);
 
   // hover takes precedence over focus
   if (mode == AnimationHover) {
-    if (hasFocus)
-      outline = KColorUtils::mix(focusColor, hoverColor, opacity);
-    else if (sunken)
+    if (sunken)
       outline = sunkenColor;
+    else if (hasFocus)
+      outline = KColorUtils::mix(focusColor, hoverColor, opacity);
     else
       outline = alphaColor(hoverColor, opacity);
 
   } else if (mouseOver) {
-    outline = hoverColor;
+    if (sunken)
+      outline = sunkenColor;
+    else
+      outline = hoverColor;
 
   } else if (mode == AnimationFocus) {
     if (sunken)
-      outline = KColorUtils::mix(sunkenColor, focusColor, opacity);
+      outline = sunkenColor;
     else
       outline = alphaColor(focusColor, opacity);
 
-  } else if (hasFocus) {
-    outline = focusColor;
-
   } else if (sunken) {
     outline = sunkenColor;
+
+  } else if (hasFocus) {
+    outline = focusColor;
   }
 
   return outline;
@@ -785,19 +787,16 @@ void Helper::renderButtonFrame(QPainter *painter, const QRect &rect,
   if (sunken)
     fill = fill.darker(105);
   else if (mouseOver)
-    fill = fill.lighter(102);
+    fill = buttonAlternateBackground(palette);
 
-  QColor outline(
-      alphaColor(palette.color(QPalette::WindowText), mouseOver ? 0.22 : 0.16));
+  QColor outline = windowAlternateBackground(palette);
   if (!enabled) {
     fill = KColorUtils::mix(fill, palette.color(QPalette::Window), 0.4);
     outline = alphaColor(outline, 0.5);
   } else if (hasFocus && !sunken) {
     // use accent-colored border for focus, no separate halo needed
     outline = mode == AnimationFocus
-                  ? KColorUtils::mix(
-                        alphaColor(palette.color(QPalette::WindowText), 0.16),
-                        focusColor(palette), opacity)
+                  ? KColorUtils::mix(outline, focusColor(palette), opacity)
                   : focusColor(palette);
   }
 
@@ -859,7 +858,7 @@ void Helper::renderButtonFrame(QPainter *painter, const QRect &rect,
 
 //______________________________________________________________________________
 void Helper::renderToolButtonFrame(QPainter *painter, const QRect &rect,
-                                   const QColor &color, bool /*sunken*/) const {
+                                   const QColor &color, bool sunken) const {
   // do nothing for invalid color
   if (!color.isValid())
     return;
@@ -869,11 +868,21 @@ void Helper::renderToolButtonFrame(QPainter *painter, const QRect &rect,
 
   const QRectF baseRect(rect.adjusted(1, 1, -1, -1));
 
-  const qreal radius = qMin(buttonFrameRadius(PenWidth::NoPen),
-                            0.5 * qMin(baseRect.width(), baseRect.height()));
-  painter->setPen(Qt::NoPen);
-  painter->setBrush(color);
-  painter->drawRoundedRect(baseRect, radius, radius);
+  if (sunken) {
+    const qreal radius(frameRadius(PenWidth::NoPen));
+
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(color);
+
+    painter->drawRoundedRect(baseRect, radius, radius);
+
+  } else {
+    const qreal radius(frameRadius(PenWidth::Frame));
+
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(color);
+    painter->drawRoundedRect(baseRect, radius, radius);
+  }
 }
 
 //______________________________________________________________________________

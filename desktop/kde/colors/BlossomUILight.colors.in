@@ -19,8 +19,8 @@ IntensityAmount=0
 IntensityEffect=0
 
 [Colors:Button]
-BackgroundAlternate=@NEUTRAL_50_RGB@
-BackgroundNormal=@NEUTRAL_50_RGB@
+BackgroundAlternate=@NEUTRAL_200_RGB@
+BackgroundNormal=@NEUTRAL_100_RGB@
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_600_RGB@
@@ -89,7 +89,7 @@ ForegroundPositive=@TERTIARY_700_RGB@
 ForegroundVisited=@PRIMARY_700_RGB@
 
 [Colors:Window]
-BackgroundAlternate=@NEUTRAL_50_RGB@
+BackgroundAlternate=@NEUTRAL_200_RGB@
 BackgroundNormal=@NEUTRAL_50_RGB@
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@

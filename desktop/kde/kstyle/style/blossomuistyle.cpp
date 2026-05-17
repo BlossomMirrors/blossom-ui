@@ -246,9 +246,17 @@ void Style::polish(QWidget *widget) {
   if (qobject_cast<QPushButton *>(widget) ||
       qobject_cast<QToolButton *>(widget)) {
     addEventFilter(widget);
+    widget->setAttribute(Qt::WA_Hover);
     QObject::connect(
         static_cast<QAbstractButton *>(widget), &QAbstractButton::pressed,
         widget, [widget]() { widget->repaint(); }, Qt::DirectConnection);
+  }
+
+  if (qobject_cast<QCheckBox *>(widget) ||
+      qobject_cast<QRadioButton *>(widget) ||
+      qobject_cast<QComboBox *>(widget)) {
+    addEventFilter(widget);
+    widget->setAttribute(Qt::WA_Hover);
   }
 
   // switch (pill) checkboxes: replace indicator with actual switch widget
@@ -532,6 +540,7 @@ void Style::polish(QWidget *widget) {
 
   } else if (qobject_cast<QMenu *>(widget)) {
     setTranslucentBackground(widget);
+    widget->setCursor(Qt::PointingHandCursor);
 
     if (widget->testAttribute(Qt::WA_TranslucentBackground) &&
         StyleConfigData::menuOpacity() < 100) {
@@ -704,8 +713,18 @@ void Style::unpolish(QWidget *widget) {
   if (qobject_cast<QAbstractScrollArea *>(widget) ||
       qobject_cast<QDockWidget *>(widget) ||
       qobject_cast<QMdiSubWindow *>(widget) ||
+      qobject_cast<QPushButton *>(widget) ||
+      qobject_cast<QToolButton *>(widget) ||
+      qobject_cast<QCheckBox *>(widget) ||
+      qobject_cast<QRadioButton *>(widget) ||
+      qobject_cast<QComboBox *>(widget) ||
       widget->inherits("QComboBoxPrivateContainer")) {
     widget->removeEventFilter(this);
+  }
+
+  // reset cursor set in polish() for menus
+  if (qobject_cast<QMenu *>(widget)) {
+    widget->unsetCursor();
   }
   if (auto checkBox = qobject_cast<QCheckBox *>(widget)) {
     if (isSwitchWidget(checkBox)) {

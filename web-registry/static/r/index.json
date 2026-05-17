@@ -1,0 +1,10 @@
+[
+	{
+		"name": "button",
+		"title": "Button",
+		"type": "registry:ui",
+		"description": "Blossom UI button matching the BlossomOS design system.",
+		"registryDependencies": [],
+		"relativeUrl": "button.json"
+	}
+]

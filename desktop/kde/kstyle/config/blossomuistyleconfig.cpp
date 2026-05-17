@@ -20,8 +20,6 @@
 
 #include "blossomuistyleconfig.h"
 
-#include "../blossomui.h"
-#include "../config-blossomui.h"
 #include "blossomuistyleconfigdata.h"
 #include "blossomuistyleversion.h"
 #include <KLocalizedString>

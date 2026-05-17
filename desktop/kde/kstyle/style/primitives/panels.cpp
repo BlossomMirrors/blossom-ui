@@ -24,6 +24,10 @@
 #include <QToolButton>
 #include <QTreeView>
 
+#if BLOSSOMUI_HAVE_QTQUICK
+#include <QQuickItem>
+#endif
+
 namespace BlossomUI {
 
 bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
@@ -36,7 +40,7 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
     return true;
 
   const QObject *styleObject(widget ? widget : option->styleObject);
-  isQtQuickControl(option, widget);
+  const bool isQtQuick = isQtQuickControl(option, widget);
 
   // store window state
   const bool windowActive(widget ? widget->isActiveWindow() : true);
@@ -53,7 +57,20 @@ bool Style::drawPanelButtonCommandPrimitive(const QStyleOption *option,
   const bool sunken(state & (State_On | State_Sunken));
   const bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
+#if BLOSSOMUI_HAVE_QTQUICK
+  if (isQtQuick && styleObject) {
+    auto *item = const_cast<QQuickItem *>(static_cast<const QQuickItem *>(styleObject));
+    if (enabled)
+      item->setCursor(Qt::PointingHandCursor);
+    else
+      item->unsetCursor();
+  }
+#endif
+
   // update animation state
+  // mouse over takes precedence over focus
+  _animations->widgetStateEngine().updateState(styleObject, AnimationHover,
+                                               mouseOver);
   _animations->widgetStateEngine().updateState(styleObject, AnimationPressed,
                                                sunken,
                                                AnimationForwardOnly |
@@ -107,11 +124,25 @@ bool Style::drawPanelButtonToolPrimitive(const QStyleOption *option,
   const auto &palette(option->palette);
   auto rect(option->rect);
 
+  const QObject *styleObject(widget ? widget : option->styleObject);
+  const bool isQtQuick = isQtQuickControl(option, widget);
+
   // store relevant flags
-  const bool windowActive(widget && widget->isActiveWindow());
+  const bool windowActive(widget ? widget->isActiveWindow() : true);
   const State &state(option->state);
   const bool autoRaise(state & State_AutoRaise);
   const bool enabled(state & State_Enabled);
+
+#if BLOSSOMUI_HAVE_QTQUICK
+  if (isQtQuick && styleObject) {
+    auto *item = const_cast<QQuickItem *>(static_cast<const QQuickItem *>(styleObject));
+    if (enabled)
+      item->setCursor(Qt::PointingHandCursor);
+    else
+      item->unsetCursor();
+  }
+#endif
+
   const bool sunken(state & (State_On | State_Sunken));
   const bool mouseOver(enabled && (option->state & State_MouseOver));
   const bool hasFocus(enabled &&
@@ -119,7 +150,7 @@ bool Style::drawPanelButtonToolPrimitive(const QStyleOption *option,
 
   /*
    * get animation state
-   * no need to update, this was already done in drawToolButtonComplexControl
+   * no need to update hover/focus, this was already done in drawToolButtonComplexControl
    */
   _animations->widgetStateEngine().updateState(widget, AnimationPressed, sunken,
                                                AnimationForwardOnly |
