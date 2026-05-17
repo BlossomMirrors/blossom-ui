@@ -1,0 +1,91 @@
+// Decoration
+window.rounded,
+window.rounded actionbar {
+  border-radius: 0 0 $window_radius $window_radius;
+
+  decoration {
+    border-radius: $window_radius;
+  }
+}
+
+window.flat headerbar {
+  box-shadow: none;
+}
+
+// Text formatting
+.accent {
+  color: $selected_bg_color;
+}
+
+.h1 {
+  font-size: 20pt;
+  font-weight: 300;
+}
+
+.h2 {
+  font-size: 16pt;
+  font-weight: 200;
+}
+
+.h3 {
+  font-size: 11pt;
+}
+
+.h4 {
+  font-weight: 700;
+}
+
+.h4 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+list .h4 {
+  padding-left: 0.5em;
+}
+
+// Granite popover
+GraniteWidgetsPopOver {
+  @if $gtkver=='3' {
+    -GraniteWidgetsPopOver-arrow-width: 21;
+    -GraniteWidgetsPopOver-arrow-height: 10;
+    -GraniteWidgetsPopOver-border-radius: $popover_radius;
+    -GraniteWidgetsPopOver-border-width: 0;
+    -GraniteWidgetsPopOver-shadow-size: 12;
+  }
+
+  border: 1px solid $menu_border;
+  background: $menu_bg_color;
+  color: $menu_fg_color;
+
+  .button {
+    background-image: none;
+    background: none;
+    border: none;
+
+    &:active,
+    &:active:hover, {
+      color: $selected_bg_color;
+    }
+  }
+
+  > .frame {
+    border:none;
+  }
+
+  .sidebar.view {
+    border: none;
+    background: none;
+  }
+}
+
+GraniteWidgetsStaticNotebook .frame {
+  border: none;
+}
+
+.popover_bg {
+  background-color: $menu_bg_color;
+  background-image: none;
+  border: 1px solid $menu_border;
+  color: $menu_fg_color;
+}

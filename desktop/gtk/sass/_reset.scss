@@ -1,0 +1,35 @@
+* {
+  border: unset;
+  filter: none;
+}
+
+scrollbar *,
+switch {
+  all: unset;
+}
+
+headerbar *,
+window.dialog.message.csd .dialog-action-area {
+  margin: 0;
+  padding: 0;
+  border-spacing: 0;
+}
+
+sheet { outline: none; }
+
+check, radio { padding: 0; }
+
+.linked:not(.vertical),
+.linked.vertical {
+  entry,
+  button {
+    margin: 0;
+  }
+}
+
+undershoot {
+  &.top, &.bottom, &.left, &.right {
+    background-image: none;
+    box-shadow: none;
+  }
+}

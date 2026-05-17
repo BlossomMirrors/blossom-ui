@@ -1,0 +1,76 @@
+// Chromium
+window.background.chromium {
+  background-color: $base_color;
+
+  //urlbar
+  textview.view {
+    background-color: gtkalpha($text_color, 0.05);
+  }
+
+  menuitem {
+    border-radius: 0;
+  }
+}
+
+// Geary
+geary-composer-editor {
+  > box.background {
+    background-color: transparent;
+
+    > actionbar > revealer > box {
+      border-radius: 0 0 $radius $radius;
+    }
+  }
+}
+
+// Gedit
+.gedit-search-slider {
+  background: $bg_color;
+  padding: 4px 8px;
+  border-radius: 0 0 $radius $radius;
+}
+
+// Nemo
+.nemo-places-sidebar .view {
+  background-color: $bg_color;
+
+  &:backdrop { background-color: $backdrop_bg_color; }
+}
+
+.nemo-window separator { background: none; }
+
+// make statusbar less tall
+.nemo-window box.toolbar {
+  padding: 0;
+
+  button {
+    min-width: 20px;
+    min-height: 20px;
+  }
+
+  scale { padding: 4px; }
+}
+
+// file rename
+.nemo-window-pane {
+  widget.entry {
+    border: 2px solid gtkalpha($selected_bg_color, 0.8);
+    border-radius: $button_radius;
+
+    &:selected {  background-color: $selected_bg_color; }
+  }
+}
+
+// Inkscaoe
+tab .close-button {
+  &:hover {
+    color: $tab_hover_bg;
+    background-color: $close_button_bg;
+    transition: none;
+  }
+
+  &, &:backdrop {
+    color: gtkalpha(currentColor, if($DarklyrcTabUseBrighterCloseIcon, 1, 0.4));
+    background-color: transparent;
+  }
+}

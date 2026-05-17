@@ -1,0 +1,28 @@
+window {
+  &.csd {
+    border-radius: var(--window-radius);
+    outline: none;
+
+    &.tiled,
+    &.tiled-top,
+    &.tiled-left,
+    &.tiled-right,
+    &.tiled-bottom {
+      --window-radius: 0px;
+    }
+
+    &.maximized,
+    &.fullscreen {
+      --window-radius: 0px;
+    }
+
+    &.ssd-frame {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &.solid-csd {
+    --window-radius: 0px;
+  }
+}

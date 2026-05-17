@@ -1,0 +1,74 @@
+window.unified {
+  border-radius: $window_radius;
+  &.maximized,
+  &.fullscreen,
+  &.tiled {
+    border-radius: 0;
+  }
+}
+
+viewswitcher {
+  headerbar & {
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+
+  button {
+    box-shadow: none;
+    padding: 0 10px;
+    margin: 0 2px;
+  }
+
+  stack > box {
+    &.narrow {
+      font-size: 0.75rem;
+    }
+  }
+
+}
+
+
+leaflet {
+  .sidebar viewport {
+    background-color: $base_color;
+
+    &:backdrop {
+      background-color: $backdrop_base_color;
+    }
+
+    list separator { background-color: transparent; }
+  }
+}
+
+popover list row { padding: 4px }
+
+
+//
+// HdyExpanderRow
+//
+row.expander {
+  padding: 0px;
+  background-color: transparent;
+
+  list.nested > row {
+    background-color: transparent;
+    border: none;
+
+    &:not(:selected).activatable {
+      &:hover {
+        background-color: gtkalpha(currentColor, .03);
+      }
+
+      &:active {
+        background-color: gtkalpha(currentColor, .08);
+      }
+    }
+  }
+
+  list.nested {
+    border-radius: $radius;
+    margin: 0 5px;
+    color: inherit;
+    background-color: gtkalpha(black, 0.1);
+  }
+}

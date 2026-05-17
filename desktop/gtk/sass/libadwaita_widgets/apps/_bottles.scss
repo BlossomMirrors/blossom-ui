@@ -1,0 +1,139 @@
+.custom_warning {
+  background-color: #f2edde;
+  border: 1px solid #ebdecc;
+  color: #a98e42;
+  padding: 15px;
+  border-radius: 7px;
+}
+
+// tags
+button.flat,
+button.flat:focus:not(:hover):not(:checked) {
+  &.tag {
+    border-radius: 20px;
+    background-color: gtkalpha(currentColor, .07);
+    padding: 5px 13px;
+    margin: 0 2px;
+  }
+
+  &.tag-img {
+    padding: 4px 10px;
+  }
+
+  &.tag-category {
+    padding: 5px 10px;
+  }
+
+  &.tag-versioning {
+    background-color: #c994eb;
+    color: #000;
+  }
+
+  &.tag-lutris {
+    background-color: #FC9A29;
+    color: #000;
+  }
+
+  &.tag-playonlinux {
+    background-color: #c91c6a;
+    color: #000;
+  }
+
+  &.tag-bottlesv1 {
+    background-color: #c91c6a;
+    color: #000;
+  }
+}
+
+// terminal style
+.terminal {
+  font-family: monospace;
+  padding: 7px 10px;
+  background-color: #4A4A4A;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.borderless,
+.borderless button.combo,
+.borderless button {
+  border: 0;
+  background-color: transparent;
+  background-image: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.plain button.combo,
+.plain-label {
+  opacity: .8;
+}
+
+.no-padding {
+  margin: 0;
+  padding: 0;
+}
+
+entry.heading_1 {
+  margin: 0 0 0 -8px;
+}
+
+// Grades
+.grade-Platinum {
+  background-color: #c9c9c9;
+  color: #6b6b6b;
+}
+
+.grade-Gold {
+  background-color: #f2edde;
+  color: #8d7637;
+}
+
+.grade-Silver {
+  background-color: #e8e8e8;
+  color: #6b6b6b;
+}
+
+.grade-Bronze {
+  background-color: #dbbfa3;
+  color: #5a3f1a;
+}
+
+.removed {
+  opacity: 0.5;
+}
+
+// Library
+.library-entry {
+  border: 1px solid gtkalpha(currentColor, .07);
+  border-radius: 4px;
+  background-color: gtkalpha(currentColor, .04);
+}
+
+.library-entry-details {
+  border-top: 1px solid gtkalpha(currentColor, .07);
+}
+
+.library-content-btn {
+  color: #ffffff;
+}
+
+.dragndrop_overlay {
+  background: rgba(41, 65, 94, 0.2);
+}
+
+progressbar.installer {
+  line-height: 2.0;
+}
+
+// Donate button
+button.donate {
+  color: #c91c6a;
+}
+
+// Playtime graph bars
+.playtime-bar {
+  min-width: 32px;
+  border-radius: 6px 6px 0 0;
+  background: var(--accent_bg_color);
+}

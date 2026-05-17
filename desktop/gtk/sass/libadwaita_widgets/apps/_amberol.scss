@@ -1,0 +1,8 @@
+.main-box {
+  playbackcontrol {
+    button.image-button {
+      &.circular { padding: 4px; }
+      &.large { min-width: 40px; min-height: 40px; }
+    }
+  }
+}

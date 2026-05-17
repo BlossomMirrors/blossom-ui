@@ -1,0 +1,137 @@
+$dialog_radius: $window_radius;
+$card_radius: $radius;
+
+$strong_disabled_opacity: 0.2;
+$dimmer_opacity: 0.3;
+
+$border_opacity: 15%;
+$focus_border_opacity: 50%;
+
+$hover_color: #{gtkalpha($fg_color, 0.1)};
+$active_color: #{gtkalpha($fg_color, 0.2)};
+
+$row_transition: none;
+
+$selected_color: $selected_bg_color;
+$selected_hover_color: gtkshade($selected_color, 1.2);
+$selected_active_color: gtkshade($selected_color, 0.8);
+
+$standalone-color-oklab-light: Min(l, 0.5) a b;
+$standalone-color-oklab-dark: Max(l, 0.85) a b;
+
+$toast_bg_color: $base_color;
+$toast_fg_color: $text_color;
+
+$view_hover_color: color-mix(in srgb, currentColor 4%, transparent);
+$view_active_color: color-mix(in srgb, currentColor 8%, transparent);
+$view_selected_color: color-mix(in srgb, var(--accent-bg-color) 25%, transparent);
+$view_selected_hover_color: color-mix(in srgb, var(--accent-bg-color) 32%, transparent);
+$view_selected_active_color: color-mix(in srgb, var(--accent-bg-color) 39%, transparent);
+
+$window_outline_color: $top_hilight;
+
+
+@define-color shade_color RGB(0 0 6 / 25%);
+
+@define-color card_bg_color #{gtkalpha($base_color, 0.7)};
+@define-color card_fg_color #{$fg_color};
+@define-color card_shade_color #{$bg_color};
+
+@define-color backdrop_card_bg_color #{gtkalpha($backdrop_base_color, 0.7)};
+@define-color backdrop_card_fg_color #{$backdrop_fg_color};
+
+@define-color dialog_bg_color #{$bg_color};
+@define-color dialog_fg_color #{$fg_color};
+
+@define-color headerbar_fg_color #{$titlebar_fg_color};
+@define-color headerbar_bg_color #{$titlebar_bg_color};
+
+@define-color sidebar_shade_color RGB(0 0 6 / 25%);
+@define-color secondary_sidebar_shade_color RGB(0 0 6 / 25%);
+
+@define-color window_bg_color #{$bg_color};
+
+:root {
+  --border-color: #{$borders_color};
+  --border-opacity: #{$border_opacity};
+  --dim-opacity: 55%;
+  --disabled-opacity: 50%;
+  --window-radius: #{$window_radius};
+
+  --accent-color: #{$selected_bg_color};
+  --accent-bg-color: var(--accent-color);
+
+  --destructive-color: #{$destructive_color};
+  --destructive-bg-color: var(--destructive-color);
+  --destructive-fg-color: white;
+
+  --success-bg-color: #{$success_color};
+  --warning-bg-color: #{$warning_color};
+  --error-bg-color: #{$error_color};
+
+  --active-toggle-bg-color: #{gtkalpha($fg_color, 0.15)};
+  --active-toggle-fg-color: #{$fg_color};
+
+  // --banner-color
+
+
+  --shade-color: @shade_color;
+
+  --card-bg-color: @card_bg_color;
+  --card-fg-color: @card_fg_color;
+  --card-shade-color: @card_shade_color;
+
+  --backdrop-card-bg-color: @backdrop_card_bg_color;
+  --backdrop-card-fg-color: @backdrop_card_fg_color;
+
+  --dialog-bg-color: @dialog_bg_color;
+  --dialog-fg-color: @dialog_fg_color;
+
+  --headerbar-bg-color: @headerbar_bg_color;
+  --headerbar-fg-color: @headerbar_fg_color;
+  --headerbar-backdrop-color: #{$backdrop_titlebar_bg_color};
+  --headerbar-backdrop-fg-color: #{$backdrop_titlebar_fg_color};
+  --headerbar-shade-color: @headerbar_bg_color;
+  --headerbar-darker-shade-color: @headerbar_bg_color;
+
+  //--overview-bg-color
+  //--overview-fg-color
+
+  --sidebar-bg-color: #{$base_color};
+  --sidebar-fg-color: #{$fg_color};
+  --sidebar-border-color: rgba(0,0,0,0.0);
+  --sidebar-backdrop-color: #{$backdrop_base_color};
+  --sidebar-shade-color: @sidebar_shade_color;
+  --secondary-sidebar-bg-color: #{gtkmix($bg_color, $base_color, 0.5)};
+  --secondary-sidebar-fg-color: var(--sidebar-fg-color);
+  --secondary-sidebar-border-color: rgba(0,0,0,0.0);
+  --secondary-sidebar-backdrop-color: #{gtkmix($backdrop_bg_color, $backdrop_base_color, 0.5)};
+  --secondary-sidebar-shade-color: @secondary_sidebar_shade_color;
+
+  //--thumbnail-bg-color
+  //--thumbnail-fg-color
+
+  --window-bg-color: #{$bg_color};
+  --window-fg-color: #{$fg_color};
+}
+
+@import 'libadwaita_widgets/palette';
+@import 'libadwaita_widgets/avatar';
+@import 'libadwaita_widgets/bottom_sheet';
+@import 'libadwaita_widgets/buttons';
+@import 'libadwaita_widgets/dialogs';
+@import 'libadwaita_widgets/header_bar';
+@import 'libadwaita_widgets/labels';
+@import 'libadwaita_widgets/lists';
+@import 'libadwaita_widgets/message_dialog';
+@import 'libadwaita_widgets/misc';
+@import 'libadwaita_widgets/preferences';
+@import 'libadwaita_widgets/sidebars';
+@import 'libadwaita_widgets/tab_view';
+@import 'libadwaita_widgets/toggle_group';
+@import 'libadwaita_widgets/toolbars';
+@import 'libadwaita_widgets/viewswitcher';
+@import 'libadwaita_widgets/window';
+
+@import 'libadwaita_widgets/apps';
+

@@ -1,0 +1,18 @@
+.colorsetter {
+  &, &:backdrop {
+    &, &:focus { background-color: #{"@colorsetter_color"}; }
+
+    &:hover {
+      background-color: #{"shade(@colorsetter_color, 1.2)"};
+    }
+    &:active:hover {
+      background-color: #{"shade(@colorsetter_color, 0.8)"};
+      animation: none;
+    }
+  }
+}
+
+.workspaces-listbox list {
+  background-color: $bg_color;
+  &:backdrop { background-color: $backdrop_bg_color; }
+}

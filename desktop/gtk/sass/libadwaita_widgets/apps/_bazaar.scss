@@ -1,0 +1,25 @@
+button.flat.context-tile {
+  button.lozenge-ring-button {
+    background-color: transparent;
+    box-shadow: none;
+
+    &:active { animation: none; }
+  }
+}
+
+.developer-badge button {
+  &, &:focus {
+    background-color: transparent;
+    box-shadow: none;
+
+    &:active { animation: none; }
+  }
+}
+
+.carousel-box.screenshot-carousel {
+  background-color: $base_color;
+
+  &:backdrop { background-color: $backdrop_base_color; }
+
+  button.circular { min-width: 34px; min-height: 34px; }
+}

@@ -1,0 +1,60 @@
+$color_suffix: _breeze;
+
+@function gtkalpha($c,$a) {
+    @if $gtkver == '4' {
+        $ratio: $a * 100%;
+        @return unquote("color-mix(in srgb, #{$c} #{$ratio}, transparent)");
+    } @else {
+        @return unquote("alpha(#{$c},#{$a})");
+    }
+}
+
+@function gtkcolor($str) {
+    @return unquote("#{$str}#{$color_suffix}");
+}
+
+@function gtkshade($c, $a) {
+    @if $gtkver == '4' {
+        @return unquote("hsl(from #{$c} h calc(s * #{$a}) calc(l * #{$a}))");
+    } @else {
+        @return unquote("shade(#{$c},#{$a})");
+    }
+}
+
+@function gtkmix($c1, $c2, $m) {
+    @if $gtkver == '4' {
+        $ratio: $m * 100%;
+        @return unquote("color-mix(in srgb, #{$c1} #{$ratio}, #{$c2})");
+    } @else {
+        @return unquote("mix(#{$c2},#{$c1},#{$m})");
+    }
+}
+
+@function selected_tab_bg_color($backdrop:false) {
+    @if $backdrop==false {
+        @if $DarklyrcTabUseHighlightColor { @return #{$selected_bg_color}; }
+        @else { @return gtkcolor("@selected_tab_bg_color"); }
+    } @else {
+        @if $DarklyrcTabUseHighlightColor { @return #{$backdrop_selected_bg_color}; }
+        @else { @return gtkcolor("@selected_tab_bg_color"); }
+    }
+}
+
+@mixin adaptive_color($name,$value_dark,$value_light) {
+    @if $gtkver=="3" {
+        @if $variant=="dark" {
+            @define-color #{$name}#{$color_suffix} #{$value_dark};
+        }
+        @if $variant=="light" {
+            @define-color #{$name}#{$color_suffix} #{$value_light};
+        }
+    }
+    @else {
+        @media (prefers-color-scheme: dark) {
+            @define-color #{$name}#{$color_suffix} #{$value_dark};
+        }
+        @media (prefers-color-scheme: light) {
+            @define-color #{$name}#{$color_suffix} #{$value_light};
+        }
+    }
+}

@@ -1,0 +1,55 @@
+#blackbox-main-window {
+  .custom-headerbar {
+    background-color: #{"@window_bg_color"};
+  }
+
+  &.context-root .custom-headerbar {
+    background-color: #{"@root_context_color"};
+  }
+  &.context-ssh .custom-headerbar {
+    background-color: #{"@ssh_context_color"};
+  }
+
+  themeswitcher .check {
+    background: $selected_bg_color;
+    color: $selected_fg_color;
+    padding: 2px;
+    border-radius: 17px;
+    margin: 3px;
+  }
+
+  themeswitcher checkbutton {
+    outline-offset: 1px;
+    transition: none;
+  }
+
+  themeswitcher checkbutton radio {
+    -gtk-icon-source: none;
+    background: none;
+    padding: 12px;
+    min-height: 24px;
+    min-width: 24px;
+    border: none;
+    outline-color: currentColor;
+    transition: none;
+    box-shadow: none;
+  }
+
+  themeswitcher checkbutton radio:checked {
+    box-shadow: inset 0 0 0 2px $selected_fg_color;
+  }
+
+  themeswitcher checkbutton.system radio {
+    background: linear-gradient(-45deg, #1e1e1e 49.99%, white 50.01%);
+  }
+
+  themeswitcher checkbutton.light radio {
+    color: gtkalpha(black, 0.8);
+    background-color: white;
+  }
+
+  themeswitcher checkbutton.dark radio {
+    color: white;
+    background-color: #1e1e1e;
+  }
+}

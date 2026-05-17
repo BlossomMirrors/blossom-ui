@@ -1,0 +1,15 @@
+clapper-app-window-state-buttons {
+  button, menubutton {
+    margin: 0;
+    padding: 0;
+    min-width: 30px;
+    min-height: 30px;
+
+    &:not(:hover),
+    &:not(:active) {
+      color: $osd_fg_color;
+      background: $osd_bg_color;
+      box-shadow: none;
+    }
+  }
+}

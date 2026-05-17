@@ -1,0 +1,350 @@
+tabbar {
+  .box {
+    background-color: var(--headerbar-bg-color);
+    color: var(--headerbar-fg-color);
+    box-shadow: none;
+    margin: 4px;
+    border-spacing: 4px;
+
+    &:backdrop {
+      background-color: var(--headerbar-backdrop-color);
+      transition: background-color $backdrop_transition;
+
+      > scrolledwindow,
+      > .start-action,
+      > .end-action {
+        transition: $backdrop_transition;
+      }
+    }
+  }
+
+  tabbox {
+    min-height: 20px;
+    padding: 0;
+    background-color: $tabbar_bg_color;
+    border-radius: $radius;
+
+    &:backdrop { background-color: $backdrop_tabbar_bg_color; }
+
+    > tabboxchild {
+      @include focus-ring($focus-state: ':focus-within:focus-visible');
+      border-radius: $radius;
+    }
+
+    > separator {
+      &, &.hidden {
+        opacity: 0;
+      }
+    }
+
+    > revealer > indicator {
+      min-width: 2px;
+      border-radius: 2px;
+      margin: 3px 6px;
+      background: color-mix(in srgb, var(--accent-color) 50%, transparent);
+    }
+  }
+
+  tab {
+    transition: background 150ms ease-in-out;
+    margin: 4px 0;
+
+    color: gtkalpha($fg_color, 0.7);
+
+    &:hover {
+      color: $fg_color;
+      background-color: $tab_hover_bg;
+    }
+
+    &:backdrop {
+      color: gtkalpha($backdrop_fg_color, 0.7);
+    }
+
+    &:selected {
+      color: $selected_tab_fg_color;
+      background-color: $selected_tab_bg_color;
+      @include _shadows($widget_shadow);
+    }
+
+    &:selected:disabled {
+      background-color: $insensitive_bg_color;
+
+      &:backdrop {
+        background-color: $backdrop_insensitive_bg_color;
+      }
+    }
+
+    &:backdrop:selected {
+      color: $backdrop_selected_tab_fg_color;
+      background-color: $backdrop_selected_tab_bg_color;
+    }
+  }
+
+  tabbox.single-tab tab {
+    &, &:hover, &:active {
+      background: none;
+    }
+  }
+
+  .start-action,
+  .end-action {
+    padding: 6px 5px;
+  }
+
+  .start-action:dir(ltr),
+  .end-action:dir(rtl) {
+    padding-right: 0;
+  }
+
+  .start-action:dir(rtl),
+  .end-action:dir(ltr) {
+    padding-left: 0;
+  }
+
+  &.inline {
+    @extend %tabbar-inline;
+  }
+}
+
+%tabbar-inline .box {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+  padding-bottom: 0;
+
+  &:backdrop {
+    background-color: transparent;
+    transition: none;
+
+    > scrolledwindow,
+    > .start-action,
+    > .end-action {
+      filter: none;
+      transition: none;
+    }
+  }
+}
+
+%tabbar-shrunk {
+  tabbox,
+  .start-action,
+  .end-action {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+dnd tab {
+  background-color: var(--headerbar-bg-color);
+  color: var(--headerbar-fg-color);
+
+  box-shadow: 0 0 0 1px RGB(0 0 0 / 3%),
+              0 1px 3px 1px RGB(0 0 0 / 7%),
+              0 2px 6px 2px RGB(0 0 0 / 3%);
+
+  margin: 25px;
+}
+
+tabbar,
+dnd {
+  tab {
+    min-height: 20px;
+    padding: 3px;
+    border-radius: $radius;
+
+    button.image-button {
+      padding: 0;
+      margin: 0;
+      min-width: 18px;
+      min-height: 18px;
+      border-radius: $circular_radius;
+
+      &.tab-close-button { @extend %tab-close-button; }
+    }
+
+    indicator {
+      min-height: 2px;
+      border-radius: 2px;
+      background: color-mix(in srgb, var(--accent-color) 50%, transparent);
+      transform: translateY(4px);
+    }
+  }
+}
+
+@if $DarklyrcOldTabbar {
+  tabbar,
+  dnd {
+    tab {
+      margin-top: 3px;
+      margin-bottom: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0; }
+  }
+
+  tabbar tabbox tabboxchild {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  @if $DarklyrcTabDrawHighlight {
+    $_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus");
+    $_backdrop_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus_backdrop");
+
+    tabbar {
+      tab {
+        &:selected {
+          background-image: linear-gradient(to bottom, $_selected_tab_highlight 2px,
+                                                       transparent 2px);
+        }
+        &:selected:backdrop {
+          background-image: linear-gradient(to bottom, $_backdrop_selected_tab_highlight 2px,
+                                                       transparent 2px);
+        }
+      }
+    }
+  }
+
+} @else if $DarklyrcTabBarAltStyle {
+  $_tab_line_bg: gtkmix($bg_color, $fg_color, 0.85);
+  $_selected_tab_line_bg: gtkcolor("@theme_button_decoration_focus");
+  $_backdrop_selected_tab_line_bg: gtkcolor("@theme_button_decoration_focus_backdrop");
+
+  tabbar {
+    tabbox {
+      &, &:backdrop { background-color: transparent; }
+
+      &, & > tabboxchild {border-radius: 0; }
+
+      separator {
+        &, &.hidden {
+          min-width: 5px;
+          margin-bottom: 1px;
+          background-color: transparent;
+          opacity: 1;
+          box-shadow: inset 0 -2px $_tab_line_bg;
+        }
+      }
+    }
+    tab {
+      border-radius: 0;
+      margin: 0;
+      margin-bottom: 1px;
+      padding-bottom: 5px;
+      box-shadow: inset 0 -2px $_tab_line_bg;
+
+      &, &:hover, &:selected { &, &:backdrop { background-color: transparent; }}
+
+      &:selected {
+        padding-bottom: 6px;
+        margin-bottom: 0;
+        box-shadow: inset 0 -4px $_selected_tab_line_bg;
+
+        &:backdrop { box-shadow: inset 0 -4px $_backdrop_selected_tab_line_bg; }
+      }
+    }
+  }
+}
+
+tabgrid > tabgridchild {
+  @include focus-ring(".card", $offset: 0, $outer: true);
+}
+
+tabthumbnail {
+  border-radius: $card_radius + 4px;
+
+  > box {
+    margin: 6px;
+  }
+
+  &:drop(active) {
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, $drop_target_color 40%, transparent);
+    background-color: color-mix(in srgb, $drop_target_color 10%, transparent);
+  }
+
+  transition: box-shadow 200ms $ease-out-quad, background-color $ease-out-quad;
+
+  .needs-attention {
+    &:dir(ltr) { transform: translate(8px, -8px); }
+    &:dir(rtl) { transform: translate(-8px, -8px); }
+
+    > widget {
+      background: var(--accent-color);
+      min-width: 12px;
+      min-height: 12px;
+      border-radius: $radius;
+      margin: 3px;
+      box-shadow: 0 1px 2px color-mix(in srgb, var(--accent-color) 40%, transparent);
+    }
+  }
+
+  .card {
+    picture {
+      outline: 1px solid $window_outline_color;
+      outline-offset: -1px;
+      border-radius: $card_radius;
+    }
+
+    background: none;
+    color: inherit;
+  }
+
+  &.pinned .card {
+    background-color: var(--thumbnail-bg-color);
+    color: var(--thumbnail-fg-color);
+  }
+
+  .icon-title-box {
+    border-spacing: 6px;
+  }
+
+  .tab-unpin-icon {
+    margin: 6px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  button {
+    &.image-button {
+      padding: 0;
+    }
+
+    border-radius: $circular_radius;
+
+    &, &:hover, &:active {
+      background: none;
+      box-shadow: none;
+    }
+
+    > image {
+      margin: 6px;
+      background-color: color-mix(in srgb, var(--thumbnail-bg-color) 75%, transparent);
+      min-width: 24px;
+      min-height: 24px;
+      border-radius: $circular_radius;
+      transition: $button_transition;
+    }
+
+    &:hover > image {
+      background-color: color-mix(in srgb, var(--thumbnail-bg-color) calc(0.9 * 75%), currentColor calc(0.1 * 75%));
+    }
+
+    &:active > image {
+      background-color: color-mix(in srgb, var(--thumbnail-bg-color) calc(0.8 * 75%), currentColor calc(0.2 * 75%));
+    }
+  }
+}
+
+taboverview > .overview {
+  color: var(--overview-fg-color);
+  background-color: var(--overview-bg-color);
+
+  .new-tab-button {
+    margin: 18px;
+  }
+}
+
+tabview:drop(active),
+tabbox:drop(active),
+tabgrid:drop(active) {
+  box-shadow: none;
+}

@@ -1,0 +1,64 @@
+%headerbar-flat,
+headerbar.flat {
+  background: none;
+  //box-shadow: none;
+  color: inherit;
+
+  min-height: $_headerbar_height;
+}
+
+%headerbar-inline {
+  @extend %headerbar-flat;
+
+  &:backdrop {
+    transition: none;
+
+    > windowhandle {
+      filter: none;
+      transition: none;
+    }
+  }
+}
+
+%headerbar-shrunk {
+  min-height: 36px;
+
+  > windowhandle > box {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &.default-decoration {
+    min-height: 26px;
+
+    > windowhandle > box {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+/******************
+ * AdwWindowTitle *
+ ******************/
+
+windowtitle {
+  .title {
+    padding-left: 12px;
+    padding-right: 12px;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    font-size: smaller;
+    padding-left: 12px;
+    padding-right: 12px;
+    @extend .dimmed;
+  }
+}
+
+windowtitle {
+  margin-top: -6px;
+  margin-bottom: -6px;
+  min-height: 12px;
+}
