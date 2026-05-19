@@ -8,6 +8,7 @@
 			"type": "registry:ui",
 			"title": "Button",
 			"description": "Blossom UI button",
+			"registryDependencies": [],
 			"files": [
 				{
 					"path": "src/lib/registry/ui/button/button.svelte",

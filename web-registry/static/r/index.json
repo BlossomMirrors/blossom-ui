@@ -3,7 +3,7 @@
 		"name": "button",
 		"title": "Button",
 		"type": "registry:ui",
-		"description": "Blossom UI button matching the BlossomOS design system.",
+		"description": "Blossom UI button",
 		"registryDependencies": [],
 		"relativeUrl": "button.json"
 	}
