@@ -1,5 +1,13 @@
 [
 	{
+		"name": "blossom",
+		"title": "Blossom Theme",
+		"type": "registry:theme",
+		"description": "Blossom UI color theme with light and dark modes",
+		"registryDependencies": [],
+		"relativeUrl": "blossom.json"
+	},
+	{
 		"name": "button",
 		"title": "Button",
 		"type": "registry:ui",
