@@ -178,6 +178,19 @@
 					"type": "registry:ui"
 				}
 			]
+		},
+		{
+			"name": "mode-toggle",
+			"type": "registry:ui",
+			"title": "Mode Toggle",
+			"description": "Blossom UI mode toggle",
+			"registryDependencies": [],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/mode-toggle/mode-toggle.svelte",
+					"type": "registry:ui"
+				}
+			]
 		}
 	]
 }

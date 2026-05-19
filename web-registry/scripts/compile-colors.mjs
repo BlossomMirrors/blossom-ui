@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, "..", "..");
 const colorsPath = resolve(repoRoot, "colors.json");
 const outPath = resolve(__dirname, "..", "src", "styles", "theme.css");
+const registryPath = resolve(__dirname, "..", "registry.json");
 
 const palette = JSON.parse(readFileSync(colorsPath, "utf8"));
 
@@ -140,3 +141,15 @@ const output = [
 mkdirSync(dirname(outPath), { recursive: true });
 writeFileSync(outPath, output);
 console.log(`Wrote ${outPath}`);
+
+const registry = JSON.parse(readFileSync(registryPath, "utf8"));
+const themeItem = registry.items.find((item) => item.name === "blossom");
+if (themeItem) {
+	themeItem.cssVars = {
+		theme: { ...primitives, ...radii },
+		light,
+		dark,
+	};
+	writeFileSync(registryPath, JSON.stringify(registry, null, "\t") + "\n");
+	console.log(`Wrote ${registryPath}`);
+}

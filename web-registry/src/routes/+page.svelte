@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from "$lib/registry/ui/button";
+	import ModeToggle from "$lib/registry/ui/mode-toggle/mode-toggle.svelte";
 	import { mode, toggleMode } from "mode-watcher";
 
 	const variants = ["default", "primary", "destructive", "ghost", "link"] as const;
@@ -15,9 +16,6 @@
 				<code class="bg-muted rounded px-1 py-0.5 text-xs">colors.json</code>.
 			</p>
 		</div>
-		<Button size="sm" onclick={toggleMode}>
-			{mode.current === "dark" ? "Light" : "Dark"} mode
-		</Button>
 	</header>
 
 	<main class="flex flex-1 flex-col gap-8">
@@ -37,6 +35,11 @@
 					<Button {size}>{size === "icon" ? "+" : size}</Button>
 				{/each}
 			</div>
+		</section>
+
+		<section class="flex flex-col gap-4 rounded-(--radius-card) border bg-card p-6">
+			<h2 class="text-sm font-medium">Mode Toggle</h2>
+			<ModeToggle />
 		</section>
 	</main>
 </div>

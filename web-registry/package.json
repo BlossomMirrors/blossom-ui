@@ -48,6 +48,7 @@
 		]
 	},
 	"dependencies": {
+		"lucide-svelte": "^1.0.1",
 		"shadcn-svelte": "^1.2.7"
 	}
 }
