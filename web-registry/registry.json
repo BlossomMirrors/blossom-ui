@@ -191,6 +191,23 @@
 					"type": "registry:ui"
 				}
 			]
+		},
+		{
+			"name": "navbar",
+			"type": "registry:ui",
+			"title": "Navbar",
+			"description": "Responsive navigation bar with dropdown menus and featured items",
+			"registryDependencies": ["navigation-menu"],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/navbar/navbar.svelte",
+					"type": "registry:ui"
+				},
+				{
+					"path": "src/lib/registry/ui/navbar/index.ts",
+					"type": "registry:ui"
+				}
+			]
 		}
 	]
 }
