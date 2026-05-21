@@ -158,7 +158,7 @@ const registry = JSON.parse(readFileSync(registryPath, "utf8"));
 const themeItem = registry.items.find((item) => item.name === "blossom");
 if (themeItem) {
 	themeItem.cssVars = {
-		theme: { ...primitives, ...radii },
+		theme: { ...primitives, ...radii, ...themeInline },
 		light,
 		dark,
 	};
