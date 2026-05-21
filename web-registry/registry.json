@@ -167,9 +167,7 @@
 			"type": "registry:ui",
 			"title": "Button",
 			"description": "Blossom UI button",
-			"registryDependencies": [
-				"blossom"
-			],
+			"registryDependencies": ["https://cdn.blossomos.org/shadcn/r/blossom.json"],
 			"files": [
 				{
 					"path": "src/lib/registry/ui/button/button.svelte",
@@ -199,9 +197,7 @@
 			"type": "registry:ui",
 			"title": "Navbar",
 			"description": "Responsive navigation bar with dropdown menus and featured items",
-			"registryDependencies": [
-				"navigation-menu"
-			],
+			"registryDependencies": ["navigation-menu"],
 			"files": [
 				{
 					"path": "src/lib/registry/ui/navbar/navbar.svelte",
@@ -218,9 +214,7 @@
 			"type": "registry:ui",
 			"title": "Scroll To Top",
 			"description": "Fixed button that appears after scrolling and smoothly returns to the top of the page",
-			"dependencies": [
-				"lucide-svelte@^1.0.1"
-			],
+			"dependencies": ["lucide-svelte@^1.0.1"],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -260,9 +254,7 @@
 			"type": "registry:ui",
 			"title": "Features",
 			"description": "Responsive two-column grid of feature cards with icon, title, description, and optional CTA link",
-			"dependencies": [
-				"lucide-svelte@^1.0.1"
-			],
+			"dependencies": ["lucide-svelte@^1.0.1"],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -280,9 +272,7 @@
 			"type": "registry:ui",
 			"title": "CTA Area",
 			"description": "Gradient call-to-action section with a heading, body text, and up to two action buttons",
-			"registryDependencies": [
-				"button"
-			],
+			"registryDependencies": ["button"],
 			"files": [
 				{
 					"path": "src/lib/registry/ui/cta-area/cta-area.svelte",
