@@ -69,12 +69,6 @@
 					"quaternary-950": "#1A1800",
 					"red-300": "#DE4F4F",
 					"cyan-300": "#7CD6FF",
-					"radius": "0.625rem",
-					"radius-sidebar-item": "4px",
-					"radius-menu": "7px",
-					"radius-button": "var(--radius-button)",
-					"radius-card": "10px",
-					"radius-window": "14px",
 					"color-background": "var(--background)",
 					"color-foreground": "var(--foreground)",
 					"color-card": "var(--card)",
@@ -117,7 +111,13 @@
 					"radius-sm": "var(--radius-sidebar-item)",
 					"radius-md": "var(--radius-menu)",
 					"radius-lg": "var(--radius-card)",
-					"radius-xl": "var(--radius-window)"
+					"radius-xl": "var(--radius-window)",
+					"radius-button": "8px",
+					"radius": "0.625rem",
+					"radius-sidebar-item": "4px",
+					"radius-menu": "7px",
+					"radius-card": "10px",
+					"radius-window": "14px"
 				},
 				"light": {
 					"background": "var(--neutral-25)",
