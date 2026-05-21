@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button } from "$lib/registry/ui/button";
 	import ModeToggle from "$lib/registry/ui/mode-toggle/mode-toggle.svelte";
-	import { mode, toggleMode } from "mode-watcher";
 
 	const variants = ["default", "primary", "destructive", "ghost", "link"] as const;
 	const sizes = ["sm", "default", "lg", "icon"] as const;
