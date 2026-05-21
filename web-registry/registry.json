@@ -210,6 +210,83 @@
 					"type": "registry:ui"
 				}
 			]
+		},
+		{
+			"name": "scroll-to-top",
+			"type": "registry:ui",
+			"title": "Scroll To Top",
+			"description": "Fixed button that appears after scrolling and smoothly returns to the top of the page",
+			"dependencies": [
+				"lucide-svelte@^1.0.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/scroll-to-top/scroll-to-top.svelte",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "section-header",
+			"type": "registry:ui",
+			"title": "Section Header",
+			"description": "Labelled section heading with an uppercase subheader and a serif title in two size variants",
+			"registryDependencies": [],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/section-header/section-header.svelte",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "feature-item",
+			"type": "registry:ui",
+			"title": "Feature Item",
+			"description": "Compact icon-and-label card for feature lists, supports image icons and an amber color variant",
+			"registryDependencies": [],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/feature-item/feature-item.svelte",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "features",
+			"type": "registry:ui",
+			"title": "Features",
+			"description": "Responsive two-column grid of feature cards with icon, title, description, and optional CTA link",
+			"dependencies": [
+				"lucide-svelte@^1.0.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/features/features.svelte",
+					"type": "registry:ui"
+				},
+				{
+					"path": "src/lib/registry/ui/features/index.ts",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "cta-area",
+			"type": "registry:ui",
+			"title": "CTA Area",
+			"description": "Gradient call-to-action section with a heading, body text, and up to two action buttons",
+			"registryDependencies": [
+				"button"
+			],
+			"files": [
+				{
+					"path": "src/lib/registry/ui/cta-area/cta-area.svelte",
+					"type": "registry:ui"
+				}
+			]
 		}
 	]
 }

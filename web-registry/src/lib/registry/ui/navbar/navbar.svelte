@@ -82,56 +82,55 @@
 	</li>
 {/snippet}
 
-<NavigationMenu.Root viewport={isMobile.current}>
-	<NavigationMenu.List class="flex-wrap">
-		{#each items as item (item.label)}
-			{#if item.type === 'link'}
-				<NavigationMenu.Item>
-					<NavigationMenu.Link>
-						{#snippet child()}
-							<a href={resolve(item.href)} class={navigationMenuTriggerStyle()}>{item.label}</a>
-						{/snippet}
-					</NavigationMenu.Link>
-				</NavigationMenu.Item>
-			{:else}
-				<NavigationMenu.Item>
-					<NavigationMenu.Trigger>{item.label}</NavigationMenu.Trigger>
-					<NavigationMenu.Content>
-						{#if item.featured}
-							<ul class="grid gap-2 p-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-								<li style="grid-row: span {item.items.length} / span {item.items.length}">
-									<NavigationMenu.Link
-										class="flex h-full w-full flex-col justify-start rounded-md bg-linear-to-b from-muted/50 to-muted p-4 no-underline outline-hidden select-none focus:shadow-md"
-									>
-										{#snippet child({ props })}
-											<a {...props} href={resolve(item.featured!.href)}>
-												<div class="mb-2 text-lg font-medium">{item.featured!.title}</div>
-												<p class="line-clamp-4 text-sm leading-snug text-muted-foreground">
-													{item.featured!.description}
-												</p>
-											</a>
-										{/snippet}
-									</NavigationMenu.Link>
-								</li>
-								{#each item.items as di (di.href)}
-									{@render DropdownItem(di)}
-								{/each}
-							</ul>
-						{:else}
-							<ul
-								class={cn(
-									'grid gap-2 p-2',
-									item.items.length > 4 ? 'w-[500px] grid-cols-2' : 'w-[300px]'
-								)}
-							>
-								{#each item.items as di (di.href)}
-									{@render DropdownItem(di)}
-								{/each}
-							</ul>
-						{/if}
-					</NavigationMenu.Content>
-				</NavigationMenu.Item>
-			{/if}
-		{/each}
-	</NavigationMenu.List>
-</NavigationMenu.Root>
+<div class="relative z-2">
+	<NavigationMenu.Root viewport={isMobile.current}>
+		<NavigationMenu.List class="flex-wrap">
+			{#each items as item (item.label)}
+				{#if item.type === 'link'}
+					<NavigationMenu.Item>
+						<NavigationMenu.Link>
+							{#snippet child()}
+								<a href={resolve(item.href)} class={navigationMenuTriggerStyle()}>{item.label}</a>
+							{/snippet}
+						</NavigationMenu.Link>
+					</NavigationMenu.Item>
+				{:else}
+					<NavigationMenu.Item>
+						<NavigationMenu.Trigger>{item.label}</NavigationMenu.Trigger>
+						<NavigationMenu.Content>
+							{#if item.featured}
+								<ul class="grid gap-2 p-2 md:w-100 lg:w-125 lg:grid-cols-[.75fr_1fr]">
+									<li style="grid-row: span {item.items.length} / span {item.items.length}">
+										<NavigationMenu.Link
+											class="flex h-full w-full flex-col justify-start rounded-md bg-linear-to-b from-muted/50 to-muted p-4 no-underline outline-hidden select-none focus:shadow-md"
+										>
+											{#snippet child({ props })}
+												<a {...props} href={resolve(item.featured!.href)}>
+													<div class="mb-2 text-lg font-medium">{item.featured!.title}</div>
+													<p class="line-clamp-4 text-sm leading-snug text-muted-foreground">
+														{item.featured!.description}
+													</p>
+												</a>
+											{/snippet}
+										</NavigationMenu.Link>
+									</li>
+									{#each item.items as di (di.href)}
+										{@render DropdownItem(di)}
+									{/each}
+								</ul>
+							{:else}
+								<ul
+									class={cn('grid gap-2 p-2', item.items.length > 4 ? 'w-125 grid-cols-2' : 'w-75')}
+								>
+									{#each item.items as di (di.href)}
+										{@render DropdownItem(di)}
+									{/each}
+								</ul>
+							{/if}
+						</NavigationMenu.Content>
+					</NavigationMenu.Item>
+				{/if}
+			{/each}
+		</NavigationMenu.List>
+	</NavigationMenu.Root>
+</div>
