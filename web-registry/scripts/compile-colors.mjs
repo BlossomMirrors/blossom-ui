@@ -121,6 +121,16 @@ const radii = {
 	"radius-window": "14px",
 };
 
+const themeInline = {};
+for (const key of Object.keys(light)) {
+	themeInline[`color-${key}`] = `var(--${key})`;
+}
+themeInline["radius-sm"] = "var(--radius-sidebar-item)";
+themeInline["radius-md"] = "var(--radius-menu)";
+themeInline["radius-lg"] = "var(--radius-card)";
+themeInline["radius-xl"] = "var(--radius-window)";
+themeInline["radius-button"] = "var(--radius-button)";
+
 const formatBlock = (selector, vars) => {
 	const body = Object.entries(vars)
 		.map(([k, v]) => `\t--${k}: ${v};`)
@@ -135,6 +145,8 @@ const output = [
 	formatBlock(":root", { ...primitives, ...radii, ...light }),
 	"",
 	formatBlock(".dark", dark),
+	"",
+	formatBlock("@theme inline", themeInline),
 	"",
 ].join("\n");
 
