@@ -142,5 +142,7 @@ fi
 
 configure_dolphin
 
+systemctl --user restart plasma-plasmashell.service 2>/dev/null || (plasmashell --replace & disown)
+
 echo "done"
 echo "toggle light/dark in system settings"

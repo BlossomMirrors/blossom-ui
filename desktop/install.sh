@@ -8,8 +8,12 @@ if [ "$1" = "remove" ]; then
     exit 1
 fi
 
+echo " *** Activating temporary /usr overlay (changes gone after reboot) *** "
+sudo rpm-ostree usroverlay || true
+
+sudo dnf install -y kdecoration-devel # FIXME: should be included in the DX OS image
 echo " *** Building *** "
-"$SRC_DIR/release.sh"
+"$SRC_DIR/release.sh" || true
 
 RPM=$(ls -1t "$SRC_DIR"/release/blossomui-*.rpm 2>/dev/null | head -1)
 if [ -z "$RPM" ]; then
