@@ -121,7 +121,7 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
     QTimer::singleShot(0, scrollArea, [this, scrollArea]() {
       const int radius =
           scrollArea->property("_blossomui_viewport_radius").toInt();
-      if (scrollArea->inherits("KItemListContainer")) {
+      if (scrollArea->inherits("KItemListContainer") && parent->inherits("DolphinView"))) {
         if (auto *ov = qobject_cast<QWidget *>(
                 scrollArea->property("_blossomui_card_overlay_widget")
                     .value<QObject *>())) {
