@@ -23,6 +23,9 @@ void Decoration::updateButtonsGeometryDelayed() {
 }
 
 void Decoration::updateButtonsGeometry() {
+  if (!m_leftButtons || !m_rightButtons)
+    return;
+
   const auto s = settings();
   const qreal buttonSpacing =
       s->smallSpacing() * Metrics::TitleBar_ButtonSpacing;
