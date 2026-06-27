@@ -147,6 +147,7 @@ bool Decoration::init()
     connect(c, &KDecoration3::DecoratedWindow::maximizedChanged, this, &Decoration::updateTitleBar);
 
     connect(c, &KDecoration3::DecoratedWindow::sizeChanged, this, &Decoration::updateBlur);
+    connect(c, &KDecoration3::DecoratedWindow::scaleChanged, this, &Decoration::updateScale);
 
     connect(c, &KDecoration3::DecoratedWindow::widthChanged, this, &Decoration::updateButtonsGeometry);
     connect(c, &KDecoration3::DecoratedWindow::maximizedChanged, this, &Decoration::updateButtonsGeometry);

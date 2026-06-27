@@ -8,10 +8,13 @@
 #include <KIconLoader>
 
 #include <QFile>
+#include <QHash>
 #include <QPainter>
 #include <QPainterPath>
 #include <QtSvg/QSvgRenderer>
 #include <zlib.h>
+
+static QHash<QString, QByteArray> s_svgDataCache;
 
 namespace BlossomUI {
 
@@ -187,36 +190,47 @@ void Button::drawIconWithMask(QPainter *painter) const {
     return;
   }
 
-  QFile svgFile(iconPath);
-  if (!svgFile.open(QIODevice::ReadOnly)) {
-    drawIcon(painter);
-    return;
-  }
-  QByteArray rawData = svgFile.readAll();
-  svgFile.close();
-
   QByteArray svgData;
-  if (iconPath.endsWith(QLatin1String(".svgz"), Qt::CaseInsensitive) ||
-      (rawData.size() >= 2 && (quint8)rawData[0] == 0x1f &&
-       (quint8)rawData[1] == 0x8b)) {
-    z_stream zs{};
-    if (inflateInit2(&zs, 15 + 32) == Z_OK) {
-      zs.next_in = reinterpret_cast<Bytef *>(rawData.data());
-      zs.avail_in = rawData.size();
-      char buf[65536];
-      int ret;
-      do {
-        zs.next_out = reinterpret_cast<Bytef *>(buf);
-        zs.avail_out = sizeof(buf);
-        ret = inflate(&zs, Z_NO_FLUSH);
-        svgData.append(buf, sizeof(buf) - zs.avail_out);
-      } while (ret == Z_OK);
-      inflateEnd(&zs);
-      if (ret != Z_STREAM_END)
-        svgData.clear();
-    }
+  auto it = s_svgDataCache.find(iconPath);
+  if (it != s_svgDataCache.end()) {
+    svgData = it.value();
   } else {
-    svgData = rawData;
+    QFile svgFile(iconPath);
+    if (!svgFile.open(QIODevice::ReadOnly)) {
+      drawIcon(painter);
+      return;
+    }
+    QByteArray rawData = svgFile.readAll();
+    svgFile.close();
+
+    if (iconPath.endsWith(QLatin1String(".svgz"), Qt::CaseInsensitive) ||
+        (rawData.size() >= 2 && (quint8)rawData[0] == 0x1f &&
+         (quint8)rawData[1] == 0x8b)) {
+      z_stream zs{};
+      if (inflateInit2(&zs, 15 + 32) == Z_OK) {
+        zs.next_in = reinterpret_cast<Bytef *>(rawData.data());
+        zs.avail_in = rawData.size();
+        char buf[65536];
+        int ret;
+        do {
+          zs.next_out = reinterpret_cast<Bytef *>(buf);
+          zs.avail_out = sizeof(buf);
+          ret = inflate(&zs, Z_NO_FLUSH);
+          svgData.append(buf, sizeof(buf) - zs.avail_out);
+        } while (ret == Z_OK);
+        inflateEnd(&zs);
+        if (ret != Z_STREAM_END)
+          svgData.clear();
+      }
+    } else {
+      svgData = rawData;
+    }
+
+    if (svgData.isEmpty()) {
+      drawIcon(painter);
+      return;
+    }
+    s_svgDataCache.insert(iconPath, svgData);
   }
 
   if (svgData.isEmpty()) {
