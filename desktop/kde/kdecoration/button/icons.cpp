@@ -264,8 +264,8 @@ void Button::drawIconWithMask(QPainter *painter) const {
   const QRectF drawRect =
       rect.adjusted(buttonMargin, buttonMargin, -buttonMargin, -buttonMargin);
 
-  int iconWidth = qRound(drawRect.width());
-  int iconHeight = qRound(drawRect.height());
+  int iconWidth = qRound(drawRect.width()) - 2;
+  int iconHeight = qRound(drawRect.height()) - 2;
 
   QImage iconImage(QSize(iconWidth, iconHeight),
                    QImage::Format_ARGB32_Premultiplied);
@@ -281,7 +281,7 @@ void Button::drawIconWithMask(QPainter *painter) const {
     bgColor = d->window()->color(ColorGroup::Warning, ColorRole::Foreground);
   else
     bgColor = d->fontColor();
-  qreal bgOpacity = qMax(0.15, m_opacity) * .6;
+  qreal bgOpacity = m_opacity * .6;
 
   if (bgColor.isValid()) {
     painter->save();
@@ -304,8 +304,8 @@ void Button::drawIconWithMask(QPainter *painter) const {
   }
 
   const QPoint iconPos(
-      qRound(drawRect.x() + (drawRect.width() - iconWidth) / 2.0),
-      qRound(drawRect.y() + (drawRect.height() - iconHeight) / 2.0));
+      qRound(rect.x() + rect.width() / 2.0 - iconWidth / 2.0),
+      qRound(rect.y() + rect.height() / 2.0 - iconHeight / 2.0));
   painter->drawImage(iconPos, iconImage);
 }
 
