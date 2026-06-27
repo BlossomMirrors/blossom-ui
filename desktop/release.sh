@@ -230,6 +230,14 @@ ARCH=$(uname -m)
 REPO="$SRC_DIR/local"
 mkdir -p "$REPO"
 
+echo "Ensuring Flatpak SDKs and runtimes are installed..."
+flatpak install --noninteractive --system flathub \
+    org.kde.Sdk/x86_64/6.9 \
+    org.kde.Sdk/x86_64/5.15-24.08 \
+    org.kde.Platform/x86_64/6.9 \
+    org.kde.Platform/x86_64/5.15-24.08 \
+    2>&1 | grep -v "^$" || true
+
 # create flatpak source archive (clean, no transform)
 tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.tar.gz" \
     --exclude=./.git \
