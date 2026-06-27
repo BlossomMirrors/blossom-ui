@@ -24,7 +24,7 @@ bool Style::eventFilterDockWidget(QDockWidget *dockWidget, QEvent *event) {
     if (dockWidget->isFloating()) {
       _helper->renderMenuFrame(&painter, rect, background, outline, false);
 
-    } else if (StyleConfigData::dockWidgetDrawFrame() &&
+    } else if (_app.isDolphin && StyleConfigData::dockWidgetDrawFrame() &&
                (dockWidget->features() & (QDockWidget::DockWidgetClosable |
                                           QDockWidget::DockWidgetMovable |
                                           QDockWidget::DockWidgetFloatable))) {

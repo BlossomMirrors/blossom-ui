@@ -190,6 +190,7 @@ protected:
 private:
   //* dolphin-specific helpers (defined in style/dolphin/)
   void polishDolphinScrollArea(QAbstractScrollArea *);
+  void polishDolphinUrlNavigator(QWidget *);
   void applyDolphinUrlNavigatorStyle(const QWidget *, QColor &background) const;
   void eventFilterDolphinListView(QListView *, QEvent *);
   void updateDolphinCardScrollArea(QAbstractScrollArea *, QEvent::Type);

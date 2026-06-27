@@ -45,10 +45,6 @@ bool Style::drawShapedFrameControl(const QStyleOption *option,
     if (widget && qobject_cast<const QAbstractScrollArea *>(widget)) {
       return drawFramePrimitive(option, painter, widget);
     }
-    if (widget && !qobject_cast<const QMenu *>(widget)) {
-      drawFrameMenuPrimitive(option, painter, widget);
-      return true;
-    }
     break;
   }
 

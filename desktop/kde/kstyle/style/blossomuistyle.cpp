@@ -346,6 +346,9 @@ void Style::polish(QWidget *widget) {
       layout->setContentsMargins(0, 0, 0, 0);
   }
 
+  if (_app.isDolphin && widget->inherits("DolphinUrlNavigator"))
+    polishDolphinUrlNavigator(widget);
+
   // translucent (window) color scheme support
   switch (widget->windowFlags() & Qt::WindowType_Mask) {
   case Qt::Window:

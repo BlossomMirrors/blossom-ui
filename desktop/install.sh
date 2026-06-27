@@ -8,8 +8,8 @@ if [ "$1" = "remove" ]; then
     exit 1
 fi
 
-echo " *** Activating temporary /usr overlay (changes gone after reboot) *** "
-sudo rpm-ostree usroverlay || true
+echo " *** Unlcoking rpm-ostree so the changes persist after restart *** "
+sudo rpm-ostree unlock --hotfix || true
 
 sudo dnf install -y kdecoration-devel # FIXME: should be included in the DX OS image
 echo " *** Building *** "

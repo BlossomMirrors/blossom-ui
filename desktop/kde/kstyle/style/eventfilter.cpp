@@ -1,7 +1,5 @@
-#include "blossomuiblurhelper.h"
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
-#include "blossomuitoolsareamanager.h"
 #include "widgets/switch.h"
 
 #include <QApplication>
@@ -302,7 +300,7 @@ bool Style::eventFilterSwitchCheckBox(QCheckBox *checkBox, QEvent *event) {
 
 bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event) {
   auto scrollArea = qobject_cast<QAbstractScrollArea *>(widget);
-  if (scrollArea)
+  if (scrollArea && _app.isDolphin)
     updateDolphinCardScrollArea(scrollArea, event->type());
 
   switch (event->type()) { // TODO: delete

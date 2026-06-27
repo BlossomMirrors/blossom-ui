@@ -65,6 +65,11 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
   if (!isTitleWidget && !(state & (State_Sunken | State_Raised)))
     return true;
 
+  // card-style rounded frame is Dolphin-only side panels keep their line frame
+  if (!_app.isDolphin &&
+      !(widget && widget->property(PropertyNames::sidePanelView).toBool()))
+    return true;
+
   const bool isInputWidget(
       (widget && widget->testAttribute(Qt::WA_Hover)) ||
       (isQtQuickControl(option, widget) &&
@@ -86,8 +91,8 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
   _animations->inputWidgetEngine().frameOpacity(widget);
 
   // render
-  if (!StyleConfigData::sidePanelDrawFrame() && widget &&
-      widget->property(PropertyNames::sidePanelView).toBool()) {
+  if (widget && widget->property(PropertyNames::sidePanelView).toBool() &&
+      (!StyleConfigData::sidePanelDrawFrame() || !_app.isDolphin)) {
     const auto outline(_helper->sidePanelOutlineColor(palette));
     const bool reverseLayout(option->direction == Qt::RightToLeft);
     const Side side(reverseLayout ? SideRight : SideLeft);
@@ -112,11 +117,6 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
     }
     _helper->renderSidePanelFrame(painter, rect, outline, side);
 
-  } else {
-    const auto background(isTitleWidget
-                              ? palette.color(widget->backgroundRole())
-                              : palette.color(QPalette::Base));
-    _helper->renderFrame(painter, rect, background, windowActive, enabled);
   }
 
   return true;

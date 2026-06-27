@@ -6,3 +6,4 @@ release/
 local
 flatpak/blossomui-flatpak-source.tar.gz
 *.color
+colors.json
