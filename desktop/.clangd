@@ -1,3 +1,0 @@
-CompileFlags:
-  CompilationDatabase: build-test
-  Remove: [-mno-direct-extern-access]
