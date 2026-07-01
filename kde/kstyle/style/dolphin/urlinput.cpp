@@ -8,6 +8,11 @@
 
 namespace BlossomUI {
 
+void Style::polishDolphinUrlNavigator(QWidget *) {
+  // background/palette sync is handled per-paint by
+  // applyDolphinUrlNavigatorStyle(); no one-time setup needed here.
+}
+
 void Style::applyDolphinUrlNavigatorStyle(const QWidget *widget,
                                           QColor &background) const {
   if (!widget->inherits("DolphinUrlNavigator"))

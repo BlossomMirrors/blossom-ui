@@ -1,5 +1,7 @@
+#include "blossomuiblurhelper.h"
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
+#include "blossomuitoolsareamanager.h"
 #include "widgets/switch.h"
 
 #include <QApplication>

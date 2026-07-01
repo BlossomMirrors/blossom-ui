@@ -9,15 +9,15 @@ if [ "$1" = "remove" ]; then
 fi
 
 echo " *** Unlcoking rpm-ostree so the changes persist after restart *** "
-sudo rpm-ostree unlock --hotfix || true
+sudo rpm-ostree unlock --hotfix | true || true
 
 sudo dnf install -y kdecoration-devel # FIXME: should be included in the DX OS image
 echo " *** Building *** "
-"$SRC_DIR/release.sh" || true
+"$SRC_DIR/release.sh"
 
 RPM=$(ls -1t "$SRC_DIR"/release/blossomui-*.rpm 2>/dev/null | head -1)
 if [ -z "$RPM" ]; then
-    echo "no RPM produced, is rpmbuild installed?"
+    echo "no RPM produced by release.sh, see build output above for the error"
     exit 1
 fi
 

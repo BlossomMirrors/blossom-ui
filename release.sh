@@ -17,15 +17,14 @@ SRC_DIR=$(pwd)
 RPMBUILD=~/rpmbuild
 mkdir -p "$RPMBUILD"/{SPECS,SOURCES,BUILD,RPMS,SRPMS} release
 
-cp "$SRC_DIR/../colors.json" "$SRC_DIR/colors.json"
-trap 'rm -f "$SRC_DIR/colors.json"' EXIT
-
 tar --warning=no-file-changed -czf "$RPMBUILD/SOURCES/$NAME-$VERSION.tar.gz" \
     --transform "s|^\./|$NAME-$VERSION/|" \
     --exclude=./.git \
     --exclude=./.flatpak-builder \
     --exclude=./release \
     --exclude=./build \
+    --exclude=./build-test \
+    --exclude=./redhat-linux-build \
     --exclude=./flatpak-build-qt5 \
     --exclude=./flatpak-build-qt6 \
     --exclude=./local \
@@ -244,6 +243,8 @@ tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.ta
     --exclude=./.flatpak-builder \
     --exclude=./release \
     --exclude=./build \
+    --exclude=./build-test \
+    --exclude=./redhat-linux-build \
     --exclude=./flatpak-build-qt5 \
     --exclude=./flatpak-build-qt6 \
     --exclude=./local \
