@@ -217,12 +217,18 @@ function(build_icons)
   add_subdirectory(icons)
 endfunction()
 
+function(build_fonts)
+  include(KDEInstallDirs${QT_MAJOR_VERSION})
+  add_subdirectory(fonts)
+endfunction()
+
 if (NOT FOR_FLATPAK)
   build_colors()
   build_lookandfeel()
   build_desktoptheme()
   build_wallpapers()
   build_icons()
+  build_fonts()
 endif()
 
 # Set default QT_MAJOR_VERSION for asset builds (icons, themes, etc.)

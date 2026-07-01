@@ -21,6 +21,10 @@ if [ -z "$RPM" ]; then
     exit 1
 fi
 
+echo " *** Clearing cache *** "
+fc-cache -f
+rm -rf ~/.cache/ksplash/qmlcache
+
 echo " *** Installing $(basename "$RPM") *** "
 if rpm -q blossomui >/dev/null 2>&1 && \
    [ "$(rpm -q --qf '%{VERSION}-%{RELEASE}' blossomui)" = "$(rpm -qp --qf '%{VERSION}-%{RELEASE}' "$RPM")" ]; then

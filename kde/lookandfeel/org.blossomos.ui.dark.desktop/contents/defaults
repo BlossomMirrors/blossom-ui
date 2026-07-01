@@ -22,7 +22,7 @@ library=org.blossomos.ui
 theme=BlossomUI
 
 [ksplashrc][KSplash]
-Theme=None
+Theme=org.blossomos.ui.splash.desktop
 Engine=KSplashQML
 
 [kwinrc][Plugins]

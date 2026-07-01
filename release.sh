@@ -46,6 +46,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  extra-cmake-modules
 BuildRequires:  gcc-c++
+BuildRequires:  gettext
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  kf6-kcoreaddons-devel
@@ -187,10 +188,16 @@ fi
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.light.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.dark.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.darkoled.desktop/
+# Plasma Look-and-Feel (KSplash theme)
+%{_datadir}/plasma/look-and-feel/org.blossomos.ui.splash.desktop/
+# Translations
+%{_datadir}/locale/*/LC_MESSAGES/blossomui_ksplash.mo
 # Plasma Desktop Theme
 %{_datadir}/plasma/desktoptheme/BlossomUI/
 # Wallpapers
 %{_datadir}/wallpapers/
+# Fonts
+%{_datadir}/fonts/blossomui/
 
 # CMake Config (Qt6)
 %{_libdir}/cmake/BlossomUI/
