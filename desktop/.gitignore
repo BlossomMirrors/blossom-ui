@@ -1,8 +1,0 @@
-build/
-build*
-release/
-.flatpak-builder
-.clang-format
-local
-flatpak/blossomui-flatpak-source.tar.gz
-*.color

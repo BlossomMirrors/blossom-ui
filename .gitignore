@@ -1,25 +1,12 @@
-node_modules
-
-# Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
+# Build output
+build-test/
+redhat-linux-build/
+release/
+local/
+flatpak-build-qt5/
+flatpak-build-qt6/
+.flatpak-builder/
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Env
-.env
-.env.*
-!.env.example
-!.env.test
-
-# Vite
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-
-.svelte-kit

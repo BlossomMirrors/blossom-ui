@@ -1,0 +1,21 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "hello@blossomos.org",
+        "Name": "Yannik Ain"
+      }
+    ],
+    "Category": "",
+    "Description": "BlossomUI Splash",
+    "Description[en_GB]": "BlossomUI Splash",
+    "Id": "org.blossomos.ui.splash.desktop",
+    "License": "GPL-2.0-or-later",
+    "Name": "BlossomUI Splash",
+    "Name[en_GB]": "BlossomUI Splash",
+    "Website": "https://blossomos.org"
+  },
+  "Keywords": "Splash;Boot;Startup;Theme;",
+  "X-KDE-PluginInfo-Version": "1.0"
+}
