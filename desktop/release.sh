@@ -114,48 +114,6 @@ This package includes both Qt5 and Qt6 application styles:
 %install
 %cmake_install
 
-%post
-if command -v kwriteconfig6 >/dev/null 2>&1; then
-    KWRITE=kwriteconfig6
-elif command -v kwriteconfig5 >/dev/null 2>&1; then
-    KWRITE=kwriteconfig5
-else
-    exit 0
-fi
-\$KWRITE --file /etc/xdg/kdeglobals --group KDE --key LookAndFeelPackage 'org.blossomos.ui.light.desktop'
-\$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultLightLookAndFeel 'org.blossomos.ui.light.desktop'
-\$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultDarkLookAndFeel 'org.blossomos.ui.dark.desktop'
-\$KWRITE --file /etc/xdg/kdeglobals --group General --key ColorScheme 'BlossomUI Light'
-\$KWRITE --file /etc/xdg/kdeglobals --group General --key LightColorScheme 'BlossomUI Light'
-\$KWRITE --file /etc/xdg/kdeglobals --group General --key DarkColorScheme 'BlossomUI Dark'
-\$KWRITE --file /etc/xdg/plasmarc --group Theme --key name 'BlossomUI'
-\$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightColorScheme 'BlossomUI Light'
-\$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkColorScheme 'BlossomUI Dark'
-\$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightLookAndFeel 'org.blossomos.ui.light.desktop'
-\$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkLookAndFeel 'org.blossomos.ui.dark.desktop'
-
-%postun
-if [ \$1 -eq 0 ]; then
-    if command -v kwriteconfig6 >/dev/null 2>&1; then
-        KWRITE=kwriteconfig6
-    elif command -v kwriteconfig5 >/dev/null 2>&1; then
-        KWRITE=kwriteconfig5
-    else
-        exit 0
-    fi
-    \$KWRITE --file /etc/xdg/kdeglobals --group KDE --key LookAndFeelPackage --delete
-    \$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultLightLookAndFeel --delete
-    \$KWRITE --file /etc/xdg/kdeglobals --group KDE --key DefaultDarkLookAndFeel --delete
-    \$KWRITE --file /etc/xdg/kdeglobals --group General --key ColorScheme --delete
-    \$KWRITE --file /etc/xdg/kdeglobals --group General --key LightColorScheme --delete
-    \$KWRITE --file /etc/xdg/kdeglobals --group General --key DarkColorScheme --delete
-    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key name --delete
-    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightColorScheme --delete
-    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkColorScheme --delete
-    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightLookAndFeel --delete
-    \$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkLookAndFeel --delete
-fi
-
 %files
 # Qt6 Application Style
 %{_libdir}/qt6/plugins/styles/blossomui6.so

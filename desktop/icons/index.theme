@@ -7,6 +7,11 @@ FollowsColorScheme=true
 DisplayDepth=32
 KDE-Extensions=.svgz,svg
 
+# Percent granularity of the battery-NNN status icons this theme ships (5% steps).
+# Read by the Blossom battery applet patch to round the icon to a level the theme
+# actually provides. Themes without this key are treated as 10%-step (breeze).
+X-Blossom-BatterySteps=5
+
 DesktopDefault=48
 ToolbarDefault=22
 MainToolbarDefault=22

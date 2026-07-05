@@ -23,7 +23,7 @@ theme=BlossomUI
 
 [ksplashrc][KSplash]
 Theme=None
-Engine=KSplashQML
+Engine=none
 
 [kwinrc][Plugins]
 blurEnabled=true
