@@ -110,5 +110,27 @@ elif command -v qdbus >/dev/null 2>&1; then
     qdbus org.kde.KGlobalSettings /KGlobalSettings org.kde.KGlobalSettings.notifyChange 3 0 2>/dev/null || true
 fi
 
+if command -v flatpak >/dev/null 2>&1; then
+    _ext_branches=$(flatpak list --runtime --columns=application,branch 2>/dev/null \
+        | awk '$1 == "org.kde.KStyle.BlossomUI" && $2 ~ /^6/ {print $2}')
+    if [ -n "$_ext_branches" ]; then
+        _ext=/usr/share/runtime/lib/plugins/BlossomUI
+        flatpak list --app --columns=application,runtime 2>/dev/null \
+        | while read -r _app _rt; do
+            case "$_rt" in
+                org.kde.Platform/*) ;;
+                *) continue ;;
+            esac
+            echo "$_ext_branches" | grep -qx "${_rt##*/}" || continue
+            flatpak override --user \
+                --env=QT_QUICK_CONTROLS_STYLE=org.blossomos.style \
+                --env=QML2_IMPORT_PATH="/app/lib/qml:$_ext/lib/qml" \
+                --env=QT_PLUGIN_PATH="/app/lib/plugins:/usr/share/runtime/lib/plugins:$_ext/lib/plugins" \
+                "$_app" 2>/dev/null || true
+        done
+        echo "flatpak QQC2 style overrides applied (re-run after installing new apps)"
+    fi
+fi
+
 echo "done"
 echo "toggle light/dark in system settings"

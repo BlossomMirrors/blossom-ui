@@ -1,10 +1,10 @@
 {
   "id": "org.kde.KStyle.BlossomUI",
-  "branch": "6.9",
+  "branch": "6.10",
   "runtime": "org.kde.Platform",
   "build-extension": true,
   "sdk": "org.kde.Sdk",
-  "runtime-version": "6.9",
+  "runtime-version": "6.10",
   "appstream-compose": false,
   "separate-locales": false,
   "modules": [
@@ -15,6 +15,7 @@
       "config-opts": [
         "-DCMAKE_INSTALL_PREFIX=/app",
         "-DKDE_INSTALL_PLUGINDIR=/app/lib/plugins",
+        "-DKDE_INSTALL_QMLDIR=/app/lib/qml",
         "-DKDE_INSTALL_KCONFMODULEDIR=/app/lib/plugins",
         "-DKDE_INSTALL_KCMMODULEDIR=/app/lib/qt6/plugins",
         "-DKDE_INSTALL_DATADIR=/app/share",

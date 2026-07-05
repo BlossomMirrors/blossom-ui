@@ -118,6 +118,11 @@ This package includes both Qt5 and Qt6 application styles:
 # Qt6 Application Style
 %{_libdir}/qt6/plugins/styles/blossomui6.so
 %{_libdir}/qt6/plugins/kstyle_config/blossomuistyleconfig.so
+# Qt6 QtQuick Controls style (org.blossomos.style) — activated by
+# plasma-patches-blossom's plasma-integration patch when the BlossomUI
+# widget style is selected in the Application Style KCM
+%{_libdir}/qt6/qml/org/blossomos/
+%{_libdir}/qt6/plugins/kf6/kirigami/platform/org.blossomos.style.so
 # Qt6 Window Decoration
 %{_libdir}/qt6/plugins/org.kde.kdecoration3/org.blossomos.ui.so
 %{_libdir}/qt6/plugins/org.kde.kdecoration3.kcm/kcm_blossomuidecoration.so
@@ -213,7 +218,7 @@ flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt5.flatpak" "runtime/o
 echo "Qt5 Flatpak bundle created"
 
 # Create Qt6 bundle
-flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.9" --runtime
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.10" --runtime
 echo "Qt6 Flatpak bundle created with all theme components"
 
 
