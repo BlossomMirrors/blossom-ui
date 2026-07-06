@@ -40,4 +40,10 @@ private:
   bool _dragging = false;
   QPoint _pressPos;
   static const int _dragThreshold = 4;
+
+  // visual thumb position (0 = off, 1 = on), animated with overshoot on
+  // toggles and following the pointer during drags
+  void animateTo(qreal target);
+  qreal _visualPos = 0.0;
+  class QVariantAnimation *_anim = nullptr;
 };

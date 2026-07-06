@@ -1246,6 +1246,10 @@ void Helper::renderSwitch(QPainter *painter, const QRect &rect,
                           const QPalette &palette, bool sunken,
                           const bool mouseOver, CheckBoxState state,
                           qreal animation) const {
+  // pressed feedback comes from the thumb overshoot animation instead of a
+  // sunken offset, matching the org.blossomos.style QML SwitchIndicator
+  Q_UNUSED(sunken)
+
   painter->setRenderHint(QPainter::Antialiasing, true);
   painter->setPen(Qt::NoPen);
 
@@ -1253,47 +1257,66 @@ void Helper::renderSwitch(QPainter *painter, const QRect &rect,
   trackRect.adjust(Metrics::Frame_FrameWidth - 1, Metrics::Frame_FrameWidth - 1,
                    -Metrics::Frame_FrameWidth + 1,
                    -Metrics::Frame_FrameWidth + 1);
-  if (sunken)
-    trackRect.translate(1, 1);
 
   const qreal radius = trackRect.height() / 2.0;
   const int margin = Metrics::Switch_ThumbMargin;
   const qreal thumbDiameter = trackRect.height() - 2 * margin;
   const qreal travel = trackRect.width() - thumbDiameter - 2 * margin;
 
-  // Thumb position: 0 = off (left), 1 = on (right)
+  // Thumb position: 0 = off (left), 1 = on (right); may overshoot slightly
+  // when the caller applies an overshooting easing curve
   qreal t = 0.0;
   if (state == CheckOn)
     t = 1.0;
   else if (state == CheckAnimated)
-    t = (animation >= 0) ? qBound(0.0, animation, 1.0) : 1.0;
+    t = (animation >= 0) ? qBound(-0.15, animation, 1.15) : 1.0;
 
+  const qreal progress = qBound(0.0, t, 1.0);
+  const QColor text = palette.color(QPalette::WindowText);
+
+  // the track keeps the off color; the accent is a fill drawn behind the
+  // thumb so it follows drags and toggle animations
   QColor trackColor = palette.color(QPalette::Button);
-  if (state == CheckOn || state == CheckAnimated) {
-    QColor accent = palette.color(QPalette::Highlight);
-    if (state == CheckAnimated && animation >= 0)
-      trackColor = KColorUtils::mix(palette.color(QPalette::Button), accent,
-                                    qBound(0.0, animation, 1.0));
-    else
-      trackColor = accent;
-  }
-  if (mouseOver)
+  QColor fillColor = palette.color(QPalette::Highlight);
+  if (mouseOver) {
     trackColor = trackColor.lighter(105);
+    fillColor = fillColor.lighter(105);
+  }
 
-  QColor borderColor = KColorUtils::mix(
-      trackColor, palette.color(QPalette::WindowText), mouseOver ? 0.16 : 0.1);
   painter->setBrush(trackColor);
+  painter->drawRoundedRect(trackRect, radius, radius);
+
+  // thumb geometry, clamped so the overshoot stays inside the track
+  const qreal thumbX =
+      trackRect.x() + margin +
+      qBound(-margin / 2.0, t * travel, travel + margin / 2.0);
+  QRectF thumbRect(thumbX, trackRect.y() + margin, thumbDiameter,
+                   thumbDiameter);
+
+  // accent trail behind the thumb
+  if (progress > 0.01) {
+    QRectF fillRect(trackRect);
+    fillRect.setWidth(
+        qMin(trackRect.width(), thumbRect.right() + margin - trackRect.x()));
+    painter->setBrush(fillColor);
+    painter->drawRoundedRect(fillRect, radius, radius);
+  }
+
+  // border on top, fading from the off border to the accent border
+  const QColor borderColor =
+      KColorUtils::mix(KColorUtils::mix(trackColor, text, mouseOver ? 0.16 : 0.1),
+                       KColorUtils::mix(fillColor, text, mouseOver ? 0.16 : 0.1),
+                       progress);
+  painter->setBrush(Qt::NoBrush);
   painter->setPen(QPen(borderColor, 1));
   painter->drawRoundedRect(trackRect, radius, radius);
 
-  // Thumb (circle)
-  const qreal thumbX = trackRect.x() + margin + t * travel;
-  const qreal thumbY = trackRect.y() + margin;
-  QRectF thumbRect(thumbX, thumbY, thumbDiameter, thumbDiameter);
-
-  QColor thumbColor = palette.color(QPalette::Window);
-  QColor thumbBorder =
-      KColorUtils::mix(thumbColor, palette.color(QPalette::WindowText), 0.12);
+  // thumb: always the light theme color (Window background in light themes,
+  // text color in dark ones) so it stays visible on the accent fill
+  const QColor windowColor = palette.color(QPalette::Window);
+  const QColor thumbColor =
+      (KColorUtils::luma(windowColor) > 0.5) ? windowColor : text;
+  const QColor thumbBorder = KColorUtils::mix(thumbColor, text, 0.12);
   painter->setBrush(thumbColor);
   painter->setPen(QPen(thumbBorder, 1));
   painter->drawEllipse(thumbRect);
