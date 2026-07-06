@@ -7,6 +7,12 @@ ColorScheme=BlossomUI Light
 [kdeglobals][Icons]
 Theme=BlossomUI
 
+[gtk-3.0/settings.ini][Settings]
+gtk-theme-name=BlossomUI
+
+[gtk-4.0/settings.ini][Settings]
+gtk-theme-name=BlossomUI
+
 [plasmarc][Theme]
 name=BlossomUI
 
@@ -25,7 +31,7 @@ library=org.blossomos.ui
 theme=BlossomUI
 
 [ksplashrc][KSplash]
-Theme=org.blossomos.ui.splash.desktop
+Theme=org.blossomos.ui.light.desktop
 Engine=KSplashQML
 
 [kwinrc][Plugins]

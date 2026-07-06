@@ -1,0 +1,25 @@
+{
+  "id": "org.gtk.Gtk3theme.BlossomUI",
+  "branch": "3.22",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "build-extension": true,
+  "appstream-compose": false,
+  "separate-locales": false,
+  "modules": [
+    {
+      "name": "BlossomUI-gtk3-theme",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -d /usr/share/runtime/share/themes/BlossomUI/gtk-3.0/blossomui-gtk-assets && install -m644 gtk/build/gtk3-light.css /usr/share/runtime/share/themes/BlossomUI/gtk-3.0/gtk.css && install -m644 gtk/build/gtk3-dark.css /usr/share/runtime/share/themes/BlossomUI/gtk-3.0/gtk-dark.css && install -m644 gtk/assets/*.png gtk/assets/*.svg /usr/share/runtime/share/themes/BlossomUI/gtk-3.0/blossomui-gtk-assets/"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "blossomui-flatpak-source.tar.gz"
+        }
+      ]
+    }
+  ]
+}

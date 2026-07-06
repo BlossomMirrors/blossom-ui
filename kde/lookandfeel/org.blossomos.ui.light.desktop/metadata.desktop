@@ -1,9 +1,9 @@
 [Desktop Entry]
-Comment=BlossomUI Light - A modern theme for Plasma with transparency and blur
-Comment[en_GB]=BlossomUI Light - A modern theme for Plasma with transparency and blur
+Comment=BlossomUI - A modern theme for Plasma with transparency and blur
+Comment[en_GB]=BlossomUI - A modern theme for Plasma with transparency and blur
 Encoding=UTF-8
-Name=BlossomUI Light
-Name[en_GB]=BlossomUI Light
+Name=BlossomUI
+Name[en_GB]=BlossomUI
 Type=Service
 X-KDE-ServiceTypes=Plasma/LookAndFeel
 X-KDE-PluginInfo-Author=Yannik Ain

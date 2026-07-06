@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=BlossomUI
+Comment=A GTK theme matching the BlossomUI Qt style
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=BlossomUI
+MetacityTheme=BlossomUI
+IconTheme=BlossomUI
+CursorTheme=Bibata-Modern-Classic
+ButtonLayout=close,minimize,maximize:menu

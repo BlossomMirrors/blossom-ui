@@ -130,8 +130,8 @@ row.spin {
       &, &:dir(ltr):last-child, &:dir(rtl):first-child {
         @extend %button_basic;
         @extend %circular_button;
-        min-width: 23px + $DarklyrcButtonHeight;
-        min-height: 23px + $DarklyrcButtonHeight;
+        min-width: 23px + $BlossomuircButtonHeight;
+        min-height: 23px + $BlossomuircButtonHeight;
         margin: 10px 2px;
         padding: 2px;
         border: none;

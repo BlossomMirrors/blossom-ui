@@ -24,9 +24,9 @@ $toast_fg_color: $text_color;
 
 $view_hover_color: color-mix(in srgb, currentColor 4%, transparent);
 $view_active_color: color-mix(in srgb, currentColor 8%, transparent);
-$view_selected_color: color-mix(in srgb, var(--accent-bg-color) 25%, transparent);
-$view_selected_hover_color: color-mix(in srgb, var(--accent-bg-color) 32%, transparent);
-$view_selected_active_color: color-mix(in srgb, var(--accent-bg-color) 39%, transparent);
+$view_selected_color: color-mix(in srgb, var(--accent-bg-color) 18%, transparent);
+$view_selected_hover_color: color-mix(in srgb, var(--accent-bg-color) 28%, transparent);
+$view_selected_active_color: color-mix(in srgb, var(--accent-bg-color) 35%, transparent);
 
 $window_outline_color: $top_hilight;
 

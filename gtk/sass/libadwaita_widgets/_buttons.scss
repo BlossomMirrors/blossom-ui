@@ -6,8 +6,8 @@ button {
   }
 
   &.text-button.circular {
-    min-width:  23px + $DarklyrcButtonHeight;
-    min-height:  23px + $DarklyrcButtonHeight;
+    min-width:  23px + $BlossomuircButtonHeight;
+    min-height:  23px + $BlossomuircButtonHeight;
     padding-left: $_img_btn_pad;
     padding-right: $_img_btn_pad;
   }
@@ -71,7 +71,7 @@ splitbutton {
   // Since the inner button doesn't have any style classes on it,
   // we have to add them manually
   &.image-button > button {
-    min-width:  23px + $DarklyrcButtonHeight;
+    min-width:  23px + $BlossomuircButtonHeight;
     padding-left: $_img_btn_pad;
     padding-right: $_img_btn_pad;
   }

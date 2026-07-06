@@ -6,7 +6,7 @@ if [ ! "$(which sassc 2> /dev/null)" ]; then
 fi
 
 SOURCE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-USER_SETTINGS="$SOURCE_DIR/sass/_darkly_user_settings.scss"
+USER_SETTINGS="$SOURCE_DIR/sass/_blossomui_user_settings.scss"
 SASSC_OPT="-M -t compact"
 
 if [ -n "$XDG_DATA_HOME" ]; then
@@ -16,10 +16,10 @@ else
 fi
 
 if [ -n "$XDG_CONFIG_HOME" ]; then
-    DARKLYRC="$XDG_CONFIG_HOME/darklyrc"
+    BLOSSOMUIRC="$XDG_CONFIG_HOME/blossomuirc"
     GTK4DIR="$XDG_CONFIG_HOME/gtk-4.0"
 else
-    DARKLYRC="$HOME/.config/darklyrc"
+    BLOSSOMUIRC="$HOME/.config/blossomuirc"
     GTK4DIR="$HOME/.config/gtk-4.0"
 fi
 
@@ -36,9 +36,9 @@ EOF
     exit 0
 }
 
-parse_darklyrc() {
-    if [ -f "$DARKLYRC" ]; then
-        echo "Darkly config found: $DARKLYRC"
+parse_blossomuirc() {
+    if [ -f "$BLOSSOMUIRC" ]; then
+        echo "BlossomUI config found: $BLOSSOMUIRC"
         echo
         echo "Writing GTK theme user config:"
         echo
@@ -59,13 +59,13 @@ parse_darklyrc() {
                     val = sprintf("rgb(%s, %s, %s)", rgb[1], rgb[2], rgb[3])
                 }
 
-                printf("$Darklyrc%s: %s;\n", key, val)
+                printf("$Blossomuirc%s: %s;\n", key, val)
             }
-            ' "$DARKLYRC" | tee "$USER_SETTINGS"
+            ' "$BLOSSOMUIRC" | tee "$USER_SETTINGS"
         echo
     else
         echo
-        echo "darklyrc not found. Using default settings."
+        echo "blossomuirc not found. Using default settings."
         echo "" > "$USER_SETTINGS"
     fi
 }
@@ -79,15 +79,15 @@ install_theme() {
     sassc $SASSC_OPT "$SOURCE_DIR/sass/gtk4.scss" "$SOURCE_DIR/build/gtk4.css" || { echo "GTK 4 CSS generation failed." ; exit 1; }
 
     echo "Installing theme to $DEST_DIR"
-    mkdir -p "$DEST_DIR/Darkly/"{assets,gtk-3.0,gtk-4.0}
-    cp -r "$SOURCE_DIR/assets/"*.{png,svg} "$DEST_DIR/Darkly/assets/"
-    ln -fns ../assets "$DEST_DIR/Darkly/gtk-3.0/darkly-gtk-assets"
-    ln -fns ../assets "$DEST_DIR/Darkly/gtk-4.0/darkly-gtk-assets"
-    ln -fs ./gtk.css "$DEST_DIR/Darkly/gtk-4.0/gtk-dark.css"
+    mkdir -p "$DEST_DIR/BlossomUI/"{assets,gtk-3.0,gtk-4.0}
+    cp -r "$SOURCE_DIR/assets/"*.{png,svg} "$DEST_DIR/BlossomUI/assets/"
+    ln -fns ../assets "$DEST_DIR/BlossomUI/gtk-3.0/blossomui-gtk-assets"
+    ln -fns ../assets "$DEST_DIR/BlossomUI/gtk-4.0/blossomui-gtk-assets"
+    ln -fs ./gtk.css "$DEST_DIR/BlossomUI/gtk-4.0/gtk-dark.css"
 
-    cp "$SOURCE_DIR/build/gtk3-light.css" "$DEST_DIR/Darkly/gtk-3.0/gtk.css"
-    cp "$SOURCE_DIR/build/gtk3-dark.css" "$DEST_DIR/Darkly/gtk-3.0/gtk-dark.css"
-    cp "$SOURCE_DIR/build/gtk4.css" "$DEST_DIR/Darkly/gtk-4.0/gtk.css"
+    cp "$SOURCE_DIR/build/gtk3-light.css" "$DEST_DIR/BlossomUI/gtk-3.0/gtk.css"
+    cp "$SOURCE_DIR/build/gtk3-dark.css" "$DEST_DIR/BlossomUI/gtk-3.0/gtk-dark.css"
+    cp "$SOURCE_DIR/build/gtk4.css" "$DEST_DIR/BlossomUI/gtk-4.0/gtk.css"
 }
 
 install_libadwaita() {
@@ -97,10 +97,10 @@ install_libadwaita() {
     mkdir -p "$GTK4DIR"
 
     if [ -f "$GTK4DIR/colors.css" ]; then
-        css=$'/* DO NOT MODIFY. THIS FILE WAS CREATED AUTOMATICALLY */\n@import \'gtk-darkly.css\';\n@import \'colors.css\';'
+        css=$'/* DO NOT MODIFY. THIS FILE WAS CREATED AUTOMATICALLY */\n@import \'gtk-blossomui.css\';\n@import \'colors.css\';'
         #echo "colors.css found"
     else
-        css=$'/* DO NOT MODIFY. THIS FILE WAS CREATED AUTOMATICALLY */\n@import \'gtk-darkly.css\';'
+        css=$'/* DO NOT MODIFY. THIS FILE WAS CREATED AUTOMATICALLY */\n@import \'gtk-blossomui.css\';'
         #echo "colors.css not found"
     fi
 
@@ -109,16 +109,16 @@ install_libadwaita() {
 
         if ! cmp --silent -- "$GTK4DIR/gtk.css" <(echo -n "$css"); then
             echo "Backing up $GTK4DIR/gtk.css"
-            mv "$GTK4DIR/gtk.css" "$GTK4DIR/gtk.css.created_by_darkly_installer.bak"
+            mv "$GTK4DIR/gtk.css" "$GTK4DIR/gtk.css.created_by_blossomui_installer.bak"
         fi
     fi
 
     echo "Writing $GTK4DIR/gtk.css"
     echo -n "$css" > "$GTK4DIR/gtk.css"
 
-    mkdir -p "$GTK4DIR/darkly-gtk-assets"
-    cp -r "$SOURCE_DIR/assets/"*.{png,svg} "$GTK4DIR/darkly-gtk-assets/"
-    cp "$DEST_DIR/Darkly/gtk-4.0/gtk.css" "$GTK4DIR/gtk-darkly.css"
+    mkdir -p "$GTK4DIR/blossomui-gtk-assets"
+    cp -r "$SOURCE_DIR/assets/"*.{png,svg} "$GTK4DIR/blossomui-gtk-assets/"
+    cp "$DEST_DIR/BlossomUI/gtk-4.0/gtk.css" "$GTK4DIR/gtk-blossomui.css"
 
     echo
     echo "Installation successful"
@@ -127,23 +127,23 @@ install_libadwaita() {
 
 uninstall () {
     echo "Uninstalling"
-    if [ -d "$DEST_DIR/Darkly" ]; then
-        echo "Found theme at $DEST_DIR/Darkly"
-        rm -rf "$DEST_DIR/Darkly"
+    if [ -d "$DEST_DIR/BlossomUI" ]; then
+        echo "Found theme at $DEST_DIR/BlossomUI"
+        rm -rf "$DEST_DIR/BlossomUI"
     else
         echo "Theme is not installed in $DEST_DIR"
     fi
 
-    if [ -f  "$GTK4DIR/gtk-darkly.css" ]; then
+    if [ -f  "$GTK4DIR/gtk-blossomui.css" ]; then
 
-        if [ -f "$GTK4DIR/gtk.css.created_by_darkly_installer.bak" ]; then
-            mv "$GTK4DIR/gtk.css.created_by_darkly_installer.bak" "$GTK4DIR/gtk.css"
+        if [ -f "$GTK4DIR/gtk.css.created_by_blossomui_installer.bak" ]; then
+            mv "$GTK4DIR/gtk.css.created_by_blossomui_installer.bak" "$GTK4DIR/gtk.css"
         else
             rm -f "$GTK4DIR/gtk.css"
         fi
 
-        rm "$GTK4DIR/gtk-darkly.css"
-        rm -rf "$GTK4DIR/darkly-gtk-assets"
+        rm "$GTK4DIR/gtk-blossomui.css"
+        rm -rf "$GTK4DIR/blossomui-gtk-assets"
     else
         echo "Libadwaita theme is not installed in $GTK4DIR"
     fi
@@ -174,7 +174,7 @@ if [ "$UNINSTALL" = true ]; then
     uninstall
 fi
 
-parse_darklyrc
+parse_blossomuirc
 install_theme
 
 if [ "$LIBADWAITA" = true ]; then

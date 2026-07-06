@@ -46,7 +46,7 @@ tabbar {
   }
 
   tab {
-    transition: background 150ms ease-in-out;
+    transition: background-color 200ms $ease-out-quad, color 200ms $ease-out-quad;
     margin: 4px 0;
 
     color: gtkalpha($fg_color, 0.7);
@@ -61,8 +61,9 @@ tabbar {
     }
 
     &:selected {
-      color: $selected_tab_fg_color;
-      background-color: $selected_tab_bg_color;
+      color: $selected_bg_color;
+      font-weight: bold;
+      background-color: gtkalpha($selected_bg_color, 0.18);
       @include _shadows($widget_shadow);
     }
 
@@ -171,7 +172,7 @@ dnd {
   }
 }
 
-@if $DarklyrcOldTabbar {
+@if $BlossomuircOldTabbar {
   tabbar,
   dnd {
     tab {
@@ -186,7 +187,7 @@ dnd {
     border-bottom-right-radius: 0;
   }
 
-  @if $DarklyrcTabDrawHighlight {
+  @if $BlossomuircTabDrawHighlight {
     $_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus");
     $_backdrop_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus_backdrop");
 
@@ -204,7 +205,7 @@ dnd {
     }
   }
 
-} @else if $DarklyrcTabBarAltStyle {
+} @else if $BlossomuircTabBarAltStyle {
   $_tab_line_bg: gtkmix($bg_color, $fg_color, 0.85);
   $_selected_tab_line_bg: gtkcolor("@theme_button_decoration_focus");
   $_backdrop_selected_tab_line_bg: gtkcolor("@theme_button_decoration_focus_backdrop");

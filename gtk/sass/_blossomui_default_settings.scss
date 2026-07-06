@@ -3,48 +3,46 @@
 //
 
 // Draw toolbar item separators
-$DarklyrcToolBarDrawItemSeparator: false;
+$BlossomuircToolBarDrawItemSeparator: false;
 
 // Float and sunken effect on checkboxes and radio buttons
 // TODO
 
 // Increase button height
-$DarklyrcButtonHeight: 3;
+$BlossomuircButtonHeight: 3;
 
 // Increase button width
-$DarklyrcButtonWidth: 1;
+$BlossomuircButtonWidth: 1;
 
 // Corner radius
-$DarklyrcCornerRadius: 9;
+$BlossomuircCornerRadius: 10;
 
 // Menu item height
-$DarklyrcMenuItemHeight: 4;
-
+$BlossomuircMenuItemHeight: 4;
 
 //
 // Tabs
 //
 
 // Tab style
-$DarklyrcOldTabbar: false;      // Lightly Default
-$DarklyrcTabBarAltStyle: false; // Lightly Alternative
+$BlossomuircOldTabbar: false; // Lightly Default
+$BlossomuircTabBarAltStyle: false; // Lightly Alternative
 
 // Draw highlight on active tab
-$DarklyrcTabDrawHighlight: false;
+$BlossomuircTabDrawHighlight: false;
 
 // Use highlight color as selected tab background
-$DarklyrcTabUseHighlightColor: false;
+$BlossomuircTabUseHighlightColor: false;
 
 // Tab size
 // TODO
 
 // Use brighter close icon
-$DarklyrcTabUseBrighterCloseIcon: false;
+$BlossomuircTabUseBrighterCloseIcon: false;
 
 // Custom tabbar background
-$DarklyrcAdjustToDarkThemes: false;
-$DarklyrcTabBGColor: rgb(0,0,0);
-
+$BlossomuircAdjustToDarkThemes: false;
+$BlossomuircTabBGColor: rgb(0, 0, 0);
 
 //
 // Animations
@@ -70,17 +68,16 @@ $DarklyrcTabBGColor: rgb(0,0,0);
 // TODO
 
 // Draw a thin line to indicate focus in menus and menubars
-$DarklyrcMenuItemDrawStrongFocus: true;
+$BlossomuircMenuItemDrawStrongFocus: true;
 
 // Fancy margins
 // TODO
 
 // Full outline
-$DarklyrcFullOutline: false;
+$BlossomuircFullOutline: true;
 
 // No outline
-$DarklyrcNoOutline: false;
-
+$BlossomuircNoOutline: false;
 
 //
 // Scrollbars
@@ -91,7 +88,6 @@ $DarklyrcNoOutline: false;
 
 // Scrollbar arrows
 // TODO
-
 
 //
 // Transparency
@@ -106,7 +102,6 @@ $DarklyrcNoOutline: false;
 // Toolbar
 // TODO
 
-
 //
 // Shadows
 //
@@ -115,26 +110,19 @@ $DarklyrcNoOutline: false;
 // TODO
 
 // Draw widget shadow
-$DarklyrcWidgetDrawShadow: true;
+$BlossomuircWidgetDrawShadow: true;
 
 // Draw shadow under toolbar
-$DarklyrcWidgetToolBarShadow: false;
-
+$BlossomuircWidgetToolBarShadow: false;
 
 //
 // Windeco
 //
 
-// Window corner radius
-$DarklyrcOtherCornerRadius: 6;
+// Window corner radius (doubled into $window_radius; kdecoration CornerRadius default is 14)
+$BlossomuircOtherCornerRadius: 7;
 
 // Button size
-// TODO
-
-// Draw a circle around the close button
-// TODO
-
-// Draw a separator under the active window's titlebar
 // TODO
 
 // Round bottom corners
@@ -145,6 +133,5 @@ $DarklyrcOtherCornerRadius: 6;
 
 // Shadow strength
 // TODO
-
 // Shadow color
-$DarklyrcShadowColor: rgb(0,0,0);
+$BlossomuircShadowColor: rgb(0, 0, 0);

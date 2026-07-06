@@ -1,26 +1,26 @@
-$DarklyrcButtonHeight: $DarklyrcButtonHeight + 0px;
-$DarklyrcButtonWidth: $DarklyrcButtonWidth + 0px;
-$DarklyrcCornerRadius: $DarklyrcCornerRadius + 0px;
-$DarklyrcMenuItemHeight: $DarklyrcMenuItemHeight + 0px;
-$DarklyrcOtherCornerRadius: $DarklyrcOtherCornerRadius + 0px;
+$BlossomuircButtonHeight: $BlossomuircButtonHeight + 0px;
+$BlossomuircButtonWidth: $BlossomuircButtonWidth + 0px;
+$BlossomuircCornerRadius: $BlossomuircCornerRadius + 0px;
+$BlossomuircMenuItemHeight: $BlossomuircMenuItemHeight + 0px;
+$BlossomuircOtherCornerRadius: $BlossomuircOtherCornerRadius + 0px;
 
 $ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 $backdrop_transition: 200ms ease-out;
 $button_transition: all 200ms $ease-out-quad;
 $focus_transition: outline-width 200ms $ease-out-quad, outline-offset 200ms $ease-out-quad; // FIXME integrate it
-$radius: $DarklyrcCornerRadius;
-$button_radius: $radius - 1px;
+$radius: $BlossomuircCornerRadius;
+$button_radius: 8px;
 $circular_radius: if($button_radius==0, 0, 9999px);
 $menu_radius: $radius + 1px;
 $menu-margin: ($menu_radius / 2) - 1px; //margin around menuitems & sidebar items
-$menu_item_padding: $DarklyrcMenuItemHeight;
+$menu_item_padding: $BlossomuircMenuItemHeight;
 $popover_radius: $radius + 1px;
-$window_radius: $DarklyrcOtherCornerRadius * 2;
+$window_radius: $BlossomuircOtherCornerRadius * 2;
 
 
 // Optional compact sizes for buttons, headerbar and headerbar widgets
 $_sizevariant: 'compact'; //compact otherwise
-$_headerbar_height: if($_sizevariant=='default', 46px, 40px);
+$_headerbar_height: 36px; // kdecoration: max(fontHeight, gridUnit*2.4) + smallSpacing*(3+3)
 $_entry_height: if($_sizevariant=='default', 32px, 30px);
 $_btn_pad: if($_sizevariant=='default', 4px 9px, 2px 6px);
 $_hb_btn_pad: if($_sizevariant=='default', 6px, 5px);
@@ -564,7 +564,7 @@ entry {
      .linked:not(.vertical) > &:drop(active) + filechooserbutton > button,
      .linked:not(.vertical) > &:drop(active) + filechooserbutton > combobox > box > button.combo,
      .linked:not(.vertical) > &:drop(active) + appchooserbutton > combobox > box > button.combo,
-     .linked:not(.vertical) > &:drop(active) + combobox > box > button.combo { border-left-color: $drop_target_color; } //FIXME Darkly doesn't have borders
+     .linked:not(.vertical) > &:drop(active) + combobox > box > button.combo { border-left-color: $drop_target_color; } //FIXME BlossomUI doesn't have borders
 
   // Vertically linked entries
   // FIXME: take care of "colored" entries
@@ -610,7 +610,7 @@ entry {
       + filechooserbutton > button,
       + filechooserbutton > combobox > box > button.combo,
       + appchooserbutton > combobox > box > button.combo,
-      + combobox > box > button.combo { border-top-color: $drop_target_color; } //FIXME Darkly doesn't have borders
+      + combobox > box > button.combo { border-top-color: $drop_target_color; } //FIXME BlossomUI doesn't have borders
     }
   }
 
@@ -739,7 +739,7 @@ $_dot_color: $selected_bg_color;
 //
 // Pressed button ripple effect
 //
-$_ripple_color: gtkshade($button_active_bg_color, 0.9);
+$_ripple_color: gtkalpha($selected_bg_color, 0.35);
 @keyframes ripple_effect {
   0% {
     background-image: radial-gradient(circle farthest-corner at center,
@@ -765,8 +765,8 @@ $_ripple_color: gtkshade($button_active_bg_color, 0.9);
 button {
   @at-root %button_basic, & {
 
-    min-height: 23px + $DarklyrcButtonHeight;
-    min-width: 16px + $DarklyrcButtonWidth;
+    min-height: 23px + $BlossomuircButtonHeight;
+    min-width: 16px + $BlossomuircButtonWidth;
     padding: $_btn_pad;
     border-radius: $button_radius;
     transition: $button_transition;
@@ -839,7 +839,7 @@ button {
       }
     }
 
-    &:not(.flat):active { animation: ripple_effect 1s cubic-bezier(0.0, 0.0, 0.2, 1.0) forwards; }
+    &:not(.flat):active { animation: ripple_effect 700ms cubic-bezier(0.0, 0.0, 0.2, 1.0) forwards; }
 
     &:backdrop {
       & {
@@ -867,7 +867,7 @@ button {
     }
 
     &.image-button {
-      min-width:  23px + $DarklyrcButtonHeight;
+      min-width:  23px + $BlossomuircButtonHeight;
       padding-left: $_img_btn_pad;
       padding-right: $_img_btn_pad;
     }
@@ -1079,7 +1079,7 @@ button {
   @at-root %circular_button,
   menubutton.circular &,
   &.circular {
-    min-width:  23px + $DarklyrcButtonHeight;
+    min-width:  23px + $BlossomuircButtonHeight;
     padding-left: $_img_btn_pad;
     padding-right: $_img_btn_pad;
     border-radius: $circular_radius;
@@ -1209,7 +1209,7 @@ modelbutton.flat,
   @extend %undecorated_button;
 
   &:hover {
-    @if $DarklyrcMenuItemDrawStrongFocus {
+    @if $BlossomuircMenuItemDrawStrongFocus {
       color: $menu_selected_fg_color;
       background-color: $menu_selected_bg_color;
     } @else {
@@ -1255,7 +1255,7 @@ modelbutton.flat arrow {
 
 button.color {
   padding: 4px;
-  min-height: 23px + $DarklyrcButtonHeight - 4px;
+  min-height: 23px + $BlossomuircButtonHeight - 4px;
 
   colorswatch:only-child {
     &, overlay { border-radius: max($button-radius - 4px, 0) ; }
@@ -1473,8 +1473,8 @@ combobox {
 
   button {
     min-width: 0;
-    padding-left: $DarklyrcButtonHeight + 4px;
-    padding-right: $DarklyrcButtonHeight + 4px;
+    padding-left: $BlossomuircButtonHeight + 4px;
+    padding-right: $BlossomuircButtonHeight + 4px;
   }
 
   // align menu labels with the button label
@@ -1546,12 +1546,12 @@ combobox {
 %toolbar {
   @if $gtkver=="3" { -GtkWidget-window-dragging: true; }
 
-  @if $DarklyrcWidgetToolBarShadow {
+  @if $BlossomuircWidgetToolBarShadow {
     &, &:backdrop {   @include _shadows($toolbar_shadow); }
   }
 
   separator {
-    background: if($DarklyrcToolBarDrawItemSeparator, gtkalpha($toolbar_fg_color, 0.05), gtkalpha($toolbar_fg_color, 0));
+    background: if($BlossomuircToolBarDrawItemSeparator, gtkalpha($toolbar_fg_color, 0.05), gtkalpha($toolbar_fg_color, 0));
   }
 
   padding: 4px;
@@ -1744,14 +1744,21 @@ windowcontrols > button.image-button {
   @extend %button_basic;
   @extend %button_basic_flat;
 
-  $titlebutton-size: 18px 18px;
+  // kdecoration draws a 22x22 rounded rect (radius 3): 60%-alpha fill inside a
+  // fully opaque 1px outline, with a 20x20 icon and a 150ms InOutQuad fade
+  $titlebutton-size: 20px 20px;
+  $_deco_ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-  border-radius: 9999px;
+  border-radius: 3px;
   padding: 0;
   margin: 0;
-  min-width: 18px;
-  min-height: 18px;
+  min-width: 20px;
+  min-height: 20px;
   box-shadow: none;
+  border: 1px solid transparent;
+  transition: background-color 150ms $_deco_ease,
+              border-color 150ms $_deco_ease,
+              color 150ms $_deco_ease;
 
   color: $titlebar_fg_color;
 
@@ -1762,53 +1769,54 @@ windowcontrols > button.image-button {
   background-size: $titlebutton-size;
 
   &.close {
-    background-image: -gtk-recolor(url("./darkly-gtk-assets/close-symbolic.svg"));
+    background-image: -gtk-recolor(url("./blossomui-gtk-assets/window-close-symbolic.svg"));
   }
 
   &.maximize {
-    background-image: -gtk-recolor(url("./darkly-gtk-assets/maximize-symbolic.svg"));
+    background-image: -gtk-recolor(url("./blossomui-gtk-assets/window-maximize-symbolic.svg"));
   }
 
   &.minimize {
-    background-image: -gtk-recolor(url("./darkly-gtk-assets/minimize-symbolic.svg"));
+    background-image: -gtk-recolor(url("./blossomui-gtk-assets/window-minimize-symbolic.svg"));
   }
 
   .maximized &.maximize {
-    background-image: -gtk-recolor(url("./darkly-gtk-assets/restore-symbolic.svg"));
+    background-image: -gtk-recolor(url("./blossomui-gtk-assets/window-restore-symbolic.svg"));
   }
 
   &:backdrop {
     color: $backdrop_titlebar_fg_color;
     background-color: transparent;
+    border-color: transparent;
     box-shadow: none;
   }
 
-  &:hover {
-    color: $titlebar_bg_color;
-    background-color: $titlebar_fg_color;
-    box-shadow: none;
-
-    &:backdrop {
-      color: $backdrop_titlebar_bg_color;
-      background-color: $backdrop_titlebar_fg_color;
-    }
-  }
-  &.close:hover {
-    background-color: gtkmix($close_button_bg, white, 0.8);
-  }
+  &:hover,
+  &:active,
   &:active:hover {
     color: $titlebar_bg_color;
-    background-color: gtkalpha($titlebar_fg_color, 0.3);
+    background-color: gtkalpha($titlebar_fg_color, 0.6);
+    border-color: $titlebar_fg_color;
+    box-shadow: none;
     animation: none;
 
     &:backdrop {
       color: $backdrop_titlebar_bg_color;
-      background-color: gtkalpha($backdrop_titlebar_fg_color,  0.3);
+      background-color: gtkalpha($backdrop_titlebar_fg_color, 0.6);
+      border-color: $backdrop_titlebar_fg_color;
     }
   }
+  &.close:hover,
+  &.close:active,
   &.close:active:hover {
-    color: $titlebar_bg_color;
-    background-color: gtkmix($close_button_bg, black, 0.8);
+    background-color: gtkalpha($close_button_bg, 0.6);
+    border-color: $close_button_bg;
+
+    @if variable-exists(variant) and $variant == 'dark' {
+      color: $titlebar_fg_color;
+    } @else {
+      color: $titlebar_bg_color;
+    }
   }
 
   // .selection-mode & {
@@ -1825,15 +1833,15 @@ windowcontrols > button.image-button {
  ***************/
 %titlebar,
 headerbar {
-  padding: 0 $_hb_btn_pad;
+  padding: 0 8px; // kdecoration TitleBar_SideMargin (4 * smallSpacing)
   min-height: $_headerbar_height;
   border-radius: 0;
   color: $titlebar_fg_color;
   background-color: $titlebar_bg_color;
-  @include _shadows(inset 0 1px $top_hilight, $toolbar_shadow);
+  @include _shadows($toolbar_shadow);
 
   separator {
-    background: if($DarklyrcToolBarDrawItemSeparator, gtkalpha($titlebar_fg_color, 0.05), gtkalpha($titlebar_fg_color, 0));
+    background: if($BlossomuircToolBarDrawItemSeparator, gtkalpha($titlebar_fg_color, 0.05), gtkalpha($titlebar_fg_color, 0));
   }
 
   button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque):not(.close):not(.minimize):not(.maximize) {
@@ -1849,7 +1857,7 @@ headerbar {
   &:backdrop {
     color: $backdrop_titlebar_fg_color;
     background-color: $backdrop_titlebar_bg_color;
-    @include _shadows(inset 0 1px $top_hilight, $toolbar_shadow);
+    @include _shadows($toolbar_shadow);
 
     transition: $backdrop_transition;
   }
@@ -1880,11 +1888,11 @@ headerbar {
     color: $selected_fg_color;
 
     background-color: $suggested_bg_color;
-    @include _shadows(inset 0 1px $top_hilight, $toolbar_shadow);
+    @include _shadows($toolbar_shadow);
 
     &:backdrop {
       background-color: $suggested_bg_color;
-      @include _shadows(inset 0 1px $top_hilight, $toolbar_shadow);
+      @include _shadows($toolbar_shadow);
 
       label {
         color: $selected_fg_color;
@@ -2476,7 +2484,7 @@ treeview.view {
       background-color: $menu_bg_color;
       background-clip: padding-box;
       border: 1px solid $menu_border;
-      box-shadow: 0 1px 2px transparentize($DarklyrcShadowColor, 0.7);
+      box-shadow: 0 1px 2px transparentize($BlossomuircShadowColor, 0.7);
     }
 
     &:backdrop {
@@ -2553,7 +2561,7 @@ treeview.view {
       border-radius: $menu_radius - 2px;
 
       &:hover {
-        @if $DarklyrcMenuItemDrawStrongFocus {
+        @if $BlossomuircMenuItemDrawStrongFocus {
           color: $menu_selected_fg_color;
           background-color: $menu_selected_bg_color;
         } @else {
@@ -2664,7 +2672,7 @@ treeview.view {
       border-radius: $button_radius;
 
       &:hover { //Seems like it :hover even with keyboard focus
-        @if $DarklyrcMenuItemDrawStrongFocus {
+        @if $BlossomuircMenuItemDrawStrongFocus {
           color: $button_focus_fg_color;
           background-color: $button_focus_bg_color;
         } @else {
@@ -2769,7 +2777,7 @@ treeview.view {
       border-radius: $menu_radius - 2px;
 
       &:selected {
-        @if $DarklyrcMenuItemDrawStrongFocus {
+        @if $BlossomuircMenuItemDrawStrongFocus {
           color: $menu_selected_fg_color;
           background-color: $menu_selected_bg_color;
         } @else {
@@ -2781,7 +2789,7 @@ treeview.view {
         }
       }
       &:selected:active {
-        @if $DarklyrcMenuItemDrawStrongFocus {
+        @if $BlossomuircMenuItemDrawStrongFocus {
           color: $menu_selected_fg_color;
           background-color: gtkshade($menu_selected_bg_color, 0.8);
         }
@@ -2809,7 +2817,7 @@ treeview.view {
 
         &:hover {
           &, &:selected.activatable {
-            @if $DarklyrcMenuItemDrawStrongFocus {
+            @if $BlossomuircMenuItemDrawStrongFocus {
               color: $menu_selected_fg_color;
               background-color: $menu_selected_bg_color;
             } @else {
@@ -2823,7 +2831,7 @@ treeview.view {
 
         &:active {
           &, &:selected.activatable {
-            @if $DarklyrcMenuItemDrawStrongFocus {
+            @if $BlossomuircMenuItemDrawStrongFocus {
               color: $menu_selected_fg_color;
               background-color: gtkshade($menu_selected_bg_color, 0.8);
             }
@@ -2874,7 +2882,7 @@ treeview.view {
       border-radius: $button_radius;
 
       &:selected { //Seems like it :hover even with keyboard focus
-        @if $DarklyrcMenuItemDrawStrongFocus {
+        @if $BlossomuircMenuItemDrawStrongFocus {
           color: $button_focus_fg_color;
           background-color: $button_focus_bg_color;
         } @else {
@@ -2987,6 +2995,7 @@ notebook {
 
       color: gtkalpha($fg_color, 0.7);
       font-weight: normal;
+      transition: background-color 200ms $ease-out-quad, color 200ms $ease-out-quad;
 
       &:hover {
         color: $fg_color;
@@ -2998,8 +3007,9 @@ notebook {
       }
 
       &:checked {
-        color: $selected_tab_fg_color;
-        background-color: $selected_tab_bg_color;
+        color: $selected_bg_color;
+        font-weight: bold;
+        background-color: gtkalpha($selected_bg_color, 0.18);
         @include _shadows($widget_shadow);
       }
 
@@ -3025,7 +3035,7 @@ notebook {
           transition: none;
         }
 
-        &, &:backdrop { color: gtkalpha(currentColor, if($DarklyrcTabUseBrighterCloseIcon, 1, 0.4)); }
+        &, &:backdrop { color: gtkalpha(currentColor, if($BlossomuircTabUseBrighterCloseIcon, 1, 0.4)); }
 
         padding: 0;
         min-width: 18px;
@@ -3094,7 +3104,7 @@ notebook {
   }
 }
 
-@if $DarklyrcOldTabbar {
+@if $BlossomuircOldTabbar {
   notebook > header {
     @each $pos1, $pos2 in ("top", "bottom"),
                           ("bottom", "top"),
@@ -3130,7 +3140,7 @@ notebook {
     }
   }
 
-  @if $DarklyrcTabDrawHighlight {
+  @if $BlossomuircTabDrawHighlight {
     $_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus");
     $_backdrop_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus_backdrop");
 
@@ -3155,7 +3165,7 @@ notebook {
     }
   }
 
-} @else if $DarklyrcTabBarAltStyle {
+} @else if $BlossomuircTabBarAltStyle {
   notebook {
     $_tab_line_bg: gtkmix($bg_color, $fg_color, 0.85);
     $_selected_tab_line_bg: gtkcolor("@theme_button_decoration_focus");
@@ -3524,11 +3534,11 @@ check {
   border-radius: $radius / 2;
   -gtk-icon-shadow: 0 1px rgba(0,0,0,0.5);
 
-  &:checked { -gtk-icon-source: image(-gtk-recolor(url("darkly-gtk-assets/check-symbolic.svg")),
-                                      -gtk-recolor(url("darkly-gtk-assets/check-symbolic.symbolic.png"))); }
+  &:checked { -gtk-icon-source: image(-gtk-recolor(url("blossomui-gtk-assets/check-symbolic.svg")),
+                                      -gtk-recolor(url("blossomui-gtk-assets/check-symbolic.symbolic.png"))); }
 
-  &:indeterminate { -gtk-icon-source: image(-gtk-recolor(url("darkly-gtk-assets/dash-symbolic.svg")),
-                                            -gtk-recolor(url("darkly-gtk-assets/dash-symbolic.symbolic.png"))); }
+  &:indeterminate { -gtk-icon-source: image(-gtk-recolor(url("blossomui-gtk-assets/dash-symbolic.svg")),
+                                            -gtk-recolor(url("blossomui-gtk-assets/dash-symbolic.symbolic.png"))); }
 }
 
 %radio,
@@ -3536,11 +3546,11 @@ radio {
   border-radius: 100%;
   -gtk-icon-shadow: 0 0 2px rgba(0,0,0,0.5);
 
-  &:checked { -gtk-icon-source: image(-gtk-recolor(url("darkly-gtk-assets/bullet-symbolic.svg")),
-                                      -gtk-recolor(url("darkly-gtk-assets/bullet-symbolic.symbolic.png"))); }
+  &:checked { -gtk-icon-source: image(-gtk-recolor(url("blossomui-gtk-assets/bullet-symbolic.svg")),
+                                      -gtk-recolor(url("blossomui-gtk-assets/bullet-symbolic.symbolic.png"))); }
 
-  &:indeterminate { -gtk-icon-source: image(-gtk-recolor(url("darkly-gtk-assets/dash-symbolic.svg")),
-                                            -gtk-recolor(url("darkly-gtk-assets/dash-symbolic.symbolic.png"))); }
+  &:indeterminate { -gtk-icon-source: image(-gtk-recolor(url("blossomui-gtk-assets/dash-symbolic.svg")),
+                                            -gtk-recolor(url("blossomui-gtk-assets/dash-symbolic.symbolic.png"))); }
 }
 
 // ANIMATION:
@@ -4230,19 +4240,34 @@ row {
 
     &:hover { background-color: gtkalpha($selected_bg_color, 0.2); }
 
-    &:active { background-color: $selected_bg_color; }
+    &:active { background-color: gtkalpha($selected_bg_color, 0.3); }
 
     &:backdrop:hover { background-color: transparent; }
 
     &:selected {
-      &:active:hover { background-color: gtkshade($selected_bg_color, 1.2); }
+      &:active:hover { background-color: gtkalpha($selected_bg_color, 0.35); }
 
       &.has-open-popup,
-      &:hover { background-color: gtkmix($fg_color, $selected_bg_color, 0.1); }
+      &:hover { background-color: gtkalpha($selected_bg_color, 0.28); }
     }
   }
 
-  &:selected { @extend %selected_items; }
+  &:selected {
+    background-color: gtkalpha($selected_bg_color, 0.18);
+    color: $text_color;
+
+    &:disabled {
+      color: $insensitive_selected_fg_color;
+      background-color: gtkalpha($insensitive_selected_bg_color, 0.18);
+    }
+
+    &:backdrop {
+      color: $backdrop_text_color;
+      background-color: gtkalpha($backdrop_selected_bg_color, 0.18);
+
+      &:disabled { color: $backdrop_insensitive_fg_color; }
+    }
+  }
 }
 
 @if $gtkver!="3" {
@@ -4652,6 +4677,8 @@ filechooserbutton:drop(active) {
       border-radius: $radius;
       margin: 0 $radius / 2;
 
+      &:selected { color: $selected_bg_color; font-weight: bold; }
+
       > label {
         padding-left: 6px;
         padding-right: 6px;
@@ -4739,7 +4766,16 @@ separator.sidebar {
         background-color: $sidebar_hover_bg;
       }
       &:selected {
-        @extend %selected_items;
+        background-color: gtkalpha($selected_bg_color, 0.18);
+        color: $selected_bg_color;
+        font-weight: bold;
+
+        &:disabled { color: $insensitive_selected_fg_color; }
+
+        &:backdrop {
+          background-color: gtkalpha($backdrop_selected_bg_color, 0.18);
+          color: $backdrop_selected_bg_color;
+        }
       }
       &:disabled { color: $insensitive_fg_color; }
     }
@@ -5167,15 +5203,17 @@ colorchooser .popover.osd { border-radius: $radius; }
 /**********************
  * Window Decorations *
  *********************/
-$_window_shadow: 0 0 0 1px gtkalpha($DarklyrcShadowColor, 0.1),
-                 0 6px 15px 1px gtkalpha($DarklyrcShadowColor, 0.3);
-$_backdrop_window_shadow: 0 0 0 1px gtkalpha($DarklyrcShadowColor, 0.1),
-                          0 6px 15px 1px gtkalpha($DarklyrcShadowColor, 0.3);
-$_popup_shadow: 0 0 0 1px gtkalpha($DarklyrcShadowColor, 0.07),
-                0 4px 6px 1px gtkalpha($DarklyrcShadowColor, 0.2);
+// kdecoration outline: KColorUtils::mix(frameColor, textColor, dark 0.12 / light 0.30)
+$_window_outline_color: gtkmix($fg_color, $bg_color, if(variable-exists(variant) and $variant == 'light', 0.30, 0.12));
+$_window_shadow: 0 0 0 1px $_window_outline_color,
+                 0 6px 15px 1px gtkalpha($BlossomuircShadowColor, 0.3);
+$_backdrop_window_shadow: 0 0 0 1px $_window_outline_color,
+                          0 6px 15px 1px gtkalpha($BlossomuircShadowColor, 0.3);
+$_popup_shadow: 0 0 0 1px gtkalpha($BlossomuircShadowColor, 0.07),
+                0 4px 6px 1px gtkalpha($BlossomuircShadowColor, 0.2);
 $_dialog_shadow: $_popup_shadow;
-$_tooltip_shadow: 0 0 0 1px gtkalpha($DarklyrcShadowColor, 0.1),
-                  0 3px 6px 1px gtkalpha($DarklyrcShadowColor, 0.3);
+$_tooltip_shadow: 0 0 0 1px gtkalpha($BlossomuircShadowColor, 0.1),
+                  0 3px 6px 1px gtkalpha($BlossomuircShadowColor, 0.3);
 
 @mixin _tiled {
   border-radius: 0;
@@ -5190,12 +5228,10 @@ $_tooltip_shadow: 0 0 0 1px gtkalpha($DarklyrcShadowColor, 0.1),
   background-color: $titlebar_bg_color;
   border: solid 1px $titlebar_bg_color;
   border-radius: 0;
-  box-shadow: inset 0 0 0 3px $titlebar_bg_color,
-  inset 0 1px $top_hilight;
+  box-shadow: inset 0 0 0 3px $titlebar_bg_color;
 
   &:backdrop {
-    box-shadow: inset 0 0 0 3px $backdrop_titlebar_bg_color,
-    inset 0 1px $top_hilight;
+    box-shadow: inset 0 0 0 3px $backdrop_titlebar_bg_color;
   }
 }
 
@@ -5360,21 +5396,21 @@ cursor-handle {
                   (':hover','-hover'),
                   (':active','-active') { //no need for insensitive and backdrop
     &.top#{$s}:dir(ltr), &.bottom#{$s}:dir(rtl) {
-      $_url: 'darkly-gtk-assets/text-select-start#{$as}';
+      $_url: 'blossomui-gtk-assets/text-select-start#{$as}';
       -gtk-icon-source: -gtk-scaled(url('#{$_url}.png'),
                                     url('#{$_url}@2.png'));
       padding-left: 10px;
     }
 
     &.bottom#{$s}:dir(ltr), &.top#{$s}:dir(rtl) {
-      $_url: 'darkly-gtk-assets/text-select-end#{$as}';
+      $_url: 'blossomui-gtk-assets/text-select-end#{$as}';
       -gtk-icon-source: -gtk-scaled(url('#{$_url}.png'),
                                     url('#{$_url}@2.png'));
       padding-right: 10px;
     }
 
     &.insertion-cursor#{$s}:dir(ltr), &.insertion-cursor#{$s}:dir(rtl) {
-      $_url: 'darkly-gtk-assets/slider-horz-scale-has-marks-above#{$as}';
+      $_url: 'blossomui-gtk-assets/slider-horz-scale-has-marks-above#{$as}';
       -gtk-icon-source: -gtk-scaled(url('#{$_url}.png'),
                                     url('#{$_url}@2.png'));
     }

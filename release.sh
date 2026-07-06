@@ -47,6 +47,7 @@ BuildRequires:  cmake
 BuildRequires:  extra-cmake-modules
 BuildRequires:  gcc-c++
 BuildRequires:  gettext
+BuildRequires:  sassc
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  kf6-kcoreaddons-devel
@@ -134,8 +135,18 @@ fi
 \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightLookAndFeel 'org.blossomos.ui.light.desktop'
 \$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkLookAndFeel 'org.blossomos.ui.dark.desktop'
 
+if command -v flatpak >/dev/null 2>&1; then
+    flatpak override --system --filesystem=xdg-config/gtk-3.0:ro 2>/dev/null || true
+    flatpak override --system --filesystem=xdg-config/gtk-4.0:ro 2>/dev/null || true
+fi
+
 %postun
 if [ \$1 -eq 0 ]; then
+    if command -v flatpak >/dev/null 2>&1; then
+        flatpak override --system --nofilesystem=xdg-config/gtk-3.0 2>/dev/null || true
+        flatpak override --system --nofilesystem=xdg-config/gtk-4.0 2>/dev/null || true
+    fi
+
     if command -v kwriteconfig6 >/dev/null 2>&1; then
         KWRITE=kwriteconfig6
     elif command -v kwriteconfig5 >/dev/null 2>&1; then
@@ -188,8 +199,6 @@ fi
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.light.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.dark.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.darkoled.desktop/
-# Plasma Look-and-Feel (KSplash theme)
-%{_datadir}/plasma/look-and-feel/org.blossomos.ui.splash.desktop/
 # Translations
 %{_datadir}/locale/*/LC_MESSAGES/blossomui_ksplash.mo
 # Plasma Desktop Theme
@@ -198,6 +207,8 @@ fi
 %{_datadir}/wallpapers/
 # Fonts
 %{_datadir}/fonts/blossomui/
+# GTK Theme
+%{_datadir}/themes/BlossomUI/
 
 # CMake Config (Qt6)
 %{_libdir}/cmake/BlossomUI/
@@ -222,6 +233,11 @@ fi
 # Flatpak
 echo ""
 echo "=== Building Flatpak ==="
+
+# flatpak-builder's own build cache can go stale and silently keep reusing an
+# old build even when the sources changed, so always start clean
+rm -rf "$SRC_DIR/.flatpak-builder"
+
 if command -v flatpak-builder >/dev/null 2>&1; then
     builder="flatpak-builder"
 elif flatpak run org.flatpak.Builder --version >/dev/null 2>&1; then
@@ -239,10 +255,20 @@ mkdir -p "$REPO"
 echo "Ensuring Flatpak SDKs and runtimes are installed..."
 flatpak install --noninteractive --system flathub \
     org.kde.Sdk/x86_64/6.9 \
+    org.kde.Sdk/x86_64/6.10 \
     org.kde.Sdk/x86_64/5.15-24.08 \
     org.kde.Platform/x86_64/6.9 \
+    org.kde.Platform/x86_64/6.10 \
     org.kde.Platform/x86_64/5.15-24.08 \
+    org.freedesktop.Sdk/x86_64/24.08 \
+    org.freedesktop.Platform/x86_64/24.08 \
     2>&1 | grep -v "^$" || true
+
+# pre-compile the GTK3 theme CSS so the org.gtk.Gtk3theme.BlossomUI flatpak
+# extension can just install it, without needing sassc inside the sandbox
+mkdir -p "$SRC_DIR/gtk/build"
+sassc -M -t compact "$SRC_DIR/gtk/sass/gtk3-light.scss" "$SRC_DIR/gtk/build/gtk3-light.css"
+sassc -M -t compact "$SRC_DIR/gtk/sass/gtk3-dark.scss" "$SRC_DIR/gtk/build/gtk3-dark.css"
 
 # create flatpak source archive (clean, no transform)
 tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.tar.gz" \
@@ -261,8 +287,11 @@ tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.ta
     .
 
 
-echo "Building Qt6 Flatpak extension with all theme components..."
+echo "Building Qt6 Flatpak extension with all theme components (KDE Platform 6.9)..."
 $builder "$SRC_DIR/flatpak/build/qt6" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt6.json"
+
+echo "Building Qt6 Flatpak extension with all theme components (KDE Platform 6.10)..."
+$builder "$SRC_DIR/flatpak/build/qt6-6.10" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt6-6.10.json"
 
 echo "Building Qt5 Flatpak extension with all theme components..."
 $builder "$SRC_DIR/flatpak/build/qt5" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt5.json"
@@ -270,9 +299,24 @@ $builder "$SRC_DIR/flatpak/build/qt5" --repo="$REPO" --force-clean --ccache "$SR
 flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt5.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/5.15-24.08" --runtime
 echo "Qt5 Flatpak bundle created"
 
-# Create Qt6 bundle
+# Create Qt6 bundles
 flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.9" --runtime
-echo "Qt6 Flatpak bundle created with all theme components"
+echo "Qt6 Flatpak bundle (6.9) created with all theme components"
+
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt6-6.10.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.10" --runtime
+echo "Qt6 Flatpak bundle (6.10) created with all theme components"
+
+echo "Building GTK3 theme Flatpak extension..."
+$builder "$SRC_DIR/flatpak/build/gtk3theme" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.gtk.Gtk3theme.BlossomUI.json"
+
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-gtk3theme.flatpak" "runtime/org.gtk.Gtk3theme.BlossomUI/$ARCH/3.22" --runtime
+echo "GTK3 theme Flatpak bundle created"
+
+echo "Building icon theme Flatpak extension..."
+$builder "$SRC_DIR/flatpak/build/icontheme" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.freedesktop.Platform.Icontheme.BlossomUI.json"
+
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-icontheme.flatpak" "runtime/org.freedesktop.Platform.Icontheme.BlossomUI/$ARCH/1.0" --runtime
+echo "Icon theme Flatpak bundle created"
 
 
 
