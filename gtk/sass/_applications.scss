@@ -70,7 +70,7 @@ tab .close-button {
   }
 
   &, &:backdrop {
-    color: gtkalpha(currentColor, if($DarklyrcTabUseBrighterCloseIcon, 1, 0.4));
+    color: gtkalpha(currentColor, if($BlossomuircTabUseBrighterCloseIcon, 1, 0.4));
     background-color: transparent;
   }
 }

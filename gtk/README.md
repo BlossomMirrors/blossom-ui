@@ -1,14 +1,14 @@
-# Darkly GTK theme
+# BlossomUI GTK theme
 
-A GTK port of the [Darkly Qt style](https://github.com/Bali10050/Darkly) by Bali10050
+A GTK port of the BlossomUI Qt style, forked from the [Darkly GTK theme](https://github.com/Bali10050/Darkly-GTK-Theme) which itself matches the [Darkly Qt style](https://github.com/Bali10050/Darkly) by Bali10050.
 
-The goal of this project is to provide a GTK theme that matches the Darkly theme for Qt applications to achieve a consistent Darkly-styled Plasma desktop.
+The goal of this project is to provide a GTK theme that matches the BlossomUI theme for Qt applications to achieve a consistent BlossomUI-styled Plasma desktop.
 
 ![preview](preview.png?raw=true)
 
 * Supports GTK 3.20+, GTK 4.0+ and libadwaita
 * Automatically follows the Plasma color scheme
-* Customization options from the Darkly Qt style config (corner radius, tab style, etc. ) are applied during installation (work in progress, see `sass/_darkly_default_settings.scss` for the current status). That means that you have to re-run the install script after changing the Darkly Qt settings.
+* Customization options from the BlossomUI Qt style config (corner radius, tab style, etc. ) are applied during installation (work in progress, see `sass/_blossomui_default_settings.scss` for the current status). That means that you have to re-run the install script after changing the BlossomUI Qt settings.
 
 ## Requirements
 `sassc` build dependency

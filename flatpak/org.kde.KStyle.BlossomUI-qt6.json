@@ -1,10 +1,10 @@
 {
   "id": "org.kde.KStyle.BlossomUI",
-  "branch": "6.10",
+  "branch": "6.9",
   "runtime": "org.kde.Platform",
   "build-extension": true,
   "sdk": "org.kde.Sdk",
-  "runtime-version": "6.10",
+  "runtime-version": "6.9",
   "appstream-compose": false,
   "separate-locales": false,
   "modules": [
@@ -13,16 +13,16 @@
       "buildsystem": "cmake",
       "builddir": true,
       "config-opts": [
-        "-DCMAKE_INSTALL_PREFIX=/app",
-        "-DKDE_INSTALL_PLUGINDIR=/app/lib/plugins",
-        "-DKDE_INSTALL_QMLDIR=/app/lib/qml",
-        "-DKDE_INSTALL_KCONFMODULEDIR=/app/lib/plugins",
-        "-DKDE_INSTALL_KCMMODULEDIR=/app/lib/qt6/plugins",
-        "-DKDE_INSTALL_DATADIR=/app/share",
+        "-DCMAKE_INSTALL_PREFIX=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DKDE_INSTALL_PLUGINDIR=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DKDE_INSTALL_KCONFMODULEDIR=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DKDE_INSTALL_KCMMODULEDIR=/usr/share/runtime/lib/plugins/BlossomUI/qt6/plugins",
+        "-DKDE_INSTALL_DATADIR=/usr/share/runtime/lib/plugins/BlossomUI/share",
+        "-DQT_PLUGINS_DIR=/usr/share/runtime/lib/plugins/BlossomUI",
         "-DBUILD_QT6=ON",
         "-DBUILD_QT5=OFF",
         "-DWITH_DECORATIONS=OFF",
-        "-DFOR_FLATPAK=OFF"
+        "-DFOR_FLATPAK=ON"
       ],
       "sources": [
         {

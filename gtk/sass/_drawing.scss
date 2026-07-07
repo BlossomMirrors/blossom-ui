@@ -2,14 +2,14 @@
 
 // generic drawing of more complex things
 
-$widget_shadow: if($DarklyrcWidgetDrawShadow, (0 0 0 1px gtkalpha(black, 0.02),
+$widget_shadow: if($BlossomuircWidgetDrawShadow, (0 0 0 1px gtkalpha(black, 0.02),
                                              0 1px 2px gtkalpha(black, 0.15)),
                                              none);
 
-$card_shadow: if($DarklyrcWidgetDrawShadow, (0 1px 2px 2px gtkalpha(black, 0.07)),
+$card_shadow: if($BlossomuircWidgetDrawShadow, (0 1px 2px 2px gtkalpha(black, 0.07)),
                                            none);
 
-$toolbar_shadow: if($DarklyrcWidgetToolBarShadow, (inset 0 -1px gtkalpha(black, 0.025),
+$toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(black, 0.025),
                                                  inset 0 -2px gtkalpha(black, 0.02),
                                                  inset 0 -3px gtkalpha(black, 0.01),
                                                  inset 0 -4px gtkalpha(black, 0.01),
@@ -18,10 +18,10 @@ $toolbar_shadow: if($DarklyrcWidgetToolBarShadow, (inset 0 -1px gtkalpha(black, 
 
 @function button-highlight($transparent:false) {
   $_highlight: if($transparent, gtkalpha($top_hilight, 0), $top_hilight);
-  @if $DarklyrcFullOutline {
+  @if $BlossomuircFullOutline {
     @return inset 0 0 0 1px $_highlight;
   }
-  @if $DarklyrcNoOutline {
+  @if $BlossomuircNoOutline {
     @return none;
   }
   @return inset 0 1px $_highlight;
@@ -96,7 +96,7 @@ $toolbar_shadow: if($DarklyrcWidgetToolBarShadow, (inset 0 -1px gtkalpha(black, 
   @if $t==normal {
     color: $text_color;
     background-color: $base_color;
-    @include _shadows($widget_shadow);
+    @include _shadows(button-highlight(), $widget_shadow);
   }
   @if $t==focus {
     @include _shadows(entry_focus_shadow($fc), $widget_shadow);

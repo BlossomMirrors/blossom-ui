@@ -1,0 +1,25 @@
+{
+  "id": "org.freedesktop.Platform.Icontheme.BlossomUI",
+  "branch": "1.0",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "build-extension": true,
+  "appstream-compose": false,
+  "separate-locales": false,
+  "modules": [
+    {
+      "name": "BlossomUI-icon-theme",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -d /usr/share/runtime/share/icons/BlossomUI && cp -r icons/. /usr/share/runtime/share/icons/BlossomUI/ && rm -f /usr/share/runtime/share/icons/BlossomUI/CMakeLists.txt /usr/share/runtime/share/icons/BlossomUI/install.sh /usr/share/runtime/share/icons/BlossomUI/icongen.py /usr/share/runtime/share/icons/BlossomUI/requirements.txt"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "blossomui-flatpak-source.tar.gz"
+        }
+      ]
+    }
+  ]
+}

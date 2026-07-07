@@ -7,6 +7,12 @@ ColorScheme=BlossomUI Dark OLED
 [kdeglobals][Icons]
 Theme=BlossomUI
 
+[gtk-3.0/settings.ini][Settings]
+gtk-theme-name=BlossomUI
+
+[gtk-4.0/settings.ini][Settings]
+gtk-theme-name=BlossomUI
+
 [plasmarc][Theme]
 name=BlossomUI
 
@@ -22,13 +28,8 @@ library=org.blossomos.ui
 theme=BlossomUI
 
 [ksplashrc][KSplash]
-<<<<<<< HEAD:desktop/kde/lookandfeel/org.blossomos.ui.darkoled.desktop/contents/defaults
-Theme=None
-Engine=none
-=======
-Theme=org.blossomos.ui.splash.desktop
+Theme=org.blossomos.ui.light.desktop
 Engine=KSplashQML
->>>>>>> c4da4d5be60250764c406e9190e271f19bdb1e93:kde/lookandfeel/org.blossomos.ui.darkoled.desktop/contents/defaults
 
 [kwinrc][Plugins]
 blurEnabled=true
