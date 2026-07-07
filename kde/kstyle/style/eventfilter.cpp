@@ -348,13 +348,14 @@ bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event) {
       background = _helper->frameBackgroundColor(viewport->palette());
     else
       background = viewport->palette().color(role);
-    if (_app.isDolphin)
-      applyDolphinCardBackground(background, scrollArea);
     painter.setBrush(background);
+
+    for (auto *child : std::as_const(children))
+      painter.drawRect(child->geometry());
 
   } break;
 
-  case QEvent::MouseButtonPress:
+  case QEvent::MouseButtonPress:nPress:s:nPress:s:nPress:onPress:nPseButtonPress:nPress:s:nPr
   case QEvent::MouseButtonRelease:
   case QEvent::MouseMove: {
     QMouseEvent *mouseEvent(static_cast<QMouseEvent *>(event));
