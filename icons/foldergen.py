@@ -98,6 +98,29 @@ COLORS = {
     "folder-yellow": "#FFC024",
 }
 
+# small outline glyphs with a baked-in color:
+# name -> (lucide candidates, color, symlink targets)
+COLORED_GLYPHS = {
+    # kio-admin: gcr-key is the plugin metadata icon,
+    # yast-auth-client is the Open as Administrator action icon
+    "gcr-key": (
+        ["shield"],
+        "#F03E4D",
+        [
+            "apps/16/gcr-key.svgz",
+            "apps/22/gcr-key.svgz",
+            "apps/24/gcr-key.svgz",
+            "apps/48/gcr-key.svgz",
+            "apps/symbolic/gcr-key-symbolic.svgz",
+            "apps/16/yast-auth-client.svgz",
+            "apps/22/yast-auth-client.svgz",
+            "apps/24/yast-auth-client.svgz",
+            "apps/48/yast-auth-client.svgz",
+            "apps/symbolic/yast-auth-client-symbolic.svgz",
+        ],
+    ),
+}
+
 # standalone designs sharing the folder body fill:
 # input svg -> (output name, symlink targets)
 EXTRAS = {
@@ -139,6 +162,15 @@ ALIASES = {
     "user-desktop": "folder-desktop",
 }
 
+# small colored folders keep the sidebar symbolic style but bake in the color
+SMALL_TEMPLATE = (
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" '
+    'viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round">\n'
+    '  <g stroke="{color}">\n{inner}\n  </g>\n'
+    '</svg>\n'
+)
+
 STYLE_BLOCK = (
     '<style\n'
     '            id="current-color-scheme"\n'
@@ -177,7 +209,7 @@ def build_overlay(inner):
     ty = cy - OVERLAY_SIZE / 2.0
     return (
         f'<g opacity="0.6" transform="translate({tx:g} {ty:g}) scale({scale:g})" '
-        f'fill="none" stroke="#FFFFFF" stroke-width="2" '
+        f'fill="none" stroke="#FFFFFF" stroke-width="1.5" '
         f'stroke-linecap="round" stroke-linejoin="round">\n{inner}\n</g>\n'
     )
 
@@ -255,6 +287,30 @@ def main():
 
     for name, color in COLORS.items():
         save_svgz(build_folder(base_svg, color=color), name)
+
+    icon_name, folder_glyph = fetch_lucide_icon(["folder"])
+    if folder_glyph:
+        inner = lucide_inner(folder_glyph)
+        for name, color in COLORS.items():
+            svg = SMALL_TEMPLATE.format(color=color, inner=inner)
+            save_svgz(svg, f"{name}-small")
+            create_symlink(f"{name}-small", f"places/24/{name}.svgz")
+            create_symlink(f"{name}-small", f"places/24/{name}-symbolic.svgz")
+    else:
+        print("Warning: could not fetch lucide folder glyph, "
+              "skipping small colored folders", file=sys.stderr)
+
+    for name, (candidates, color, targets) in COLORED_GLYPHS.items():
+        icon_name, glyph = fetch_lucide_icon(candidates)
+        if not glyph:
+            print(f"Warning: no lucide icon for {name} "
+                  f"(tried {', '.join(candidates)}), skipping",
+                  file=sys.stderr)
+            continue
+        svg = SMALL_TEMPLATE.format(color=color, inner=lucide_inner(glyph))
+        save_svgz(svg, name)
+        for target in targets:
+            create_symlink(name, target)
 
     for src, (name, targets) in EXTRAS.items():
         svg = Path(src).read_text()

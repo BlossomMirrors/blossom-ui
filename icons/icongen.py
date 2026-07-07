@@ -53,6 +53,7 @@ def apply_kde_theme_colors(svg_content, size=16):
     root.set('width', '16')
     root.set('height', '16')
     root.set('viewBox', new_viewbox)
+    root.set('stroke-width', '1.5')
     
     if 'stroke' in root.attrib:
         del root.attrib['stroke']
