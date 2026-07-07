@@ -8,6 +8,7 @@
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>
+#include <QEasingCurve>
 #include <QComboBox>
 #include <QPainter>
 #include <QPainterPath>
@@ -163,10 +164,19 @@ bool Style::drawIndicatorCheckBoxPrimitive(const QStyleOption *option,
   const qreal animation(
       _animations->widgetStateEngine().opacity(styleObject, AnimationPressed));
 
-  if (isSwitchCheckBox(option, widget))
+  if (isSwitchCheckBox(option, widget)) {
+    // overshooting thumb: ease toward the target so turning on overshoots
+    // past the end position and turning off overshoots past the start
+    qreal t = animation;
+    if (checkBoxState == CheckAnimated && animation >= 0) {
+      const QEasingCurve ease(QEasingCurve::OutBack);
+      const bool switchOn = (state & State_On);
+      t = switchOn ? ease.valueForProgress(animation)
+                   : 1.0 - ease.valueForProgress(1.0 - animation);
+    }
     _helper->renderSwitch(painter, rect, palette, sunken, mouseOver,
-                          checkBoxState, animation);
-  else
+                          checkBoxState, t);
+  } else
     _helper->renderCheckBox(painter, rect, palette, false, sunken, mouseOver,
                             checkBoxState, false, animation);
   return true;

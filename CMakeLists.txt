@@ -154,6 +154,10 @@ function(build_qt6)
   add_subdirectory(kde/kstyle kstyle6)
   add_subdirectory(kde/libblossomuicommon libblossomuicommon6)
 
+  if(${Qt6Quick_FOUND})
+    add_subdirectory(kde/qqc2style)
+  endif()
+
   if(WITH_DECORATIONS)
     find_package(KDecoration3 REQUIRED)
     add_subdirectory(kde/kdecoration)

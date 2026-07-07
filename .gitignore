@@ -6,6 +6,7 @@ local/
 flatpak-build-qt5/
 flatpak-build-qt6/
 .flatpak-builder/
+*.tar.gz
 
 # OS
 .DS_Store

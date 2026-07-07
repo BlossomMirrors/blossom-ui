@@ -11,6 +11,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStyleOptionButton>
+#include <QVariantAnimation>
 
 BlossomUISwitchWidget::BlossomUISwitchWidget(BlossomUI::Helper *helper,
                                              QCheckBox *parent)
@@ -19,6 +20,15 @@ BlossomUISwitchWidget::BlossomUISwitchWidget(BlossomUI::Helper *helper,
   setAttribute(Qt::WA_NoMousePropagation, false);
   setFocusPolicy(Qt::NoFocus);
   _checked = parent->isChecked();
+  _visualPos = _checked ? 1.0 : 0.0;
+  _anim = new QVariantAnimation(this);
+  _anim->setDuration(200);
+  _anim->setEasingCurve(QEasingCurve::OutBack);
+  connect(_anim, &QVariantAnimation::valueChanged, this,
+          [this](const QVariant &value) {
+            _visualPos = value.toReal();
+            update();
+          });
   setCursor(Qt::PointingHandCursor);
   connect(parent, &QCheckBox::toggled, this,
           &BlossomUISwitchWidget::updateFromParent);
@@ -29,14 +39,27 @@ void BlossomUISwitchWidget::setChecked(bool on) {
     _checked = on;
     if (_checkBox && _checkBox->isChecked() != on)
       _checkBox->setChecked(on);
+    if (!_dragging)
+      animateTo(on ? 1.0 : 0.0);
     update();
     emit toggled(on);
   }
 }
 
+void BlossomUISwitchWidget::animateTo(qreal target) {
+  _anim->stop();
+  if (qFuzzyCompare(_visualPos, target))
+    return;
+  _anim->setStartValue(_visualPos);
+  _anim->setEndValue(target);
+  _anim->start();
+}
+
 void BlossomUISwitchWidget::updateFromParent() {
   if (_checkBox && _checked != _checkBox->isChecked()) {
     _checked = _checkBox->isChecked();
+    if (!_dragging)
+      animateTo(_checked ? 1.0 : 0.0);
     update();
   }
 }
@@ -50,11 +73,8 @@ void BlossomUISwitchWidget::paintEvent(QPaintEvent *) {
     return;
   QPainter p(this);
   const QPalette &palette = _checkBox->palette();
-  const bool sunken = _pressed && hitTrack(mapFromGlobal(QCursor::pos()));
-  BlossomUI::CheckBoxState state =
-      _checked ? BlossomUI::CheckOn : BlossomUI::CheckOff;
-  _helper->renderSwitch(&p, rect(), palette, sunken, _hover, state,
-                        _checked ? 1.0 : 0.0);
+  _helper->renderSwitch(&p, rect(), palette, false, _hover,
+                        BlossomUI::CheckAnimated, _visualPos);
 }
 
 void BlossomUISwitchWidget::mousePressEvent(QMouseEvent *e) {
@@ -83,6 +103,16 @@ void BlossomUISwitchWidget::mouseMoveEvent(QMouseEvent *e) {
       return;
     }
   }
+  // thumb follows the pointer while dragging
+  _anim->stop();
+  const qreal thumbSpan = height();
+  qreal frac = width() > thumbSpan
+      ? (e->pos().x() - thumbSpan / 2.0) / (width() - thumbSpan)
+      : 0.5;
+  if (_checkBox->layoutDirection() == Qt::RightToLeft)
+    frac = 1.0 - frac;
+  _visualPos = qBound(0.0, frac, 1.0);
+
   const int cx = width() / 2;
   const bool on = e->pos().x() >= cx;
   if (_checkBox->layoutDirection() == Qt::RightToLeft) {
@@ -99,10 +129,13 @@ void BlossomUISwitchWidget::mouseReleaseEvent(QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
   e->accept();
-  if (!_dragging && hitTrack(e->pos()))
+  const bool wasDragging = _dragging;
+  if (!wasDragging && hitTrack(e->pos()))
     setChecked(!_checked);
   _pressed = false;
   _dragging = false;
+  if (wasDragging)
+    animateTo(_checked ? 1.0 : 0.0);
   update();
 }
 

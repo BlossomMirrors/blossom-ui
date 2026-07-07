@@ -38,23 +38,6 @@ else
     return
 fi
 
-configure_dolphin() {
-    $KWRITECONFIG --file ~/.config/dolphinrc --group General --key ShowStatusBar --type string "Disabled"
-    $KWRITECONFIG --file ~/.config/dolphinrc --group MainWindow --key MenuBar --type string "Disabled"
-    $KWRITECONFIG --file ~/.config/dolphinrc --group KDE --key MenuBar --type string "Disabled"
-    $KWRITECONFIG --file ~/.config/dolphinrc --key MenuBar --type string "Disabled"
-
-    # hide recent files/locations from places panel
-    if [ -f ~/.local/share/user-places.xbel ]; then
-        sed -i 's|<GroupState-RecentlySaved-IsHidden>false</GroupState-RecentlySaved-IsHidden>|<GroupState-RecentlySaved-IsHidden>true</GroupState-RecentlySaved-IsHidden>|g' ~/.local/share/user-places.xbel
-    fi
-
-    # copy toolbar config
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    mkdir -p ~/.local/share/kxmlgui5/dolphin
-    cp "$SCRIPT_DIR/kde/dolphin/dolphinui.rc" ~/.local/share/kxmlgui5/dolphin/dolphinui.rc
-}
-
 echo "applying blossomui $MODE theme..."
 
 # drop stale per-user color-scheme copies that shadow the system files,
@@ -75,32 +58,19 @@ elif command -v kbuildsycoca5 >/dev/null 2>&1; then
     kbuildsycoca5 --noincremental >/dev/null 2>&1 || true
 fi
 
-# set default light/dark/oled themes
-$KWRITECONFIG --file ~/.config/kdeglobals --group General --key LightColorScheme --type string "BlossomUI Light"
 if [[ "$MODE" == "oled" ]]; then
     $KWRITECONFIG --file ~/.config/kdeglobals --group General --key DarkColorScheme --type string "BlossomUI Dark OLED"
-else
-    $KWRITECONFIG --file ~/.config/kdeglobals --group General --key DarkColorScheme --type string "BlossomUI Dark"
-fi
-
-$KWRITECONFIG --file ~/.config/plasmarc --group Theme --key LightColorScheme --type string "BlossomUI Light"
-if [[ "$MODE" == "oled" ]]; then
     $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key DarkColorScheme --type string "BlossomUI Dark OLED"
     $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key DarkLookAndFeel --type string "$OLED_THEME_ID"
-else
-    $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key DarkColorScheme --type string "BlossomUI Dark"
-    $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key DarkLookAndFeel --type string "$DARK_THEME_ID"
-fi
-$KWRITECONFIG --file ~/.config/plasmarc --group Theme --key LightLookAndFeel --type string "$LIGHT_THEME_ID"
-
-
-$KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key LookAndFeelPackage --type string "$THEME_ID"
-$KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key DefaultLightLookAndFeel --type string "$LIGHT_THEME_ID"
-if [[ "$MODE" == "oled" ]]; then
     $KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key DefaultDarkLookAndFeel --type string "$OLED_THEME_ID"
 else
+    $KWRITECONFIG --file ~/.config/kdeglobals --group General --key DarkColorScheme --type string "BlossomUI Dark"
+    $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key DarkColorScheme --type string "BlossomUI Dark"
+    $KWRITECONFIG --file ~/.config/plasmarc --group Theme --key DarkLookAndFeel --type string "$DARK_THEME_ID"
     $KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key DefaultDarkLookAndFeel --type string "$DARK_THEME_ID"
 fi
+
+$KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key LookAndFeelPackage --type string "$THEME_ID"
 
 plasma-apply-lookandfeel --apply "$THEME_ID" 2>/dev/null
 
@@ -140,7 +110,27 @@ elif command -v qdbus >/dev/null 2>&1; then
     qdbus org.kde.KGlobalSettings /KGlobalSettings org.kde.KGlobalSettings.notifyChange 3 0 2>/dev/null || true
 fi
 
-configure_dolphin
+if command -v flatpak >/dev/null 2>&1; then
+    _ext_branches=$(flatpak list --runtime --columns=application,branch 2>/dev/null \
+        | awk '$1 == "org.kde.KStyle.BlossomUI" && $2 ~ /^6/ {print $2}')
+    if [ -n "$_ext_branches" ]; then
+        _ext=/usr/share/runtime/lib/plugins/BlossomUI
+        flatpak list --app --columns=application,runtime 2>/dev/null \
+        | while read -r _app _rt; do
+            case "$_rt" in
+                org.kde.Platform/*) ;;
+                *) continue ;;
+            esac
+            echo "$_ext_branches" | grep -qx "${_rt##*/}" || continue
+            flatpak override --user \
+                --env=QT_QUICK_CONTROLS_STYLE=org.blossomos.style \
+                --env=QML2_IMPORT_PATH="/app/lib/qml:$_ext/lib/qml" \
+                --env=QT_PLUGIN_PATH="/app/lib/plugins:/usr/share/runtime/lib/plugins:$_ext/lib/plugins" \
+                "$_app" 2>/dev/null || true
+        done
+        echo "flatpak QQC2 style overrides applied (re-run after installing new apps)"
+    fi
+fi
 
 systemctl --user restart plasma-plasmashell.service 2>/dev/null || (plasmashell --replace & disown)
 
