@@ -22,7 +22,6 @@ if [ -z "$RPM" ]; then
 fi
 
 echo " *** Clearing cache *** "
-fc-cache -f
 rm -rf ~/.cache/ksplash/qmlcache
 
 echo " *** Installing $(basename "$RPM") *** "
@@ -32,6 +31,10 @@ if rpm -q blossomui >/dev/null 2>&1 && \
 else
     sudo dnf install -y "$RPM"
 fi
+
+echo " *** Refreshing font cache *** "
+sudo fc-cache -f >/dev/null
+fc-cache -f >/dev/null 2>&1 || true
 
 QT5_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-qt5.flatpak 2>/dev/null | head -1)
 GTK3THEME_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-gtk3theme.flatpak 2>/dev/null | head -1)

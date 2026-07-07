@@ -17,21 +17,6 @@ SRC_DIR=$(pwd)
 RPMBUILD=~/rpmbuild
 mkdir -p "$RPMBUILD"/{SPECS,SOURCES,BUILD,RPMS,SRPMS} release
 
-tar --warning=no-file-changed -czf "$RPMBUILD/SOURCES/$NAME-$VERSION.tar.gz" \
-    --transform "s|^\./|$NAME-$VERSION/|" \
-    --exclude=./.git \
-    --exclude=./.flatpak-builder \
-    --exclude=./release \
-    --exclude=./build \
-    --exclude=./build-test \
-    --exclude=./redhat-linux-build \
-    --exclude=./flatpak-build-qt5 \
-    --exclude=./flatpak-build-qt6 \
-    --exclude=./local \
-    --exclude=./RPMS \
-    --exclude=./SRPMS \
-    .
-
 # generate RPM spec file with complete file listings for all theme components
 cat > "$RPMBUILD/SPECS/$NAME.spec" << EOF
 Name:           $NAME
@@ -40,7 +25,7 @@ Release:        $RELEASE%{?dist}
 Summary:        A modern global theme for Qt/KDE (Application Style, Window Decoration, Icons, Wallpapers, Plasma Theme)
 License:        GPL-2.0-or-later
 URL:            https://git.blossomos.org/Blossom/ui
-Source0:        %{name}-%{version}.tar.gz
+%define debug_package %{nil}
 
 # Build requirements for QT6
 BuildRequires:  cmake
@@ -100,20 +85,12 @@ This package includes both Qt5 and Qt6 application styles:
 - Color Schemes
 
 %prep
-%autosetup
+# nothing to unpack: binaries come from the incremental CMake tree in build/rpm
 
 %build
-# configure with both Qt5 and Qt6 support, including all theme components
-%cmake -DBUILD_TESTING=OFF \
-       -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-       -DBUILD_QT5=ON \
-       -DBUILD_QT6=ON \
-       -DWITH_DECORATIONS=ON \
-       -DFOR_FLATPAK=OFF
-%cmake_build
 
 %install
-%cmake_install
+cp -a ${SRC_DIR}/build/rpm/staging/. %{buildroot}/
 
 %post
 if command -v kwriteconfig6 >/dev/null 2>&1; then
@@ -210,6 +187,10 @@ fi
 # GTK Theme
 %{_datadir}/themes/BlossomUI/
 
+# QML style module (QtQuick Controls + Kirigami platform plugin)
+%{_libdir}/qt6/qml/org/blossomos/
+%{_libdir}/qt6/plugins/kf6/kirigami/platform/org.blossomos.style.so
+
 # CMake Config (Qt6)
 %{_libdir}/cmake/BlossomUI/
 # KServices (Qt6)
@@ -220,9 +201,24 @@ fi
 - $CHANGELOG
 EOF
 
-echo "=== Building RPM ==="
+echo "=== Building (incremental CMake) ==="
+cmake -S "$SRC_DIR" -B "$SRC_DIR/build/rpm" -G Ninja \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib64 \
+    -DBUILD_TESTING=OFF \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DBUILD_QT5=ON \
+    -DBUILD_QT6=ON \
+    -DWITH_DECORATIONS=ON \
+    -DFOR_FLATPAK=OFF
+cmake --build "$SRC_DIR/build/rpm" --parallel
+rm -rf "$SRC_DIR/build/rpm/staging"
+DESTDIR="$SRC_DIR/build/rpm/staging" cmake --install "$SRC_DIR/build/rpm" >/dev/null
+
+echo "=== Packaging RPM ==="
 if command -v rpmbuild >/dev/null 2>&1; then
-    rpmbuild -ba "$RPMBUILD/SPECS/$NAME.spec"
+    rpmbuild -bb "$RPMBUILD/SPECS/$NAME.spec"
     find "$RPMBUILD/RPMS" -name "$NAME-$VERSION-$RELEASE*.rpm" -exec cp {} release/ \;
     echo "RPM package created in release/"
     echo "Note: RPM includes both Qt5 and Qt6 application styles with all theme components"
@@ -234,9 +230,7 @@ fi
 echo ""
 echo "=== Building Flatpak ==="
 
-# flatpak-builder's own build cache can go stale and silently keep reusing an
-# old build even when the sources changed, so always start clean
-rm -rf "$SRC_DIR/.flatpak-builder"
+rm -rf "$SRC_DIR/.flatpak-builder/cache" "$SRC_DIR/.flatpak-builder/build" "$SRC_DIR/.flatpak-builder/rofiles"
 
 if command -v flatpak-builder >/dev/null 2>&1; then
     builder="flatpak-builder"

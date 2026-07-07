@@ -2,6 +2,11 @@
 widgetStyle=BlossomUI
 
 [kdeglobals][General]
+font=Aspekta,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+fixed=Maple Mono NF,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+smallestReadableFont=Aspekta,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+toolBarFont=Aspekta,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+menuFont=Aspekta,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 ColorScheme=BlossomUI Dark OLED
 
 [kdeglobals][Icons]
