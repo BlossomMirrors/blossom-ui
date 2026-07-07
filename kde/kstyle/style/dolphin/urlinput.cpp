@@ -8,9 +8,10 @@
 
 namespace BlossomUI {
 
-void Style::polishDolphinUrlNavigator(QWidget *) {
-  // background/palette sync is handled per-paint by
-  // applyDolphinUrlNavigatorStyle(); no one-time setup needed here.
+void Style::polishDolphinUrlNavigator(QWidget *widget) {
+  // inset the breadcrumb buttons from the pill's rounded edges; the frame
+  // itself is painted over the full widget rect in drawFrameLineEditPrimitive
+  widget->setContentsMargins(8, 0, 8, 0);
 }
 
 void Style::applyDolphinUrlNavigatorStyle(const QWidget *widget,
