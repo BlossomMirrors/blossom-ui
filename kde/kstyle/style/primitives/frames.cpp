@@ -57,9 +57,6 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
                            widget->parent() &&
                            widget->parent()->inherits("KTitleWidget"));
 
-  // store window state
-  const bool windowActive(widget && widget->isActiveWindow());
-
   // copy state
   const State &state(option->state);
   if (!isTitleWidget && !(state & (State_Sunken | State_Raised)))
@@ -116,7 +113,6 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
       }
     }
     _helper->renderSidePanelFrame(painter, rect, outline, side);
-
   }
 
   return true;

@@ -619,7 +619,8 @@ void Style::polishScrollArea(QAbstractScrollArea *scrollArea) {
 
   if (scrollArea->frameShape() == QFrame::StyledPanel &&
       scrollArea->frameShadow() == QFrame::Sunken &&
-      !qobject_cast<QAbstractItemView *>(scrollArea)) {
+      !qobject_cast<QAbstractItemView *>(scrollArea) &&
+      !scrollArea->inherits("KItemListRoleEditor")) {
     scrollArea->setAutoFillBackground(false);
     if (scrollArea->viewport())
       scrollArea->viewport()->setAutoFillBackground(false);
