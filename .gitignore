@@ -11,3 +11,11 @@ flatpak-build-qt6/
 # OS
 .DS_Store
 Thumbs.db
+build/
+flatpak/build/
+gtk/build/
+RPMS/
+SRPMS/
+node_modules/
+*.flatpak
+*.rpm
