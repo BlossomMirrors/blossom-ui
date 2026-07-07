@@ -1,9 +1,12 @@
+[BlurBehindEffect]
+enabled=true
+
 [AdaptiveTransparency]
 enabled=true
 
 [ContrastEffect]
 contrast=0.2
-enabled=false
+enabled=true
 intensity=0.4
 saturation=1.7
 
@@ -16,5 +19,5 @@ X-KDE-PluginInfo-Email=yannik@blossomos.org
 X-KDE-PluginInfo-EnabledByDefault=true
 X-KDE-PluginInfo-License=GPLv2
 X-KDE-PluginInfo-Name=BlossomUI
-X-KDE-PluginInfo-Version=1.0.1
+X-KDE-PluginInfo-Version=1.0.2
 X-Plasma-API=5.0
