@@ -2,11 +2,11 @@
 <!--
     SPDX-License-Identifier: GPL-2.0-or-later
     Blossom switch for PlasmaComponents3 — matches the org.blossomos.style
-    QQC2 SwitchIndicator and the BlossomUI kstyle switch (36x20 pill,
+    QQC2 SwitchIndicator and the BlossomUI kstyle switch (46x26 pill,
     accent fill, light thumb). Colors follow the active color scheme via
     the current-color-scheme stylesheet classes.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1">
   <defs>
     <style type="text/css" id="current-color-scheme">
         .ColorScheme-Text {
@@ -27,38 +27,38 @@
     </style>
   </defs>
 
-  <!-- sizing hint for the bar: 36x20 like the kstyle Switch_Width/Height -->
-  <rect id="hint-bar-size" x="0" y="0" width="36" height="20" fill="none" stroke="none" opacity="0"/>
+  <!-- sizing hint for the bar: 46x26 like the kstyle Switch_Width/Height -->
+  <rect id="hint-bar-size" x="0" y="0" width="46" height="26" fill="none" stroke="none" opacity="0"/>
 
   <!-- inactive bar (3-part horizontal frame, pill caps) -->
   <path id="inactive-left" class="ColorScheme-ButtonBackground" fill="currentColor"
-        d="M 10,0 A 10,10 0 0 0 0,10 10,10 0 0 0 10,20 Z"/>
+        d="M 13,0 A 13,13 0 0 0 0,13 13,13 0 0 0 13,26 Z"/>
   <rect id="inactive-center" class="ColorScheme-ButtonBackground" fill="currentColor"
-        x="10" y="0" width="16" height="20"/>
+        x="13" y="0" width="20" height="26"/>
   <path id="active-right" class="ColorScheme-Highlight" fill="currentColor"
-        transform="translate(0,24)"
-        d="M 26,0 A 10,10 0 0 1 36,10 10,10 0 0 1 26,20 Z"/>
+        transform="translate(0,30)"
+        d="M 33,0 A 13,13 0 0 1 46,13 13,13 0 0 1 33,26 Z"/>
   <path id="inactive-right" class="ColorScheme-ButtonBackground" fill="currentColor"
-        d="M 26,0 A 10,10 0 0 1 36,10 10,10 0 0 1 26,20 Z"/>
+        d="M 33,0 A 13,13 0 0 1 46,13 13,13 0 0 1 33,26 Z"/>
 
   <!-- active bar (accent fill, drawn behind the handle while it travels) -->
   <path id="active-left" class="ColorScheme-Highlight" fill="currentColor"
-        transform="translate(0,24)"
-        d="M 10,0 A 10,10 0 0 0 0,10 10,10 0 0 0 10,20 Z"/>
+        transform="translate(0,30)"
+        d="M 13,0 A 13,13 0 0 0 0,13 13,13 0 0 0 13,26 Z"/>
   <rect id="active-center" class="ColorScheme-Highlight" fill="currentColor"
-        x="10" y="24" width="16" height="20"/>
+        x="13" y="30" width="20" height="26"/>
 
-  <!-- handle: light thumb, 16x16 like the QML/kstyle thumb -->
+  <!-- handle: light thumb, 20x20 like the QML/kstyle thumb -->
   <circle id="handle" class="ColorScheme-ButtonText" fill="currentColor"
-          cx="48" cy="8" r="8"/>
+          cx="62" cy="10" r="10"/>
   <circle id="handle-active" class="ColorScheme-ButtonText" fill="currentColor"
-          cx="48" cy="28" r="8"/>
+          cx="62" cy="34" r="10"/>
   <circle id="handle-hover" class="ColorScheme-ButtonText" fill="currentColor"
-          cx="48" cy="48" r="8"/>
+          cx="62" cy="58" r="10"/>
   <circle id="handle-pressed" class="ColorScheme-ButtonText" fill="currentColor"
-          cx="64" cy="8" r="8"/>
+          cx="86" cy="10" r="10"/>
   <circle id="handle-shadow" fill="#000000" opacity="0.25"
-          cx="64" cy="28" r="8.5"/>
+          cx="86" cy="34" r="10.5"/>
   <circle id="handle-focus" class="ColorScheme-Highlight" fill="none" stroke="currentColor"
-          stroke-width="1.5" opacity="0.6" cx="64" cy="48" r="9"/>
+          stroke-width="1.5" opacity="0.6" cx="86" cy="58" r="11"/>
 </svg>

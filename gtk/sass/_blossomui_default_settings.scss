@@ -6,7 +6,7 @@
 $BlossomuircToolBarDrawItemSeparator: false;
 
 // Float and sunken effect on checkboxes and radio buttons
-// TODO
+// TODO /should be always sunken effect on click
 
 // Increase button height
 $BlossomuircButtonHeight: 3;
@@ -65,13 +65,10 @@ $BlossomuircTabBGColor: rgb(0, 0, 0);
 //
 
 // Draw rounded frame on rubber band control
-// TODO
+// (should always be true tho)
 
 // Draw a thin line to indicate focus in menus and menubars
 $BlossomuircMenuItemDrawStrongFocus: true;
-
-// Fancy margins
-// TODO
 
 // Full outline
 $BlossomuircFullOutline: true;
@@ -82,9 +79,6 @@ $BlossomuircNoOutline: false;
 //
 // Scrollbars
 //
-
-// Render a thin separator between the Scrollbar
-// TODO
 
 // Scrollbar arrows
 // TODO

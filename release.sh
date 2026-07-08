@@ -190,6 +190,7 @@ fi
 # QML style module (QtQuick Controls + Kirigami platform plugin)
 %{_libdir}/qt6/qml/org/blossomos/
 %{_libdir}/qt6/plugins/kf6/kirigami/platform/org.blossomos.style.so
+%{_sysconfdir}/xdg/plasma-workspace/env/blossom-qqc2-style.sh
 
 # CMake Config (Qt6)
 %{_libdir}/cmake/BlossomUI/
@@ -211,6 +212,7 @@ cmake -S "$SRC_DIR" -B "$SRC_DIR/build/rpm" -G Ninja \
     -DBUILD_QT5=ON \
     -DBUILD_QT6=ON \
     -DWITH_DECORATIONS=ON \
+    -DINSTALL_QQC2_STYLE_ENV=ON \
     -DFOR_FLATPAK=OFF
 cmake --build "$SRC_DIR/build/rpm" --parallel
 rm -rf "$SRC_DIR/build/rpm/staging"
@@ -261,8 +263,8 @@ flatpak install --noninteractive --system flathub \
 # pre-compile the GTK3 theme CSS so the org.gtk.Gtk3theme.BlossomUI flatpak
 # extension can just install it, without needing sassc inside the sandbox
 mkdir -p "$SRC_DIR/gtk/build"
-sassc -M -t compact "$SRC_DIR/gtk/sass/gtk3-light.scss" "$SRC_DIR/gtk/build/gtk3-light.css"
-sassc -M -t compact "$SRC_DIR/gtk/sass/gtk3-dark.scss" "$SRC_DIR/gtk/build/gtk3-dark.css"
+sassc -M -t compact -I "$SRC_DIR/build/rpm/gtk" "$SRC_DIR/gtk/sass/gtk3-light.scss" "$SRC_DIR/gtk/build/gtk3-light.css"
+sassc -M -t compact -I "$SRC_DIR/build/rpm/gtk" "$SRC_DIR/gtk/sass/gtk3-dark.scss" "$SRC_DIR/gtk/build/gtk3-dark.css"
 
 # create flatpak source archive (clean, no transform)
 tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.tar.gz" \

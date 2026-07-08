@@ -1,100 +1,39 @@
-@define-color borders_breeze #39393e;
-@define-color content_view_bg_breeze #121219;
-@define-color error_color_backdrop_breeze #973a3c;
-@define-color error_color_breeze #de4f4f;
-@define-color error_color_insensitive_backdrop_breeze #7e535f;
-@define-color error_color_insensitive_breeze #7e535f;
-@define-color insensitive_base_color_breeze #27272f;
-@define-color insensitive_base_fg_color_breeze #8c8c90;
-@define-color insensitive_bg_color_breeze #26262e;
-@define-color insensitive_borders_breeze #3b3b42;
-@define-color insensitive_fg_color_breeze #8c8c90;
-@define-color insensitive_selected_bg_color_breeze #26262e;
-@define-color insensitive_selected_fg_color_breeze #8c8c90;
-@define-color insensitive_unfocused_bg_color_breeze #26262e;
-@define-color insensitive_unfocused_fg_color_breeze #8c8c90;
-@define-color insensitive_unfocused_selected_bg_color_breeze #26262e;
-@define-color insensitive_unfocused_selected_fg_color_breeze #8c8c90;
-@define-color link_color_breeze #3e78ff;
-@define-color link_visited_color_breeze #b7d0ff;
-@define-color success_color_backdrop_breeze #06ac54;
-@define-color success_color_breeze #00ff73;
-@define-color success_color_insensitive_backdrop_breeze #549482;
-@define-color success_color_insensitive_breeze #549482;
-@define-color theme_base_color_breeze #121219;
-@define-color theme_bg_color_breeze #0c0c12;
-@define-color theme_button_background_backdrop_breeze #18181f;
-@define-color theme_button_background_backdrop_insensitive_breeze #27272f;
-@define-color theme_button_background_insensitive_breeze #27272f;
-@define-color theme_button_background_normal_breeze #18181f;
-@define-color theme_button_decoration_focus_backdrop_breeze #3156b1;
-@define-color theme_button_decoration_focus_backdrop_insensitive_breeze #4d5e91;
-@define-color theme_button_decoration_focus_breeze #3e78ff;
-@define-color theme_button_decoration_focus_insensitive_breeze #4d5e91;
-@define-color theme_button_decoration_hover_backdrop_breeze #3156b1;
-@define-color theme_button_decoration_hover_backdrop_insensitive_breeze #4d5e91;
-@define-color theme_button_decoration_hover_breeze #3e78ff;
-@define-color theme_button_decoration_hover_insensitive_breeze #4d5e91;
-@define-color theme_button_foreground_active_backdrop_breeze #a2a9bb;
-@define-color theme_button_foreground_active_backdrop_insensitive_breeze #8c8c90;
-@define-color theme_button_foreground_active_breeze #ffffff;
-@define-color theme_button_foreground_active_insensitive_breeze #8c8c90;
-@define-color theme_button_foreground_backdrop_breeze #a2a2a7;
-@define-color theme_button_foreground_backdrop_insensitive_breeze #8c8c90;
-@define-color theme_button_foreground_insensitive_breeze #8c8c90;
-@define-color theme_button_foreground_normal_breeze #ededf0;
-@define-color theme_fg_color_breeze #ededf0;
-@define-color theme_header_background_backdrop_breeze #0c0c12;
-@define-color theme_header_background_breeze #0c0c12;
-@define-color theme_header_background_light_breeze #0c0c12;
-@define-color theme_header_foreground_backdrop_breeze #9e9ea2;
-@define-color theme_header_foreground_breeze #ededf0;
-@define-color theme_header_foreground_insensitive_backdrop_breeze #9e9ea2;
-@define-color theme_header_foreground_insensitive_breeze #9e9ea2;
-@define-color theme_hovering_selected_bg_color_breeze #3e78ff;
-@define-color theme_selected_bg_color_breeze #3e78ff;
-@define-color theme_selected_fg_color_breeze #ffffff;
-@define-color theme_text_color_breeze #ededf0;
-@define-color theme_titlebar_background_backdrop_breeze #0c0c12;
-@define-color theme_titlebar_background_breeze #0c0c12;
-@define-color theme_titlebar_background_light_breeze #0c0c12;
-@define-color theme_titlebar_foreground_backdrop_breeze #91919e;
-@define-color theme_titlebar_foreground_breeze #d8d8dd;
-@define-color theme_titlebar_foreground_insensitive_backdrop_breeze #91919e;
-@define-color theme_titlebar_foreground_insensitive_breeze #91919e;
-@define-color theme_unfocused_base_color_breeze #121219;
-@define-color theme_unfocused_bg_color_breeze #0c0c12;
-@define-color theme_unfocused_fg_color_breeze #9e9ea2;
-@define-color theme_unfocused_selected_bg_color_alt_breeze #172a58;
-@define-color theme_unfocused_selected_bg_color_breeze #172a58;
-@define-color theme_unfocused_selected_fg_color_breeze #a2a9bb;
-@define-color theme_unfocused_text_color_breeze #a0a0a5;
-@define-color theme_unfocused_view_bg_color_breeze #27272f;
-@define-color theme_unfocused_view_text_color_breeze #8c8c90;
-@define-color theme_view_active_decoration_color_breeze #3e78ff;
-@define-color theme_view_hover_decoration_color_breeze #3e78ff;
-@define-color tooltip_background_breeze #18181f;
-@define-color tooltip_border_breeze #434349;
-@define-color tooltip_text_breeze #ededf0;
-@define-color unfocused_borders_breeze #29292f;
-@define-color unfocused_insensitive_borders_breeze #3b3b42;
-@define-color warning_color_backdrop_breeze #aca409;
-@define-color warning_color_breeze #fff200;
-@define-color warning_color_insensitive_backdrop_breeze #918e67;
-@define-color warning_color_insensitive_breeze #918e67;
-
-// Not part of the autogenerated colorscheme
-@define-color close_button_bg_breeze #de4f4f;
+// pre-sync fallback, overridden at runtime by kde-gtk-config's live colors.css
+@import "colors-static";
 
 // Colors that change with dark/light variants
-@include adaptive_color("infobar_bg_color", gtkalpha(gtkcolor("@theme_selected_bg_color"), 0.15), gtkalpha(gtkcolor("@theme_selected_bg_color"), 0.2));
-@include adaptive_color("infobar_warning_bg_color", gtkalpha(gtkcolor("@warning_color"), 0.15), gtkalpha(gtkcolor("@warning_color"), 0.2));
-@include adaptive_color("infobar_error_bg_color", gtkalpha(gtkcolor("@error_color"), 0.15), gtkalpha(gtkcolor("@error_color"), 0.2));
-@include adaptive_color("selected_tab_bg_color", gtkalpha(gtkcolor("@theme_base_color"), 0.6), gtkalpha(gtkcolor("@theme_base_color"), 0.8));
+@include adaptive_color(
+    "infobar_bg_color",
+    gtkalpha(gtkcolor("@theme_selected_bg_color"), 0.15),
+    gtkalpha(gtkcolor("@theme_selected_bg_color"), 0.2)
+);
+@include adaptive_color(
+    "infobar_warning_bg_color",
+    gtkalpha(gtkcolor("@warning_color"), 0.15),
+    gtkalpha(gtkcolor("@warning_color"), 0.2)
+);
+@include adaptive_color(
+    "infobar_error_bg_color",
+    gtkalpha(gtkcolor("@error_color"), 0.15),
+    gtkalpha(gtkcolor("@error_color"), 0.2)
+);
+@include adaptive_color(
+    "selected_tab_bg_color",
+    gtkalpha(gtkcolor("@theme_base_color"), 0.6),
+    gtkalpha(gtkcolor("@theme_base_color"), 0.8)
+);
 @if $BlossomuircAdjustToDarkThemes {
-  @include adaptive_color("tabbar_bg_color", gtkalpha($BlossomuircTabBGColor, 0.4), gtkalpha($BlossomuircTabBGColor,0.2));
+    @include adaptive_color(
+        "tabbar_bg_color",
+        gtkalpha($BlossomuircTabBGColor, 0.4),
+        gtkalpha($BlossomuircTabBGColor, 0.2)
+    );
 } @else {
-  @include adaptive_color("tabbar_bg_color", rgba(0,0,0,0.2), rgba(0,0,0,0.13));
+    @include adaptive_color(
+        "tabbar_bg_color",
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.13)
+    );
 }
 
 $base_color: gtkcolor("@theme_base_color");
@@ -107,7 +46,10 @@ $button_bg_color: gtkcolor("@theme_button_background_normal");
 $button_fg_color: gtkcolor("@theme_button_foreground_normal");
 $button_focus_bg_color: gtkcolor("@theme_button_decoration_focus");
 $button_focus_fg_color: gtkcolor("@theme_button_foreground_active");
-$button_active_bg_color: gtkshade(gtkcolor("@theme_button_decoration_focus"), 0.7);
+$button_active_bg_color: gtkshade(
+    gtkcolor("@theme_button_decoration_focus"),
+    0.7
+);
 $button_active_fg_color: gtkcolor("@theme_button_foreground_active");
 $button_hover_decoration: gtkcolor("@theme_button_decoration_hover");
 
@@ -115,11 +57,18 @@ $selected_bg_color: gtkcolor("@theme_selected_bg_color");
 $selected_fg_color: gtkcolor("@theme_selected_fg_color");
 $selected_text_bg_color: gtkalpha($selected_bg_color, 0.8);
 
-$focus_border_color: gtkalpha(gtkcolor("@theme_view_hover_decoration_color"), 0.7);
+$focus_border_color: gtkalpha(
+    gtkcolor("@theme_view_hover_decoration_color"),
+    0.7
+);
 $selected_borders_color: green;
 $borders_color: gtkcolor("@borders");
 $alt_borders_color: blue;
-$column_header_hover_bg: gtkmix($button_bg_color, gtkcolor("@theme_button_decoration_hover"), 0.8);
+$column_header_hover_bg: gtkmix(
+    $button_bg_color,
+    gtkcolor("@theme_button_decoration_hover"),
+    0.8
+);
 $link_color: gtkcolor("@link_color");
 $link_visited_color: gtkcolor("@link_visited_color");
 $top_hilight: gtkalpha($fg_color, 0.1);
@@ -143,8 +92,16 @@ $popover_bg_color: $bg_color;
 $popover_hover_color: gtkmix($fg_color, $menu_bg_color, 0.1);
 
 $scrollbar_bg_color: gtkalpha($fg_color, 0.25);
-$scrollbar_slider_color: gtkmix(gtkcolor("@theme_button_decoration_focus"), $base_color, 0.6);
-$scrollbar_slider_hover_color: gtkmix(gtkcolor("@theme_button_decoration_hover"), $base_color, 0.6);
+$scrollbar_slider_color: gtkmix(
+    gtkcolor("@theme_button_decoration_focus"),
+    $base_color,
+    0.6
+);
+$scrollbar_slider_hover_color: gtkmix(
+    gtkcolor("@theme_button_decoration_hover"),
+    $base_color,
+    0.6
+);
 $scrollbar_slider_active_color: $scrollbar_slider_hover_color;
 
 $infobar_bg_color: gtkcolor("@infobar_bg_color");
@@ -166,7 +123,7 @@ $osd_borders_color: gtkalpha($osd_fg_color, 0.1);
 $selected_tab_fg_color: $fg_color;
 $selected_tab_bg_color: selected_tab_bg_color();
 $tab_hover_bg: gtkalpha($selected_bg_color, 0.2);
-$tabbar_bg_color : gtkcolor("@tabbar_bg_color");
+$tabbar_bg_color: gtkcolor("@tabbar_bg_color");
 
 $base_hover_color: gtkalpha($fg_color, 0.05);
 
@@ -205,8 +162,13 @@ $backdrop_fg_color: gtkcolor("@theme_unfocused_fg_color");
 
 $backdrop_button_fg_color: gtkcolor("@theme_button_foreground_backdrop");
 $backdrop_button_bg_color: gtkcolor("@theme_button_background_backdrop");
-$backdrop_insensitive_button_fg_color: gtkcolor("@theme_button_foreground_backdrop_insensitive");
-$backdrop_insensitive_button_bg_color: gtkalpha(gtkcolor("@theme_button_background_insensitive"), 0.5);
+$backdrop_insensitive_button_fg_color: gtkcolor(
+    "@theme_button_foreground_backdrop_insensitive"
+);
+$backdrop_insensitive_button_bg_color: gtkalpha(
+    gtkcolor("@theme_button_background_insensitive"),
+    0.5
+);
 
 $backdrop_insensitive_fg_color: gtkcolor("@insensitive_unfocused_fg_color");
 $backdrop_insensitive_bg_color: gtkcolor("@insensitive_unfocused_bg_color");
@@ -216,12 +178,20 @@ $backdrop_insensitive_base_color: $backdrop_base_color; //
 $backdrop_selected_fg_color: gtkcolor("@theme_unfocused_selected_fg_color");
 $backdrop_selected_bg_color: gtkcolor("@theme_unfocused_selected_bg_color");
 
-$backdrop_insensitive_selected_fg_color: gtkcolor("@insensitive_unfocused_selected_fg_color");
-$backdrop_insensitive_selected_bg_color: gtkcolor("@insensitive_unfocused_selected_bg_color");
+$backdrop_insensitive_selected_fg_color: gtkcolor(
+    "@insensitive_unfocused_selected_fg_color"
+);
+$backdrop_insensitive_selected_bg_color: gtkcolor(
+    "@insensitive_unfocused_selected_bg_color"
+);
 
 $backdrop_borders_color: gtkcolor("@unfocused_borders");
 $backdrop_dark_fill: gtkshade($backdrop_bg_color, 0.8);
-$backdrop_light_fill: gtkmix($backdrop_fg_color, $backdrop_bg_color, 0.2); //FIXME
+$backdrop_light_fill: gtkmix(
+    $backdrop_fg_color,
+    $backdrop_bg_color,
+    0.2
+); //FIXME
 
 $backdrop_selected_tab_fg_color: $backdrop_fg_color;
 $backdrop_selected_tab_bg_color: selected_tab_bg_color(backdrop=true);
@@ -237,7 +207,9 @@ $backdrop_scrollbar_slider_color: gtkalpha($scrollbar_bg_color, 0.6);
 
 $backdrop_toolbar_fg_color: gtkcolor("@theme_header_foreground_backdrop");
 $backdrop_toolbar_bg_color: gtkcolor("@theme_header_background_backdrop");
-$backdrop_insensitive_toolbar_fg_color: gtkcolor("@theme_header_foreground_insensitive_backdrop");
+$backdrop_insensitive_toolbar_fg_color: gtkcolor(
+    "@theme_header_foreground_insensitive_backdrop"
+);
 
 $backdrop_titlebar_fg_color: gtkcolor("@theme_titlebar_foreground_backdrop");
 $backdrop_titlebar_bg_color: gtkcolor("@theme_titlebar_background_backdrop");

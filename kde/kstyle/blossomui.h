@@ -82,9 +82,9 @@ static constexpr int CheckBox_FocusMarginWidth = 2;
 static constexpr int CheckBox_ItemSpacing = 4;
 
 // switch (pill-style toggle)
-static constexpr int Switch_Width = 36;
-static constexpr int Switch_Height = 20;
-static constexpr int Switch_ThumbMargin = 2;
+static constexpr int Switch_Width = 46;
+static constexpr int Switch_Height = 26;
+static constexpr int Switch_ThumbMargin = 3;
 
 // menubar items
 static constexpr int MenuBarItem_MarginWidth = 10;
