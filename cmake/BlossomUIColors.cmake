@@ -21,5 +21,7 @@ foreach(_bui_group IN ITEMS neutral primary secondary tertiary quaternary red cy
         math(EXPR _bui_g "0x${_bui_hg}")
         math(EXPR _bui_b "0x${_bui_hb}")
         set(${_bui_GROUP}_${_bui_step}_RGB "${_bui_r},${_bui_g},${_bui_b}")
+        string(TOLOWER "${_bui_hx}" _bui_hx_lower)
+        set(${_bui_GROUP}_${_bui_step}_HEX "#${_bui_hx_lower}")
     endforeach()
 endforeach()

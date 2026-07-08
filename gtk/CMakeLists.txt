@@ -3,29 +3,32 @@ if(NOT SASSC_EXECUTABLE)
   message(FATAL_ERROR "sassc is required to build the BlossomUI GTK theme")
 endif()
 
+include(BlossomUIColors)
+configure_file(sass/_colors-static.scss.in "${CMAKE_CURRENT_BINARY_DIR}/_colors-static.scss" @ONLY)
+
 set(GTK_THEME_NAME BlossomUI)
 set(GTK_THEME_DESTDIR ${KDE_INSTALL_DATADIR}/themes/${GTK_THEME_NAME})
 set(GTK_THEME_FULL_DESTDIR ${KDE_INSTALL_FULL_DATADIR}/themes/${GTK_THEME_NAME})
-set(SASSC_OPTS -M -t compact)
+set(SASSC_OPTS -M -t compact -I ${CMAKE_CURRENT_BINARY_DIR})
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gtk3-light.css
   COMMAND ${SASSC_EXECUTABLE} ${SASSC_OPTS} ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk3-light.scss ${CMAKE_CURRENT_BINARY_DIR}/gtk3-light.css
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk3-light.scss
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk3-light.scss ${CMAKE_CURRENT_BINARY_DIR}/_colors-static.scss
   COMMENT "Compiling BlossomUI GTK3 light theme"
 )
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gtk3-dark.css
   COMMAND ${SASSC_EXECUTABLE} ${SASSC_OPTS} ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk3-dark.scss ${CMAKE_CURRENT_BINARY_DIR}/gtk3-dark.css
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk3-dark.scss
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk3-dark.scss ${CMAKE_CURRENT_BINARY_DIR}/_colors-static.scss
   COMMENT "Compiling BlossomUI GTK3 dark theme"
 )
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gtk4.css
   COMMAND ${SASSC_EXECUTABLE} ${SASSC_OPTS} ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk4.scss ${CMAKE_CURRENT_BINARY_DIR}/gtk4.css
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk4.scss
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sass/gtk4.scss ${CMAKE_CURRENT_BINARY_DIR}/_colors-static.scss
   COMMENT "Compiling BlossomUI GTK4 theme"
 )
 

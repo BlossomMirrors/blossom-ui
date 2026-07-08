@@ -355,7 +355,7 @@ bool Style::eventFilterScrollArea(QWidget *widget, QEvent *event) {
 
   } break;
 
-  case QEvent::MouseButtonPress:nPress:s:nPress:s:nPress:onPress:nPseButtonPress:nPress:s:nPr
+  case QEvent::MouseButtonPress:
   case QEvent::MouseButtonRelease:
   case QEvent::MouseMove: {
     QMouseEvent *mouseEvent(static_cast<QMouseEvent *>(event));

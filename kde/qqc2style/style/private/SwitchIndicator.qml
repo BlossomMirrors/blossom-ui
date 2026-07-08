@@ -18,15 +18,17 @@ import org.kde.kirigami as Kirigami
 Item {
     id: indicator
 
-    // BlossomUI kstyle metrics: Switch_Width / Switch_Height / Switch_ThumbMargin
-    implicitWidth: 36
-    implicitHeight: 20
+    // scales with Kirigami.Units.gridUnit (like the Breeze QQC2 style's
+    // switch) so it matches surrounding text/control size at any font size
+    // or DPI; keeps the BlossomUI kstyle's 46:26:3 track/thumb proportions
+    implicitHeight: Kirigami.Units.gridUnit
+    implicitWidth: implicitHeight * 46 / 26
     layer.enabled: control.opacity < 1.0
 
     property T.AbstractButton control
     property alias handle: handle
 
-    readonly property real thumbMargin: 2
+    readonly property real thumbMargin: implicitHeight * 3 / 26
     readonly property bool highlighted: control.hovered || control.visualFocus
     // progress of the *animated* thumb (not visualPosition, which snaps on
     // toggle) so the accent trail and border follow drags AND animations

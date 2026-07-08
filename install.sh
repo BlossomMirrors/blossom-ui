@@ -63,22 +63,4 @@ if [ -n "$ICONTHEME_FLATPAK" ]; then
     flatpak install --user --or-update --noninteractive --bundle "$ICONTHEME_FLATPAK"
 fi
 
-# GTK4/libadwaita apps have no flatpak theme extension point, but they all load
-# ~/.config/gtk-4.0/gtk.css, which sandboxes can see via the gtk-4.0 override the
-# RPM sets up. The css must be copied (not symlinked) since /usr/share/themes
-# isn't visible inside sandboxes.
-GTK4_THEME_DIR=/usr/share/themes/BlossomUI/gtk-4.0
-if [ -f "$GTK4_THEME_DIR/gtk.css" ]; then
-    echo " *** Installing GTK4 theme into ~/.config/gtk-4.0 *** "
-    mkdir -p ~/.config/gtk-4.0
-    cp -f "$GTK4_THEME_DIR/gtk.css" ~/.config/gtk-4.0/gtk.css
-    # keep kde-gtk-config's live color sync overriding our static fallbacks
-    # (later @define-color wins; kde-gtk-config itself only appends this line)
-    if [ -f ~/.config/gtk-4.0/colors.css ]; then
-        printf "\n@import 'colors.css';\n" >> ~/.config/gtk-4.0/gtk.css
-    fi
-    rm -rf ~/.config/gtk-4.0/blossomui-gtk-assets
-    cp -rL "$GTK4_THEME_DIR/blossomui-gtk-assets" ~/.config/gtk-4.0/blossomui-gtk-assets
-fi
-
 echo " *** Done *** "
