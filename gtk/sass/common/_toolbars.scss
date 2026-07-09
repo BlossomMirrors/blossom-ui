@@ -1,0 +1,115 @@
+/************
+ * Toolbars *
+ ************/
+%toolbar {
+    @if $gtkver== "3" {
+        -GtkWidget-window-dragging: true;
+    }
+
+    @if $BlossomuircWidgetToolBarShadow {
+        &,
+        &:backdrop {
+            @include _shadows($toolbar_shadow);
+        }
+    }
+
+    separator {
+        background: if(
+            $BlossomuircToolBarDrawItemSeparator,
+            gtkalpha($toolbar_fg_color, 0.05),
+            gtkalpha($toolbar_fg_color, 0)
+        );
+    }
+
+    padding: 4px;
+    @if $gtkver!= "3" {
+        border-spacing: 2px;
+    }
+    color: $toolbar_fg_color;
+    background-color: $toolbar_bg_color;
+
+    &:backdrop {
+        color: $backdrop_toolbar_fg_color;
+        background-color: $backdrop_toolbar_bg_color;
+    }
+}
+
+.toolbar,
+toolbar {
+    @extend %toolbar;
+
+    &.flat {
+        background: none;
+        box-shadow: none;
+    }
+
+    button:not(.raised):not(.suggested-action):not(.destructive-action):not(
+            .opaque
+        ) {
+        @extend %button_basic_flat;
+    }
+
+    .linked
+        button:not(.raised):not(.suggested-action):not(.destructive-action):not(
+            .opaque
+        ) {
+        border-radius: $button_radius;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+
+    // on OSD
+    .osd & {
+        background-color: transparent;
+    }
+
+    // stand-alone OSD toolbars
+    &.osd {
+        padding: 13px;
+        border-radius: $window_radius;
+        background-color: $osd_bg_color;
+
+        &.left,
+        &.right,
+        &.top,
+        &.bottom {
+            border-radius: 0;
+        } // positional classes for `attached` osd toolbars
+    }
+
+    // toolbar separators
+    &.horizontal > separator {
+        margin: 4px 0;
+    }
+    &.vertical > separator {
+        margin: 0 4px;
+    }
+
+    &:not(.inline-toolbar):not(.osd) {
+        // workaround: add margins to the children of tool items to simulate
+        // spacing, ignore the overflow button (.toggle) and the overflow menu
+        // (.popup)
+        > *:not(.toggle):not(.popup) > * {
+            margin-right: 1px;
+            margin-bottom: 1px;
+        }
+    }
+}
+
+//searchbar, location-bar
+searchbar > revealer > box,
+.location-bar {
+    padding: 4px;
+    @if $gtkver!= "3" {
+        border-spacing: 4px;
+    }
+}
+
+@if $gtkver== "3" {
+    searchbar > revealer > box {
+        // workaround: undo the GtkContainer:border-width and use CSS padding instead
+        margin: -6px;
+        padding: 6px;
+    }
+}
+

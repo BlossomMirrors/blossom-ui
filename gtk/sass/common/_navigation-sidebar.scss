@@ -1,0 +1,61 @@
+/**********************
+ * Navigation Sidebar *
+ **********************/
+@if $gtkver!= "3" {
+    .navigation-sidebar {
+        padding: ($radius / 2)
+            0; //only vertical padding. horizontal row size would clip
+
+        &,
+        &.view,
+        &.view:disabled {
+            background-color: transparent;
+            color: inherit;
+        }
+
+        &.background {
+            &,
+            &:disabled {
+                background-color: $bg_color;
+                color: $fg_color;
+            }
+        }
+
+        > separator {
+            margin: $radius / 2;
+        }
+
+        > row {
+            min-height: 26px;
+            padding: 0 4px;
+            border-radius: $radius;
+            margin: 0 ($radius / 2) 2px;
+            @include focus-ring($focus-state: ":focus-visible:focus-within");
+
+            &:hover {
+                background-color: $sidebar_hover_bg;
+            }
+            &:selected {
+                background-color: gtkalpha($selected_bg_color, 0.18);
+                color: $selected_bg_color;
+                font-weight: bold;
+
+                &:disabled {
+                    color: $insensitive_selected_fg_color;
+                }
+
+                &:backdrop {
+                    background-color: gtkalpha(
+                        $backdrop_selected_bg_color,
+                        0.18
+                    );
+                    color: $backdrop_selected_bg_color;
+                }
+            }
+            &:disabled {
+                color: $insensitive_fg_color;
+            }
+        }
+    }
+}
+

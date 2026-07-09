@@ -1,8 +1,10 @@
 button {
+  // Adwaita's prominent "pill" buttons: keep the larger padding but square
+  // them off to the normal kstyle button radius
   @at-root %pill_button,
   &.pill {
-    padding: 6px 24px;
-    border-radius: $circular_radius;
+    padding: 6px 16px;
+    border-radius: $button_radius;
   }
 
   &.text-button.circular {

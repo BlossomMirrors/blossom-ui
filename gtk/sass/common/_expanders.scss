@@ -1,0 +1,76 @@
+/*************
+ * Expanders *
+ *************/
+expander {
+    title > arrow {
+        min-width: 16px;
+        min-height: 16px;
+        -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+        &:dir(rtl) {
+            -gtk-icon-source: -gtk-icontheme("pan-end-symbolic-rtl");
+        }
+
+        &:hover {
+            color: gtkshade($fg_color, 1.3);
+        } //only lightens the arrow
+        &:disabled {
+            color: $insensitive_fg_color;
+        }
+        &:disabled:backdrop {
+            color: $backdrop_insensitive_fg_color;
+        }
+
+        &:checked {
+            -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+        }
+    }
+}
+
+@if $gtkver!= "3" {
+    expander {
+        min-width: 16px;
+        min-height: 16px;
+        -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+        &:dir(rtl) {
+            -gtk-icon-source: -gtk-icontheme("pan-end-symbolic-rtl");
+        }
+
+        &:hover {
+            color: gtkshade($fg_color, 1.3);
+        } //only lightens the arrow
+        &:disabled {
+            color: $insensitive_fg_color;
+        }
+        &:disabled:backdrop {
+            color: $backdrop_insensitive_fg_color;
+        }
+
+        &:checked {
+            -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+        }
+    }
+
+    expander-widget {
+        @include focus-ring("> box > title");
+
+        > box > title {
+            transition: $focus_transition;
+            border-radius: $button_radius;
+
+            &:hover > expander {
+                color: gtkshade($fg_color, 1.3); //only lightens the icon
+            }
+        }
+    }
+
+    .navigation-sidebar,
+    placessidebar,
+    stackswitcher,
+    expander-widget {
+        &:not(decoration):not(window):drop(active):focus,
+        &:not(decoration):not(window):drop(active) {
+            box-shadow: none;
+        }
+    }
+}
+

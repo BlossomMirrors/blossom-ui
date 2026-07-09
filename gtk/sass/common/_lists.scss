@@ -1,0 +1,230 @@
+/*********
+ * Lists *
+ *********/
+listview,
+list {
+    color: $text_color;
+    background-color: $base_color;
+    border-radius: $button_radius;
+
+    &:backdrop {
+        color: $backdrop_text_color;
+        background-color: $backdrop_base_color;
+    }
+
+    > row {
+        border-radius: $radius;
+        margin: $radius / 2;
+        margin-bottom: 0;
+        padding: 0;
+        min-height: 0;
+    }
+    > row.expander {
+        padding: 0px;
+    }
+    > row.expander .row-header {
+        padding: 2px;
+    }
+
+    > child,
+    > flowboxchild {
+        border-radius: $radius;
+        margin: 3px;
+        padding: 6px;
+    }
+}
+
+row {
+    transition: all 150ms $ease-out-quad;
+
+    @if $gtkver!=3 {
+        @include focus-ring();
+    }
+
+    &.activatable {
+        &.has-open-popup, // this is for indicathing which row generated a popover see https://bugzilla.gnome.org/show_bug.cgi?id=754411
+
+    &:hover {
+            background-color: gtkalpha($selected_bg_color, 0.2);
+        }
+
+        &:active {
+            background-color: gtkalpha($selected_bg_color, 0.3);
+        }
+
+        &:backdrop:hover {
+            background-color: transparent;
+        }
+
+        &:selected {
+            &:active:hover {
+                background-color: gtkalpha($selected_bg_color, 0.35);
+            }
+
+            &.has-open-popup,
+            &:hover {
+                background-color: gtkalpha($selected_bg_color, 0.28);
+            }
+        }
+    }
+
+    &:selected {
+        background-color: gtkalpha($selected_bg_color, 0.18);
+        color: $text_color;
+
+        &:disabled {
+            color: $insensitive_selected_fg_color;
+            background-color: gtkalpha($insensitive_selected_bg_color, 0.18);
+        }
+
+        &:backdrop {
+            color: $backdrop_text_color;
+            background-color: gtkalpha($backdrop_selected_bg_color, 0.18);
+
+            &:disabled {
+                color: $backdrop_insensitive_fg_color;
+            }
+        }
+    }
+}
+
+@if $gtkver!= "3" {
+    columnview {
+        // move padding to child cells
+        > listview > row {
+            padding: 0;
+
+            // align horizontal sizing with header buttons
+            > cell {
+                padding: 8px 6px;
+
+                &:not(:first-child) {
+                    border-left: 1px solid transparent; //FIXME
+                }
+            }
+        }
+
+        // shrink vertically for .data-table
+        &.data-table > listview > row > cell {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+    }
+
+    treeexpander {
+        border-spacing: 4px;
+        indent {
+            -gtk-icon-size: 8px;
+        }
+    }
+
+    /********************************************************
+  * Data Tables                                          *
+  * treeview like tables with individual focusable cells *
+  * https://gitlab.gnome.org/GNOME/gtk/-/issues/2929     *
+  ********************************************************/
+
+    columnview
+        row:not(:selected)
+        cell
+        editablelabel:not(.editing):focus-within {
+        outline: 2px solid $focus_border_color;
+    }
+
+    columnview row:not(:selected) cell editablelabel.editing:focus-within {
+        outline: 2px solid $selected_bg_color;
+    }
+
+    columnview row:not(:selected) cell editablelabel.editing text selection {
+        background-color: $selected_bg_color;
+        color: transparent;
+        &:focus-within {
+            background-color: $selected_text_bg_color;
+            color: $fg_color;
+        }
+    }
+
+    /*******************************************************
+  * Rich Lists                                          *
+  * Large list usually containing lots of widgets       *
+  * https://gitlab.gnome.org/GNOME/gtk/-/issues/3073    *
+  *******************************************************/
+
+    .rich-list {
+        /* rich lists usually containing other widgets than just labels/text */
+        & > row {
+            padding: 8px 12px;
+            min-height: 32px; /* should be tall even when only containing a label */
+
+            & > box {
+                border-spacing: 10px;
+            }
+        }
+        & > header {
+            background-color: transparent;
+            padding: 0;
+            min-height: 24px;
+            font-weight: normal;
+
+            & > box {
+                border-spacing: 6px;
+            }
+        }
+    }
+
+    /********************************************************
+  * Complex Lists                                        *
+  * Put padding on the cell content so event controllers *
+  * can cover the whole area.                            *
+  ********************************************************/
+
+    columnview.complex {
+        > listview > row > cell {
+            padding: 0;
+            > * {
+                padding: 8px 6px;
+            }
+        }
+
+        // shrink vertically for .data-table
+        &.data-table > listview > row > cell {
+            padding: 0;
+            > * {
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+        }
+    }
+
+    /**********************************************************************
+  * Boxed Lists                                                        *
+  * Lists inside a rounded frame. Can be used together with .rich-list *                                     *
+  **********************************************************************/
+
+    .boxed-list {
+        border-radius: $radius;
+        //border: 1px solid gtkalpha($text_color, 0.05);
+
+        > row {
+            @include focus-ring($offset: -1px);
+
+            //border-bottom: 1px solid gtkalpha($text_color, 0.05);
+
+            &:backdrop {
+                //border-bottom-color: gtkalpha($text_color, 0.05);
+            }
+
+            &:first-child {
+                border-top-left-radius: $radius;
+                border-top-right-radius: $radius;
+            }
+
+            &:last-child {
+                border-bottom-left-radius: $radius;
+                border-bottom-right-radius: $radius;
+                border-bottom: none;
+            }
+        }
+    }
+}
+

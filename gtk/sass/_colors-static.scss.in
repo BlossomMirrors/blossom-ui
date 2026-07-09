@@ -23,6 +23,7 @@
 @define-color success_color_insensitive_breeze #549482;
 @define-color theme_base_color_breeze @NEUTRAL_850_HEX@;
 @define-color theme_bg_color_breeze @NEUTRAL_900_HEX@;
+@define-color theme_button_background_alternate_breeze @NEUTRAL_700_HEX@;
 @define-color theme_button_background_backdrop_breeze @NEUTRAL_800_HEX@;
 @define-color theme_button_background_backdrop_insensitive_breeze #27272f;
 @define-color theme_button_background_insensitive_breeze #27272f;

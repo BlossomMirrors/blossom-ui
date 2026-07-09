@@ -1,0 +1,476 @@
+/************
+ * GtkScale *
+ ************/
+%scale_trough {
+    border-radius: 2px;
+    background-color: $light_fill;
+    // hack
+    border: 1px solid transparent;
+    background-clip: padding-box;
+
+    &:disabled {
+        background-color: gtkalpha($light_fill, 0.4);
+    }
+
+    &:backdrop {
+        background-color: $backdrop_light_fill;
+        transition: $backdrop_transition;
+
+        &:disabled {
+            background-color: gtkalpha($backdrop_light_fill, 0.4);
+        }
+    }
+
+    row:selected & {
+        &:disabled,
+        & {
+            background-color: gtkalpha($selected_fg_color, 0.4);
+        }
+    }
+
+    // OSD
+    .osd & {
+        background-color: gtkalpha($osd_borders_color, 0.8);
+
+        &:disabled {
+            background-color: $osd_insensitive_bg_color;
+        }
+    }
+}
+
+%scale_highlight {
+    margin: -1px;
+
+    border-radius: 2px;
+    background-color: $selected_bg_color;
+    border: 1px solid $selected_bg_color;
+    background-clip: padding-box;
+
+    &:backdrop {
+        background-color: $backdrop_selected_bg_color;
+        border-color: $backdrop_selected_bg_color;
+    }
+
+    &:disabled {
+        background-color: transparent; //$insensitive_selected_bg_color; //FIXME almost invisible against background
+        border-color: transparent;
+    }
+
+    &:backdrop {
+        &:disabled {
+            background-color: transparent; //$backdrop_insensitive_selected_bg_color;
+            border-color: transparent;
+        }
+    }
+}
+
+scale {
+    // sizing
+    $_marks_length: 6px;
+    $_marks_distance: 6px;
+    $_marks_size: $_marks_length + $_marks_distance;
+
+    min-height: 10px;
+    min-width: 10px;
+    padding: 12px;
+
+    @if $gtkver!=3 {
+        @include focus-ring("> trough", $offset: 10px);
+    }
+
+    // those are inside the trough node, I need them to show their own border over the trough one, so negative margin
+    //fill,
+    //highlight { margin: -1px; }
+
+    // the slider is inside the trough, so to have make it bigger there's a negative margin
+
+    slider {
+        min-height: 14px;
+        min-width: 14px;
+        margin: -6px;
+    }
+
+    // click-and-hold the slider to activate
+    &.fine-tune {
+        &.horizontal {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            min-height: 14px;
+        }
+
+        &.vertical {
+            padding-left: 8px;
+            padding-right: 8px;
+            min-width: 14px;
+        }
+
+        // to make the trough grow in fine-tune mode
+        slider {
+            margin: -4px;
+        }
+
+        fill,
+        highlight,
+        trough {
+            border-radius: 5px;
+            @if $gtkver== "3" {
+                -gtk-outline-radius: 7px;
+            }
+        }
+    }
+
+    // the backing bit
+    trough {
+        min-width: 2px;
+        min-height: 2px;
+
+        outline-offset: 4px;
+        @if $gtkver== "3" {
+            -gtk-outline-radius: 5px;
+        }
+
+        @extend %scale_trough;
+    }
+
+    // the colored part of the backing bit
+    highlight {
+        min-width: 2px;
+        min-height: 2px;
+
+        @extend %scale_highlight;
+
+        row:selected & {
+            &:disabled,
+            & {
+                background-color: $selected_fg_color;
+            }
+        }
+    }
+
+    // this is another differently styled part of the backing bit, the most relevant use case is for example
+    // in media player to indicate how much video stream as been cached
+    fill {
+        @extend %scale_trough;
+
+        &:backdrop,
+        & {
+            background-color: gtkalpha($fg_color, 0.1);
+        }
+
+        &:disabled {
+            &:backdrop,
+            & {
+                background-color: transparent;
+            }
+        }
+
+        // OSD
+        .osd & {
+            background-color: gtkmix($osd_fg_color, $osd_borders_color, 0.25);
+
+            &:disabled {
+                &:backdrop,
+                & {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    slider {
+        @include button(normal);
+        @include _shadows(
+            button_highlight(),
+            $widget_shadow,
+            $widget_shadow,
+            $widget_shadow
+        ); // darker shadow
+
+        border-radius: 100%;
+        transition: $button_transition;
+        transition-property: background, box-shadow;
+
+        &:hover {
+            @include button(focused);
+        }
+
+        &:active {
+            @include button(active);
+        }
+
+        &:disabled {
+            @include button(insensitive);
+        }
+
+        &:backdrop {
+            transition: $backdrop_transition;
+
+            @include button(backdrop);
+
+            &:disabled {
+                @include button(backdrop-insensitive);
+            }
+        }
+
+        // ...on selected list rows
+        //row:selected & { &:disabled, & { background-color: red; } }
+
+        // OSD
+        .osd & {
+            @include button(osd); //FIXME needs solid background color
+
+            &:hover {
+                @include button(osd-hover);
+            }
+
+            &:active {
+                @include button(osd-active);
+            }
+
+            &:disabled {
+                @include button(osd-insensitive);
+            }
+
+            &:backdrop {
+                @include button(osd-backdrop);
+
+                &:disabled {
+                    @include button(osd-backdrop-insensitive);
+                }
+            }
+        }
+    }
+
+    marks,
+    value {
+        color: gtkalpha(currentColor, 0.55);
+        font-feature-settings: "tnum";
+    }
+
+    &.horizontal {
+        > marks {
+            &.top {
+                margin-bottom: $_marks_distance;
+            }
+            &.bottom {
+                margin-top: $_marks_distance;
+            }
+
+            indicator {
+                background-color: if(
+                    $gtkver!= "3",
+                    gtkalpha(currentColor, 0.55),
+                    transparent
+                );
+                min-height: $_marks_length;
+                min-width: 1px;
+            }
+        }
+
+        &:not(.marks-before) {
+            > value.top {
+                margin-bottom: $_marks_size;
+            }
+        }
+
+        &:not(.marks-after) {
+            > value.bottom {
+                margin-top: $_marks_size;
+            }
+        }
+
+        > value.left {
+            margin-right: 9px;
+        }
+        > value.right {
+            margin-left: 9px;
+        }
+
+        &.fine-tune {
+            > marks {
+                &.top {
+                    margin-top: $_marks_distance - 2px;
+                }
+                &.bottom {
+                    margin-bottom: $_marks_distance - 2px;
+                }
+
+                indicator {
+                    min-height: ($_marks_length - 2px);
+                }
+            }
+        }
+    }
+
+    &.vertical {
+        > marks {
+            &.top {
+                margin-right: $_marks_distance;
+            }
+            &.bottom {
+                margin-left: $_marks_distance;
+            }
+
+            indicator {
+                background-color: if(
+                    $gtkver!= "3",
+                    gtkalpha(currentColor, 0.55),
+                    transparent
+                );
+                min-height: 1px;
+                min-width: $_marks_length;
+            }
+        }
+
+        &:not(.marks-before) {
+            > value.left {
+                margin-right: $_marks_size;
+            }
+        }
+
+        &:not(.marks-after) {
+            > value.right {
+                margin-left: $_marks_size;
+            }
+        }
+
+        > value.top {
+            margin-bottom: 9px;
+        }
+        > value.bottom {
+            margin-top: 9px;
+        }
+
+        &.fine-tune {
+            > marks {
+                &.top {
+                    margin-left: $_marks_distance - 2px;
+                }
+                &.bottom {
+                    margin-right: $_marks_distance - 2px;
+                }
+
+                indicator {
+                    min-width: ($_marks_length - 2px);
+                }
+            }
+        }
+    }
+
+    &.color {
+        // FIXME
+        //   min-height: 0;
+        //   min-width: 0;
+        //
+        //   trough {
+        //     background-color: $bg_color;
+        //   }
+        //
+        //   &.horizontal {
+        //     padding: 0 0 15px 0;
+        //
+        //     trough {
+        //       padding-bottom: 4px;
+        //       background-position: 0 -3px;
+        //       border-top-left-radius: 0;
+        //       border-top-right-radius: 0;
+        //     }
+        //
+        //     slider {
+        //       &:dir(ltr), &:dir(rtl) { // specificity bumb
+        //         &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
+        //           margin-bottom: -15px;
+        //           margin-top: 6px;
+        //         }
+        //       }
+        //     }
+        //   }
+        //
+        //   &.vertical {
+        //     &:dir(ltr) {
+        //       padding: 0 0 0 15px;
+        //
+        //       trough {
+        //         padding-left: 4px;
+        //         background-position: 3px 0;
+        //         border-bottom-right-radius: 0;
+        //         border-top-right-radius: 0;
+        //       }
+        //
+        //       slider {
+        //         &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
+        //           margin-left: -15px;
+        //           margin-right: 6px;
+        //         }
+        //       }
+        //     }
+        //
+        //     &:dir(rtl) {
+        //       padding: 0 15px 0 0;
+        //
+        //       trough {
+        //         padding-right: 4px;
+        //         background-position: -3px 0;
+        //         border-bottom-left-radius: 0;
+        //         border-top-left-radius: 0;
+        //       }
+        //
+        //       slider {
+        //         &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
+        //           margin-right: -15px;
+        //           margin-left: 6px;
+        //         }
+        //       }
+        //     }
+        //   }
+        //
+        //   &.fine-tune {
+        //     &.horizontal {
+        //       &:dir(ltr), &:dir(rtl) { // specificity bump
+        //         padding: 0 0 12px 0;
+        //
+        //         trough {
+        //           padding-bottom: 7px;
+        //           background-position: 0 -6px;
+        //         }
+        //
+        //         slider {
+        //           margin-bottom: -15px;
+        //           margin-top: 6px;
+        //         }
+        //       }
+        //     }
+        //
+        //     &.vertical {
+        //       &:dir(ltr) {
+        //         padding: 0 0 0 12px;
+        //
+        //         trough {
+        //           padding-left: 7px;
+        //           background-position: 6px 0;
+        //         }
+        //
+        //         slider {
+        //           margin-left: -15px;
+        //           margin-right: 6px;
+        //         }
+        //       }
+        //
+        //       &:dir(rtl) {
+        //         padding: 0 12px 0 0;
+        //
+        //         trough {
+        //           padding-right: 7px;
+        //           background-position: -6px 0;
+        //         }
+        //
+        //         slider {
+        //           margin-right: -15px;
+        //           margin-left: 6px;
+        //         }
+        //       }
+        //     }
+        //   }
+    }
+}
+

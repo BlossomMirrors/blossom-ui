@@ -1,0 +1,66 @@
+/*****************
+ * Progress bars *
+ *****************/
+progressbar {
+    // sizing
+    &.horizontal {
+        trough {
+            min-height: 2px;
+        }
+        progress {
+            min-height: 4px;
+        }
+    }
+
+    &.vertical {
+        trough {
+            min-width: 2px;
+        }
+        progress {
+            min-width: 4px;
+        }
+    }
+
+    // FIXME: insensitive state missing and some other state should be set probably
+    font-size: smaller;
+    color: gtkalpha($fg_color, 0.4);
+    font-feature-settings: "tnum";
+
+    &:backdrop {
+        transition: $backdrop_transition;
+    }
+
+    trough {
+        @extend %scale_trough;
+    }
+
+    progress {
+        @extend %scale_highlight;
+
+        border-radius: 2px;
+        @if $gtkver== "3" {
+            border: none;
+        }
+    }
+
+    &.osd {
+        // progressbar.osd used for epiphany page loading progress
+        min-width: 3px;
+        min-height: 3px;
+        background-color: transparent;
+
+        trough {
+            border-radius: 0;
+            background-color: transparent;
+        }
+
+        progress {
+            border-radius: 0;
+        }
+    }
+
+    trough.empty progress {
+        all: unset;
+    } // makes the progress indicator disappear, when the fraction is 0
+}
+

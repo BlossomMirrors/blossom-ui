@@ -1,0 +1,118 @@
+/**************
+ * ComboBoxes *
+ **************/
+dropdown > popover.menu.background > contents {
+    padding: 0;
+} //allow search entries with no margin
+
+dropdown > button > box {
+    @if $gtkver!= "3" {
+        border-spacing: 4px;
+    }
+
+    > stack > row.activatable:hover {
+        background: none;
+        box-shadow: none;
+    }
+}
+
+dropdown,
+combobox {
+    arrow {
+        -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+        min-height: 16px;
+        min-width: 16px;
+    }
+
+    button {
+        min-width: 0;
+        padding-left: $BlossomuircButtonHeight + 4px;
+        padding-right: $BlossomuircButtonHeight + 4px;
+    }
+
+    // align menu labels with the button label
+    > popover.menu > contents modelbutton {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    &.linked {
+        button:nth-child(2) {
+            &:dir(ltr) {
+                @extend %linked_right;
+            }
+            &:dir(rtl) {
+                @extend %linked_left;
+            }
+        }
+    }
+
+    &:drop(active) {
+        // FIXME: untested
+        box-shadow: none;
+
+        button.combo {
+            @extend %button_basic_drop_active;
+        }
+    }
+
+    // newstyle
+    popover {
+        margin-top: 6px;
+        padding: 0;
+
+        listview {
+            margin: 8px;
+
+            > row.activatable {
+                padding: 8px;
+
+                &:selected {
+                    &,
+                    &:hover {
+                        outline-color: $selected_fg_color; //FIXME
+                        color: $selected_fg_color; // untested colors
+                        background-color: $selected_bg_color; //
+                        border-radius: $button_radius;
+                    }
+                }
+            }
+        }
+
+        // drodowns with searchboxes on top
+        .dropdown-searchbar {
+            padding: 6px;
+        }
+    }
+}
+
+// the combo is a composite widget so the way we do button linking doesn't
+// work, special case needed. See
+// https://bugzilla.gnome.org/show_bug.cgi?id=733979
+
+.linked:not(.vertical) > combobox > box > button.combo {
+    @extend %linked_middle;
+}
+.linked:not(.vertical) > combobox:first-child > box > button.combo {
+    @extend %linked_left;
+}
+.linked:not(.vertical) > combobox:last-child > box > button.combo {
+    @extend %linked_right;
+}
+.linked:not(.vertical) > combobox:only-child > box > button.combo {
+    @extend %linked_only_child;
+}
+
+.linked.vertical > combobox > box > button.combo {
+    @extend %linked_vertical_middle;
+}
+.linked.vertical > combobox:first-child > box > button.combo {
+    @extend %linked_vertical_top;
+}
+.linked.vertical > combobox:last-child > box > button.combo {
+    @extend %linked_vertical_bottom;
+}
+.linked.vertical > combobox:only-child > box > button.combo {
+    @extend %linked_vertical_only_child;
+}
+

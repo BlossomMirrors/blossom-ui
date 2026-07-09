@@ -1,0 +1,60 @@
+/********
+ * Misc *
+ ********/
+//content view (grid/list)
+.content-view {
+    background-color: gtkshade($bg_color, 1.03);
+
+    @if $gtkver== "3" {
+        &:hover {
+            -gtk-icon-effect: highlight;
+        }
+    }
+
+    &:backdrop {
+        background-color: $backdrop_bg_color;
+    }
+
+    .tile {
+        margin: 2px;
+        background-color: black;
+        border-radius: 0;
+        padding: 0;
+
+        &:active,
+        &:selected {
+            background-color: $selected_bg_color;
+        }
+        &:disabled {
+            background-color: $insensitive_bg_color;
+        }
+    }
+
+    rubberband,
+    .rubberband {
+        @extend rubberband;
+    }
+}
+
+.scale-popup {
+    .osd & {
+        @extend %osd;
+    }
+
+    button {
+        // +/- buttons on GtkVolumeButton popup
+        &:hover {
+            @extend %undecorated_button;
+            background-color: gtkalpha($fg_color, 0.1);
+        }
+
+        &:backdrop {
+            &:hover,
+            &:disabled,
+            & {
+                @extend %undecorated_button;
+            }
+        }
+    }
+}
+

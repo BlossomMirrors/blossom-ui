@@ -1,0 +1,137 @@
+/*****************
+ * Title buttons *
+ *****************/
+@if $gtkver!= "3" {
+    windowcontrols {
+        border-spacing: 6px;
+
+        &:not(.empty) {
+            &.start:dir(ltr),
+            &.end:dir(rtl) {
+                margin-left: 3px;
+                margin-right: 4px;
+            }
+
+            &.start:dir(rtl),
+            &.end:dir(ltr) {
+                margin-right: 3px;
+                margin-left: 4px;
+            }
+        }
+
+        image.icon {
+            min-width: 28px;
+        }
+    }
+} @else {
+    headerbar,
+    .titlebar {
+        .right,
+        .left:dir(rtl) {
+            margin-right: 2px;
+        }
+
+        .left,
+        .right:dir(rtl) {
+            margin-left: 2px;
+        }
+    }
+}
+
+button.titlebutton,
+windowcontrols > button,
+windowcontrols > button.image-button {
+    @extend %button_basic;
+    @extend %button_basic_flat;
+
+    // kdecoration draws a 22x22 rounded rect (radius 3): 60%-alpha fill inside a
+    // fully opaque 1px outline, with a 20x20 icon and a 150ms InOutQuad fade
+    $titlebutton-size: 20px 20px;
+    $_deco_ease: cubic-bezier(0.45, 0, 0.55, 1);
+
+    border-radius: 3px;
+    padding: 0;
+    margin: 0;
+    min-width: 20px;
+    min-height: 20px;
+    box-shadow: none;
+    border: 1px solid transparent;
+    transition:
+        background-color 150ms $_deco_ease,
+        border-color 150ms $_deco_ease,
+        color 150ms $_deco_ease;
+
+    color: $titlebar_fg_color;
+
+    image {
+        color: transparent;
+    }
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $titlebutton-size;
+
+    &.close {
+        background-image: -gtk-recolor(
+            url("./blossomui-gtk-assets/window-close-symbolic.svg")
+        );
+    }
+
+    &.maximize {
+        background-image: -gtk-recolor(
+            url("./blossomui-gtk-assets/window-maximize-symbolic.svg")
+        );
+    }
+
+    &.minimize {
+        background-image: -gtk-recolor(
+            url("./blossomui-gtk-assets/window-minimize-symbolic.svg")
+        );
+    }
+
+    .maximized &.maximize {
+        background-image: -gtk-recolor(
+            url("./blossomui-gtk-assets/window-restore-symbolic.svg")
+        );
+    }
+
+    &:backdrop {
+        color: $backdrop_titlebar_fg_color;
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+    &:hover,
+    &:active,
+    &:active:hover {
+        color: $titlebar_bg_color;
+        background-color: gtkalpha($titlebar_fg_color, 0.6);
+        border-color: $titlebar_fg_color;
+        box-shadow: none;
+        animation: none;
+        transition:
+            background-color 150ms $_deco_ease,
+            border-color 150ms $_deco_ease,
+            color 150ms $_deco_ease;
+
+        &:backdrop {
+            color: $backdrop_titlebar_bg_color;
+            background-color: gtkalpha($backdrop_titlebar_fg_color, 0.6);
+            border-color: $backdrop_titlebar_fg_color;
+        }
+    }
+    &.close:hover,
+    &.close:active,
+    &.close:active:hover {
+        background-color: gtkalpha($close_button_bg, 0.6);
+        border-color: $close_button_bg;
+
+        color: #ededf0;
+    }
+
+    &:backdrop {
+        -gtk-icon-shadow: none;
+    }
+}
+

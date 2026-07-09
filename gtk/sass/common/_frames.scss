@@ -1,0 +1,89 @@
+/**********
+ * Frames *
+ **********/
+frame {
+    border {
+        border-color: gtkalpha(black, 0.1);
+    }
+
+    > label {
+        color: gtkalpha($fg_color, 0.5);
+    }
+}
+@if $gtkver!= "3" {
+    frame {
+        border-radius: $radius;
+
+        > label {
+            margin: 4px;
+        }
+    }
+}
+
+actionbar > revealer > box {
+    padding: 6px;
+
+    @if $gtkver!= "3" {
+        &,
+        > box.start,
+        > box.end {
+            border-spacing: 4px;
+        }
+    }
+}
+
+scrolledwindow {
+    // This is used when content is touch-dragged past boundaries.
+    // draws a box on top of the content, the size changes programmatically.
+    overshoot {
+        &.top {
+            @include overshoot(top);
+        }
+
+        &.bottom {
+            @include overshoot(bottom);
+        }
+
+        &.left {
+            @include overshoot(left);
+        }
+
+        &.right {
+            @include overshoot(right);
+        }
+    }
+
+    junction {
+        // the small square between two scrollbars
+        background-color: transparent;
+    }
+
+    // inset the main content card from the window edges, kstyle-style
+    // (popovers are separate surfaces so this can't leak into dropdown lists;
+    // .navigation-sidebar is excluded since sidebars sit flush against the edge)
+    &:not(.navigation-sidebar) {
+        > .view,
+        > viewport > .view {
+            margin: 8px;
+        }
+    }
+}
+
+//vbox and hbox separators
+separator {
+    background: transparentize(white, 0.95);
+    min-width: 1px;
+    min-height: 1px;
+
+    &.spacer {
+        background: none;
+
+        &.horizontal {
+            min-width: 12px;
+        }
+        &.vertical {
+            min-height: 12px;
+        }
+    }
+}
+

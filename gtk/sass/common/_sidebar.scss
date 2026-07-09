@@ -1,0 +1,87 @@
+/***********
+ * Sidebar *
+ ***********/
+.sidebar {
+    background-color: $bg_color;
+    margin: 5px;
+    border-radius: $radius;
+
+    &:backdrop {
+        background-color: $backdrop_bg_color;
+        transition: $backdrop_transition;
+    }
+
+    listview.view,
+    list {
+        background-color: transparent;
+
+        row {
+            padding: 0px 2px;
+            border-radius: $radius;
+            margin: 0 $radius / 2;
+
+            &:selected {
+                color: $selected_bg_color;
+                font-weight: bold;
+            }
+
+            > label {
+                padding-left: 6px;
+                padding-right: 6px;
+            }
+        }
+    }
+}
+
+stacksidebar {
+    .frame {
+        margin: 5px;
+        border-radius: $radius;
+        @include _shadows($card_shadow);
+    }
+
+    list separator {
+        background: none;
+    }
+
+    row {
+        padding: 6px 2px;
+        border-radius: $radius;
+        margin: $radius / 2;
+
+        @if $gtkver!= "3" {
+            @include focus-ring();
+        }
+
+        &.activatable:hover {
+            background-color: $sidebar_hover_bg;
+        }
+
+        > label {
+            min-height: 26px;
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        &.needs-attention > label {
+            @extend %needs_attention;
+            background-size:
+                6px 6px,
+                0 0;
+        }
+    }
+}
+
+separator.sidebar {
+    background-color: $bg_color;
+
+    &:backdrop {
+        background-color: $backdrop_bg_color;
+    }
+
+    &.selection-mode,
+    .selection-mode & {
+        background-color: gtkshade($suggested_bg_color, 0.8);
+    }
+}
+

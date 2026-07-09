@@ -1,0 +1,48 @@
+/**********************
+ * General Typography *
+ **********************/
+
+.large-title {
+    font-weight: 300;
+    font-size: 24pt;
+}
+.title-1 {
+    font-weight: 800;
+    font-size: 181%;
+}
+
+.title-2 {
+    font-weight: 800;
+    font-size: 136%;
+}
+
+.title-3 {
+    font-weight: 700;
+    font-size: 136%;
+}
+
+.title-4 {
+    font-weight: 700;
+    font-size: 118%;
+}
+.heading {
+    font-weight: 700;
+}
+.body {
+    font-weight: 400;
+    @if $gtkver!= "3" {
+        line-height: 140%;
+    }
+}
+.caption-heading {
+    font-weight: 700;
+    font-size: 82%;
+}
+.caption {
+    font-weight: 400;
+    font-size: 82%;
+    @if $gtkver!= "3" {
+        line-height: 140%;
+    }
+}
+

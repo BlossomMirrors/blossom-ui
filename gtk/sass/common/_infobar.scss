@@ -1,0 +1,85 @@
+/**************
+ * GtkInfoBar *
+ **************/
+infobar {
+    > revealer > box {
+        @if $gtkver== "3" {
+            padding: 4px;
+        } @else {
+            padding: 8px;
+            border-spacing: 10px;
+        }
+    }
+
+    &.action:hover > revealer > box {
+        background-color: $infobar_bg_color;
+    }
+
+    &.info,
+    &.question,
+    &.warning,
+    &.error {
+        & > revealer > box {
+            & {
+                color: $infobar_fg_color;
+            }
+
+            border-radius: $radius;
+        }
+        &:backdrop > revealer > box {
+            & {
+                color: $backdrop_infobar_fg_color;
+            }
+        }
+
+        selection {
+            background-color: gtkshade($bg_color, 0.9);
+        }
+
+        *:link {
+            color: $link_color;
+        }
+    }
+
+    &.info,
+    &.question {
+        & > revealer > box {
+            background-color: $infobar_bg_color;
+        }
+        &:backdrop > revealer > box {
+            background-color: $backdrop_infobar_bg_color;
+        }
+    }
+
+    &.warning {
+        & > revealer > box {
+            background-color: $infobar_warning_bg_color;
+        }
+        &:backdrop > revealer > box {
+            background-color: $backdrop_infobar_warning_bg_color;
+        }
+    }
+
+    &.error {
+        & > revealer > box {
+            background-color: $indobar_error_bg_color;
+        }
+        &:backdrop > revealer > box {
+            background-color: $backdrop_infobar_error_bg_color;
+        }
+    }
+}
+
+infobar .close,
+searchbar .close {
+    @include button(undecorated);
+    min-width: 16px;
+    min-height: 16px;
+    padding: 4px;
+    border-radius: $circular_radius;
+
+    &:hover {
+        @include button(hover);
+    }
+}
+

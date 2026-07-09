@@ -1,0 +1,442 @@
+/***************
+ * Header bars *
+ ***************/
+windowcontrols {
+    border-spacing: 0;
+    margin: 0;
+}
+
+windowcontrols > button.minimize,
+windowcontrols > button.maximize,
+windowcontrols > button.close {
+    margin: 0;
+}
+
+windowcontrols > button > image {
+    padding: 0;
+    margin: 0;
+    background: none;
+}
+
+// after the per-class resets and same specificity, so it wins the tie
+windowcontrols > button:not(:first-child),
+windowcontrols > button.image-button:not(:first-child) {
+    margin-left: 14px;
+}
+
+button.titlebutton + button.titlebutton {
+    margin-left: 8px; // gtk3 headerbar box already adds 6px -> 14 total
+}
+
+%titlebar,
+headerbar {
+    padding: 0 8px; // kdecoration TitleBar_SideMargin (4 * smallSpacing)
+    min-height: $_headerbar_height;
+    border-radius: 0;
+    color: $titlebar_fg_color;
+    background-color: $titlebar_bg_color;
+    @include _shadows($toolbar_shadow);
+
+    separator {
+        background: if(
+            $BlossomuircToolBarDrawItemSeparator,
+            gtkalpha($titlebar_fg_color, 0.05),
+            gtkalpha($titlebar_fg_color, 0)
+        );
+    }
+
+    button:not(.raised):not(.suggested-action):not(.destructive-action):not(
+            .opaque
+        ):not(.close):not(.minimize):not(.maximize) {
+        @extend %button_basic_flat;
+    }
+
+    .linked
+        button:not(.raised):not(.suggested-action):not(.destructive-action):not(
+            .opaque
+        ):not(.close):not(.minimize):not(.maximize) {
+        border-radius: $button_radius;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+
+    &:backdrop {
+        color: $backdrop_titlebar_fg_color;
+        background-color: $backdrop_titlebar_bg_color;
+        @include _shadows($toolbar_shadow);
+
+        transition: $backdrop_transition;
+    }
+
+    .title {
+        padding-left: 12px;
+        padding-right: 12px;
+        font-weight: bold;
+    }
+
+    .subtitle {
+        font-size: smaller;
+        padding-left: 12px;
+        padding-right: 12px;
+
+        @extend .dim-label;
+    }
+
+    button.flat,
+    button.flat:hover {
+        color: $titlebar_fg_color;
+
+        &:backdrop {
+            color: $backdrop_titlebar_fg_color;
+        }
+    }
+
+    .selection-mode &,
+    &.selection-mode {
+        color: $selected_fg_color;
+
+        background-color: $suggested_bg_color;
+        @include _shadows($toolbar_shadow);
+
+        &:backdrop {
+            background-color: $suggested_bg_color;
+            @include _shadows($toolbar_shadow);
+
+            label {
+                color: $selected_fg_color;
+            }
+        }
+
+        .subtitle:link {
+            @extend %link_selected;
+        }
+
+        // button {
+        //   @include button(normal, $suggested_bg_color, $selected_fg_color);
+        //
+        //   @at-root %selection_mode_button_flat,
+        //   &.flat { @include button(undecorated); }
+        //
+        //   &:hover { @include button(hover, $suggested_bg_color, $selected_fg_color); }
+        //
+        //   &:active,
+        //   &:checked,
+        //   &.toggle:checked,
+        //   &.toggle:active { @include button(active, $suggested_bg_color, $selected_fg_color); }
+        //
+        //   &:backdrop {
+        //     &.flat, & {
+        //       @include button(backdrop, $suggested_bg_color, $selected_fg_color);
+        //
+        //       -gtk-icon-effect: none;
+        //       border-color: $suggested_border_color;
+        //
+        //       &:active,
+        //       &:checked {
+        //         @include button(backdrop-active, $suggested_bg_color, $selected_fg_color);
+        //       }
+        //
+        //       &:disabled {
+        //         @include button(backdrop-insensitive, $suggested_bg_color, $selected_fg_color);
+        //
+        //         &:active, &:checked {
+        //           @include button(backdrop-insensitive-active, $suggested_bg_color, $selected_fg_color);
+        //         }
+        //       }
+        //     }
+        //   }
+        //
+        //   @at-root %selection_mode_button_flat,
+        //   &.flat { &:backdrop, &:disabled, &:backdrop:disabled { @include button(undecorated); }}
+        //
+        //   &:disabled {
+        //     @include button(insensitive, $suggested_bg_color, $selected_fg_color);
+        //
+        //     &:active,
+        //     &:checked { @include button(insensitive-active, $suggested_bg_color, $selected_fg_color); }
+        //   }
+        //
+        //   &.suggested-action {
+        //     @include button(normal);
+        //     &:hover { @include button(hover); }
+        //     &:active { @include button(active); }
+        //     &:disabled { @include button(insensitive); }
+        //     &:backdrop { @include button(backdrop); }
+        //     &:backdrop:disabled { @include button(backdrop-insensitive); }
+        //   }
+        // }
+
+        .selection-menu {
+            &:backdrop,
+            & {
+                border-color: gtkalpha($suggested_bg_color, 0);
+                background-color: gtkalpha($suggested_bg_color, 0);
+                background-image: none;
+                box-shadow: none;
+                min-height: 20px;
+                padding: $_sel_menu_pad;
+
+                @if $gtkver== "3" {
+                    arrow {
+                        -GtkArrow-arrow-scaling: 1;
+                    }
+                }
+
+                .arrow {
+                    -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+                    color: gtkalpha($selected_fg_color, 0.5);
+                    -gtk-icon-shadow: none;
+                }
+            }
+        }
+    }
+
+    // squared corners when the window is maximized, tiled, or fullscreen
+    .tiled &,
+    .tiled-top &,
+    .tiled-right &,
+    .tiled-bottom &,
+    .tiled-left &,
+    .maximized &,
+    .fullscreen & {
+        &:backdrop,
+        & {
+            border-radius: 0;
+        }
+    }
+
+    &.default-decoration {
+        min-height: 28px;
+        padding: 4px;
+
+        @if $gtkver== "3" {
+            button.titlebutton {
+                min-height: 16px;
+                min-width: 16px;
+                margin: 0;
+                padding: 0;
+            }
+        } @else {
+            windowcontrols {
+                button,
+                menubutton {
+                    min-height: 16px;
+                    min-width: 16px;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    separator.titlebutton {
+        opacity: 0;
+    } /* hide the close button separator */
+
+    .solid-csd & {
+        &:backdrop,
+        & {
+            &:dir(rtl),
+            &:dir(ltr) {
+                // specificity bump
+                margin-left: -1px;
+                margin-right: -1px;
+                margin-top: -1px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+headerbar {
+    @if $gtkver!= "3" {
+        > windowhandle > box {
+            &,
+            > box.start,
+            > box.end {
+                border-spacing: 4px;
+            }
+        }
+        windowhandle > box {
+            margin-top: $_hb_btn_pad;
+            margin-bottom: $_hb_btn_pad;
+        }
+    }
+
+    // add vertical margins to common widget on the headerbar to avoid them spanning the whole height
+    @if $gtkver== "3" {
+        entry,
+        spinbutton,
+        separator:not(.sidebar),
+        button,
+        menubutton,
+        splitbutton {
+            margin-top: $_hb_btn_pad;
+            margin-bottom: $_hb_btn_pad;
+        }
+
+        switch {
+            margin-top: $_switch_margin;
+            margin-bottom: $_switch_margin;
+        }
+    }
+
+    splitbutton {
+        > button,
+        > menubutton {
+            margin: 0;
+        }
+    }
+
+    windowcontrols {
+        margin: 6px 0;
+
+        &.start {
+            padding-right: 5px;
+        }
+        &.end {
+            padding-left: 5px;
+        }
+    }
+
+    // Reset margins for buttons inside menubutton
+    menubutton > button {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    &.titlebar headerbar:not(.titlebar) {
+        // Drop the background of non-titlebar nested headerbars. This is needed to
+        // work around headerbar sliding animation issues without refactoring
+        // Adwaita's support of titlebars and headerbars as it may break
+        // applications.
+        // See https://gitlab.gnome.org/GNOME/gtk/issues/1264 for more information.
+        background: none;
+        box-shadow: none;
+    }
+}
+
+.background .titlebar {
+    &:backdrop,
+    & {
+        border-top-left-radius: $window_radius;
+        border-top-right-radius: $window_radius;
+    }
+}
+
+.background.tiled .titlebar,
+.background.tiled-top .titlebar,
+.background.tiled-right .titlebar,
+.background.tiled-bottom .titlebar,
+.background.tiled-left .titlebar,
+.background.maximized .titlebar,
+.background.solid-csd .titlebar {
+    &:backdrop,
+    & {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+}
+
+headerbar {
+    // headerbar border rounding
+
+    window separator:first-child + &,
+    window &:first-child {
+        &:backdrop,
+        & {
+            border-top-left-radius: $window_radius;
+        }
+    }
+    window &:last-child {
+        &:backdrop,
+        & {
+            border-top-right-radius: $window_radius;
+        }
+    }
+
+    window stack & {
+        // tackles the stacked headerbars case
+        &:first-child,
+        &:last-child {
+            &:backdrop,
+            & {
+                border-top-left-radius: $window_radius;
+                border-top-right-radius: $window_radius;
+            }
+        }
+    }
+
+    window.tiled &,
+    window.tiled-top &,
+    window.tiled-right &,
+    window.tiled-bottom &,
+    window.tiled-left &,
+    window.maximized &,
+    window.fullscreen &,
+    window.solid-csd & {
+        &,
+        &:backdrop {
+            &,
+            &:first-child,
+            &:last-child,
+            &:only-child {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+        }
+    }
+}
+
+.titlebar:not(headerbar) {
+    window.csd > & {
+        // in csd we assume every titlebar is a headerbar so reset anything, this is needed for split toolbars cases
+        padding: 0;
+        background-color: transparent;
+        background-image: none;
+        border-style: none;
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+    separator {
+        background-color: $borders_color;
+    } // FIXME: use darker border?
+
+    @extend %titlebar;
+}
+
+// Development versions of apps to use a differently styled headerbar
+
+window.devel {
+    headerbar.titlebar:not(.selection-mode) {
+        $c: gtkshade($bg_color, 0.9);
+        $gradient:
+            cross-fade(
+                    10% -gtk-icontheme("system-run-symbolic"),
+                    image(transparent)
+                )
+                90% 0/256px 256px no-repeat,
+            linear-gradient(
+                to right,
+                transparent 65%,
+                gtkalpha($selected_bg_color, 0.1)
+            ),
+            linear-gradient(to top, gtkshade($c, 1.03) 3px, gtkshade($c, 1.05));
+
+        background: $bg_color $gradient;
+
+        &:backdrop {
+            background:
+                $bg_color
+                    cross-fade(
+                        10% -gtk-icontheme("system-run-symbolic"),
+                        image(transparent)
+                    )
+                    90% 0/256px 256px no-repeat,
+                image($bg_color); /* background-color would flash */
+        }
+    }
+}
+

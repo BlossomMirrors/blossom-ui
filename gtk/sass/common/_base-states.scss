@@ -1,0 +1,311 @@
+/***************
+ * Base States *
+ ***************/
+.background {
+    color: $fg_color;
+    background-color: $bg_color;
+
+    &:backdrop {
+        color: $backdrop_fg_color;
+        background-color: $backdrop_bg_color;
+        text-shadow: none;
+        -gtk-icon-shadow: none;
+    }
+}
+
+@if $gtkver== "3" {
+    *:disabled {
+        -gtk-icon-effect: dim;
+    }
+
+    .gtkstyle-fallback {
+        color: $fg_color;
+        background-color: $bg_color;
+
+        &:hover {
+            color: $fg_color;
+            background-color: gtkshade($bg_color, 1.1);
+        }
+
+        &:active {
+            color: $fg_color;
+            background-color: gtkshade($bg_color, 0.9);
+        }
+
+        &:disabled {
+            color: $insensitive_fg_color;
+            background-color: $insensitive_bg_color;
+        }
+
+        &:selected {
+            color: $selected_fg_color;
+            background-color: $selected_bg_color;
+        }
+    }
+} @else {
+    dnd {
+        color: $fg-color;
+    }
+
+    .normal-icons {
+        -gtk-icon-size: 16px;
+    }
+    .large-icons {
+        -gtk-icon-size: 32px;
+    }
+
+    image:disabled {
+        -gtk-icon-filter: opacity(0.5);
+    }
+    picture:disabled {
+        opacity: 0.5;
+    }
+}
+
+.view,
+%view {
+    color: $text_color;
+    @if $gtkver== "3" {
+        caret-color: $caret_color;
+    }
+    background-color: $base_color;
+    border-radius: $radius; //FIXME
+
+    &:backdrop {
+        color: $backdrop_text_color;
+        background-color: $backdrop_base_color;
+        &:disabled {
+            color: $backdrop_insensitive_text_color;
+            background-color: $backdrop_insensitive_base_color;
+        }
+    }
+
+    &:disabled {
+        color: $insensitive_text_color;
+        background-color: $insensitive_base_color;
+    }
+
+    &:selected {
+        &:focus,
+        & {
+            @extend %selected_items;
+
+            border-radius: $button_radius;
+        }
+    }
+}
+
+textview {
+    > text {
+        @extend %view;
+
+        > selection {
+            @if $gtkver== "3" {
+                &:focus,
+                & {
+                    @extend %selected_items;
+                }
+            } @else {
+                &:focus-within {
+                    background-color: $selected_text_bg_color;
+                }
+            }
+        }
+    }
+}
+
+iconview {
+    @extend .view;
+
+    @if $gtkver!= "3" {
+        @include focus-ring();
+    }
+
+    > dndtarget:drop(active) {
+        border: 1px solid $drop_target_color;
+    }
+}
+
+.rubberband,
+rubberband {
+    border-radius: $radius;
+    border: 1px solid gtkshade($selected_bg_color, 1.6);
+    background-color: gtkalpha($selected_bg_color, 0.5);
+}
+
+flowbox {
+    rubberband {
+        @extend rubberband;
+    }
+
+    flowboxchild {
+        padding: 3px;
+
+        @if $gtkver!= "3" {
+            @include focus-ring();
+        }
+
+        &:selected {
+            @extend %selected_items;
+
+            outline-offset: -2px;
+        }
+    }
+}
+
+gridview {
+    > rubberband {
+        @extend rubberband;
+    }
+
+    > child {
+        padding: 3px;
+        //transition: $focus_transition;
+
+        @if $gtkver!= "3" {
+            @include focus-ring();
+        }
+
+        &:selected {
+            outline-color: gtkalpha(currentColor, 0.45);
+
+            @extend %selected_items;
+        }
+
+        // FIXME is this needed
+        // box { //cells
+        //   @if $gtkver!="3" { border-spacing: 8px; } //label separation
+        //   margin: 12px;
+        // }
+    }
+}
+
+coverflow cover {
+    color: $text_color;
+    background-color: $base_color;
+}
+
+.content-view .tile {
+    margin: 2px;
+    background-color: black;
+    border-radius: 0;
+    padding: 0;
+
+    &:backdrop {
+        background-color: gtkshade($backdrop_base_color, 0.95);
+    }
+    &:active,
+    &:selected {
+        background-color: $selected_bg_color;
+    }
+    &:disabled {
+        background-color: $insensitive_bg_color;
+    }
+}
+
+label {
+    @if $gtkver!= "3" {
+        @include focus-ring();
+    } @else {
+        caret-color: currentColor;
+    }
+
+    &.separator {
+        @extend .dim-label;
+    }
+
+    &:selected {
+        @extend %nobg_selected_items;
+    }
+
+    selection {
+        background-color: $selected_bg_color;
+        color: $selected_fg_color;
+
+        @if $gtkver!= "3" {
+            &:focus-within {
+                background-color: $selected_text_bg_color;
+            }
+        }
+    }
+
+    &:disabled {
+        color: $insensitive_fg_color;
+
+        button & {
+            color: inherit;
+        }
+
+        &:backdrop {
+            color: $backdrop_insensitive_fg_color;
+
+            button & {
+                color: inherit;
+            }
+        }
+
+        selection {
+            @extend %selected_items_disabled;
+        }
+    }
+
+    &:backdrop {
+        selection {
+            @extend %selected_items_backdrop;
+        }
+    }
+
+    @each $e_type, $e_color in (error, $error_color), (success, $success_color),
+        (warning, $warning_color)
+    {
+        &.#{$e_type} {
+            color: $e_color;
+
+            &:disabled {
+                color: gtkalpha($e_color, 0.5);
+            }
+            &:disabled:backdrop {
+                color: gtkalpha($e_color, 0.4);
+            }
+        }
+    }
+}
+
+.dim-label {
+    opacity: 0.55;
+    text-shadow: none;
+}
+
+assistant,
+window.assistant {
+    .sidebar {
+        padding: $radius / 2;
+        background-color: $base_color;
+
+        &:backdrop {
+            background-color: $backdrop_base_color;
+        }
+    }
+
+    .sidebar label {
+        padding: 4px 10px;
+    }
+
+    .sidebar label.highlight {
+        border-radius: $radius;
+        @extend %selected_items;
+    }
+}
+
+@if $gtkver!= "3" {
+    window.aboutdialog image.large-icons {
+        -gtk-icon-size: 128px;
+    }
+}
+
+%osd,
+.osd {
+    color: $osd_fg_color;
+    background-color: $osd_bg_color;
+}
+

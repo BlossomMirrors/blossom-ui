@@ -1,0 +1,364 @@
+/*************
+ * Notebooks *
+ *************/
+notebook {
+    @if $gtkver!= "3" {
+        @include focus-ring(
+            "> header > tabs > tab:checked",
+            $offset: -2px,
+            $focus-state: ":focus:focus-visible"
+        );
+    }
+
+    > header {
+        padding: 0;
+        background-color: $tabbar_bg_color;
+        border-radius: $radius;
+
+        &.top,
+        &.bottom {
+            margin: 4px 0;
+        }
+        &.left,
+        &.right {
+            margin: 0 4px;
+        }
+
+        &:backdrop {
+            background-color: $backdrop_tabbar_bg_color;
+        }
+
+        &.top > tabs > arrow {
+            @extend %notebook_vert_arrows;
+        }
+
+        &.bottom > tabs > arrow {
+            @extend %notebook_vert_arrows;
+        }
+
+        @at-root %notebook_vert_arrows {
+            margin-left: -5px;
+            margin-right: -5px;
+            padding-left: 4px;
+            padding-right: 4px;
+
+            &.down {
+                -gtk-icon-source: -gtk-icontheme("pan-start-symbolic");
+            }
+
+            &.up {
+                -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+            }
+        }
+
+        &.left > tabs > arrow {
+            @extend %notebook_horz_arrows;
+        }
+
+        &.right > tabs > arrow {
+            @extend %notebook_horz_arrows;
+        }
+
+        @at-root %notebook_horz_arrows {
+            margin-top: -5px;
+            margin-bottom: -5px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            &.down {
+                -gtk-icon-source: -gtk-icontheme("pan-up-symbolic");
+            }
+
+            &.up {
+                -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+            }
+        }
+
+        > tabs > arrow {
+            min-height: 16px;
+            min-width: 16px;
+
+            &:hover:not(:active):not(:backdrop) {
+                color: $selected_bg_color;
+            }
+
+            &:disabled {
+                color: $insensitive_fg_color;
+
+                &:backdrop {
+                    color: $backdrop_insensitive_fg_color;
+                }
+            }
+            &:backdrop {
+                color: $backdrop_fg_color;
+            }
+        }
+
+        tab {
+            min-height: 22px;
+            min-width: 22px;
+            padding: 3px 12px;
+            border-radius: $radius;
+
+            outline-offset: -5px;
+
+            color: gtkalpha($fg_color, 0.7);
+            font-weight: normal;
+            transition:
+                background-color 200ms $ease-out-quad,
+                color 200ms $ease-out-quad;
+
+            &:hover {
+                color: $fg_color;
+                background-color: $tab_hover_bg;
+            }
+
+            &:backdrop {
+                color: gtkalpha($backdrop_fg_color, 0.7);
+            }
+
+            &:checked {
+                color: $selected_bg_color;
+                font-weight: bold;
+                background-color: gtkalpha($selected_bg_color, 0.18);
+                @include _shadows($widget_shadow);
+            }
+
+            &:checked:disabled {
+                background-color: $insensitive_bg_color;
+
+                &:backdrop {
+                    background-color: $backdrop_insensitive_bg_color;
+                }
+            }
+
+            &:backdrop:checked {
+                color: $backdrop_selected_tab_fg_color;
+                background-color: $backdrop_selected_tab_bg_color;
+            }
+
+            // colors the button like the label, overridden otherwise
+            @at-root %tab-close-button,
+                & button.flat {
+                &:hover {
+                    color: $tabbar_bg_color;
+                    background-color: $close_button_bg;
+                    transition: none;
+                }
+
+                &,
+                &:backdrop {
+                    color: gtkalpha(
+                        currentColor,
+                        if($BlossomuircTabUseBrighterCloseIcon, 1, 0.4)
+                    );
+                }
+
+                padding: 0;
+                min-width: 18px;
+                min-height: 18px;
+                border-radius: 50%;
+
+                &:last-child {
+                    margin-left: 4px;
+                    margin-right: -4px;
+                }
+
+                &:first-child {
+                    margin-left: -4px;
+                    margin-right: 4px;
+                }
+            }
+        }
+
+        &.top,
+        &.bottom {
+            tabs {
+                margin: 4px 0;
+
+                &:not(:only-child) {
+                    margin-left: 3px;
+                    margin-right: 3px;
+
+                    &:first-child {
+                        margin-left: -1px;
+                    }
+                    &:last-child {
+                        margin-right: -1px;
+                    }
+                }
+
+                tab {
+                    margin-left: 4px;
+                    margin-right: 4px;
+                }
+            }
+        }
+
+        &.left,
+        &.right {
+            tabs {
+                margin: 0 4px;
+
+                &:not(:only-child) {
+                    margin-top: 3px;
+                    margin-bottom: 3px;
+
+                    &:first-child {
+                        margin-top: -1px;
+                    }
+                    &:last-child {
+                        margin-bottom: -1px;
+                    }
+                }
+
+                tab {
+                    margin-top: 4px;
+                    margin-bottom: 4px;
+                }
+            }
+        }
+    }
+
+    > stack:not(:only-child) {
+        // the :not(:only-child) is for "hidden" notebooks
+        border-radius: $radius;
+        background-color: gtkmix($bg_color, $base_color, 0.5);
+        @include _shadows($widget_shadow);
+
+        &:backdrop {
+            background-color: $backdrop_bg_color;
+        }
+    }
+}
+
+@if $BlossomuircOldTabbar {
+    notebook > header {
+        @each $pos1, $pos2 in ("top", "bottom"), ("bottom", "top"),
+            ("left", "right"), ("right", "left")
+        {
+            &.#{$pos1} {
+                @if $pos2== "top" or $pos2== "bottom" {
+                    border-#{$pos2}-left-radius: 0;
+                    border-#{$pos2}-right-radius: 0;
+                } @else {
+                    border-top-#{$pos2}-radius: 0;
+                    border-bottom-#{$pos2}-radius: 0;
+                }
+                tabs {
+                    margin: 0;
+                    margin-#{$pos1}: 3px;
+                    tab {
+                        margin: 3px;
+                        margin-#{$pos1}: 0;
+                        margin-#{$pos2}: 0;
+
+                        @if $pos2== "top" or $pos2== "bottom" {
+                            border-#{$pos2}-left-radius: 0;
+                            border-#{$pos2}-right-radius: 0;
+                        } @else {
+                            border-top-#{$pos2}-radius: 0;
+                            border-bottom-#{$pos2}-radius: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @if $BlossomuircTabDrawHighlight {
+        $_selected_tab_highlight: gtkcolor("@theme_button_decoration_focus");
+        $_backdrop_selected_tab_highlight: gtkcolor(
+            "@theme_button_decoration_focus_backdrop"
+        );
+
+        notebook > header {
+            @each $pos, $dir in ("top", "bottom"), ("bottom", "top"),
+                ("left", "right"), ("right", "left")
+            {
+                &.#{$pos} {
+                    tabs tab {
+                        &:checked {
+                            background-image: linear-gradient(
+                                to #{$dir},
+                                $_selected_tab_highlight 2px,
+                                transparent 2px
+                            );
+                        }
+                        &:checked:backdrop {
+                            background-image: linear-gradient(
+                                to #{$dir},
+                                $_backdrop_selected_tab_highlight 2px,
+                                transparent 2px
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+} @else if $BlossomuircTabBarAltStyle {
+    notebook {
+        $_tab_line_bg: gtkmix($bg_color, $fg_color, 0.85);
+        $_selected_tab_line_bg: gtkcolor("@theme_button_decoration_focus");
+        $_backdrop_selected_tab_line_bg: gtkcolor(
+            "@theme_button_decoration_focus_backdrop"
+        );
+
+        > header {
+            &,
+            &:backdrop {
+                background-color: transparent;
+            }
+            border-radius: 0;
+
+            tabs {
+                tab {
+                    border-radius: 0;
+                    &,
+                    &:hover,
+                    &:checked {
+                        &,
+                        &:backdrop {
+                            background-color: transparent;
+                        }
+                    }
+                }
+            }
+
+            @each $pos, $dir, $x, $y, $pad in ("top", "bottom", 0, -2px, 4px),
+                ("bottom", "top", 0, 2px, 4px),
+                ("left", "right", -2px, 0, 13px),
+                ("right", "left", 2px, 0, 13px)
+            {
+                &.#{$pos} tabs {
+                    tab {
+                        margin: 0;
+                        box-shadow: inset $x $y $_tab_line_bg;
+
+                        &:checked {
+                            margin-#{$dir}: -1px;
+                            padding-#{$dir}: $pad;
+                            box-shadow: inset
+                                2 *
+                                $x
+                                2 *
+                                $y
+                                $_selected_tab_line_bg;
+
+                            &:backdrop {
+                                box-shadow: inset
+                                    2 *
+                                    $x
+                                    2 *
+                                    $y
+                                    $_backdrop_selected_tab_line_bg;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

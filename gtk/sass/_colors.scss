@@ -219,3 +219,9 @@ $backdrop_menu_bg_color: $menu_bg_color;
 //special cased widget colors
 $suggested_bg_color: $selected_bg_color;
 $close_button_bg: gtkcolor("@close_button_bg");
+
+// kstyle hover fill and button border: Button AlternateBackground / Window
+// AlternateBackground (identical in the BlossomUI schemes), synced by our
+// patched kde-gtk-config with a static fallback in _colors-static.scss.in
+$button_hover_bg_color: gtkcolor("@theme_button_background_alternate");
+$button_border_color: $button_hover_bg_color;
