@@ -5,7 +5,7 @@ Inherits=breeze,hicolor
 Example=folder
 FollowsColorScheme=true
 DisplayDepth=32
-KDE-Extensions=.svgz,svg
+KDE-Extensions=.svg
 
 # Percent granularity of the battery-NNN status icons this theme ships (5% steps).
 # Read by the Blossom battery applet patch to round the icon to a level the theme
