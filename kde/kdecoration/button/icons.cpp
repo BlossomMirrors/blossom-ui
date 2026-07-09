@@ -11,6 +11,7 @@
 #include <QHash>
 #include <QPainter>
 #include <QPainterPath>
+#include <QVariantAnimation>
 #include <QtSvg/QSvgRenderer>
 #include <zlib.h>
 
@@ -238,23 +239,19 @@ void Button::drawIconWithMask(QPainter *painter) const {
     return;
   }
 
-  const bool isDarkMode =
-      d->window()->palette().color(QPalette::Window).lightness() < 128;
-  const QColor hoverIconColor =
-      (type() == DecorationButtonType::Close && isDarkMode)
-          ? d->fontColor()
-          : d->titleBarColor();
+  const QColor hoverIconColor = (type() == DecorationButtonType::Close)
+                                    ? d->fontColor()
+                                    : d->titleBarColor();
 
+  const qreal hoverProgress =
+      (m_animation->state() == QAbstractAnimation::Running)
+          ? m_opacity
+          : ((isHovered() || isPressed()) ? 1.0 : 0.0);
   const QColor iconColor =
-      KColorUtils::mix(d->fontColor(), hoverIconColor, m_opacity);
-  QString svgContent = QString::fromUtf8(svgData);
-  svgContent.replace(QStringLiteral("color:#232629"),
-                     QStringLiteral("color:") + iconColor.name());
-  svgContent.replace(QStringLiteral("color: #232629"),
-                     QStringLiteral("color: ") + iconColor.name());
+      KColorUtils::mix(d->fontColor(), hoverIconColor, hoverProgress);
 
   QSvgRenderer renderer;
-  renderer.load(svgContent.toUtf8());
+  renderer.load(svgData);
   if (!renderer.isValid()) {
     drawIcon(painter);
     return;
@@ -274,6 +271,8 @@ void Button::drawIconWithMask(QPainter *painter) const {
   iconPainter.setRenderHints(QPainter::Antialiasing |
                              QPainter::SmoothPixmapTransform);
   renderer.render(&iconPainter, QRectF(0, 0, iconWidth, iconHeight));
+  iconPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+  iconPainter.fillRect(iconImage.rect(), iconColor);
   iconPainter.end();
 
   QColor bgColor;
@@ -281,7 +280,7 @@ void Button::drawIconWithMask(QPainter *painter) const {
     bgColor = d->window()->color(ColorGroup::Warning, ColorRole::Foreground);
   else
     bgColor = d->fontColor();
-  qreal bgOpacity = m_opacity * .6;
+  qreal bgOpacity = hoverProgress * .6;
 
   if (bgColor.isValid()) {
     painter->save();

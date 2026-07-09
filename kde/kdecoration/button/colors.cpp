@@ -16,20 +16,26 @@ QColor Button::foregroundColor() const {
   auto d = qobject_cast<Decoration *>(decoration());
   if (!d) {
     return QColor();
-  } else if (isPressed()) {
-    return d->titleBarColor();
-  } else if (type() == DecorationButtonType::Close &&
-             d->internalSettings()->outlineCloseButton()) {
-    return d->titleBarColor();
+  }
+
+  const bool isClose = type() == DecorationButtonType::Close;
+  if (isPressed()) {
+    return isClose ? d->fontColor() : d->titleBarColor();
+  } else if (isClose && d->internalSettings()->outlineCloseButton()) {
+    if (m_animation->state() == QAbstractAnimation::Running)
+      return KColorUtils::mix(d->titleBarColor(), d->fontColor(), m_opacity);
+    return isHovered() ? d->fontColor() : d->titleBarColor();
   } else if ((type() == DecorationButtonType::KeepBelow ||
               type() == DecorationButtonType::KeepAbove ||
               type() == DecorationButtonType::Shade) &&
              isChecked()) {
     return d->titleBarColor();
   } else if (m_animation->state() == QAbstractAnimation::Running) {
+    if (isClose)
+      return d->fontColor();
     return KColorUtils::mix(d->fontColor(), d->titleBarColor(), m_opacity);
   } else if (isHovered()) {
-    return d->titleBarColor();
+    return isClose ? d->fontColor() : d->titleBarColor();
   } else {
     return d->fontColor();
   }
