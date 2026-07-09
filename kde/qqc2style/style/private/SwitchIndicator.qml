@@ -92,9 +92,6 @@ Item {
             height: width
             radius: width / 2
 
-            // always the theme's light color: Window background in light
-            // themes (kstyle parity), text color in dark themes — keeps the
-            // thumb visible on the accent track and on highlighted rows
             color: Kirigami.ColorUtils.brightnessForColor(Kirigami.Theme.backgroundColor) === Kirigami.ColorUtils.Light
                 ? Kirigami.Theme.backgroundColor
                 : Kirigami.Theme.textColor
@@ -102,11 +99,44 @@ Item {
             border.color: Kirigami.ColorUtils.linearInterpolation(color, Kirigami.Theme.textColor, 0.12)
 
             Behavior on x {
+                id: xBehavior
+
                 enabled: !indicator.control.pressed && Kirigami.Units.shortDuration > 0
-                NumberAnimation {
-                    duration: Kirigami.Units.shortDuration * 1.5
-                    easing.type: Easing.OutBack
+
+                SequentialAnimation {
+                    NumberAnimation {
+                        duration: Kirigami.Units.shortDuration
+                        easing.type: Easing.OutCubic
+                        to: xBehavior.targetValue + (xBehavior.targetValue >= handle.x ? 2 : -2)
+                    }
+                    NumberAnimation {
+                        duration: Kirigami.Units.shortDuration / 2
+                        easing.type: Easing.InOutQuad
+                        to: xBehavior.targetValue
+                    }
                 }
+            }
+            
+            Kirigami.Icon {
+                width: Math.round(handle.width * 0.6)
+                height: width
+                x: Math.round((handle.width - width) / 2)
+                y: Math.round((handle.height - height) / 2)
+                source: Qt.resolvedUrl("switch-x.svg")
+                isMask: true
+                color: Kirigami.ColorUtils.linearInterpolation(handle.color, "black", 0.55)
+                opacity: 1 - indicator.progress
+            }
+
+            Kirigami.Icon {
+                width: Math.round(handle.width * 0.6)
+                height: width
+                x: Math.round((handle.width - width) / 2)
+                y: Math.round((handle.height - height) / 2)
+                source: Qt.resolvedUrl("switch-check.svg")
+                isMask: true
+                color: Kirigami.Theme.highlightColor
+                opacity: indicator.progress
             }
         }
     }

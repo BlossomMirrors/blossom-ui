@@ -127,7 +127,11 @@ windowcontrols > button.image-button {
         background-color: gtkalpha($close_button_bg, 0.6);
         border-color: $close_button_bg;
 
-        color: #ededf0;
+        color: $titlebar_fg_color;
+
+        &:backdrop {
+            color: $backdrop_titlebar_fg_color;
+        }
     }
 
     &:backdrop {

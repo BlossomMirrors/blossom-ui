@@ -38,6 +38,8 @@ scrollbar {
             background-color: $scrollbar_slider_hover_color;
         }
 
+        // :active alone so the accent sticks when dragging past the slider
+        &:active,
         &:hover:active {
             background-color: $scrollbar_slider_active_color;
         }

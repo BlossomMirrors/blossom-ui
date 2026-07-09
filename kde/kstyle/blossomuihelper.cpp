@@ -1286,10 +1286,10 @@ void Helper::renderSwitch(QPainter *painter, const QRect &rect,
   painter->setBrush(trackColor);
   painter->drawRoundedRect(trackRect, radius, radius);
 
-  // thumb geometry, clamped so the overshoot stays inside the track
+  const qreal overshoot = 2.0;
   const qreal thumbX =
       trackRect.x() + margin +
-      qBound(-margin / 2.0, t * travel, travel + margin / 2.0);
+      qBound(-overshoot, t * travel, travel + overshoot);
   QRectF thumbRect(thumbX, trackRect.y() + margin, thumbDiameter,
                    thumbDiameter);
 
@@ -1320,6 +1320,41 @@ void Helper::renderSwitch(QPainter *painter, const QRect &rect,
   painter->setBrush(thumbColor);
   painter->setPen(QPen(thumbBorder, 1));
   painter->drawEllipse(thumbRect);
+
+  const qreal glyphScale = thumbDiameter / 16.0;
+  const auto gp = [&](qreal px, qreal py) {
+    return QPointF((px - 8.0) * 1.35 + 8.0, (py - 8.0) * 1.35 + 8.0) *
+               glyphScale +
+           thumbRect.topLeft();
+  };
+
+  QPen glyphPen(Qt::SolidLine);
+  glyphPen.setWidthF(1.5);
+  glyphPen.setCapStyle(Qt::RoundCap);
+  glyphPen.setJoinStyle(Qt::RoundJoin);
+  painter->setBrush(Qt::NoBrush);
+
+  const qreal xOpacity = 1.0 - progress;
+  if (xOpacity > 0.01) {
+    // thumbColor is always light (see above), contrast by darkening it
+    QColor xColor(KColorUtils::mix(thumbColor, QColor(Qt::black), 0.55));
+    xColor.setAlphaF(xColor.alphaF() * xOpacity);
+    glyphPen.setColor(xColor);
+    painter->setPen(glyphPen);
+    painter->drawLine(gp(4.5, 4.5), gp(11.5, 11.5));
+    painter->drawLine(gp(11.5, 4.5), gp(4.5, 11.5));
+  }
+  if (progress > 0.01) {
+    QColor checkColor(KColorUtils::mix(thumbColor, fillColor, 0.85));
+    checkColor.setAlphaF(checkColor.alphaF() * progress);
+    glyphPen.setColor(checkColor);
+    painter->setPen(glyphPen);
+    QPainterPath check;
+    check.moveTo(gp(5, 8.5));
+    check.lineTo(gp(7, 11));
+    check.lineTo(gp(12, 5));
+    painter->drawPath(check);
+  }
 }
 
 //______________________________________________________________________________

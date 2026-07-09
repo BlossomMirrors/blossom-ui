@@ -22,7 +22,9 @@ if [ -z "$RPM" ]; then
 fi
 
 echo " *** Clearing cache *** "
-rm -rf ~/.cache/ksplash/qmlcache
+# rpm-ostree normalizes file mtimes, which can defeat Qt's qmlcache
+# invalidation and keep serving stale compiled QML
+rm -rf ~/.cache/*/qmlcache
 
 echo " *** Installing $(basename "$RPM") *** "
 if rpm -q blossomui >/dev/null 2>&1 && \
