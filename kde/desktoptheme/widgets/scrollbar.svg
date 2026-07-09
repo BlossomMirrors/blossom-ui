@@ -274,51 +274,51 @@
        height="3.9999993"
        x="570"
        y="565" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#background-vertical-center"
-       id="background-vertical-top"
-       transform="translate(0,-4.0000007)"
-       style="opacity:1" />
     <rect
        class="ColorScheme-Text"
-       style="fill:currentColor;fill-opacity:1;stroke-width:0.999997;stroke-linecap:round;stroke-linejoin:round;opacity:0.2"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+       id="background-vertical-top"
+       width="1"
+       height="2"
+       x="570"
+       y="563" />
+    <rect
+       class="ColorScheme-Text"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-right"
-       width="4"
-       height="3.9999993"
+       width="2"
+       height="4"
        x="571"
        y="565" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#background-vertical-topright"
+    <path
+       class="ColorScheme-Text"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-topleft"
-       transform="matrix(-1,0,0,1,1141,-6.9999999e-7)" />
+       d="M 570,563 A 2,2 0 0 0 568,565 L 570,565 Z" />
     <use
        x="0"
        y="0"
        xlink:href="#background-vertical-right"
        id="background-vertical-left"
-       transform="translate(-5)" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#background-vertical-topright"
+       transform="translate(-3)" />
+    <path
+       class="ColorScheme-Text"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-bottomleft"
-       transform="rotate(180,570.5,567)" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#background-vertical-center"
+       d="M 570,571 A 2,2 0 0 1 568,569 L 570,569 Z" />
+    <rect
+       class="ColorScheme-Text"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-bottom"
-       transform="translate(0,3.999999)" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#background-vertical-topright"
+       width="1"
+       height="2"
+       x="570"
+       y="569" />
+    <path
+       class="ColorScheme-Text"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-bottomright"
-       transform="matrix(1,0,0,-1,0,1134)" />
+       d="M 571,571 A 2,2 0 0 0 573,569 L 571,569 Z" />
     <rect
        id="hint-scrollbar-size"
        x="542"
@@ -329,17 +329,8 @@
        style="fill:currentColor;fill-rule:evenodd;stroke-width:0.999999" />
     <path
        class="ColorScheme-Text"
-       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:0.999998;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.2;fill:currentColor;fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
        id="background-vertical-topright"
-       sodipodi:type="arc"
-       sodipodi:cx="571"
-       sodipodi:cy="-565"
-       sodipodi:rx="4"
-       sodipodi:ry="4"
-       sodipodi:start="0"
-       sodipodi:end="1.5707963"
-       sodipodi:arc-type="slice"
-       d="m 575,-565 a 4,4 0 0 1 -4,4 v -4 z"
-       transform="scale(1,-1)" />
+       d="M 571,563 A 2,2 0 0 1 573,565 L 571,565 Z" />
   </g>
 </svg>
