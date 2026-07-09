@@ -1,0 +1,208 @@
+/**********************
+ * Window Decorations *
+ *********************/
+// kdecoration outline: KColorUtils::mix(frameColor, textColor, dark 0.12 / light 0.30)
+$_window_outline_color: gtkmix(
+    $fg_color,
+    $bg_color,
+    if(variable-exists(variant) and $variant == "light", 0.3, 0.12)
+);
+$_window_shadow:
+    0 0 0 1px $_window_outline_color,
+    0 6px 15px 1px gtkalpha($BlossomuircShadowColor, 0.3);
+$_backdrop_window_shadow:
+    0 0 0 1px $_window_outline_color,
+    0 6px 15px 1px gtkalpha($BlossomuircShadowColor, 0.3);
+$_popup_shadow:
+    0 0 0 1px gtkalpha($BlossomuircShadowColor, 0.07),
+    0 4px 6px 1px gtkalpha($BlossomuircShadowColor, 0.2);
+$_dialog_shadow: $_popup_shadow;
+$_tooltip_shadow:
+    0 0 0 1px gtkalpha($BlossomuircShadowColor, 0.1),
+    0 3px 6px 1px gtkalpha($BlossomuircShadowColor, 0.3);
+
+@mixin _tiled {
+    border-radius: 0;
+    box-shadow: 0 0 0 20px transparent; //transparent control workaround -- #3670
+
+    &:backdrop {
+        box-shadow: 0 0 0 20px transparent;
+    } // #3670
+}
+
+@mixin _solid-csd {
+    margin: 0;
+    padding: 4px;
+    background-color: $titlebar_bg_color;
+    border: solid 1px $titlebar_bg_color;
+    border-radius: 0;
+    box-shadow: inset 0 0 0 3px $titlebar_bg_color;
+
+    &:backdrop {
+        box-shadow: inset 0 0 0 3px $backdrop_titlebar_bg_color;
+    }
+}
+
+@if $gtkver== "3" {
+    decoration {
+        border-radius: $window_radius;
+        // lamefun trick to get rounded borders regardless of CSD use
+        border-width: 0px;
+
+        box-shadow: $_window_shadow;
+
+        // this is used for the resize cursor area
+        margin: 10px;
+
+        &:backdrop {
+            box-shadow: $_backdrop_window_shadow;
+            transition: $backdrop_transition;
+        }
+
+        .maximized &,
+        .fullscreen & {
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .tiled &,
+        .tiled-top &,
+        .tiled-right &,
+        .tiled-bottom &,
+        .tiled-left & {
+            @include _tiled;
+        }
+
+        .popup & {
+            box-shadow: none;
+        }
+
+        // server-side decorations as used by mutter
+        // just doing borders, wm draws actual shadows
+        .ssd & {
+            box-shadow: 0 0 0 1px $titlebar_bg_color;
+        }
+        .ssd &:backdrop {
+            box-shadow: 0 0 0 1px $backdrop_titlebar_bg_color;
+        }
+        .ssd.maximized &,
+        .ssd.maximized &:backdrop {
+            box-shadow: none;
+        }
+
+        .csd.popup & {
+            border-radius: $menu_radius;
+            box-shadow: $_popup_shadow;
+        }
+
+        tooltip.csd & {
+            border-radius: $radius;
+            box-shadow: $_tooltip_shadow;
+        }
+
+        messagedialog.csd & {
+            border-radius: $window_radius;
+            box-shadow: $_dialog_shadow;
+        }
+
+        .solid-csd & {
+            @include _solid-csd;
+        }
+    }
+} @else {
+    window {
+        border-width: 0px;
+
+        &.csd {
+            box-shadow: $_window_shadow;
+            margin: 0px;
+            border-radius: $window_radius;
+            &:backdrop {
+                box-shadow: $_backdrop_window_shadow;
+                transition: $backdrop_transition;
+            }
+
+            &.popup {
+                border-radius: $menu_radius;
+                box-shadow: $_popup_shadow;
+            }
+
+            &.dialog.message {
+                border-radius: $window_radius;
+                box-shadow: $_dialog_shadow;
+            }
+        }
+
+        &.solid-csd {
+            @include _solid-csd;
+        }
+
+        &.maximized,
+        &.fullscreen {
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        &.tiled,
+        &.tiled-top,
+        &.tiled-left,
+        &.tiled-right,
+        &.tiled-bottom {
+            @include _tiled;
+        }
+
+        &.popup {
+            box-shadow: none;
+        }
+
+        // server-side decorations as used by mutter
+        // just doing borders, wm draws actual shadows
+        &.ssd {
+            box-shadow: 0 0 0 1px $titlebar_bg_color;
+        }
+        &.ssd:backdrop {
+            box-shadow: 0 0 0 1px $backdrop_titlebar_bg_color;
+        }
+    }
+
+    tooltip.csd {
+        border-radius: $radius;
+        box-shadow: $_tooltip_shadow;
+    }
+}
+
+// catch all extend :)
+
+%selected_items {
+    background-color: $selected_bg_color;
+
+    &:disabled {
+        color: $insensitive_selected_fg_color;
+        background-color: $insensitive_selected_bg_color;
+    }
+
+    @at-root %nobg_selected_items,
+        & {
+        color: $selected_fg_color;
+
+        @at-root %selected_items_disabled,
+            &:disabled {
+            color: $insensitive_fg_color;
+        }
+
+        @at-root %selected_items_backdrop,
+            &:backdrop {
+            color: $backdrop_selected_fg_color;
+            background-color: $backdrop_selected_bg_color;
+
+            &:disabled {
+                color: $backdrop_insensitive_fg_color;
+            }
+        }
+    }
+}
+
+.monospace {
+    font-family: monospace;
+}
+

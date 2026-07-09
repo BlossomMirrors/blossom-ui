@@ -1,0 +1,71 @@
+$BlossomuircButtonHeight: $BlossomuircButtonHeight + 0px;
+$BlossomuircButtonWidth: $BlossomuircButtonWidth + 0px;
+$BlossomuircCornerRadius: $BlossomuircCornerRadius + 0px;
+$BlossomuircMenuItemHeight: $BlossomuircMenuItemHeight + 0px;
+$BlossomuircOtherCornerRadius: $BlossomuircOtherCornerRadius + 0px;
+
+$ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$backdrop_transition: 200ms ease-out;
+$button_transition: all 200ms $ease-out-quad;
+$focus_transition:
+    outline-width 200ms $ease-out-quad,
+    outline-offset 200ms $ease-out-quad; // FIXME integrate it
+$radius: $BlossomuircCornerRadius;
+$button_radius: 8px;
+$circular_radius: if($button_radius==0, 0, 9999px);
+$menu_radius: $radius + 1px;
+$menu-margin: ($menu_radius / 2) - 1px; //margin around menuitems & sidebar items
+$menu_item_padding: $BlossomuircMenuItemHeight;
+$popover_radius: $radius + 1px;
+$window_radius: $BlossomuircOtherCornerRadius * 2;
+
+// Optional compact sizes for buttons, headerbar and headerbar widgets
+$_sizevariant: "compact"; //compact otherwise
+$_headerbar_height: 36px; // kdecoration: max(fontHeight, gridUnit*2.4) + smallSpacing*(3+3)
+$_entry_height: if($_sizevariant== "default", 32px, 30px);
+$_btn_pad: if($_sizevariant== "default", 4px 9px, 2px 6px);
+$_hb_btn_pad: if($_sizevariant== "default", 6px, 5px);
+$_img_btn_pad: if($_sizevariant== "default", 5px, 2px);
+$_sel_menu_pad: if($_sizevariant== "default", 6px 10px, 4px 10px);
+$_circ_btn_pad: if($_sizevariant== "default", 4px, 2px);
+$_switch_margin: if(
+    $_sizevariant== "default",
+    10px,
+    8px
+); //FIXME test with gtk3
+
+@if $gtkver== "3" {
+    * {
+        padding: 0;
+        -GtkToolButton-icon-spacing: 4;
+        -GtkTextView-error-underline-color: $error_color;
+
+        // The size for scrollbars. The slider is 2px smaller, but we keep it
+        // up so that the whole area is sensitive to button presses for the
+        // slider. The stepper button is larger in both directions, the slider
+        // only in the width
+
+        -GtkScrolledWindow-scrollbar-spacing: 0;
+
+        -GtkToolItemGroup-expander-size: 11;
+
+        -GtkWidget-text-handle-width: 20;
+        -GtkWidget-text-handle-height: 24;
+
+        -GtkDialog-button-spacing: 4;
+        -GtkDialog-action-area-border: 0;
+
+        // We use the outline properties to signal the focus properties
+        // to the adwaita engine: using real CSS properties is faster,
+        // and we don't use any outlines for now.
+
+        outline-color: $focus_border_color;
+        outline-style: solid;
+        outline-offset: -3px;
+        outline-width: 1px;
+        -gtk-outline-radius: max($button-radius - 2px, 0);
+
+        -gtk-secondary-caret-color: $selected_bg_color;
+    }
+}
+

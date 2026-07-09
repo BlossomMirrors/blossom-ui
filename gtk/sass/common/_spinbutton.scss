@@ -1,0 +1,134 @@
+/*****************
+ * GtkSpinButton *
+ *****************/
+spinbutton {
+    $_entry: if($gtkver== "3", "entry", "text");
+
+    &:not(.vertical) {
+        // in this horizontal configuration, the whole spinbutton
+        // behaves as the entry, so we extend the entry styling
+        // and nuke the style on the internal entry
+        @extend %entry;
+
+        padding: 0;
+        @if $gtkver!= "3" {
+            border-spacing: 0;
+        }
+
+        %spinbutton_horz_entry {
+            min-width: 28px;
+            // reset all the other props since the spinbutton node is styled here
+            margin: 0;
+            background: none;
+            background-color: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            @if $gtkver!= "3" {
+                padding: 6px;
+            }
+
+            &:backdrop:disabled {
+                background-color: transparent;
+            }
+        }
+
+        > #{$_entry} {
+            @extend %spinbutton_horz_entry;
+        }
+
+        > button.up:not(.flat),
+        > button.down:not(.flat),
+        > button.image-button.up:not(.flat),
+        > button.image-button.down:not(.flat) {
+            min-height: 16px;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background-color: transparent;
+
+            image {
+                color: inherit;
+            }
+
+            &:hover {
+                color: $selected_bg_color;
+            }
+        }
+    }
+
+    // Vertical
+    &.vertical {
+        // in the vertical configuration, we treat the spinbutton
+        // as a box, and tweak the style of the entry in the middle
+        // so that it's linked
+
+        // FIXME: this should not be set at all, but otherwise it gets the wrong
+        // color
+        &:disabled {
+            color: $insensitive_fg_color;
+        }
+
+        &:backdrop:disabled {
+            color: $backdrop_insensitive_fg_color;
+        }
+
+        &:drop(active) {
+        }
+
+        #{$_entry} {
+            @if $gtkver!=3 {
+                @extend %entry;
+                > selection {
+                    background-color: gtkalpha($text_color, 0.2);
+                    color: transparent;
+                    &:focus-within {
+                        background-color: $selected_text_bg_color;
+                        color: $fg_color;
+                    }
+                }
+                > block-cursor {
+                    @include entry(block_cursor);
+                }
+            }
+
+            min-height: 32px;
+            min-width: 32px;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        button {
+            min-height: 32px;
+            min-width: 32px;
+            padding: 0;
+
+            &.up {
+                @extend %top_button;
+            }
+            &.down {
+                @extend %bottom_button;
+            }
+        }
+
+        %top_button {
+            border-radius: $button_radius $button_radius 0 0;
+        }
+
+        %bottom_button {
+            border-radius: 0 0 $button_radius $button_radius;
+        }
+    }
+
+    // Misc
+    treeview &:not(.vertical) {
+        min-height: 0;
+        border-radius: 0;
+
+        > #{$_entry} {
+            min-height: 0;
+            padding: 1px 2px;
+        }
+    }
+    font-feature-settings: "tnum";
+}
+

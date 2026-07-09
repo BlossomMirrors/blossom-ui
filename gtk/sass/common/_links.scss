@@ -1,0 +1,84 @@
+/*********
+ * Links *
+ *********/
+
+%link,
+*:link,
+link {
+    color: $link_color;
+
+    &:visited {
+        color: $link_visited_color;
+
+        *:selected & {
+            color: gtkmix($selected_fg_color, $link_visited_color, 0.6);
+        }
+    }
+
+    &:hover {
+        $_fg: gtkshade($link_color, 1.1);
+        color: $_fg;
+
+        *:selected & {
+            color: gtkmix($selected_fg_color, $_fg, 0.9);
+        }
+    }
+
+    &:active {
+        color: $link_color;
+
+        *:selected & {
+            color: gtkmix($selected_fg_color, $link_color, 0.8);
+        }
+    }
+
+    &:disabled,
+    &:disabled:backdrop {
+        color: gtkalpha($link_color, 0.8);
+    }
+
+    &:backdrop {
+        &:backdrop:hover,
+        &:backdrop:hover:selected,
+        & {
+            color: gtkalpha($link_color, 0.9);
+        }
+    }
+
+    @at-root %link_selected,
+        &:selected,
+        *:selected & {
+        color: gtkmix($selected_fg_color, $link_color, 0.8);
+    }
+}
+
+link {
+    @if $gtkver!= "3" {
+        @include focus-ring();
+    }
+}
+
+button.link,
+button:link,
+button:visited {
+    @extend %link;
+
+    text-shadow: none;
+
+    &:focus,
+    &:hover,
+    &:focus:hover,
+    &:active,
+    &:checked,
+    &:focus:active,
+    &:focus:checked {
+        @extend %undecorated_button;
+
+        text-shadow: none;
+    }
+
+    > label {
+        text-decoration: underline;
+    }
+}
+

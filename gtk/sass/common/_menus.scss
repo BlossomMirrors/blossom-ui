@@ -1,0 +1,447 @@
+/*********
+ * Menus *
+ *********/
+@if $gtkver== "3" {
+    menu,
+    .menu,
+    .context-menu {
+        margin: 4px; // see https://bugzilla.gnome.org/show_bug.cgi?id=591258
+        padding: $menu-margin;
+        background-color: $menu_bg_color;
+        color: $menu_fg_color;
+        border: 1px solid $menu_border;
+
+        .csd & {
+            border-radius: $menu_radius;
+        }
+
+        &:backdrop {
+            background-color: $backdrop_menu_bg_color;
+        }
+
+        menuitem {
+            min-height: 16px;
+            min-width: 40px;
+            padding: $menu_item_padding $menu_item_padding + 2px;
+            border-radius: $menu_radius - 2px;
+
+            &:hover {
+                @if $BlossomuircMenuItemDrawStrongFocus {
+                    color: $menu_selected_fg_color;
+                    background-color: $menu_selected_bg_color;
+                } @else {
+                    color: $menu_fg_color;
+                    background-color: gtkalpha(
+                        $menu_fg_color,
+                        0.075
+                    ); //FIXME probably not the correct color
+
+                    > label {
+                        text-decoration: underline;
+                        text-decoration-color: $menu_selected_bg_color;
+                    }
+                    > arrow {
+                        color: $menu_selected_bg_color;
+                    }
+                }
+            }
+
+            &:disabled {
+                color: gtkalpha($menu_fg_color, 0.4);
+            }
+
+            // submenu indicators
+            arrow {
+                min-height: 16px;
+                min-width: 16px;
+
+                &:dir(ltr) {
+                    -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+                    margin-left: 10px;
+                }
+
+                &:dir(rtl) {
+                    -gtk-icon-source: -gtk-icontheme("pan-end-symbolic-rtl");
+                    margin-right: 10px;
+                }
+            }
+
+            // avoids labels color being overridden, see
+            // https://bugzilla.gnome.org/show_bug.cgi?id=767058
+            label {
+                &:dir(rtl),
+                &:dir(ltr) {
+                    color: inherit;
+                }
+            }
+        }
+
+        // overflow arrows
+        > arrow {
+            @include button(undecorated);
+
+            min-height: 16px;
+            min-width: 16px;
+            padding: 4px;
+            background-color: $menu_bg_color;
+            border-radius: 0;
+
+            &.top {
+                margin: -4px -4px 0 -4px;
+                border-bottom: 1px
+                    solid
+                    gtkmix($menu_fg_color, $menu_bg_color, 0.1);
+                border-top-right-radius: $menu_radius;
+                border-top-left-radius: $menu_radius;
+                -gtk-icon-source: -gtk-icontheme("pan-up-symbolic");
+            }
+
+            &.bottom {
+                margin: 10px -4px -14px -4px;
+                border-top: 1px
+                    solid
+                    gtkmix($menu_fg_color, $menu_bg_color, 0.1);
+                border-bottom-right-radius: $menu_radius;
+                border-bottom-left-radius: $menu_radius;
+                -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+            }
+
+            &:hover {
+                background-color: gtkmix($menu_fg_color, $menu_bg_color, 0.1);
+            }
+
+            &:backdrop {
+                background-color: $backdrop_menu_bg_color;
+            }
+
+            &:disabled {
+                color: transparent;
+                background-color: transparent;
+                border-color: transparent;
+            }
+        }
+    }
+
+    // Needed to make the border-radius of menus work
+    // otherwise the background bleeds out of the menu edges
+    .background.popup {
+        background-color: transparent;
+    }
+
+    menuitem {
+        accelerator {
+            color: gtkalpha(currentColor, 0.4);
+        }
+
+        check,
+        radio {
+            min-height: 16px;
+            min-width: 16px;
+
+            &:dir(ltr) {
+                margin-right: 7px;
+            }
+            &:dir(rtl) {
+                margin-left: 7px;
+            }
+        }
+    }
+
+    // Menubar
+    menubar,
+    .menubar {
+        -GtkWidget-window-dragging: true;
+        padding: 0px;
+        color: $toolbar_fg_color;
+        background-color: $toolbar_bg_color;
+
+        &:backdrop {
+            color: $backdrop_toolbar_fg_color;
+            background-color: $backdrop_toolbar_bg_color;
+        }
+
+        > menuitem {
+            min-height: 16px;
+            padding: 4px 10px;
+            border-radius: $button_radius;
+
+            &:hover {
+                //Seems like it :hover even with keyboard focus
+                @if $BlossomuircMenuItemDrawStrongFocus {
+                    color: $button_focus_fg_color;
+                    background-color: $button_focus_bg_color;
+                } @else {
+                    > label {
+                        text-decoration: underline;
+                        text-decoration-color: $button_focus_bg_color;
+                    }
+                }
+            }
+
+            &:disabled {
+                color: $insensitive_toolbar_fg_color;
+
+                &:backdrop {
+                    color: $backdrop_insensitive_toolbar_fg_color;
+                }
+            }
+        }
+    }
+} @else {
+    //global $menu-margin for outside menuitems
+
+    popover.menu {
+        padding: 0;
+
+        > contents {
+            min-width: 120px;
+        }
+
+        box.inline-buttons {
+            padding: 0 $menu_item_padding;
+
+            button.image-button.model {
+                @include button(undecorated);
+
+                min-height: 30px;
+                min-width: 30px;
+                padding: 0;
+                border: none;
+                outline: none;
+                transition: none;
+
+                &:selected {
+                    color: $menu_selected_fg_color;
+                    background: $menu_selected_bg_color;
+                }
+            }
+        }
+
+        box.circular-buttons {
+            padding: $menu_item_padding $menu_item_padding 6px;
+
+            button.circular.image-button.model {
+                //@extend %list_button; //FIXME
+
+                padding: 11px;
+                &:focus {
+                    color: $menu_selected_fg_color;
+                    background-color: $menu_selected_bg_color;
+                }
+            }
+        }
+
+        & > arrow,
+        &.background > contents {
+            color: $menu_fg_color;
+            background-color: $menu_bg_color;
+            padding: $menu-margin;
+
+            &,
+            > scrolledwindow > viewport {
+                > stack > box {
+                    padding: 0;
+                }
+            }
+        }
+
+        &.background separator {
+            margin: 6px 0;
+        }
+
+        accelerator {
+            color: gtkalpha(currentColor, 0.4);
+
+            &:dir(ltr) {
+                margin-left: $menu_item_padding + 6px;
+            }
+            &:dir(rtl) {
+                margin-right: $menu_item_padding + 6px;
+            }
+        }
+
+        arrow.left,
+        radio.left,
+        check.left {
+            margin-left: -2px;
+            margin-right: 6px;
+        }
+
+        arrow.right,
+        radio.right,
+        check.right {
+            margin-left: 6px;
+            margin-right: -2px;
+        }
+
+        modelbutton {
+            min-height: 16px;
+            min-width: 40px;
+            padding: $menu_item_padding $menu_item_padding + 2px;
+            border-radius: $menu_radius - 2px;
+
+            &:selected {
+                @if $BlossomuircMenuItemDrawStrongFocus {
+                    color: $menu_selected_fg_color;
+                    background-color: $menu_selected_bg_color;
+                } @else {
+                    color: $menu_fg_color;
+                    background-color: gtkalpha(
+                        $menu_fg_color,
+                        0.075
+                    ); //FIXME probably not the correct color
+
+                    > label {
+                        text-decoration: underline;
+                        text-decoration-color: $menu_selected_bg_color;
+                    }
+                    > arrow {
+                        color: $menu_selected_bg_color;
+                    }
+                }
+            }
+            &:selected:active {
+                @if $BlossomuircMenuItemDrawStrongFocus {
+                    color: $menu_selected_fg_color;
+                    background-color: gtkshade($menu_selected_bg_color, 0.8);
+                }
+            }
+        }
+
+        label.title {
+            font-weight: bold;
+            padding: 4px
+                (
+                    $menu_item_padding + 20px
+                ); //this will fall apart with font sizing
+        }
+
+        list,
+        listview {
+            background: none;
+            color: inherit;
+
+            > row {
+                border-radius: $menu_radius - 2px;
+                padding: $menu_item_padding $menu_item_padding + 2px;
+                min-height: 16px;
+                min-width: 40px;
+
+                &:selected {
+                    background: none;
+                }
+
+                &:hover {
+                    &,
+                    &:selected.activatable {
+                        @if $BlossomuircMenuItemDrawStrongFocus {
+                            color: $menu_selected_fg_color;
+                            background-color: $menu_selected_bg_color;
+                        } @else {
+                            color: $menu_fg_color;
+                            background-color: gtkalpha(
+                                $menu_fg_color,
+                                0.075
+                            ); //FIXME probably not the correct color
+
+                            > box > label {
+                                text-decoration: underline;
+                                text-decoration-color: $menu_selected_bg_color;
+                            }
+                        }
+                    }
+                }
+
+                &:active {
+                    &,
+                    &:selected.activatable {
+                        @if $BlossomuircMenuItemDrawStrongFocus {
+                            color: $menu_selected_fg_color;
+                            background-color: gtkshade(
+                                $menu_selected_bg_color,
+                                0.8
+                            );
+                        }
+                    }
+                }
+
+                &.has-open-popup {
+                    &,
+                    &:selected.activatable {
+                        background-color: $selected_bg_color;
+                    }
+                }
+
+                > box {
+                    border-spacing: 6px;
+                }
+            }
+        }
+
+        contents > list,
+        contents > listview,
+        scrolledwindow > viewport > list,
+        scrolledwindow > listview {
+            padding: 0;
+
+            > row {
+                margin: 0;
+                padding: $menu_item_padding ($menu_item_padding + 5px);
+                min-height: 16px;
+            }
+        }
+    }
+
+    // initial styling for popover menu and bar
+    menubar {
+        padding: 0px;
+
+        color: $toolbar_fg_color;
+        background-color: $toolbar_bg_color;
+
+        &:backdrop {
+            color: $backdrop_toolbar_fg_color;
+            background-color: $backdrop_toolbar_bg_color;
+        }
+
+        > item {
+            min-height: 16px;
+            padding: 4px 10px;
+            border-radius: $button_radius;
+
+            &:selected {
+                //Seems like it :hover even with keyboard focus
+                @if $BlossomuircMenuItemDrawStrongFocus {
+                    color: $button_focus_fg_color;
+                    background-color: $button_focus_bg_color;
+                } @else {
+                    > label {
+                        text-decoration: underline;
+                        text-decoration-color: $button_focus_bg_color;
+                    }
+                }
+            }
+
+            &:disabled {
+                color: $insensitive_toolbar_fg_color;
+
+                &:backdrop {
+                    color: $backdrop_insensitive_toolbar_fg_color;
+                }
+            }
+        }
+
+        & > item popover.menu.background > contents {
+            padding: $menu-margin;
+        }
+        //nested submenus
+        & > item popover.menu popover.menu {
+            padding: 0 0 4px 0;
+        }
+        & > item popover.menu.background popover.menu.background > contents {
+            margin: 0;
+            border-radius: $popover_radius; //including top
+        }
+    }
+}
+

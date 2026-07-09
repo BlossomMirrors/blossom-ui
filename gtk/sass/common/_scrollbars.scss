@@ -1,0 +1,113 @@
+/**************
+ * Scrollbars *
+ **************/
+scrollbar {
+    $_slider_min_length: 40px;
+    $_slider_width: 8px;
+    $_scrollbar_transition: all 300ms $ease-out-quad;
+    $_fine-tune_slider_border: $_slider_width - 3; //3672
+
+    // disable steppers
+    @if $gtkver== "3" {
+        @at-root * {
+            -GtkScrollbar-has-backward-stepper: false;
+            -GtkScrollbar-has-forward-stepper: false;
+        }
+    }
+
+    margin: 8px;
+    border-radius: 10px;
+    background-color: $scrollbar_bg_color;
+    transition: $_scrollbar_transition;
+
+    &:backdrop {
+        background-color: $backdrop_scrollbar_bg_color;
+        transition: $backdrop_transition;
+    }
+
+    // slider
+    slider {
+        min-width: $_slider_width;
+        min-height: $_slider_width;
+        border-radius: 10px;
+        background-clip: padding-box;
+        background-color: $scrollbar_slider_color;
+        transition: $_scrollbar_transition;
+
+        &:hover {
+            background-color: $scrollbar_slider_hover_color;
+        }
+
+        &:hover:active {
+            background-color: $scrollbar_slider_active_color;
+        }
+
+        &:backdrop {
+            background-color: $backdrop_scrollbar_slider_color;
+        }
+
+        &:disabled {
+            background-color: transparent;
+        }
+    }
+
+    &.fine-tune {
+        slider {
+            transition: none;
+            min-width: $_fine-tune_slider_border + 1;
+            min-height: $_fine-tune_slider_border + 1;
+        }
+
+        &.horizontal slider {
+            border-width: $_fine-tune_slider_border 4px;
+        }
+        &.vertical slider {
+            border-width: 4px $_fine-tune_slider_border;
+        }
+    }
+
+    &.overlay-indicator {
+        margin: 5px;
+
+        &:not(.dragging):not(.hovering) {
+            border-color: transparent;
+            background-color: transparent;
+
+            slider {
+                margin: 0;
+                min-width: 4px;
+                min-height: 4px;
+                background-color: gtkalpha($scrollbar_slider_color, 0.5);
+
+                &:backdrop {
+                    background-color: $backdrop_scrollbar_slider_color;
+                }
+            }
+
+            &.horizontal {
+                slider {
+                    min-width: $_slider_min_length;
+                }
+            }
+
+            &.vertical {
+                slider {
+                    min-height: $_slider_min_length;
+                }
+            }
+        }
+
+        &.dragging,
+        &.hovering {
+            opacity: 0.8;
+        }
+    }
+
+    &.horizontal slider {
+        min-width: $_slider_min_length;
+    }
+    &.vertical slider {
+        min-height: $_slider_min_length;
+    }
+}
+

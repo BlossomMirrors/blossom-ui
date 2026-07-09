@@ -1,0 +1,39 @@
+/****************
+ * Print dialog *
+*****************/
+@if $gtkver== "3" {
+    printdialog {
+        paper {
+            color: black;
+            background: white;
+            padding: 0;
+        }
+
+        .dialog-action-box {
+            margin: 12px;
+        }
+    }
+} @else {
+    window.dialog.print {
+        page-thumbnail {
+            color: black;
+            background: white;
+
+            label {
+                color: black;
+            }
+        }
+
+        .drawing {
+            color: $fg_color;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .dialog-action-box {
+            margin: 12px;
+        }
+    }
+}
+

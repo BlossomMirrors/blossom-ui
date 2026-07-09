@@ -167,14 +167,16 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
     color: $tc;
     outline-color: gtkalpha($tc, 0.3);
     background-color: $c;
-    @include _shadows(button-highlight(), $widget_shadow);
+    // kstyle: full-opacity Window AlternateBackground border, always
+    @include _shadows(inset 0 0 0 1px $button_border_color, $widget_shadow);
   }
 
   @else if $t==hover {
     color: $tc;
     outline-color: gtkalpha($tc, 0.3);
-    background-color: gtkshade($c, 1.06);
-    @include _shadows(button-highlight(), $widget_shadow);
+    // kstyle hovers with the Button AlternateBackground fill
+    background-color: if($c==$button_bg_color, $button_hover_bg_color, gtkshade($c, 1.06));
+    @include _shadows(inset 0 0 0 1px $button_border_color, $widget_shadow);
   }
 
   @else if $t==flat-hover {
@@ -184,32 +186,50 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
     @include _shadows(button-highlight($transparent:true), $widget_shadow);
   }
 
+  // accent-tinted button, kstyle renderButtonFrame parity: fill is the accent
+  // mixed into the button base (28%, 38% hovered), ring is full-opacity accent
+  @else if $t==tinted {
+    color: $tc;
+    outline-color: gtkalpha($tc, 0.3);
+    background-color: gtkmix($c, $button_bg_color, 0.28);
+    @include _shadows(inset 0 0 0 1px $c, $widget_shadow);
+  }
+
+  // hovered tinted button, kstyle parity: the fill falls back to the hover
+  // fill, only the full-opacity ring keeps announcing the action color
+  @else if $t==tinted-hover {
+    color: $tc;
+    outline-color: gtkalpha($tc, 0.3);
+    background-color: $button_hover_bg_color;
+    @include _shadows(inset 0 0 0 1px $c, $widget_shadow);
+  }
+
   @else if $t==focused {
-    color: $button_focus_fg_color;
-    outline-color: gtkalpha($button_focus_fg_color, 0.3);
-    background-color: $button_focus_bg_color;
-    @include _shadows(button-highlight(), $widget_shadow);
+    @include button(tinted, $button_focus_bg_color, $tc);
   }
 
   @else if $t==focused-hover {
-    color: $button_focus_fg_color;
-    outline-color: gtkalpha($button_focus_fg_color, 0.3);
-    background-color: gtkshade($button_focus_bg_color, 1.2);
-    @include _shadows(button-highlight(), $widget_shadow);
+    @include button(tinted-hover, $button_focus_bg_color, $tc);
   }
 
   @else if $t==active {
-    color: if($tc==$button_fg_color, $button_active_fg_color, $tc);
-    outline-color: gtkalpha($button_active_fg_color, 0.3);
-    background-color: if($c==$button_bg_color, $button_active_bg_color, gtkshade($c, 0.7));
-    @include _shadows(button-highlight($transparent:true), $widget_shadow);
+    color: $tc;
+    outline-color: gtkalpha($tc, 0.3);
+    @if $c==$button_bg_color {
+      // kstyle pressed/checked: base mixed 20% toward the text color, then
+      // darkened — a neutral pressed look with the normal border; the accent
+      // only ever appears through the ripple animation
+      background-color: gtkshade(gtkmix($button_fg_color, $c, 0.2), 0.95);
+      @include _shadows(inset 0 0 0 1px $button_border_color, $widget_shadow);
+    } @else {
+      background-color: gtkshade(gtkmix($c, $button_bg_color, 0.28), 0.95);
+      @include _shadows(inset 0 0 0 1px $c, $widget_shadow);
+    }
   }
 
   @else if $t==active-hover {
-    color: $button_active_fg_color;
-    outline-color: gtkalpha($button_active_fg_color, 0.3);
-    background-color: gtkshade($button_active_bg_color, 1.1);
-    @include _shadows(button-highlight($transparent:true), $widget_shadow);
+    // Qt: pressed wins over hover, same rendering as active
+    @include button(active, $c, $tc);
   }
 
   @else if $t==flat-active {
@@ -222,12 +242,15 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   @else if $t==insensitive {
     color: if($tc != $button_fg_color, gtkalpha($tc, 0.6), $insensitive_button_fg_color);
     background-color: if($c != $button_bg_color, gtkalpha($c, 0.4), $insensitive_button_bg_color);
-    @include _shadows(button-highlight($transparent:true), $widget_shadow);
+    // kstyle disabled: border at half opacity
+    @include _shadows(inset 0 0 0 1px gtkalpha($button_border_color, 0.5), $widget_shadow);
   }
 
   @else if $t==insensitive-active {
-    color: if($tc==$button_fg_color, gtkalpha($button_active_fg_color, 0.5), gtkalpha($tc, 0.5));
-    background-color: if($c==$button_bg_color, gtkalpha($button_active_bg_color, 0.2), gtkalpha(gtkshade($c, 0.7), 0.2));
+    color: gtkalpha($tc, 0.5);
+    background-color: if($c==$button_bg_color,
+                         gtkalpha(gtkshade(gtkmix($button_fg_color, $c, 0.2), 0.95), 0.4),
+                         gtkalpha(gtkshade(gtkmix($c, $button_bg_color, 0.28), 0.95), 0.4));
     @include _shadows(button-highlight($transparent:true), $widget_shadow);
   }
 
@@ -240,14 +263,14 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   @else if $t==backdrop {
     color: $backdrop_button_fg_color;
     background-color: $backdrop_button_bg_color;
-    @include _shadows(button-highlight(), $widget_shadow);
+    @include _shadows(inset 0 0 0 1px $button_border_color, $widget_shadow);
   }
 
   @else if $t==backdrop-active {
-    color: gtkalpha($button_active_fg_color, 0.8);
-    outline-color: gtkalpha($button_active_fg_color, 0.3);
-    background-color: gtkshade($button_active_bg_color, 0.8);
-    @include _shadows(button-highlight($transparent:true), $widget_shadow);
+    color: $backdrop_button_fg_color;
+    outline-color: gtkalpha($backdrop_button_fg_color, 0.3);
+    background-color: gtkshade(gtkmix($backdrop_button_fg_color, $backdrop_button_bg_color, 0.2), 0.95);
+    @include _shadows(inset 0 0 0 1px $button_border_color, $widget_shadow);
   }
 
   @else if $t==backdrop-insensitive {
@@ -257,8 +280,8 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   }
 
   @else if $t==backdrop-insensitive-active {
-    color: gtkalpha($button_active_fg_color, 0.4);
-    background-color: gtkalpha($button_active_bg_color, 0.2);
+    color: gtkalpha($backdrop_button_fg_color, 0.4);
+    background-color: gtkalpha(gtkshade(gtkmix($backdrop_button_fg_color, $backdrop_button_bg_color, 0.2), 0.95), 0.4);
     @include _shadows(button-highlight($transparent:true), $widget_shadow);
   }
 

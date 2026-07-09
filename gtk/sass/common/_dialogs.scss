@@ -1,0 +1,96 @@
+/***********
+ * Dialogs *
+ ***********/
+window.dialog.message,
+messagedialog {
+    .titlebar {
+        min-height: 20px;
+        background-image: none;
+        background-color: $bg_color;
+        border-top-left-radius: $window_radius;
+        border-top-right-radius: $window_radius;
+    }
+
+    padding: 5px;
+
+    @if $gtkver!= "3" {
+        box.dialog-vbox.vertical {
+            border-spacing: 8px;
+        }
+    }
+
+    & label.title {
+        font-weight: 800;
+        font-size: 150%;
+    }
+
+    &.csd {
+        // rounded bottom border styling for csd version
+        &.background {
+            // bigger radius for better antialiasing
+            border-bottom-left-radius: $window_radius + 1;
+            border-bottom-right-radius: $window_radius + 1;
+        }
+
+        .dialog-action-area {
+            &.linked {
+                margin: 5px;
+            }
+            button {
+                margin: 5px;
+                &,
+                &:first-child,
+                &:last-child,
+                &:only-child {
+                    border-radius: $button_radius;
+                }
+            }
+        }
+    }
+}
+
+filechooser {
+    #pathbarbox {
+        border-bottom: 1px solid $bg_color;
+    }
+
+    @if $gtkver!= "3" {
+        gridview child {
+            border-radius: $radius;
+            margin: 12px;
+
+            &:hover {
+                background-color: gtkalpha(currentColor, 0.04);
+            }
+            &:active {
+                background-color: gtkalpha(currentColor, 0.08);
+            }
+            &:selected {
+                background-color: gtkalpha($selected_bg_color, 0.15);
+                color: inherit;
+            }
+            &:selected:hover {
+                background-color: gtkalpha($selected_bg_color, 0.2);
+            }
+            &:selected:active {
+                background-color: gtkalpha($selected_bg_color, 0.25);
+            }
+
+            & filethumbnail image {
+                filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.3));
+            }
+        }
+    }
+}
+
+@if $gtkver!= "3" {
+    filechooserbutton > button > box {
+        border-spacing: 4px;
+    }
+}
+
+filechooserbutton:drop(active) {
+    box-shadow: none;
+    border-color: transparent;
+}
+
