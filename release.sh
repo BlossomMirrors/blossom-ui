@@ -117,12 +117,29 @@ if command -v flatpak >/dev/null 2>&1; then
     flatpak override --system --filesystem=xdg-config/gtk-4.0:ro 2>/dev/null || true
 fi
 
+if [ -d /var/lib/plasmalogin ]; then
+    if [ -d '%{_datadir}/wallpapers/Blossom Rays' ]; then
+        mkdir -p /var/lib/plasmalogin/wallpapers
+        rm -rf '/var/lib/plasmalogin/wallpapers/Blossom Rays'
+        cp -r '%{_datadir}/wallpapers/Blossom Rays' /var/lib/plasmalogin/wallpapers/
+    fi
+    mkdir -p /var/lib/plasmalogin/.config
+    for f in kdeglobals plasmarc; do
+        if [ ! -e "/var/lib/plasmalogin/.config/\$f" ]; then
+            cp "%{_datadir}/blossomui/plasmalogin/greeter-\$f" "/var/lib/plasmalogin/.config/\$f"
+        fi
+    done
+    chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers /var/lib/plasmalogin/.config 2>/dev/null || true
+fi
+
 %postun
 if [ \$1 -eq 0 ]; then
     if command -v flatpak >/dev/null 2>&1; then
         flatpak override --system --nofilesystem=xdg-config/gtk-3.0 2>/dev/null || true
         flatpak override --system --nofilesystem=xdg-config/gtk-4.0 2>/dev/null || true
     fi
+
+    rm -rf '/var/lib/plasmalogin/wallpapers/Blossom Rays'
 
     if command -v kwriteconfig6 >/dev/null 2>&1; then
         KWRITE=kwriteconfig6
@@ -191,6 +208,9 @@ fi
 %{_libdir}/qt6/qml/org/blossomos/
 %{_libdir}/qt6/plugins/kf6/kirigami/platform/org.blossomos.style.so
 %{_sysconfdir}/xdg/plasma-workspace/env/blossom-qqc2-style.sh
+
+%{_sysconfdir}/plasmalogin.conf.d/10-blossomui.conf
+%{_datadir}/blossomui/plasmalogin/
 
 # CMake Config (Qt6)
 %{_libdir}/cmake/BlossomUI/

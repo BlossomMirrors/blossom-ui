@@ -1,0 +1,9 @@
+[General]
+ColorScheme=BlossomUI Dark
+font=Aspekta,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+
+[KDE]
+LookAndFeelPackage=org.blossomos.ui.dark.desktop
+
+[Icons]
+Theme=BlossomUI
