@@ -107,16 +107,16 @@ COLORED_GLYPHS = {
         ["shield"],
         "#F03E4D",
         [
-            "apps/16/gcr-key.svgz",
-            "apps/22/gcr-key.svgz",
-            "apps/24/gcr-key.svgz",
-            "apps/48/gcr-key.svgz",
-            "apps/symbolic/gcr-key-symbolic.svgz",
-            "apps/16/yast-auth-client.svgz",
-            "apps/22/yast-auth-client.svgz",
-            "apps/24/yast-auth-client.svgz",
-            "apps/48/yast-auth-client.svgz",
-            "apps/symbolic/yast-auth-client-symbolic.svgz",
+            "apps/16/gcr-key.svg",
+            "apps/22/gcr-key.svg",
+            "apps/24/gcr-key.svg",
+            "apps/48/gcr-key.svg",
+            "apps/symbolic/gcr-key-symbolic.svg",
+            "apps/16/yast-auth-client.svg",
+            "apps/22/yast-auth-client.svg",
+            "apps/24/yast-auth-client.svg",
+            "apps/48/yast-auth-client.svg",
+            "apps/symbolic/yast-auth-client-symbolic.svg",
         ],
     ),
 }
@@ -127,10 +127,10 @@ EXTRAS = {
     "source/custom/dolphin.svg": (
         "org.kde.dolphin",
         [
-            "apps/48/org.kde.dolphin.svgz",
-            "apps/48/system-file-manager.svgz",
-            "apps/64/org.kde.dolphin.svgz",
-            "apps/64/system-file-manager.svgz",
+            "apps/48/org.kde.dolphin.svg",
+            "apps/48/system-file-manager.svg",
+            "apps/64/org.kde.dolphin.svg",
+            "apps/64/system-file-manager.svg",
         ],
     ),
 }
@@ -239,16 +239,20 @@ def build_folder(base_svg, color=None, overlay=None):
 
 
 def save_svgz(svg_content, name):
-    path = OUTPUT_DIR / f"{name}.svgz"
-    if path.is_symlink() or path.exists():
-        path.unlink()
-    with gzip.open(path, 'wt', encoding='utf-8') as f:
+    # plain svg despite the name: GTK's icon lookup only accepts
+    # .png/.svg/.xpm, .svgz is a KDE-only extension
+    path = OUTPUT_DIR / f"{name}.svg"
+    for ext in ('.svg', '.svgz'):
+        old = path.with_suffix(ext)
+        if old.is_symlink() or old.exists():
+            old.unlink()
+    with open(path, 'w', encoding='utf-8') as f:
         f.write(svg_content)
     print(f"Created: {path}")
 
 
 def create_symlink(source_name, target):
-    source_path = (OUTPUT_DIR / f"{source_name}.svgz").resolve()
+    source_path = (OUTPUT_DIR / f"{source_name}.svg").resolve()
     target_path = Path(target)
     target_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -294,8 +298,8 @@ def main():
         for name, color in COLORS.items():
             svg = SMALL_TEMPLATE.format(color=color, inner=inner)
             save_svgz(svg, f"{name}-small")
-            create_symlink(f"{name}-small", f"places/24/{name}.svgz")
-            create_symlink(f"{name}-small", f"places/24/{name}-symbolic.svgz")
+            create_symlink(f"{name}-small", f"places/24/{name}.svg")
+            create_symlink(f"{name}-small", f"places/24/{name}-symbolic.svg")
     else:
         print("Warning: could not fetch lucide folder glyph, "
               "skipping small colored folders", file=sys.stderr)
@@ -329,7 +333,7 @@ def main():
 
     for name, source_name in sorted(all_names.items()):
         for size in SIZES:
-            create_symlink(source_name, f"places/{size}/{name}.svgz")
+            create_symlink(source_name, f"places/{size}/{name}.svg")
 
     print(f"\n✓ Generated {len(TYPES) + len(COLORS) + 1} folder icons, "
           f"{len(all_names) * len(SIZES)} symlinks")

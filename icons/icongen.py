@@ -6,7 +6,7 @@ Fetches icons from Lucide icon library and applies KDE theme text color.
 Usage:
     python icongen.py <icon-name> [additional/symlink/path...]
 
-The source icon is always saved to source/<icon-name>.svgz.
+The source icon is always saved to source/<icon-name>.svg.
 All target paths become symlinks pointing to the source file.
 
 Example:
@@ -121,19 +121,21 @@ def apply_kde_theme_colors(svg_content, size=16):
 def save_icon(svg_content, target_path):
     path = Path(target_path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     svg_path = path.with_suffix('.svg')
     svgz_path = path.with_suffix('.svgz')
-    
+
     if svg_path.is_symlink() or svg_path.exists():
         svg_path.unlink()
     if svgz_path.is_symlink() or svgz_path.exists():
         svgz_path.unlink()
-    
-    with gzip.open(svgz_path, 'wt', encoding='utf-8') as f:
+
+    # plain svg: GTK's icon lookup only accepts .png/.svg/.xpm, .svgz is a
+    # KDE-only extension and makes icons invisible to GTK apps
+    with open(svg_path, 'w', encoding='utf-8') as f:
         f.write(svg_content)
-    
-    print(f"Created: {svgz_path}")
+
+    print(f"Created: {svg_path}")
 
 
 def create_symlink(source, target):
@@ -216,7 +218,7 @@ Examples:
     )
 
     parser.add_argument('icon_name', help='Lucide icon name to fetch')
-    parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<icon-name>.svgz is always the source)')
+    parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<icon-name>.svg is always the source)')
     parser.add_argument('--map', metavar='FILE', help='Icon mapping JSON file to update')
     parser.add_argument('--from-map', action='store_true',
                         help='Use source and target paths from mapping file (requires --map)')

@@ -58,15 +58,24 @@ scrolledwindow {
         background-color: transparent;
     }
 
-    // inset the main content card from the window edges, kstyle-style
-    // (popovers are separate surfaces so this can't leak into dropdown lists;
-    // .navigation-sidebar is excluded since sidebars sit flush against the edge)
-    &:not(.navigation-sidebar) {
+    &:not(.navigation-sidebar):not(.sidebar) {
         > .view,
         > viewport > .view {
-            margin: 8px;
+            border: 8px solid $bg_color;
+            background-clip: padding-box;
+            border-radius: $radius + 8px;
         }
     }
+}
+
+window.popup scrolledwindow > .view,
+window.popup scrolledwindow > viewport > .view,
+popover scrolledwindow > .view,
+popover scrolledwindow > viewport > .view,
+menu scrolledwindow > .view {
+    border: none;
+    background-clip: border-box;
+    border-radius: $radius;
 }
 
 //vbox and hbox separators
@@ -86,4 +95,3 @@ separator {
         }
     }
 }
-

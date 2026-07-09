@@ -1,0 +1,20 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style
+            id="current-color-scheme"
+            type="text/css">
+
+            .ColorScheme-Text
+            {
+                color:#232629;
+            }
+
+        </style>
+    </defs>
+
+<path d="M15.2217 3C16.51 3.00021 17.5545 3.94012 17.5547 5.09961V6.90039C17.5545 8.05988 16.51 8.99979 15.2217 9H7.33301C6.04464 8.99984 5.00023 8.05991 5 6.90039V5.09961C5.00023 3.94009 6.04464 3.00016 7.33301 3H15.2217ZM18.5049 4.2002C18.7782 4.20042 18.9997 4.39955 19 4.64551V7.05371C18.9999 7.29985 18.7783 7.49978 18.5049 7.5C18.2312 7.5 18.0089 7.29998 18.0088 7.05371V4.64551C18.0091 4.39941 18.2314 4.2002 18.5049 4.2002Z" fill="#FF5555" fill-opacity="0.25"/>
+<path d="M6.66699 8.91248C5.70331 8.65423 5 7.85099 5 6.89978V5.09998C5 4.1487 5.70322 3.34547 6.66699 3.08728V8.91248Z" fill="#FF5555"/>
+<path d="M11.3333 7.79993H11.34" stroke="#640D0D" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.3333 4.19995V6.59995" stroke="#640D0D" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="ColorScheme-Text" d="M12 13V15M12 11C13.933 11 15.5 12.567 15.5 14.5V17.5C15.5 19.433 13.933 21 12 21C10.067 21 8.5 19.433 8.5 17.5V14.5C8.5 12.567 10.067 11 12 11Z" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

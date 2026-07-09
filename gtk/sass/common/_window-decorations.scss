@@ -109,6 +109,13 @@ $_tooltip_shadow:
             @include _solid-csd;
         }
     }
+
+    // decoration's radius only shapes the frame/shadow; the window content
+    // itself paints square unless the window node is rounded too (the top
+    // corners come from the headerbar rules)
+    window.csd:not(.maximized):not(.fullscreen):not(.tiled):not(.tiled-top):not(.tiled-right):not(.tiled-bottom):not(.tiled-left):not(.popup):not(.solid-csd) {
+        border-radius: 0 0 $window_radius $window_radius;
+    }
 } @else {
     window {
         border-width: 0px;
