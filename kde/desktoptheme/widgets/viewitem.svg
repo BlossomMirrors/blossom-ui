@@ -138,8 +138,7 @@
   </g>
   <g
      id="selected-topleft"
-     transform="translate(-91.000017,65)"
-     style="opacity:1">
+     transform="translate(-91.000017,65)">
     <path
        id="rect1039-3"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
@@ -149,8 +148,7 @@
   </g>
   <g
      id="selected-top"
-     transform="translate(-91.000017,65)"
-     style="opacity:0.18">
+     transform="translate(-91.000017,65)">
     <rect
        id="rect1388-6"
        width="32"
@@ -160,12 +158,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="selected-center"
-     transform="matrix(1,0,0,0.87499974,-91.000017,64.374995)"
-     style="opacity:0.18">
+     transform="matrix(1,0,0,0.87499974,-91.000017,64.374995)">
     <rect
        id="rect1514-7"
        width="32"
@@ -175,12 +173,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="selected-bottom"
-     transform="translate(-91.000017,99.00002)"
-     style="opacity:0.18">
+     transform="translate(-91.000017,99.00002)">
     <rect
        id="rect1618-5"
        width="32"
@@ -190,22 +188,22 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="selected-topright"
-     transform="rotate(90,77.999989,-2.0000105)"
-     style="opacity:0.18">
+     transform="rotate(90,77.999989,-2.0000105)">
     <path
        id="path1622-3"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="selected-bottomleft"
-     transform="matrix(1,0,0,-1,-91.000017,83)"
-     style="opacity:1">
+     transform="matrix(1,0,0,-1,-91.000017,83)">
     <path
        id="path1626-5"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
@@ -215,13 +213,13 @@
   </g>
   <g
      id="selected-bottomright"
-     transform="matrix(0,-1,-1,0,75.999979,228.00002)"
-     style="opacity:0.18">
+     transform="matrix(0,-1,-1,0,75.999979,228.00002)">
     <path
        id="path1630-6"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="selected-left">
@@ -240,8 +238,7 @@
   </g>
   <g
      id="selected-right"
-     transform="matrix(0,0.87499974,-1,0,75.999978,-62.499965)"
-     style="opacity:0.18">
+     transform="matrix(0,0.87499974,-1,0,75.999978,-62.499965)">
     <rect
        id="rect1638-9"
        width="32"
@@ -251,22 +248,22 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-topleft"
-     transform="translate(-30,65)"
-     style="opacity:0.18">
+     transform="translate(-30,65)">
     <path
        id="rect1039-1"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-top"
-     transform="translate(-30,65)"
-     style="opacity:0.18">
+     transform="translate(-30,65)">
     <rect
        id="rect1388-2"
        width="32"
@@ -276,12 +273,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-center"
-     transform="matrix(1,0,0,0.87499974,-30,64.374995)"
-     style="opacity:0.18">
+     transform="matrix(1,0,0,0.87499974,-30,64.374995)">
     <rect
        id="rect1514-70"
        width="32"
@@ -291,12 +288,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-bottom"
-     transform="translate(-30,99.00002)"
-     style="opacity:0.18">
+     transform="translate(-30,99.00002)">
     <rect
        id="rect1618-9"
        width="32"
@@ -306,42 +303,42 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-topright"
-     transform="rotate(90,108.5,28.499999)"
-     style="opacity:0.18">
+     transform="rotate(90,108.5,28.499999)">
     <path
        id="path1622-36"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-bottomleft"
-     transform="matrix(1,0,0,-1,-30,83)"
-     style="opacity:0.18">
+     transform="matrix(1,0,0,-1,-30,83)">
     <path
        id="path1626-0"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-bottomright"
-     transform="matrix(0,-1,-1,0,136.99999,228.00002)"
-     style="opacity:0.18">
+     transform="matrix(0,-1,-1,0,136.99999,228.00002)">
     <path
        id="path1630-62"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-left"
-     transform="matrix(0,0.87499974,-1,0,98.999982,-62.499965)"
-     style="opacity:0.18">
+     transform="matrix(0,0.87499974,-1,0,98.999982,-62.499965)">
     <rect
        id="rect1634-6"
        width="32"
@@ -351,12 +348,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="hover-right"
-     transform="matrix(0,0.87499974,-1,0,137,-62.499965)"
-     style="opacity:0.18">
+     transform="matrix(0,0.87499974,-1,0,137,-62.499965)">
     <rect
        id="rect1638-1"
        width="32"
@@ -366,22 +363,22 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.18" />
   </g>
   <g
      id="selected+hover-topleft"
-     transform="translate(33.999983,65)"
-     style="opacity:0.28">
+     transform="translate(33.999983,65)">
     <path
        id="rect1039-8"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-top"
-     transform="translate(33.999983,65)"
-     style="opacity:0.28">
+     transform="translate(33.999983,65)">
     <rect
        id="rect1388-7"
        width="32"
@@ -391,12 +388,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-center"
-     transform="matrix(1,0,0,0.87499974,33.999983,64.374995)"
-     style="opacity:0.28">
+     transform="matrix(1,0,0,0.87499974,33.999983,64.374995)">
     <rect
        id="rect1514-9"
        width="32"
@@ -406,12 +403,12 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-bottom"
-     transform="translate(33.999983,99.00002)"
-     style="opacity:0.28">
+     transform="translate(33.999983,99.00002)">
     <rect
        id="rect1618-2"
        width="32"
@@ -421,42 +418,42 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-topright"
-     transform="rotate(90,140.49999,60.499988)"
-     style="opacity:0.28">
+     transform="rotate(90,140.49999,60.499988)">
     <path
        id="path1622-0"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-bottomleft"
-     transform="matrix(1,0,0,-1,33.999983,83)"
-     style="opacity:0.28">
+     transform="matrix(1,0,0,-1,33.999983,83)">
     <path
        id="path1626-2"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-bottomright"
-     transform="matrix(0,-1,-1,0,200.99998,228.00002)"
-     style="opacity:0.28">
+     transform="matrix(0,-1,-1,0,200.99998,228.00002)">
     <path
        id="path1630-3"
        d="m 140,-11 c -3.324,0 -6,2.676 -6,6 h 6 z"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-right"
-     transform="matrix(0,0.87499974,-1,0,200.99998,-62.499971)"
-     style="opacity:0.28">
+     transform="matrix(0,0.87499974,-1,0,200.99998,-62.499971)">
     <rect
        id="rect1638-5"
        width="32"
@@ -466,7 +463,8 @@
        rx="0"
        ry="0"
        class="ColorScheme-Highlight"
-       fill="currentColor" />
+       fill="currentColor"
+       style="opacity:0.28" />
   </g>
   <g
      id="selected+hover-left">
@@ -483,4 +481,17 @@
        transform="rotate(90)"
        style="opacity:0.28;stroke-width:0.935414" />
   </g>
+  <!-- Presence-only hint: consumers that draw their own selected-state
+       icon/text color (e.g. Kickoff's sidebar) should tint it with
+       ColorScheme-Highlight instead of leaving it at the normal text
+       color, matching BlossomUI's own visual language. Themes that don't
+       define this element (e.g. stock Breeze) get plain text-colored
+       icon/text on a highlighted row instead. -->
+  <rect
+     id="hint-use-highlighted-text"
+     x="0"
+     y="0"
+     width="1"
+     height="1"
+     style="opacity:0;fill:none;stroke:none" />
 </svg>
