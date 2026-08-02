@@ -17,7 +17,6 @@ import sys
 import os
 import gzip
 import json
-import requests
 import argparse
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -25,8 +24,11 @@ from xml.etree import ElementTree as ET
 
 LUCIDE_BASE_URL = "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons"
 
+SVG_NS = 'http://www.w3.org/2000/svg'
+
 
 def fetch_lucide_icon(icon_name):
+    import requests
     url = f"{LUCIDE_BASE_URL}/{icon_name}.svg"
     try:
         response = requests.get(url, timeout=10)
@@ -116,6 +118,103 @@ def apply_kde_theme_colors(svg_content, size=16):
                 elem.set('style', ';'.join(new_style_parts))
     
     return ET.tostring(root, encoding='unicode', method='xml')
+
+
+def outline_strokes(svg_content):
+    """Convert stroked shapes to filled paths.
+
+    GTK recolors symbolic icons by force-filling every shape (fill: <fg>
+    !important on rect/circle/path/...), which turns stroke-based Lucide icons
+    into solid blobs. KDE recolors via the ColorScheme-Text class, which works
+    for fills exactly like breeze, so outlined icons render right everywhere.
+    """
+    try:
+        from picosvg.svg import SVG as PicoSVG
+    except ImportError:
+        print("Error: picosvg is required (pip install picosvg)", file=sys.stderr)
+        sys.exit(1)
+
+    ET.register_namespace('', SVG_NS)
+    root = ET.fromstring(svg_content)
+
+    width = root.get('width', '16')
+    height = root.get('height', '16')
+    viewbox = root.get('viewBox')
+
+    # picosvg does not inherit presentation attributes from the root element,
+    # so push them down onto each shape before converting
+    inherited = {}
+    for attr in ('stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'fill'):
+        if attr in root.attrib:
+            inherited[attr] = root.attrib.pop(attr)
+
+    for defs in root.findall(f'{{{SVG_NS}}}defs'):
+        root.remove(defs)
+
+    shape_tags = {'path', 'circle', 'rect', 'ellipse', 'line', 'polyline', 'polygon'}
+    has_stroke = False
+    for elem in root.iter():
+        tag = elem.tag.split('}')[-1]
+        if tag not in shape_tags:
+            continue
+        elem.attrib.pop('class', None)
+        elem.attrib.pop('style', None)
+        for attr, value in inherited.items():
+            if attr not in elem.attrib:
+                elem.set(attr, value)
+        for attr in ('stroke', 'fill'):
+            if elem.get(attr) == 'currentColor':
+                elem.set(attr, '#000000')
+        if elem.get('stroke', 'none') != 'none':
+            has_stroke = True
+
+    if not has_stroke:
+        return svg_content
+
+    pico = PicoSVG.fromstring(ET.tostring(root, encoding='unicode')).topicosvg()
+    out = ET.fromstring(pico.tostring())
+    for empty_defs in out.findall(f'{{{SVG_NS}}}defs'):
+        if len(empty_defs) == 0:
+            out.remove(empty_defs)
+    out.set('width', width)
+    out.set('height', height)
+    if viewbox:
+        out.set('viewBox', viewbox)
+
+    defs = ET.Element('defs')
+    style = ET.SubElement(defs, 'style')
+    style.set('id', 'current-color-scheme')
+    style.set('type', 'text/css')
+    style.text = '.ColorScheme-Text { color: #232629; }'
+    out.insert(0, defs)
+
+    for elem in out.iter():
+        if elem.tag.split('}')[-1] != 'path':
+            continue
+        elem.set('class', 'ColorScheme-Text')
+        elem.set('fill', 'currentColor')
+        elem.attrib.pop('stroke', None)
+
+    return ET.tostring(out, encoding='unicode', method='xml')
+
+
+def reprocess_sources(src_dir):
+    converted = 0
+    failed = []
+    for svg_path in sorted(Path(src_dir).glob('*.svg')):
+        content = svg_path.read_text()
+        try:
+            result = outline_strokes(content)
+        except Exception as e:
+            failed.append((svg_path.name, e))
+            continue
+        if result != content:
+            svg_path.write_text(result)
+            converted += 1
+    print(f"Outlined {converted} stroke-based icons in {src_dir}")
+    for name, err in failed:
+        print(f"  FAILED {name}: {err}", file=sys.stderr)
+    return len(failed) == 0
 
 
 def save_icon(svg_content, target_path):
@@ -217,13 +316,22 @@ Examples:
         """
     )
 
-    parser.add_argument('icon_name', help='Lucide icon name to fetch')
+    parser.add_argument('icon_name', nargs='?', help='Lucide icon name to fetch')
     parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<icon-name>.svg is always the source)')
     parser.add_argument('--map', metavar='FILE', help='Icon mapping JSON file to update')
     parser.add_argument('--from-map', action='store_true',
                         help='Use source and target paths from mapping file (requires --map)')
+    parser.add_argument('--reprocess', action='store_true',
+                        help='Convert all existing source/ icons from strokes to filled paths (GTK compatibility)')
 
     args = parser.parse_args()
+
+    if args.reprocess:
+        src = Path(__file__).parent / 'source'
+        sys.exit(0 if reprocess_sources(src) else 1)
+
+    if not args.icon_name:
+        parser.error('icon_name is required unless --reprocess is used')
 
     # Handle --from-map mode
     if args.from_map:
@@ -265,6 +373,9 @@ Examples:
 
     print("Applying KDE theme colors...")
     themed_svg = apply_kde_theme_colors(svg_content)
+
+    print("Outlining strokes for GTK compatibility...")
+    themed_svg = outline_strokes(themed_svg)
 
     # Save source icon
     save_icon(themed_svg, source_path)

@@ -199,7 +199,7 @@ row.combo {
       margin: 0 0 6px 0;
 
       + scrolledwindow {
-        //@include undershoot(top);
+        @include undershoot(top);
       }
     }
   }
@@ -222,7 +222,8 @@ row.combo {
 %boxed_list_row {
   @include focus-ring($offset: -1px, $transition: $row_transition);
 
-  //border-bottom: 1px solid var(--card-shade-color);
+  margin: 0;
+  border-radius: 0;
 
   &:not(:selected).activatable {
     &:hover {

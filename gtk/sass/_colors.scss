@@ -84,6 +84,7 @@ $titlebar_fg_color: gtkcolor("@theme_titlebar_foreground");
 $titlebar_bg_color: gtkcolor("@theme_titlebar_background");
 
 $menu_bg_color: $base_color;
+$menu_opacity: 1;
 $menu_fg_color: $text_color;
 $menu_selected_bg_color: gtkcolor("@theme_button_decoration_focus");
 $menu_selected_fg_color: gtkcolor("@theme_button_foreground_active");
@@ -212,8 +213,12 @@ $backdrop_menu_bg_color: $menu_bg_color;
 $suggested_bg_color: $selected_bg_color;
 $close_button_bg: gtkcolor("@close_button_bg");
 
-// kstyle hover fill and button border: Button AlternateBackground / Window
-// AlternateBackground (identical in the BlossomUI schemes), synced by our
-// patched kde-gtk-config with a static fallback in _colors-static.scss.in
+// kstyle hover fill: Button AlternateBackground, synced by our patched
+// kde-gtk-config with a static fallback in _colors-static.scss.in. With a
+// Plasma accent color set this becomes the accent, matching kstyle hovers.
 $button_hover_bg_color: gtkcolor("@theme_button_background_alternate");
-$button_border_color: $button_hover_bg_color;
+// kstyle button border: Window AlternateBackground. Plasma accent-tints
+// Button AlternateBackground, so it can no longer double as the border, and
+// kde-gtk-config exports no Window Alternate — derive it from bg/fg instead
+// (12% fg over bg reproduces NEUTRAL_700/200 in the BlossomUI schemes).
+$button_border_color: gtkmix($fg_color, $bg_color, 0.12);

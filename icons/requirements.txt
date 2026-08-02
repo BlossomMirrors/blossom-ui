@@ -1,2 +1,3 @@
 requests>=2.31.0
+picosvg>=0.22.0
 # or install with yay -Sy python-requests and then just run ./icongen.py
