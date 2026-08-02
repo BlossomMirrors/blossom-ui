@@ -68,11 +68,11 @@ scrolledwindow {
     }
 }
 
-window.popup scrolledwindow > .view,
-window.popup scrolledwindow > viewport > .view,
-popover scrolledwindow > .view,
-popover scrolledwindow > viewport > .view,
-menu scrolledwindow > .view {
+window.popup scrolledwindow:not(.navigation-sidebar):not(.sidebar) > .view,
+window.popup scrolledwindow:not(.navigation-sidebar):not(.sidebar) > viewport > .view,
+popover scrolledwindow:not(.navigation-sidebar):not(.sidebar) > .view,
+popover scrolledwindow:not(.navigation-sidebar):not(.sidebar) > viewport > .view,
+menu scrolledwindow:not(.navigation-sidebar):not(.sidebar) > .view {
     border: none;
     background-clip: border-box;
     border-radius: $radius;

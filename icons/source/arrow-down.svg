@@ -1,3 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs><path d="m6 9 6 6 6-6" class="ColorScheme-Text" stroke="currentColor" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0"><defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs><path fill="currentColor" d="M6.707,8.293 L12,13.586 L17.293,8.293 Q17.586,8 18,8 Q18.414,8 18.707,8.293 Q19,8.586 19,9 Q19,9.414 18.707,9.707 L12.707,15.707 Q12.414,16 12,16 Q11.586,16 11.293,15.707 L5.293,9.707 Q5,9.414 5,9 Q5,8.586 5.293,8.293 Q5.586,8 6,8 Q6.414,8 6.707,8.293 Z" class="ColorScheme-Text" /></svg>

@@ -416,7 +416,10 @@ button {
     {
         @at-root %#{$b_type}-button,
             &.#{$b_type} {
-            @include button(tinted, $b_color);
+            // 60% fill against the full-opacity ring mirrors the titlebar
+            // close button (60% fill, full border) so both danger reds sit
+            // at a similar brightness
+            @include button(tinted, $b_color, $mix: 0.6);
 
             &.flat {
                 @include button(undecorated);
@@ -425,7 +428,7 @@ button {
             }
 
             &:hover {
-                @include button(tinted-hover, $b_color);
+                @include button(tinted-hover, $b_color, $mix: 0.6);
             }
 
             // kstyle parity: pressing never floods the button with the

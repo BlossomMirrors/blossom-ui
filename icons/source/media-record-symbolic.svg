@@ -1,3 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs><circle cx="12" cy="12" r="10" class="ColorScheme-Text" stroke="currentColor" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0"><defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs><path fill="currentColor" d="M23,12 Q23,16.556 19.778,19.778 Q16.556,23 12,23 Q7.444,23 4.222,19.778 Q1,16.556 1,12 Q1,7.444 4.222,4.222 Q7.444,1 12,1 Q16.556,1 19.778,4.222 Q23,7.444 23,12 Z M21,12 Q21,8.272 18.364,5.636 Q15.728,3 12,3 Q8.272,3 5.636,5.636 Q3,8.272 3,12 Q3,15.728 5.636,18.364 Q8.272,21 12,21 Q15.728,21 18.364,18.364 Q21,15.728 21,12 Z" class="ColorScheme-Text" /></svg>

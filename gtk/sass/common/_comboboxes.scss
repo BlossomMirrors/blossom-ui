@@ -58,11 +58,9 @@ combobox {
 
     // newstyle
     popover {
-        margin-top: 6px;
         padding: 0;
 
         listview {
-            margin: 8px;
 
             > row.activatable {
                 padding: 8px;
@@ -115,4 +113,3 @@ combobox {
 .linked.vertical > combobox:only-child > box > button.combo {
     @extend %linked_vertical_only_child;
 }
-

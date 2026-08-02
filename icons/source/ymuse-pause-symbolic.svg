@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs><rect x="14" y="3" width="5" height="18" rx="1" class="ColorScheme-Text" stroke="currentColor" />
-  <rect x="5" y="3" width="5" height="18" rx="1" class="ColorScheme-Text" stroke="currentColor" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0"><defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs><path fill="currentColor" d="M15,2 L18,2 Q20,2 20,4 L20,20 Q20,22 18,22 L15,22 Q13,22 13,20 L13,4 Q13,2 15,2 Z M15,4 L15,20 L18,20 L18,4 Z" class="ColorScheme-Text" /><path fill="currentColor" d="M6,2 L9,2 Q11,2 11,4 L11,20 Q11,22 9,22 L6,22 Q4,22 4,20 L4,4 Q4,2 6,2 Z M6,4 L6,20 L9,20 L9,4 Z" class="ColorScheme-Text" /></svg>

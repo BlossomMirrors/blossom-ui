@@ -21,7 +21,7 @@ DialogDefault=32
 
 Directories=animations/16,animations/22,apps/16,apps/22,apps/24,apps/32,apps/48,apps/64,apps/symbolic,actions/16,actions/22,actions/24,actions/symbolic,categories/16,categories/22,categories/symbolic,devices/16,devices/22,devices/symbolic,emblems/symbolic,places/16,places/22,places/32,places/48,places/64,places/96,status/16,status/22,status/24,status/32,status/48,status/64,status/symbolic
 
-ScaledDirectories=places/16@2x,places/16@3x,places/22@2x,places/22@3x
+ScaledDirectories=places/16@2x,places/16@3x,places/22@2x,places/22@3x,actions/16@2x,actions/16@3x,actions/22@2x,actions/22@3x
 
 [animations/16]
 Context=Animations
@@ -139,9 +139,33 @@ Context=Actions
 Size=16
 Type=Fixed
 
+[actions/16@2x]
+Context=Actions
+Size=16
+Scale=2
+Type=Fixed
+
+[actions/16@3x]
+Context=Actions
+Size=16
+Scale=3
+Type=Fixed
+
 [actions/22]
 Context=Actions
 Size=22
+Type=Fixed
+
+[actions/22@2x]
+Context=Actions
+Size=22
+Scale=2
+Type=Fixed
+
+[actions/22@3x]
+Context=Actions
+Size=22
+Scale=3
 Type=Fixed
 
 [actions/24]
