@@ -7,6 +7,7 @@ flatpak-build-qt5/
 flatpak-build-qt6/
 .flatpak-builder/
 *.tar.gz
+.cache
 
 # OS
 .DS_Store

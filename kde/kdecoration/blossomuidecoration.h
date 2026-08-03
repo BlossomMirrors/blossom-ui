@@ -151,7 +151,7 @@ private:
   std::shared_ptr<QPainterPath> m_windowPath = std::make_shared<QPainterPath>();
 
   //*frame corner radius, scaled according to DPI
-  qreal m_scaledCornerRadius = 3;
+  qreal m_scaledCornerRadius = 12;
 };
 
 bool Decoration::hasBorders() const {

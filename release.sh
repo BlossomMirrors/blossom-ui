@@ -84,6 +84,12 @@ This package includes both Qt5 and Qt6 application styles:
 - Wallpapers
 - Color Schemes
 
+%pretrans -p <lua>
+st = posix.stat("/usr/share/icons/BlossomUI/actions/22")
+if st and st.type == 'link' then
+    os.remove("/usr/share/icons/BlossomUI/actions/22")
+end
+
 %prep
 # nothing to unpack: binaries come from the incremental CMake tree in build/rpm
 
@@ -165,42 +171,51 @@ fi
 # Qt6 Application Style
 %{_libdir}/qt6/plugins/styles/blossomui6.so
 %{_libdir}/qt6/plugins/kstyle_config/blossomuistyleconfig.so
+
 # Qt6 Window Decoration
 %{_libdir}/qt6/plugins/org.kde.kdecoration3/org.blossomos.ui.so
 %{_libdir}/qt6/plugins/org.kde.kdecoration3.kcm/kcm_blossomuidecoration.so
-# Qt6 Common Library
 
 # Qt5 Application Style
 %{_libdir}/qt5/plugins/styles/blossomui5.so
-# Qt5 Common Library
 
 # KStyle Theme Files
 %{_datadir}/kstyle/themes/blossomui.themerc
+
 # Color Schemes
 %{_datadir}/color-schemes/BlossomUIDark.colors
 %{_datadir}/color-schemes/BlossomUILight.colors
 %{_datadir}/color-schemes/BlossomUIDarkOLED.colors
 %{_datadir}/konsole/BlossomUI.colorscheme
+
 # Desktop Entries
 %{_datadir}/applications/blossomuistyleconfig.desktop
 %{_datadir}/applications/kcm_blossomuidecoration.desktop
+
 # Settings Binary
 %{_bindir}/blossomui-settings6
+
 # Icons
 %{_datadir}/icons/hicolor/scalable/apps/blossomui-settings.svgz
 %{_datadir}/icons/BlossomUI/
+
 # Plasma Look-and-Feel (Global Themes)
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.light.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.dark.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.darkoled.desktop/
+
 # Translations
 %{_datadir}/locale/*/LC_MESSAGES/blossomui_ksplash.mo
+
 # Plasma Desktop Theme
 %{_datadir}/plasma/desktoptheme/BlossomUI/
+
 # Wallpapers
 %{_datadir}/wallpapers/
+
 # Fonts
 %{_datadir}/fonts/blossomui/
+
 # GTK Theme
 %{_datadir}/themes/BlossomUI/
 
@@ -214,6 +229,7 @@ fi
 
 # CMake Config (Qt6)
 %{_libdir}/cmake/BlossomUI/
+
 # KServices (Qt6)
 %{_datadir}/kservices6/blossomuidecoration*.desktop
 

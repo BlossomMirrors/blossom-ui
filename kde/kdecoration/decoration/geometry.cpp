@@ -255,7 +255,7 @@ void Decoration::recalculateBorders() {
 
 void Decoration::setScaledCornerRadius() {
   m_scaledCornerRadius =
-      m_internalSettings->cornerRadius() * window()->nextScale();
+      m_internalSettings->cornerRadius();
 }
 
 void Decoration::updateScale() {
