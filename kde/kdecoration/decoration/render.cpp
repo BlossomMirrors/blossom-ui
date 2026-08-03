@@ -39,15 +39,15 @@ void Decoration::calculateWindowAndTitleBarShapes(const bool windowShapeOnly) {
       m_titleBarPath->addRect(m_titleRect);
     } else {
       QPainterPath path;
-      const qreal radius = m_scaledCornerRadius;
+      const qreal radius = m_scaledCornerRadius * 2;
 
       const qreal W = m_titleRect.width();
       const qreal bottom = m_titleRect.bottom();
       path.moveTo(-1.0, bottom);
       path.lineTo(-1.0, radius - 1.0);
-      path.arcTo(QRectF(-1.0, -1.0, radius * 2, radius * 2), 180, -90);
+      path.arcTo(QRectF(-1.0, -1.0, radius, radius), 180, -90);
       path.lineTo(W + 1.0 - radius, -1.0);
-      path.arcTo(QRectF(W + 1.0 - radius * 2, -1.0, radius * 2, radius * 2), 90,
+      path.arcTo(QRectF(W + 1.0 - radius, -1.0, radius, radius), 90,
                  -90);
       path.lineTo(W + 1.0, bottom);
       path.closeSubpath();
