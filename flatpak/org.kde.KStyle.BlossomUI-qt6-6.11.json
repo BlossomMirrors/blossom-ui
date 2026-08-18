@@ -1,0 +1,35 @@
+{
+  "id": "org.kde.KStyle.BlossomUI",
+  "branch": "6.11",
+  "runtime": "org.kde.Platform",
+  "build-extension": true,
+  "sdk": "org.kde.Sdk",
+  "runtime-version": "6.11",
+  "appstream-compose": false,
+  "separate-locales": false,
+  "modules": [
+    {
+      "name": "BlossomUI",
+      "buildsystem": "cmake",
+      "builddir": true,
+      "config-opts": [
+        "-DCMAKE_INSTALL_PREFIX=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DKDE_INSTALL_PLUGINDIR=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DKDE_INSTALL_KCONFMODULEDIR=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DKDE_INSTALL_KCMMODULEDIR=/usr/share/runtime/lib/plugins/BlossomUI/qt6/plugins",
+        "-DKDE_INSTALL_DATADIR=/usr/share/runtime/lib/plugins/BlossomUI/share",
+        "-DQT_PLUGINS_DIR=/usr/share/runtime/lib/plugins/BlossomUI",
+        "-DBUILD_QT6=ON",
+        "-DBUILD_QT5=OFF",
+        "-DWITH_DECORATIONS=OFF",
+        "-DFOR_FLATPAK=ON"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "blossomui-flatpak-source.tar.gz"
+        }
+      ]
+    }
+  ]
+}
