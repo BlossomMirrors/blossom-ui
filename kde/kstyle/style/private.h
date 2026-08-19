@@ -2,6 +2,7 @@
 
 #include "blossomui.h"
 #include "blossomuistyleconfigdata.h"
+#include "itemview.h"
 
 #include <QAbstractItemDelegate>
 #include <QAbstractItemModel>
@@ -55,7 +56,7 @@ class ComboBoxItemDelegate : public QItemDelegate {
 public:
   explicit ComboBoxItemDelegate(QAbstractItemView *parent)
       : QItemDelegate(parent), _proxy(parent->itemDelegate()),
-        _itemMargin(BlossomUI::Metrics::ItemView_ItemMarginWidth) {}
+        _itemMargin(BlossomUI::Render::ItemView_ItemMarginWidth) {}
 
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
              const QModelIndex &index) const override {

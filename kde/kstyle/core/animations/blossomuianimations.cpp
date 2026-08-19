@@ -18,6 +18,7 @@
  *************************************************************************/
 
 #include "blossomuianimations.h"
+#include "blossomui.h"
 #include "blossomuipropertynames.h"
 #include "blossomuistyleconfigdata.h"
 
@@ -45,7 +46,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 Animations::Animations(QObject *parent)
     : QObject(parent)
 {
@@ -65,26 +65,21 @@ Animations::Animations(QObject *parent)
     registerEngine(_dialEngine = new DialEngine(this));
 }
 
-//____________________________________________________________
 void Animations::setupEngines()
 {
-    // apply KDE global animation speed (kdeglobals [General] AnimationDurationFactor)
-    const KConfigGroup generalGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("General"));
+    // apply KDE global animation speed (kdeglobals [KDE] AnimationDurationFactor)
+    const KConfigGroup generalGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("KDE"));
     const qreal globalFactor = generalGroup.readEntry("AnimationDurationFactor", 1.0);
-    const int baseDuration = StyleConfigData::animationsDuration();
-    const int animationsDuration = qRound(baseDuration * qBound(0.0, globalFactor, 10.0));
+    const int animationsDuration = qRound(Animation_BaseDuration * qBound(0.0, globalFactor, 10.0));
 
     // animation steps
     AnimationData::setSteps(animationsDuration / 1000.0 * 60);
 
-    const bool animationsEnabled(StyleConfigData::animationsEnabled());
-    // const int animationsDuration( 1000 );
-
-    _widgetEnabilityEngine->setEnabled(animationsEnabled);
-    _comboBoxEngine->setEnabled(animationsEnabled);
-    _toolButtonEngine->setEnabled(animationsEnabled);
-    _spinBoxEngine->setEnabled(animationsEnabled);
-    _toolBoxEngine->setEnabled(animationsEnabled);
+    _widgetEnabilityEngine->setEnabled(true);
+    _comboBoxEngine->setEnabled(true);
+    _toolButtonEngine->setEnabled(true);
+    _spinBoxEngine->setEnabled(true);
+    _toolBoxEngine->setEnabled(true);
 
     _widgetEnabilityEngine->setDuration(animationsDuration);
     _comboBoxEngine->setDuration(animationsDuration);
@@ -95,19 +90,18 @@ void Animations::setupEngines()
 
     // registered engines
     foreach (const BaseEngine::Pointer &engine, _engines) {
-        engine.data()->setEnabled(animationsEnabled);
+        engine.data()->setEnabled(true);
         engine.data()->setDuration(animationsDuration);
     }
 
     // stacked widget transition has an extra flag for animations
-    _stackedWidgetEngine->setEnabled(animationsEnabled && StyleConfigData::stackedWidgetTransitionsEnabled());
+    _stackedWidgetEngine->setEnabled(StyleConfigData::stackedWidgetTransitionsEnabled());
 
     // busy indicator
     _busyIndicatorEngine->setEnabled(StyleConfigData::progressBarAnimated());
     _busyIndicatorEngine->setDuration(StyleConfigData::progressBarBusyStepDuration());
 }
 
-//____________________________________________________________
 void Animations::registerWidget(QObject *widget) const
 {
     if (!widget)
@@ -204,7 +198,6 @@ void Animations::registerWidget(QObject *widget) const
     }
 }
 
-//____________________________________________________________
 void Animations::unregisterWidget(QWidget *widget) const
 {
     if (!widget)
@@ -224,7 +217,6 @@ void Animations::unregisterWidget(QWidget *widget) const
     }
 }
 
-//_______________________________________________________________
 void Animations::unregisterEngine(QObject *object)
 {
     int index(_engines.indexOf(qobject_cast<BaseEngine *>(object)));
@@ -232,7 +224,6 @@ void Animations::unregisterEngine(QObject *object)
         _engines.removeAt(index);
 }
 
-//_______________________________________________________________
 void Animations::registerEngine(BaseEngine *engine)
 {
     _engines.append(engine);

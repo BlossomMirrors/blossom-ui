@@ -1,5 +1,6 @@
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
+#include "card.h"
 #include "dolphin/delegate.h"
 
 #include <KColorUtils>
@@ -7,6 +8,7 @@
 #include <QAbstractScrollArea>
 #include <QApplication>
 #include <QEvent>
+#include <QLayout>
 #include <QListView>
 #include <QPalette>
 #include <QTableView>
@@ -101,10 +103,7 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
       if (!vp)
         return;
       const QColor win = QApplication::palette().color(QPalette::Window);
-      const bool isDark = win.lightness() < 128;
-      const QColor cardColor =
-          isDark ? KColorUtils::mix(win, QColor(255, 255, 255), 0.12)
-                 : KColorUtils::mix(win, QColor(0, 0, 0), 0.04);
+      const QColor cardColor = Render::cardBackgroundFill(win).brush.color();
       QPalette pal = vp->palette();
       pal.setColor(QPalette::Window, cardColor);
       pal.setColor(QPalette::Base, cardColor);
@@ -173,9 +172,7 @@ void Style::applyDolphinCardBackground(
   if (!scrollArea->inherits("KItemListContainer"))
     return;
   const QColor win = QApplication::palette().color(QPalette::Window);
-  const bool isDark = win.lightness() < 128;
-  background = isDark ? KColorUtils::mix(win, QColor(255, 255, 255), 0.12)
-                      : KColorUtils::mix(win, QColor(0, 0, 0), 0.04);
+  background = Render::cardBackgroundFill(win).brush.color();
 }
 
 void Style::updateDolphinCardScrollAreaScrollbar(
@@ -190,6 +187,25 @@ void Style::updateDolphinCardScrollAreaScrollbar(
     scrollArea->setProperty("VISIBLE-SEPARATORS", scrollbarVisible);
     scrollArea->update();
   }
+}
+
+//* Dolphin's DolphinView: zero content margins
+void Style::polishDolphinView(QWidget *widget) {
+  if (!(_app.isDolphin && widget->inherits("DolphinView")))
+    return;
+  widget->setContentsMargins(0, 0, 0, 0);
+  if (auto layout = widget->layout())
+    layout->setContentsMargins(0, 0, 0, 0);
+}
+
+//* Dolphin's view: disable autofill on scroll area grandchildren
+void Style::polishDolphinViewAutofill(QWidget *widget) {
+  if (!(_app.isDolphin &&
+        qobject_cast<QAbstractScrollArea *>(getParent(widget, 2)) &&
+        !qobject_cast<QAbstractScrollArea *>(getParent(widget, 3))))
+    return;
+  if (widget->autoFillBackground())
+    widget->setAutoFillBackground(false);
 }
 
 } // namespace BlossomUI

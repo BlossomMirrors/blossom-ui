@@ -22,7 +22,6 @@
 namespace BlossomUI
 {
 
-//________________________________________________
 SpinBoxData::SpinBoxData(QObject *parent, QWidget *target, int duration)
     : AnimationData(parent, target)
 {
@@ -32,7 +31,7 @@ SpinBoxData::SpinBoxData(QObject *parent, QWidget *target, int duration)
     setupAnimation(downArrowAnimation(), "downArrowOpacity");
 }
 
-//______________________________________________
+//_
 bool SpinBoxData::Data::updateState(bool value)
 {
     if (_state == value)

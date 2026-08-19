@@ -207,8 +207,7 @@ entry {
     // .linked:not(.vertical) > &:focus + &,  //FIXME borders between linked entries
     // .linked:not(.vertical) > &:focus + button,
     // .linked:not(.vertical) > &:focus + combobox > box > button.combo { border-left-color: entry_focus_border(); }
-    //
-    // .linked:not(.vertical) > &:focus.error + &,
+        // .linked:not(.vertical) > &:focus.error + &,
     // .linked:not(.vertical) > &:focus.error + button,
     // .linked:not(.vertical) > &:focus.error + combobox > box > button.combo { border-left-color: entry_focus_border($error_color); }
 
@@ -244,19 +243,16 @@ entry {
         // &:not(:disabled) + entry:not(:disabled),
         // &:not(:disabled) + %entry:not(:disabled) {
         //   border-top-color: gtkmix($borders_color, $base_color, 0.3);
-        //
-        //   &:backdrop { border-top-color: gtkmix($backdrop_borders_color, $backdrop_base_color, 0.3); }
+                //   &:backdrop { border-top-color: gtkmix($backdrop_borders_color, $backdrop_base_color, 0.3); }
         // }
 
         // color back the top border of a linked focused entry following another entry.
         // :not(:only-child) is a specificity bump hack.
         // + %entry:focus:not(:only-child),
         // + entry:focus:not(:only-child) { border-top-color: entry_focus_border(); }
-        //
-        // + %entry:focus.error:not(:only-child),
+                // + %entry:focus.error:not(:only-child),
         // + entry:focus.error:not(:only-child) { border-top-color: entry_focus_border($error_color); }
-        //
-        // + %entry:drop(active):not(:only-child),
+                // + %entry:drop(active):not(:only-child),
         // + entry:drop(active):not(:only-child) { border-top-color: $drop_target_color; }
 
         // this takes care of coloring the top border of the focused entry subsequent widget.
@@ -369,4 +365,3 @@ treeview entry {
         }
     }
 }
-

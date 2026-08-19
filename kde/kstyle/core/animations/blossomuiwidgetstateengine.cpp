@@ -25,7 +25,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool WidgetStateEngine::registerWidget(QObject *widget, AnimationModes mode)
 {
     if (!widget)
@@ -49,7 +48,6 @@ bool WidgetStateEngine::registerWidget(QObject *widget, AnimationModes mode)
     return true;
 }
 
-//____________________________________________________________
 BaseEngine::WidgetList WidgetStateEngine::registeredWidgets(AnimationModes mode) const
 {
     WidgetList out;
@@ -70,21 +68,18 @@ BaseEngine::WidgetList WidgetStateEngine::registeredWidgets(AnimationModes mode)
     return out;
 }
 
-//____________________________________________________________
 bool WidgetStateEngine::updateState(const QObject *object, AnimationMode mode, bool value, AnimationParameters parameters)
 {
     DataMap<WidgetStateData>::Value data(WidgetStateEngine::data(object, mode));
     return (data && data.data()->updateState(value, parameters));
 }
 
-//____________________________________________________________
 bool WidgetStateEngine::isAnimated(const QObject *object, AnimationMode mode)
 {
     DataMap<WidgetStateData>::Value data(WidgetStateEngine::data(object, mode));
     return (data && data.data()->animation() && data.data()->animation().data()->isRunning());
 }
 
-//____________________________________________________________
 DataMap<WidgetStateData>::Value WidgetStateEngine::data(const QObject *object, AnimationMode mode)
 {
     switch (mode) {
@@ -101,7 +96,6 @@ DataMap<WidgetStateData>::Value WidgetStateEngine::data(const QObject *object, A
     }
 }
 
-//____________________________________________________________
 DataMap<WidgetStateData> &WidgetStateEngine::dataMap(AnimationMode mode)
 {
     switch (mode) {

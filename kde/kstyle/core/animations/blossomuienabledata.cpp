@@ -22,7 +22,7 @@
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 bool EnableData::eventFilter(QObject *object, QEvent *event)
 {
     if (!enabled())

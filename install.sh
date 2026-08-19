@@ -8,7 +8,7 @@ if [ "$1" = "remove" ]; then
     exit 1
 fi
 
-echo " *** Unlcoking rpm-ostree so the changes persist after restart *** "
+echo " *** Unlocking rpm-ostree so the changes persist after restart *** "
 sudo rpm-ostree unlock --hotfix | true || true
 
 sudo dnf install -y kdecoration-devel sassc gettext # FIXME: should be included in the DX OS image
@@ -22,17 +22,24 @@ if [ -z "$RPM" ]; then
 fi
 
 echo " *** Clearing cache *** "
-# rpm-ostree normalizes file mtimes, which can defeat Qt's qmlcache
-# invalidation and keep serving stale compiled QML
 rm -rf ~/.cache/*/qmlcache
 
 echo " *** Installing $(basename "$RPM") *** "
-if rpm -q blossomui >/dev/null 2>&1 && \
-   [ "$(rpm -q --qf '%{VERSION}-%{RELEASE}' blossomui)" = "$(rpm -qp --qf '%{VERSION}-%{RELEASE}' "$RPM")" ]; then
-    sudo dnf reinstall -y "$RPM"
+if rpm -q blossomui >/dev/null 2>&1; then
+    if [ "$(rpm -q --qf '%{VERSION}-%{RELEASE}' blossomui)" = "$(rpm -qp --qf '%{VERSION}-%{RELEASE}' "$RPM")" ]; then
+        sudo dnf reinstall -y "$RPM"
+    else
+        sudo rpm -Uvh --replacefiles "$RPM"
+    fi
 else
     sudo dnf install -y "$RPM"
 fi
+
+echo " *** Installing Zed theme *** "
+if [ -f /usr/share/blossomui/zed/themes/blossomui.json ]; then
+    mkdir -p ~/.config/zed/themes
+    cp /usr/share/blossomui/zed/themes/blossomui.json ~/.config/zed/themes/blossomui.json
+fi || true
 
 echo " *** Refreshing font cache *** "
 sudo fc-cache -f >/dev/null
@@ -42,7 +49,8 @@ QT5_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-qt5.flatpak 2>/dev/null | he
 GTK3THEME_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-gtk3theme.flatpak 2>/dev/null | head -1)
 ICONTHEME_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-icontheme.flatpak 2>/dev/null | head -1)
 QT6_610_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-qt6-6.10.flatpak 2>/dev/null | head -1)
-QT6_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*.flatpak 2>/dev/null | grep -v -- '-qt5\.flatpak' | grep -v -- '-gtk3theme\.flatpak' | grep -v -- '-icontheme\.flatpak' | grep -v -- '-qt6-6\.10\.flatpak' | head -1)
+QT6_611_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*-qt6-6.11.flatpak 2>/dev/null | head -1)
+QT6_FLATPAK=$(ls -1t "$SRC_DIR"/release/blossomui-*.flatpak 2>/dev/null | grep -v -- '-qt5\.flatpak' | grep -v -- '-gtk3theme\.flatpak' | grep -v -- '-icontheme\.flatpak' | grep -v -- '-qt6-6\.10\.flatpak' | grep -v -- '-qt6-6\.11\.flatpak' | head -1)
 
 if [ -n "$QT5_FLATPAK" ]; then
     echo " *** Installing $(basename "$QT5_FLATPAK") *** "
@@ -55,6 +63,10 @@ fi
 if [ -n "$QT6_610_FLATPAK" ]; then
     echo " *** Installing $(basename "$QT6_610_FLATPAK") *** "
     flatpak install --user --or-update --noninteractive --bundle "$QT6_610_FLATPAK"
+fi
+if [ -n "$QT6_611_FLATPAK" ]; then
+    echo " *** Installing $(basename "$QT6_611_FLATPAK") *** "
+    flatpak install --user --or-update --noninteractive --bundle "$QT6_611_FLATPAK"
 fi
 if [ -n "$GTK3THEME_FLATPAK" ]; then
     echo " *** Installing $(basename "$GTK3THEME_FLATPAK") *** "

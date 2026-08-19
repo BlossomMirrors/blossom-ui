@@ -19,7 +19,7 @@
 
 #include "blossomuistyle.h"
 #include "private.h"
-#include "widgets/switch.h"
+#include "switchwidget.h"
 
 #include "blossomui.h"
 #include "blossomuianimations.h"
@@ -39,56 +39,24 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-#include <QAccessible>
-#include <QAction>
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDBusConnection>
 #include <QDial>
-#include <QDialog>
-#include <QDialogButtonBox>
 #include <QDockWidget>
-#include <QDragMoveEvent>
-#include <QFormLayout>
-#include <QFrame>
-#include <QGraphicsView>
-#include <QGroupBox>
-#include <QItemDelegate>
 #include <QLabel>
 #include <QLineEdit>
-#include <QListWidget>
-#include <QMainWindow>
-#include <QMap>
 #include <QMdiSubWindow>
 #include <QMenu>
-#include <QMenuBar>
 #include <QPainter>
 #include <QPainterPath>
-#include <QPolygon>
 #include <QPushButton>
-#include <QQuickWidget>
 #include <QRadioButton>
-#include <QRegion>
 #include <QScrollBar>
 #include <QSplitterHandle>
-#include <QStackedLayout>
-#include <QStorageInfo>
-#include <QStyledItemDelegate>
-#include <QSurfaceFormat>
-#include <QTableView>
 #include <QTextEdit>
-#include <QTimer>
-#include <QToolBar>
-#include <QToolBox>
 #include <QToolButton>
-#include <QTreeView>
-#include <QWidgetAction>
-#include <QWindow>
-
-#if BLOSSOMUI_HAVE_QTQUICK
-#include <QQuickWindow>
-#endif
 
 namespace BlossomUIPrivate {
 
@@ -190,26 +158,6 @@ void Style::polish(QApplication *app) {
   ParentStyleClass::polish(app);
 }
 
-class ParentResizeFilter : public QObject {
-public:
-  explicit ParentResizeFilter(QWidget *overlay)
-      : QObject(overlay), m_overlay(overlay) {}
-
-protected:
-  bool eventFilter(QObject *watched, QEvent *event) override {
-    if (event->type() == QEvent::Resize && m_overlay &&
-        m_overlay->parentWidget() == watched) {
-      m_overlay->setGeometry(m_overlay->parentWidget()->rect());
-      m_overlay->update();
-    }
-    // call base implementation
-    return QObject::eventFilter(watched, event);
-  }
-
-private:
-  QWidget *m_overlay;
-};
-
 void Style::polish(QWidget *widget) {
   if (!widget)
     return;
@@ -238,79 +186,12 @@ void Style::polish(QWidget *widget) {
     widget->setAttribute(Qt::WA_Hover);
   }
 
-  if (widget->inherits("QLineEditIconButton")) {
-    widget->setAttribute(Qt::WA_Hover);
-    addEventFilter(widget);
-  }
-
-  if (qobject_cast<QPushButton *>(widget) ||
-      qobject_cast<QToolButton *>(widget)) {
-    addEventFilter(widget);
-    widget->setAttribute(Qt::WA_Hover);
-    QObject::connect(
-        static_cast<QAbstractButton *>(widget), &QAbstractButton::pressed,
-        widget, [widget]() { widget->repaint(); }, Qt::DirectConnection);
-  }
-
-  if (qobject_cast<QCheckBox *>(widget) ||
-      qobject_cast<QRadioButton *>(widget) ||
-      qobject_cast<QComboBox *>(widget)) {
-    addEventFilter(widget);
-    widget->setAttribute(Qt::WA_Hover);
-  }
-
-  // switch (pill) checkboxes: replace indicator with actual switch widget
-  // (draggable)
-  if (auto checkBox = qobject_cast<QCheckBox *>(widget)) {
-    if (isSwitchWidget(checkBox)) {
-      QStyleOptionButton opt;
-      opt.initFrom(checkBox);
-      opt.rect = checkBox->rect();
-      opt.text = checkBox->text();
-      opt.icon = checkBox->icon();
-      opt.iconSize = checkBox->iconSize();
-      QRect indRect = subElementRect(SE_CheckBoxIndicator, &opt, checkBox);
-      BlossomUISwitchWidget *overlay =
-          new BlossomUISwitchWidget(_helper, checkBox);
-      overlay->setParent(checkBox);
-      overlay->setGeometry(indRect);
-      overlay->show();
-      overlay->raise(); // ensure overlay is on top of any other children (e.g.
-                        // label)
-      checkBox->setProperty("blossomui-switch-overlay",
-                            QVariant::fromValue<QObject *>(overlay));
-      addEventFilter(checkBox);
-      // update geometry after layout (checkbox rect may not be final at polish
-      // time)
-      QTimer::singleShot(0, checkBox, [this, checkBox]() {
-        QObject *ov =
-            checkBox->property("blossomui-switch-overlay").value<QObject *>();
-        auto *o = qobject_cast<BlossomUISwitchWidget *>(ov);
-        if (o) {
-          QStyleOptionButton opt;
-          opt.initFrom(checkBox);
-          opt.rect = checkBox->rect();
-          opt.text = checkBox->text();
-          opt.icon = checkBox->icon();
-          opt.iconSize = checkBox->iconSize();
-          o->setGeometry(subElementRect(SE_CheckBoxIndicator, &opt, checkBox));
-        }
-      });
-    }
-  }
-
-  // remove auto background from combobox popup
-  if (auto view = const_cast<QAbstractItemView *>(itemViewParent(widget))) {
-    QWidget *w = view;
-    while (w) {
-      if (qobject_cast<QComboBox *>(w)) {
-        view->setAutoFillBackground(false);
-        view->viewport()->setAutoFillBackground(false);
-        break;
-      }
-      w = w->parentWidget();
-    }
-  }
+  polishLineEditIconButton(widget);
+  polishButton(widget);
+  polishCheckableHover(widget);
+  polishComboBoxHover(widget);
+  polishSwitchCheckBox(widget);
+  polishComboBoxPopupViewBackground(widget);
 
   // enforce translucency for drag and drop window
   if (widget->testAttribute(Qt::WA_X11NetWmWindowTypeDND) &&
@@ -319,17 +200,7 @@ void Style::polish(QWidget *widget) {
     widget->clearMask();
   }
 
-  if ((qobject_cast<QToolBar *>(widget) || qobject_cast<QMenuBar *>(widget)) &&
-      _helper->titleBarColor(true).alphaF() * 100.0 < 100) {
-    // only accept top most widgets, besides the main window
-    if (!widget->isWindow() && widget->parentWidget()->isWindow()) {
-      // this is only valid if the window is opaque (but not forced), otherwise
-      // everything will be blurred
-      if (widget->palette().color(QPalette::Window).alpha() == 255 &&
-          !_app.isOpaque)
-        addEventFilter(widget);
-    }
-  }
+  polishOpaqueBar(widget);
 
   if (!_app.isKonsole) {
     if (StyleConfigData::toolBarOpacity() < 100 ||
@@ -340,11 +211,7 @@ void Style::polish(QWidget *widget) {
     }
   }
 
-  if (_app.isDolphin && widget->inherits("DolphinView")) {
-    widget->setContentsMargins(0, 0, 0, 0);
-    if (auto layout = widget->layout())
-      layout->setContentsMargins(0, 0, 0, 0);
-  }
+  polishDolphinView(widget);
 
   if (_app.isDolphin && widget->inherits("DolphinUrlNavigator"))
     polishDolphinUrlNavigator(widget);
@@ -414,12 +281,6 @@ void Style::polish(QWidget *widget) {
       if (!widget->testAttribute(Qt::WA_StyledBackground))
         widget->setAttribute(Qt::WA_StyledBackground);
 
-      // setting Qt::WA_TranslucentBackground enables Qt::WA_NoSystemBackground
-      // unset here to stop flickering during repaint events on resizing
-      if (StyleConfigData::transparentDolphinView() &&
-          widget->testAttribute(Qt::WA_NoSystemBackground))
-        widget->setAttribute(Qt::WA_NoSystemBackground, false);
-
       _translucentWidgets.insert(widget);
 
       // paint the background in event filter
@@ -435,271 +296,43 @@ void Style::polish(QWidget *widget) {
   }
   }
 
-  // hack Dolphin's view
-  if ((_app.isDolphin &&
-       qobject_cast<QAbstractScrollArea *>(getParent(widget, 2)) &&
-       !qobject_cast<QAbstractScrollArea *>(getParent(widget, 3)))) {
-    if (widget->autoFillBackground())
-      widget->setAutoFillBackground(false);
-  }
-
-  if (widget->inherits("QQuickWidget")) {
-    // Check if it is a child of FocusHackWidget
-    QWidget *parent = widget->parentWidget();
-    bool isChildOfFocusHack = false;
-    while (parent) {
-      if (parent->inherits("FocusHackWidget")) {
-        isChildOfFocusHack = true;
-        break;
-      }
-      parent = parent->parentWidget();
-    }
-
-    if (isChildOfFocusHack) {
-      auto quickWidget = qobject_cast<QQuickWidget *>(widget);
-      if (quickWidget) {
-        quickWidget->setClearColor(Qt::transparent);
-      }
-
-      widget->setAttribute(Qt::WA_TranslucentBackground);
-      widget->setAttribute(Qt::WA_OpaquePaintEvent, false);
-    }
-  }
+  polishDolphinViewAutofill(widget);
+  polishQuickWidget(widget);
 
   // scrollarea polishing is somewhat complex. It is moved to a dedicated method
   polishScrollArea(qobject_cast<QAbstractScrollArea *>(widget));
 
-  if (auto itemView = qobject_cast<QAbstractItemView *>(widget)) {
-    // enable mouse over effects in itemviews' viewport
-    itemView->viewport()->setAttribute(Qt::WA_Hover);
-
-  } else if (auto groupBox = qobject_cast<QGroupBox *>(widget)) {
-    // checkable group boxes
-    if (groupBox->isCheckable()) {
-      groupBox->setAttribute(Qt::WA_Hover);
-    }
-
-  } else if (qobject_cast<QAbstractButton *>(widget) &&
-             qobject_cast<QDockWidget *>(widget->parent())) {
-    widget->setAttribute(Qt::WA_Hover);
-
-  } else if (qobject_cast<QAbstractButton *>(widget) &&
-             qobject_cast<QToolBox *>(widget->parent())) {
-    widget->setAttribute(Qt::WA_Hover);
-
-  } else if (qobject_cast<QFrame *>(widget) && widget->parent() &&
-             widget->parent()->inherits("KTitleWidget")) {
-    widget->setAutoFillBackground(false);
-    if (!StyleConfigData::titleWidgetDrawFrame()) {
-      widget->setBackgroundRole(QPalette::Window);
-    }
+  if (polishItemView(widget)) {
+  } else if (polishCheckableGroupBox(widget)) {
+  } else if (polishDockWidgetButton(widget)) {
+  } else if (polishToolBoxButton(widget)) {
+  } else if (polishTitleWidgetFrame(widget)) {
   }
 
-  if (qobject_cast<QScrollBar *>(widget)) {
-    // remove opaque painting for scrollbars
-    widget->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-  } else if (widget->inherits("KTextEditor::View")) {
-    addEventFilter(widget);
-
-  } else if (auto toolButton = qobject_cast<QToolButton *>(widget)) {
-    if (toolButton->autoRaise()) {
-      // for flat toolbuttons, adjust foreground and background role accordingly
-      widget->setBackgroundRole(QPalette::NoRole);
-      widget->setForegroundRole(QPalette::WindowText);
-    }
-
-    if (widget->parentWidget() && widget->parentWidget()->parentWidget() &&
-        widget->parentWidget()->parentWidget()->inherits(
-            "Gwenview::SideBarGroup")) {
-      widget->setProperty(PropertyNames::toolButtonAlignment, Qt::AlignLeft);
-    }
-
-  } else if (qobject_cast<QDockWidget *>(widget)) {
-    // add event filter on dock widgets
-    // and alter palette
-    widget->setAutoFillBackground(false);
-    widget->setContentsMargins(
-        StyleConfigData::fancyMargins() ? 5 : Metrics::Frame_FrameWidth,
-        Metrics::Frame_FrameWidth,
-        StyleConfigData::fancyMargins() ? 5 : Metrics::Frame_FrameWidth,
-        Metrics::Frame_FrameWidth);
-    addEventFilter(widget);
-
-  } else if (qobject_cast<QMdiSubWindow *>(widget)) {
-    widget->setAutoFillBackground(false);
-    addEventFilter(widget);
-
-  } else if (qobject_cast<QToolBox *>(widget)) {
-    widget->setBackgroundRole(QPalette::NoRole);
-    widget->setAutoFillBackground(false);
-
-  } else if (widget->parentWidget() && widget->parentWidget()->parentWidget() &&
-             qobject_cast<QToolBox *>(
-                 widget->parentWidget()->parentWidget()->parentWidget())) {
-    widget->setBackgroundRole(QPalette::NoRole);
-    widget->setAutoFillBackground(false);
-    widget->parentWidget()->setAutoFillBackground(false);
-
-  } else if (qobject_cast<QMenu *>(widget)) {
-    setTranslucentBackground(widget);
-    widget->setCursor(Qt::PointingHandCursor);
-
-    if (widget->testAttribute(Qt::WA_TranslucentBackground) &&
-        StyleConfigData::menuOpacity() < 100) {
-      _blurHelper->registerWidget(widget->window(), _app.isDolphin);
-    }
-
-  } else if (qobject_cast<QCommandLinkButton *>(widget)) {
-    addEventFilter(widget);
-
-  } else if (widget->parent() &&
-             widget->parent()->inherits("QComboBoxListView")) {
-    widget->setAutoFillBackground(false);
-
-  } else if (auto comboBox = qobject_cast<QComboBox *>(widget)) {
-    if (!hasParent(widget, "QWebView")) {
-      auto itemView(comboBox->view());
-      if (itemView && itemView->itemDelegate()) {
-        const QByteArray delegateClass =
-            itemView->itemDelegate()->metaObject()->className();
-        const bool isDefaultDelegate =
-            itemView->itemDelegate()->inherits("QComboBoxDelegate") ||
-            delegateClass == "QStyledItemDelegate";
-        if (isDefaultDelegate) {
-          itemView->setItemDelegate(
-              new BlossomUIPrivate::ComboBoxItemDelegate(itemView));
-        }
-      }
-    }
-  } else if (widget->inherits("QComboBoxPrivateContainer")) {
-    addEventFilter(widget);
-    setTranslucentBackground(widget);
-
-  } else if (widget->inherits("QTipLabel")) {
-    setTranslucentBackground(widget);
-
-  } else if (qobject_cast<QMainWindow *>(widget)) {
-    widget->setAttribute(Qt::WA_StyledBackground);
-  } else if (qobject_cast<QDialogButtonBox *>(widget)) {
-    addEventFilter(widget);
+  if (polishScrollBarOpaque(widget)) {
+  } else if (polishKTextEditorView(widget)) {
+  } else if (polishAutoRaiseToolButton(widget)) {
+  } else if (polishDockWidget(widget)) {
+  } else if (polishMdiSubWindow(widget)) {
+  } else if (polishToolBox(widget)) {
+  } else if (polishToolBoxChild(widget)) {
+  } else if (polishMenu(widget)) {
+  } else if (polishCommandLinkButton(widget)) {
+  } else if (polishComboBoxListViewChild(widget)) {
+  } else if (polishComboBox(widget)) {
+  } else if (polishComboBoxPopupContainer(widget)) {
+  } else if (polishTipLabel(widget)) {
+  } else if (polishMainWindow(widget)) {
+  } else if (polishDialogButtonBox(widget)) {
     // opaque menubar / toolbar / tabbar register blur
   } else if (_app.isBarsOpaque) {
     _blurHelper->registerWidget(widget->window(), _app.isDolphin);
   }
 
-  if (_toolsAreaManager->hasHeaderColors()) {
-    // style TitleWidget and Search KPageView to look the same as KDE System
-    // Settings
-    if (widget->objectName() == QLatin1String("KPageView::TitleWidget")) {
-      widget->setAutoFillBackground(true);
-      widget->setPalette(_toolsAreaManager->palette());
-      addEventFilter(widget);
-    } else if (widget->objectName() == QLatin1String("KPageView::Search")) {
-      widget->setBackgroundRole(QPalette::Window);
-      widget->setPalette(_toolsAreaManager->palette());
-      addEventFilter(widget);
-    }
-  }
+  polishKPageViewHeaders(widget);
 
   // base class polishing
   ParentStyleClass::polish(widget);
-}
-
-void Style::polishScrollArea(QAbstractScrollArea *scrollArea) {
-  // check argument
-  if (!scrollArea)
-    return;
-
-  // enable mouse over effect in sunken scrollareas that support focus
-  if (scrollArea->frameShadow() == QFrame::Sunken &&
-      scrollArea->focusPolicy() & Qt::StrongFocus) {
-    scrollArea->setAttribute(Qt::WA_Hover);
-  }
-
-  if (scrollArea->frameShape() == QFrame::StyledPanel &&
-      scrollArea->frameShadow() == QFrame::Sunken &&
-      !qobject_cast<QAbstractItemView *>(scrollArea) &&
-      !scrollArea->inherits("KItemListRoleEditor")) {
-    scrollArea->setAutoFillBackground(false);
-    if (scrollArea->viewport())
-      scrollArea->viewport()->setAutoFillBackground(false);
-  }
-
-  if (scrollArea->viewport() && scrollArea->inherits("KItemListContainer")) {
-    if (auto *frame = qobject_cast<QFrame *>(scrollArea))
-      frame->setFrameShape(QFrame::NoFrame);
-    scrollArea->viewport()->setBackgroundRole(QPalette::Window);
-    scrollArea->viewport()->setForegroundRole(QPalette::WindowText);
-  }
-
-  if (_app.isDolphin)
-    polishDolphinScrollArea(scrollArea);
-
-  // add event filter, to make sure proper background is rendered behind
-  // scrollbars
-  addEventFilter(scrollArea);
-
-  // force side panels as flat, on option
-  if (scrollArea->inherits("KDEPrivate::KPageListView") ||
-      scrollArea->inherits("KDEPrivate::KPageTreeView")) {
-    scrollArea->setProperty(PropertyNames::sidePanelView, true);
-  }
-
-  // for all side view panels, unbold font (design choice)
-  if (scrollArea->property(PropertyNames::sidePanelView).toBool()) {
-    // upbold list font
-    auto font(scrollArea->font());
-    font.setBold(false);
-    scrollArea->setFont(font);
-
-    QWidget *viewPort = scrollArea->findChild<QWidget *>(
-        QString("qt_scrollarea_viewport"), Qt::FindDirectChildrenOnly);
-    if (viewPort)
-      viewPort->setAutoFillBackground(false);
-  }
-
-  // disable autofill background for flat (== NoFrame) scrollareas, with
-  // QPalette::Window as a background this fixes flat scrollareas placed in a
-  // tinted widget, such as groupboxes, tabwidgets or framed dock-widgets
-  if (!(scrollArea->frameShape() == QFrame::NoFrame ||
-        scrollArea->backgroundRole() == QPalette::Window)) {
-    return;
-  }
-
-  if (_app.isDolphin && scrollArea->inherits("KItemListContainer"))
-    return;
-
-  // get viewport and check background role
-  auto viewport(scrollArea->viewport());
-  if (!(viewport && viewport->backgroundRole() == QPalette::Window))
-    return;
-
-  // change viewport autoFill background.
-  // do the same for all children if the background role is QPalette::Window
-  viewport->setAutoFillBackground(false);
-  QList<QWidget *> children(viewport->findChildren<QWidget *>());
-  for (auto *child : std::as_const(children)) {
-    if (child->parent() == viewport &&
-        child->backgroundRole() == QPalette::Window) {
-      child->setAutoFillBackground(false);
-    }
-  }
-
-  /*
-  QTreeView animates expanding/collapsing branches. It paints them into a
-  temp pixmap whose background is unconditionally filled with the palette's
-  *base* color which is usually different from the window's color
-  cf. QTreeViewPrivate::renderTreeToPixmapForAnimation()
-  */
-  if (auto treeView = qobject_cast<QTreeView *>(scrollArea)) {
-    if (treeView->isAnimated()) {
-      QPalette pal(treeView->palette());
-      pal.setColor(QPalette::Active, QPalette::Base,
-                   treeView->palette().color(treeView->backgroundRole()));
-      treeView->setPalette(pal);
-    }
-  }
 }
 
 void Style::unpolish(QWidget *widget) {
@@ -727,20 +360,8 @@ void Style::unpolish(QWidget *widget) {
   }
 
   // reset cursor set in polish() for menus
-  if (qobject_cast<QMenu *>(widget)) {
-    widget->unsetCursor();
-  }
-  if (auto checkBox = qobject_cast<QCheckBox *>(widget)) {
-    if (isSwitchWidget(checkBox)) {
-      QObject *ov =
-          checkBox->property("blossomui-switch-overlay").value<QObject *>();
-      if (ov) {
-        ov->deleteLater();
-        checkBox->setProperty("blossomui-switch-overlay", QVariant());
-      }
-      widget->removeEventFilter(this);
-    }
-  }
+  unpolishMenu(widget);
+  unpolishSwitchCheckBox(widget);
 
   if (_translucentWidgets.contains(widget)) {
     widget->setAttribute(Qt::WA_NoSystemBackground, false);
@@ -749,8 +370,7 @@ void Style::unpolish(QWidget *widget) {
     widget->removeEventFilter(this);
   }
 
-  if (BlossomUIPrivate::possibleTranslucentToolBars.contains(widget))
-    BlossomUIPrivate::possibleTranslucentToolBars.remove(widget);
+  unpolishOpaqueBar(widget);
 
   ParentStyleClass::unpolish(widget);
 }
@@ -867,124 +487,9 @@ void Style::drawPrimitive(PrimitiveElement element, const QStyleOption *option,
 
 bool Style::drawWidgetPrimitive(const QStyleOption *option, QPainter *painter,
                                 const QWidget *widget) const {
-  Q_UNUSED(option)
-
-  const auto drawBackground = _toolsAreaManager->hasHeaderColors() &&
-                              _helper->shouldDrawToolsArea(widget);
-
-  auto mw = qobject_cast<const QMainWindow *>(widget);
-  if (mw && mw == mw->window()) {
-    painter->save();
-
-    auto rect = _toolsAreaManager->toolsAreaRect(*mw);
-
-    if (rect.height() == 0) {
-      if (mw->property(PropertyNames::noSeparator).toBool() ||
-          mw->isFullScreen()) {
-        painter->restore();
-        return true;
-      }
-      painter->setPen(
-          QPen(_helper->separatorColor(_toolsAreaManager->palette()),
-               PenWidth::Frame * widget->devicePixelRatio()));
-      painter->drawLine(widget->rect().topLeft(), widget->rect().topRight());
-      painter->restore();
-      return true;
-    }
-
-    auto color = _toolsAreaManager->palette().brush(
-        mw->isActiveWindow() ? QPalette::Active : QPalette::Inactive,
-        QPalette::Window);
-
-    if (drawBackground) {
-      painter->setPen(Qt::transparent);
-      painter->setBrush(color);
-      painter->drawRect(rect);
-    }
-
-    painter->setPen(_helper->separatorColor(_toolsAreaManager->palette()));
-    if (!_app.isDolphin)
-      painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-
-    painter->restore();
-  } else if (auto dialog = qobject_cast<const QDialog *>(widget)) {
-    if (dialog->isFullScreen()) {
-      return true;
-    }
-    if (auto vLayout = qobject_cast<QVBoxLayout *>(widget->layout())) {
-      QRect rect(0, 0, widget->width(), 0);
-      const auto color = _toolsAreaManager->palette().brush(
-          widget->isActiveWindow() ? QPalette::Active : QPalette::Inactive,
-          QPalette::Window);
-
-      if (vLayout->menuBar()) {
-        rect.setHeight(rect.height() + vLayout->menuBar()->rect().height());
-      }
-
-      for (int i = 0, count = vLayout->count(); i < count; i++) {
-        const auto layoutItem = vLayout->itemAt(i);
-        if (layoutItem->widget() &&
-            qobject_cast<QToolBar *>(layoutItem->widget())) {
-          rect.setHeight(rect.height() + layoutItem->widget()->rect().height() +
-                         vLayout->spacing());
-        } else {
-          break;
-        }
-      }
-
-      if (rect.height() > 0) {
-        // We found either a QMenuBar or a QToolBar
-
-        // Add contentsMargins + separator
-        rect.setHeight(rect.height() + widget->devicePixelRatio() +
-                       vLayout->contentsMargins().top());
-
-        if (drawBackground) {
-          painter->setPen(Qt::transparent);
-          painter->setBrush(color);
-          painter->drawRect(rect);
-        }
-
-        painter->setPen(
-            QPen(_helper->separatorColor(_toolsAreaManager->palette()),
-                 widget->devicePixelRatio()));
-        painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-
-        return true;
-      }
-    }
-
-    painter->setPen(QPen(_helper->separatorColor(_toolsAreaManager->palette()),
-                         PenWidth::Frame * widget->devicePixelRatio()));
-    painter->drawLine(widget->rect().topLeft(), widget->rect().topRight());
-  } else if (widget && widget->inherits("KMultiTabBar")) {
-    enum class Position {
-      Left,
-      Right,
-      Top,
-      Bottom,
-    };
-
-    const Position position =
-        static_cast<Position>(widget->property("position").toInt());
-    const auto splitterWidth = Metrics::Splitter_SplitterWidth;
-    QRect rect = option->rect;
-
-    if (position == Position::Top || position == Position::Bottom) {
-      return true;
-    }
-
-    if ((position == Position::Left &&
-         widget->layoutDirection() == Qt::LeftToRight) ||
-        (position == Position::Right &&
-         widget->layoutDirection() == Qt::RightToLeft)) {
-      rect.setX(rect.width() - splitterWidth);
-    }
-
-    rect.setWidth(splitterWidth);
-
-    const auto color(_helper->separatorColor(option->palette));
-    _helper->renderSeparator(painter, rect, color, true);
+  if (drawMainWindowToolsAreaPrimitive(option, painter, widget)) {
+  } else if (drawDialogHeaderSeparatorPrimitive(option, painter, widget)) {
+  } else if (drawMultiTabBarSeparatorPrimitive(option, painter, widget)) {
   }
   return true;
 }

@@ -22,7 +22,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool ToolBoxEngine::registerWidget(QWidget *widget)
 {
     if (!widget)
@@ -36,14 +35,12 @@ bool ToolBoxEngine::registerWidget(QWidget *widget)
     return true;
 }
 
-//____________________________________________________________
 bool ToolBoxEngine::updateState(const QPaintDevice *object, bool value)
 {
     PaintDeviceDataMap<WidgetStateData>::Value data(ToolBoxEngine::data(object));
     return (data && data.data()->updateState(value));
 }
 
-//____________________________________________________________
 bool ToolBoxEngine::isAnimated(const QPaintDevice *object)
 {
     PaintDeviceDataMap<WidgetStateData>::Value data(ToolBoxEngine::data(object));

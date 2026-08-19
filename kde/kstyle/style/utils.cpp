@@ -4,7 +4,9 @@
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
 #include "blossomuiwindowmanager.h"
+#include "menucontrol.h"
 #include "private.h"
+#include "spinbox.h"
 #include <KColorUtils>
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -64,18 +66,9 @@ void Style::renderSpinBoxArrow(const SubControl &subControl,
       enabled && _animations->spinBoxEngine().isAnimated(widget, subControl));
   const qreal opacity(_animations->spinBoxEngine().opacity(widget, subControl));
 
-  auto color = _helper->arrowColor(palette, QPalette::Text);
-  if (animated) {
-    auto highlight = _helper->hoverColor(palette);
-    color = KColorUtils::mix(color, highlight, opacity);
-
-  } else if (subControlHover) {
-    // use focusColor (dark) as qspinbox mouseover color
-    color = _helper->focusColor(palette);
-
-  } else if (atLimit) {
-    color = _helper->arrowColor(palette, QPalette::Disabled, QPalette::Text);
-  }
+  const auto color = Render::spinBoxArrowColor(_helper, palette, animated, opacity,
+                                               subControlHover, atLimit)
+                          .brush.color();
 
   // arrow orientation
   ArrowOrientation orientation((subControl == SC_SpinBoxUp) ? ArrowUp
@@ -96,7 +89,7 @@ void Style::renderMenuTitle(const QStyleOptionToolButton *option,
   _helper->renderSeparator(
       painter,
       QRect(option->rect.bottomLeft() -
-                QPoint(0, (Metrics::MenuItem_MarginHeight +
+                QPoint(0, (Render::MenuItem_MarginHeight +
                            StyleConfigData::menuItemHeight())),
             QSize(option->rect.width(), 1)),
       color);
@@ -105,8 +98,8 @@ void Style::renderMenuTitle(const QStyleOptionToolButton *option,
   // icon is discarded on purpose
   painter->setFont(option->font);
   const auto contentsRect = insideMargin(
-      option->rect, Metrics::MenuItem_MarginWidth,
-      (Metrics::MenuItem_MarginHeight + StyleConfigData::menuItemHeight()));
+      option->rect, Render::MenuItem_MarginWidth,
+      (Render::MenuItem_MarginHeight + StyleConfigData::menuItemHeight()));
   drawItemText(painter, contentsRect, Qt::AlignCenter, palette, true,
                option->text, QPalette::WindowText);
 }
@@ -174,16 +167,14 @@ QColor Style::scrollBarArrowColor(const QStyleOptionSlider *option,
   // check enabled state
   const bool enabled(option->state & State_Enabled);
   if (!enabled) {
-    if (StyleConfigData::animationsEnabled()) {
-      // finally, global opacity when ScrollBarShowOnMouseOver
-      const qreal globalOpacity(_animations->scrollBarEngine().opacity(
-          widget, QStyle::SC_ScrollBarGroove));
-      if (globalOpacity >= 0)
-        color.setAlphaF(globalOpacity);
-      // no mouse over and no animation in progress, don't draw arrows at all
-      else if (!widgetMouseOver)
-        return Qt::transparent;
-    }
+    // finally, global opacity when ScrollBarShowOnMouseOver
+    const qreal globalOpacity(_animations->scrollBarEngine().opacity(
+        widget, QStyle::SC_ScrollBarGroove));
+    if (globalOpacity >= 0)
+      color.setAlphaF(globalOpacity);
+    // no mouse over and no animation in progress, don't draw arrows at all
+    else if (!widgetMouseOver)
+      return Qt::transparent;
     return color;
   }
 
@@ -194,16 +185,14 @@ QColor Style::scrollBarArrowColor(const QStyleOptionSlider *option,
     // manually disable arrow, to indicate that scrollbar is at limit
     color =
         _helper->arrowColor(palette, QPalette::Disabled, QPalette::WindowText);
-    if (StyleConfigData::animationsEnabled()) {
-      // finally, global opacity when ScrollBarShowOnMouseOver
-      const qreal globalOpacity(_animations->scrollBarEngine().opacity(
-          widget, QStyle::SC_ScrollBarGroove));
-      if (globalOpacity >= 0)
-        color.setAlphaF(globalOpacity);
-      // no mouse over and no animation in progress, don't draw arrows at all
-      else if (!widgetMouseOver)
-        return Qt::transparent;
-    }
+    // finally, global opacity when ScrollBarShowOnMouseOver
+    const qreal globalOpacity(_animations->scrollBarEngine().opacity(
+        widget, QStyle::SC_ScrollBarGroove));
+    if (globalOpacity >= 0)
+      color.setAlphaF(globalOpacity);
+    // no mouse over and no animation in progress, don't draw arrows at all
+    else if (!widgetMouseOver)
+      return Qt::transparent;
     return color;
   }
 
@@ -235,16 +224,14 @@ QColor Style::scrollBarArrowColor(const QStyleOptionSlider *option,
     }
   }
 
-  if (StyleConfigData::animationsEnabled()) {
-    // finally, global opacity when ScrollBarShowOnMouseOver
-    const qreal globalOpacity(_animations->scrollBarEngine().opacity(
-        widget, QStyle::SC_ScrollBarGroove));
-    if (globalOpacity >= 0)
-      color.setAlphaF(globalOpacity);
-    // no mouse over and no animation in progress, don't draw arrows at all
-    else if (!widgetMouseOver)
-      return Qt::transparent;
-  }
+  // finally, global opacity when ScrollBarShowOnMouseOver
+  const qreal globalOpacity(_animations->scrollBarEngine().opacity(
+      widget, QStyle::SC_ScrollBarGroove));
+  if (globalOpacity >= 0)
+    color.setAlphaF(globalOpacity);
+  // no mouse over and no animation in progress, don't draw arrows at all
+  else if (!widgetMouseOver)
+    return Qt::transparent;
 
   return color;
 }
@@ -709,8 +696,7 @@ void Style::setSurfaceFormat(QWidget *widget) const {
 
   /* distinguish forced translucency from hard-coded translucency */
   // forcedTranslucency_.insert(widget);
-  // connect(widget, &QObject::destroyed, this, &Style::noTranslucency); //
-  // needed?
+  // connect(widget, &QObject::destroyed, this, &Style::noTranslucency);   // needed?
 }
 
 bool Style::isStylableToolbar(const QWidget *w,

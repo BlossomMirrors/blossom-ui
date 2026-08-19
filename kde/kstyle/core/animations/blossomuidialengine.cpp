@@ -24,7 +24,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool DialEngine::registerWidget(QWidget *widget, AnimationModes mode)
 {
     // check widget

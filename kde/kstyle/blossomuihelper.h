@@ -113,15 +113,6 @@ public:
                            qreal opacity = AnimationData::OpacityInvalid,
                            AnimationMode = AnimationNone) const;
 
-  //* hover outline color, using animations
-  QColor hoverOutlineColor(const QPalette &) const;
-
-  //* focus outline color, using animations
-  QColor buttonFocusOutlineColor(const QPalette &) const;
-
-  //* hover outline color, using animations
-  QColor buttonHoverOutlineColor(const QPalette &) const;
-
   //* side panel outline color, using animations
   QColor sidePanelOutlineColor(const QPalette &) const;
 
@@ -147,38 +138,6 @@ public:
                     qreal opacity = AnimationData::OpacityInvalid,
                     AnimationMode = AnimationNone) const;
 
-  //* button outline color, using animations
-  QColor buttonOutlineColor(const QPalette &, bool mouseOver, bool hasFocus,
-                            qreal opacity = AnimationData::OpacityInvalid,
-                            AnimationMode = AnimationNone) const;
-
-  //* button panel color, using animations
-  QColor buttonBackgroundColor(const QPalette &, bool mouseOver, bool hasFocus,
-                               bool sunken,
-                               qreal opacity = AnimationData::OpacityInvalid,
-                               AnimationMode = AnimationNone) const;
-
-  //* tool button color
-  QColor toolButtonColor(const QPalette &, bool mouseOver, bool hasFocus,
-                         bool sunken,
-                         qreal opacity = AnimationData::OpacityInvalid,
-                         AnimationMode = AnimationNone) const;
-
-  //* slider outline color, using animations
-  QColor sliderOutlineColor(const QPalette &, bool mouseOver, bool hasFocus,
-                            qreal opacity = AnimationData::OpacityInvalid,
-                            AnimationMode = AnimationNone) const;
-
-  //* scrollbar handle color, using animations
-  QColor scrollBarHandleColor(const QPalette &, bool mouseOver, bool hasFocus,
-                              qreal opacity = AnimationData::OpacityInvalid,
-                              AnimationMode = AnimationNone) const;
-
-  //* checkbox indicator, using animations
-  QColor checkBoxIndicatorColor(const QPalette &, bool mouseOver, bool active,
-                                qreal opacity = AnimationData::OpacityInvalid,
-                                AnimationMode = AnimationNone) const;
-
   //* separator color
   QColor separatorColor(const QPalette &) const;
 
@@ -190,9 +149,6 @@ public:
 
   //*@name rendering utilities
   //@{
-
-  //* debug frame
-  void renderDebugFrame(QPainter *, const QRect &) const;
 
   //* focus line
   void renderFocusLine(QPainter *, const QRect &, const QColor &) const;
@@ -216,10 +172,6 @@ public:
                                const QRect &targetRect,
                                int blurRadius = 12) const;
 
-  //* outline for widgets
-  void renderOutline(QPainter *painter, const QRectF &rect, const int radius,
-                     const int outlineStrength) const;
-
   //* shadow for widgets
   void renderBoxShadow(QPainter *, const QRect &, const int xOffset,
                        const int yOffset, const int size, const QColor &color,
@@ -234,31 +186,6 @@ public:
     renderBoxShadow(painter, copy, xOffset, yOffset, size, color, cornerRadius,
                     active, tiles);
   }
-
-  //* shadow for ellipses
-  void renderEllipseShadow(QPainter *, const QRectF &, QColor color,
-                           const int size, const float param1,
-                           const float param2, const int xOffset,
-                           const int yOffset, const bool outline = false,
-                           const int outlineStrength = 0) const;
-
-  //* top outline highlight in dark themes
-  void topHighlight(QPainter *, const QRectF &, const int radius,
-                    const QColor &color = QColor(255, 255, 255, 20)) const;
-
-  //* button frame
-  void renderButtonFrame(
-      QPainter *, const QRect &, const QColor &color, const QPalette &palette,
-      const bool focus, const bool sunken, const bool mouseOver,
-      const bool enabled, const bool windowActive,
-      const AnimationMode mode = AnimationNone,
-      const qreal opacity = AnimationData::OpacityInvalid,
-      const QPointF &ripplePos = QPointF(),
-      const qreal pressOpacity = AnimationData::OpacityInvalid) const;
-
-  //* toolbutton frame
-  void renderToolButtonFrame(QPainter *, const QRect &, const QColor &color,
-                             bool sunken) const;
 
   //* toolbutton frame
   void renderToolBoxFrame(QPainter *, const QRect &, int tabWidth,
@@ -411,9 +338,6 @@ public:
 
   //@}
 
-  //* return device pixel ratio for a given pixmap
-  virtual qreal devicePixelRatio(const QPixmap &) const;
-
   //* frame radius
   qreal frameRadius(const qreal penWidth = PenWidth::NoPen,
                     const qreal bias = 0) const {
@@ -465,13 +389,6 @@ public:
   QColor transparentBarBgColor(QColor, QPainter *, const QRect &,
                                BarType) const;
 
-  //* Rounded rect as QRegion for viewport mask (integer-aligned for
-  //pixel-perfect edges).
-  static QRegion roundedRectRegion(int w, int h, int radius);
-  //* DPR-aware overload for fractional scaling: rounds dimensions to align with
-  //physical pixels.
-  static QRegion roundedRectRegion(int w, int h, int radius,
-                                   qreal devicePixelRatio);
   //* Bottom corners only (for file list card - top stays straight under
   //header).
   static QRegion roundedRectRegionBottomCorners(int w, int h, int radius,

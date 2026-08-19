@@ -2,7 +2,10 @@
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
 #include "blossomuitoolsareamanager.h"
-#include "widgets/switch.h"
+#include "button.h"
+#include "frame.h"
+#include "switchwidget.h"
+#include "toolbarcontrol.h"
 
 #include <QApplication>
 #include <QCheckBox>
@@ -270,8 +273,8 @@ bool Style::eventFilterPageViewHeader(QWidget *widget, QEvent *event) {
         rect.setLeft(rect.width() - 1);
       }
       rect.setHeight(rect.height() -
-                     Metrics::ToolBar_SeparatorVerticalMargin * 2);
-      rect.setY(Metrics::ToolBar_SeparatorVerticalMargin);
+                     Render::ToolBar_SeparatorVerticalMargin * 2);
+      rect.setY(Render::ToolBar_SeparatorVerticalMargin);
 
       const auto color(_helper->separatorColor(palette));
       _helper->renderSeparator(&painter, rect, color, true);
@@ -477,7 +480,7 @@ bool Style::eventFilterCommandLinkButton(QCommandLinkButton *button,
 
     drawControl(QStyle::CE_PushButton, &option, &painter, button);
 
-    const int margin(Metrics::Button_MarginWidth + Metrics::Frame_FrameWidth);
+    const int margin(Render::Button_MarginWidth + Render::Frame_FrameWidth);
     QPoint offset(margin, margin);
 
     if (button->isDown() && !isFlat)
@@ -507,7 +510,7 @@ bool Style::eventFilterCommandLinkButton(QCommandLinkButton *button,
                                button->isChecked() ? QIcon::On : QIcon::Off));
       drawItemPixmap(&painter, pixmapRect, Qt::AlignCenter, pixmap);
 
-      offset.rx() += pixmapSize.width() + Metrics::Button_ItemSpacing;
+      offset.rx() += pixmapSize.width() + Render::Button_ItemSpacing;
     }
 
     QRect textRect(offset, QSize(button->size().width() - offset.x() - margin,

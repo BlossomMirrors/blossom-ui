@@ -166,8 +166,7 @@ $backdrop_insensitive_button_bg_color: gtkalpha(
 $backdrop_insensitive_fg_color: gtkcolor("@insensitive_unfocused_fg_color");
 $backdrop_insensitive_bg_color: gtkcolor("@insensitive_unfocused_bg_color");
 $backdrop_insensitive_text_color: $backdrop_text_color; // FIXME
-$backdrop_insensitive_base_color: $backdrop_base_color; //
-
+$backdrop_insensitive_base_color: $backdrop_base_color;
 $backdrop_selected_fg_color: gtkcolor("@theme_unfocused_selected_fg_color");
 $backdrop_selected_bg_color: gtkcolor("@theme_unfocused_selected_bg_color");
 

@@ -70,7 +70,7 @@ CompositeShadowParams(QPoint(0, 32), ShadowParams(QPoint(0, 0), 40, 0.12), Shado
 namespace BlossomUI
 {
 
-//_____________________________________________________
+
 CompositeShadowParams ShadowHelper::lookupShadowParams(int shadowSizeEnum)
 {
     switch (shadowSizeEnum) {
@@ -90,7 +90,7 @@ CompositeShadowParams ShadowHelper::lookupShadowParams(int shadowSizeEnum)
     }
 }
 
-//_____________________________________________________
+
 int ShadowHelper::lookupIntensityParams(int shadowIntensityEnum)
 {
     switch (shadowIntensityEnum) {
@@ -108,27 +108,27 @@ int ShadowHelper::lookupIntensityParams(int shadowIntensityEnum)
     }
 }
 
-//_____________________________________________________
+
 ShadowHelper::ShadowHelper(QObject *parent, Helper &helper)
     : QObject(parent)
     , _helper(helper)
 {
 }
 
-//_______________________________________________________
+//_
 ShadowHelper::~ShadowHelper()
 {
     qDeleteAll(_shadows);
 }
 
-//______________________________________________
+//_
 void ShadowHelper::reset()
 {
     _tiles.clear();
     _shadowTiles = TileSet();
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::registerWidget(QWidget *widget, bool force)
 {
     // make sure widget is not already registered
@@ -154,7 +154,7 @@ bool ShadowHelper::registerWidget(QWidget *widget, bool force)
     return true;
 }
 
-//_______________________________________________________
+//_
 void ShadowHelper::unregisterWidget(QWidget *widget)
 {
     if (_widgets.remove(widget)) {
@@ -169,7 +169,7 @@ void ShadowHelper::unregisterWidget(QWidget *widget)
     }
 }
 
-//_______________________________________________________
+//_
 void ShadowHelper::loadConfig()
 {
     // reset
@@ -181,7 +181,7 @@ void ShadowHelper::loadConfig()
     }
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::eventFilter(QObject *object, QEvent *event)
 {
     if (Helper::isX11()) {
@@ -215,7 +215,7 @@ bool ShadowHelper::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-//_______________________________________________________
+//_
 TileSet ShadowHelper::shadowTiles(QWidget *widget)
 {
     CompositeShadowParams params = lookupShadowParams(StyleConfigData::shadowSize());
@@ -264,10 +264,10 @@ TileSet ShadowHelper::shadowTiles(QWidget *widget)
     QPainter painter(&shadowTexture);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    const QMargins margins = QMargins(boxRect.left() - outerRect.left() - Metrics::Shadow_Overlap - params.offset.x(),
-                                      boxRect.top() - outerRect.top() - Metrics::Shadow_Overlap - params.offset.y(),
-                                      outerRect.right() - boxRect.right() - Metrics::Shadow_Overlap + params.offset.x(),
-                                      outerRect.bottom() - boxRect.bottom() - Metrics::Shadow_Overlap + params.offset.y());
+    const QMargins margins = QMargins(boxRect.left() - outerRect.left() - Shadow_Overlap - params.offset.x(),
+                                      boxRect.top() - outerRect.top() - Shadow_Overlap - params.offset.y(),
+                                      outerRect.right() - boxRect.right() - Shadow_Overlap + params.offset.x(),
+                                      outerRect.bottom() - boxRect.bottom() - Shadow_Overlap + params.offset.y());
 
     painter.setPen(Qt::NoPen);
     painter.setBrush(Qt::black);
@@ -289,7 +289,7 @@ TileSet ShadowHelper::shadowTiles(QWidget *widget)
     return _shadowTiles;
 }
 
-//_______________________________________________________
+//_
 TileSet ShadowHelper::shadowTiles(const int frameRadius, CustomShadowParams shadow1, CustomShadowParams shadow2)
 {
     if (shadow1.radius == 0) {
@@ -327,10 +327,10 @@ TileSet ShadowHelper::shadowTiles(const int frameRadius, CustomShadowParams shad
         QPainter painter(&shadowTexture);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        const QMargins margins = QMargins(boxRect.left() - outerRect.left() - Metrics::Shadow_Overlap,
-                                          boxRect.top() - outerRect.top() - Metrics::Shadow_Overlap,
-                                          outerRect.right() - boxRect.right() - Metrics::Shadow_Overlap,
-                                          outerRect.bottom() - boxRect.bottom() - Metrics::Shadow_Overlap);
+        const QMargins margins = QMargins(boxRect.left() - outerRect.left() - Shadow_Overlap,
+                                          boxRect.top() - outerRect.top() - Shadow_Overlap,
+                                          outerRect.right() - boxRect.right() - Shadow_Overlap,
+                                          outerRect.bottom() - boxRect.bottom() - Shadow_Overlap);
 
         painter.setPen(Qt::NoPen);
         painter.setBrush(Qt::black);
@@ -356,45 +356,45 @@ TileSet ShadowHelper::shadowTiles(const int frameRadius, CustomShadowParams shad
     return shadowTiles;
 }
 
-//_______________________________________________________
+//_
 void ShadowHelper::widgetDeleted(QObject *object)
 {
     QWidget *widget(static_cast<QWidget *>(object));
     _widgets.remove(widget);
 }
 
-//_______________________________________________________
+//_
 void ShadowHelper::windowDeleted(QObject *object)
 {
     QWindow *window(static_cast<QWindow *>(object));
     _shadows.remove(window);
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::isMenu(QWidget *widget) const
 {
     return qobject_cast<QMenu *>(widget);
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::isToolTip(QWidget *widget) const
 {
     return widget->inherits("QTipLabel") || (widget->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip;
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::isDockWidget(QWidget *widget) const
 {
     return qobject_cast<QDockWidget *>(widget);
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::isToolBar(QWidget *widget) const
 {
     return qobject_cast<QToolBar *>(widget);
 }
 
-//_______________________________________________________
+//_
 bool ShadowHelper::acceptWidget(QWidget *widget) const
 {
     // flags
@@ -425,7 +425,7 @@ bool ShadowHelper::acceptWidget(QWidget *widget) const
     return false;
 }
 
-//______________________________________________
+//_
 const QVector<KWindowShadowTile::Ptr> &ShadowHelper::createShadowTiles()
 {
     // make sure size is valid
@@ -444,7 +444,7 @@ const QVector<KWindowShadowTile::Ptr> &ShadowHelper::createShadowTiles()
     return _tiles;
 }
 
-//______________________________________________
+//_
 KWindowShadowTile::Ptr ShadowHelper::createTile(const QPixmap &source)
 {
     KWindowShadowTile::Ptr tile = KWindowShadowTile::Ptr::create();
@@ -452,7 +452,7 @@ KWindowShadowTile::Ptr ShadowHelper::createTile(const QPixmap &source)
     return tile;
 }
 
-//_______________________________________________________
+//_
 void ShadowHelper::installShadows(QWidget *widget)
 {
     if (!widget)
@@ -507,7 +507,7 @@ void ShadowHelper::installShadows(QWidget *widget)
     shadow->create();
 }
 
-//_______________________________________________________
+//_
 QMargins ShadowHelper::shadowMargins(QWidget *widget) const
 {
     CompositeShadowParams params = lookupShadowParams(StyleConfigData::shadowSize());
@@ -529,10 +529,10 @@ QMargins ShadowHelper::shadowMargins(QWidget *widget) const
     QRectF boxRect(QPoint(0, 0), boxSize);
     boxRect.moveCenter(shadowRect.center());
 
-    QMarginsF margins(boxRect.left() - shadowRect.left() - int(Metrics::Shadow_Overlap) - params.offset.x(),
-                      boxRect.top() - shadowRect.top() - int(Metrics::Shadow_Overlap) - params.offset.y(),
-                      shadowRect.right() - boxRect.right() - int(Metrics::Shadow_Overlap) + params.offset.x(),
-                      shadowRect.bottom() - boxRect.bottom() - int(Metrics::Shadow_Overlap) + params.offset.y());
+    QMarginsF margins(boxRect.left() - shadowRect.left() - int(Shadow_Overlap) - params.offset.x(),
+                      boxRect.top() - shadowRect.top() - int(Shadow_Overlap) - params.offset.y(),
+                      shadowRect.right() - boxRect.right() - int(Shadow_Overlap) + params.offset.x(),
+                      shadowRect.bottom() - boxRect.bottom() - int(Shadow_Overlap) + params.offset.y());
 
     if (widget->inherits("QBalloonTip")) {
         // Balloon tip needs special margins to deal with the arrow.
@@ -556,7 +556,7 @@ QMargins ShadowHelper::shadowMargins(QWidget *widget) const
     return margins.toMargins();
 }
 
-//_______________________________________________________
+//_
 void ShadowHelper::uninstallShadows(QWidget *widget)
 {
     delete _shadows.take(widget->windowHandle());

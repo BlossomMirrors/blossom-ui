@@ -34,7 +34,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________________________________
 bool FrameShadowFactory::registerWidget(QWidget *widget, Helper &helper)
 {
     if (!widget)
@@ -86,7 +85,6 @@ bool FrameShadowFactory::registerWidget(QWidget *widget, Helper &helper)
     return true;
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::unregisterWidget(QWidget *widget)
 {
     if (!isRegistered(widget))
@@ -95,7 +93,6 @@ void FrameShadowFactory::unregisterWidget(QWidget *widget)
     removeShadows(widget);
 }
 
-//____________________________________________________________________________________
 bool FrameShadowFactory::eventFilter(QObject *object, QEvent *event)
 {
     switch (event->type()) {
@@ -113,7 +110,6 @@ bool FrameShadowFactory::eventFilter(QObject *object, QEvent *event)
     return QObject::eventFilter(object, event);
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::installShadows(QWidget *widget, Helper &helper)
 {
     removeShadows(widget);
@@ -126,7 +122,6 @@ void FrameShadowFactory::installShadows(QWidget *widget, Helper &helper)
     widget->removeEventFilter(&_addEventFilter);
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::removeShadows(QWidget *widget)
 {
     widget->removeEventFilter(this);
@@ -141,7 +136,6 @@ void FrameShadowFactory::removeShadows(QWidget *widget)
     }
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::updateShadowsGeometry(const QObject *object, QRect rect) const
 {
     const QList<QObject *> &children = object->children();
@@ -152,7 +146,6 @@ void FrameShadowFactory::updateShadowsGeometry(const QObject *object, QRect rect
     }
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::raiseShadows(QObject *object) const
 {
     const QList<QObject *> &children = object->children();
@@ -163,7 +156,6 @@ void FrameShadowFactory::raiseShadows(QObject *object) const
     }
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::update(QObject *object) const
 {
     const QList<QObject *> &children = object->children();
@@ -174,7 +166,6 @@ void FrameShadowFactory::update(QObject *object) const
     }
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::updateState(const QWidget *widget, bool focus, bool hover, qreal opacity, AnimationMode mode) const
 {
     const QList<QObject *> &children = widget->children();
@@ -185,7 +176,6 @@ void FrameShadowFactory::updateState(const QWidget *widget, bool focus, bool hov
     }
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::installShadow(QWidget *widget, Helper &helper, Side area) const
 {
     FrameShadow *shadow(nullptr);
@@ -194,13 +184,11 @@ void FrameShadowFactory::installShadow(QWidget *widget, Helper &helper, Side are
     shadow->hide();
 }
 
-//____________________________________________________________________________________
 void FrameShadowFactory::widgetDestroyed(QObject *object)
 {
     _registeredWidgets.remove(object);
 }
 
-//____________________________________________________________________________________
 FrameShadow::FrameShadow(Side area, Helper &helper)
     : _helper(helper)
     , _area(area)
@@ -219,7 +207,6 @@ FrameShadow::FrameShadow(Side area, Helper &helper)
         setCursor(viewport->cursor());
 }
 
-//____________________________________________________________________________________
 void FrameShadow::updateGeometry(QRect rect)
 {
     // show on first call
@@ -261,7 +248,6 @@ void FrameShadow::updateGeometry(QRect rect)
     setGeometry(rect);
 }
 
-//____________________________________________________________________________________
 void FrameShadow::updateState(bool focus, bool hover, qreal opacity, AnimationMode mode)
 {
     bool changed(false);
@@ -295,7 +281,6 @@ void FrameShadow::updateState(bool focus, bool hover, qreal opacity, AnimationMo
     }
 }
 
-//____________________________________________________________________________________
 void FrameShadow::paintEvent(QPaintEvent *event)
 {
     // this fixes shadows in frames that change frameStyle() after polish()
@@ -317,7 +302,6 @@ void FrameShadow::paintEvent(QPaintEvent *event)
     //_helper.renderFrame( &painter, rect, QColor(), outline );
 }
 
-//____________________________________________________________________________________
 QWidget *FrameShadow::viewport() const
 {
     if (!parentWidget())

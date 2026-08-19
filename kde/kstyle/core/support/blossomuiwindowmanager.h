@@ -347,7 +347,7 @@ private:
     friend class AppEventFilter;
 };
 
-//____________________________________________________________________
+
 template<typename T>
 T WindowManager::findParent(const QWidget *widget) const
 {

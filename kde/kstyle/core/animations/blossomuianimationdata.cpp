@@ -25,7 +25,6 @@ namespace BlossomUI
 const qreal AnimationData::OpacityInvalid = -1;
 int AnimationData::_steps = 0;
 
-//_________________________________________________________________________________
 void AnimationData::setupAnimation(const Animation::Pointer &animation, const QByteArray &property)
 {
     // setup animation

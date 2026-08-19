@@ -34,6 +34,9 @@
 namespace BlossomUI
 {
 
+// shadow tile overlap, in logical pixels
+static constexpr int Shadow_Overlap = 2;
+
 //* forward declaration
 class Helper;
 

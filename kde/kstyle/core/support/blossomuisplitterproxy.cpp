@@ -51,7 +51,7 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________________
+
 void SplitterFactory::setEnabled(bool value)
 {
     if (_enabled != value) {
@@ -66,7 +66,7 @@ void SplitterFactory::setEnabled(bool value)
     }
 }
 
-//____________________________________________________________________
+
 bool SplitterFactory::registerWidget(QWidget *widget)
 {
     // check widget type
@@ -109,7 +109,7 @@ bool SplitterFactory::registerWidget(QWidget *widget)
         return false;
 }
 
-//____________________________________________________________________
+
 void SplitterFactory::unregisterWidget(QWidget *widget)
 {
     WidgetMap::iterator iter(_widgets.find(widget));
@@ -120,7 +120,7 @@ void SplitterFactory::unregisterWidget(QWidget *widget)
     }
 }
 
-//____________________________________________________________________
+
 SplitterProxy::SplitterProxy(QWidget *parent, bool enabled)
     : QWidget(parent)
     , _enabled(enabled)
@@ -131,7 +131,7 @@ SplitterProxy::SplitterProxy(QWidget *parent, bool enabled)
     hide();
 }
 
-//____________________________________________________________________
+
 void SplitterProxy::setEnabled(bool value)
 {
     // make sure status has changed
@@ -142,7 +142,7 @@ void SplitterProxy::setEnabled(bool value)
     }
 }
 
-//____________________________________________________________________
+
 bool SplitterProxy::eventFilter(QObject *object, QEvent *event)
 {
     // do nothing if disabled
@@ -282,7 +282,7 @@ bool SplitterProxy::event(QEvent *event)
     }
 }
 
-//____________________________________________________________________
+
 void SplitterProxy::setSplitter(QWidget *widget)
 {
     // check if changed

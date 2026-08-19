@@ -2,7 +2,9 @@
 #include "blossomuianimations.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
-#include "widgets/switch.h"
+#include "itemview.h"
+#include "switchwidget.h"
+#include "toolbarcontrol.h"
 
 #include <KColorUtils>
 #include <QAbstractButton>
@@ -12,12 +14,16 @@
 #include <QComboBox>
 #include <QPainter>
 #include <QPainterPath>
+#include <QPolygon>
 #include <QStyleOptionButton>
 #include <QStyleOptionHeader>
 #include <QStyleOptionToolButton>
 #include <QTreeView>
 
 namespace BlossomUI {
+
+//* contrast for arrow and treeline rendering
+static const qreal arrowShade = 0.15;
 
 bool Style::drawIndicatorArrowPrimitive(ArrowOrientation orientation,
                                         const QStyleOption *option,
@@ -217,75 +223,6 @@ bool Style::drawIndicatorRadioButtonPrimitive(const QStyleOption *option,
   return true;
 }
 
-bool Style::drawIndicatorButtonDropDownPrimitive(const QStyleOption *option,
-                                                 QPainter *painter,
-                                                 const QWidget *widget) const {
-  // cast option and check
-  const auto toolButtonOption(
-      qstyleoption_cast<const QStyleOptionToolButton *>(option));
-  if (!toolButtonOption)
-    return true;
-
-  // store window state
-  const bool windowActive(widget && widget->isActiveWindow());
-
-  // store state
-  const State &state(option->state);
-  const bool autoRaise(state & State_AutoRaise);
-
-  // do nothing for autoraise buttons
-  if (autoRaise || !(toolButtonOption->subControls & SC_ToolButtonMenu))
-    return true;
-
-  // store palette and rect
-  const auto &palette(option->palette);
-  const auto &rect(option->rect);
-
-  // store state
-  const bool enabled(state & State_Enabled);
-  const bool hasFocus(enabled && (state & (State_HasFocus | State_Sunken)));
-  const bool mouseOver(enabled && (state & State_MouseOver));
-  const bool sunken(enabled && (state & State_Sunken));
-
-  // update animation state
-  // mouse over takes precedence over focus
-  _animations->widgetStateEngine().updateState(widget, AnimationHover,
-                                               mouseOver);
-  _animations->widgetStateEngine().updateState(widget, AnimationFocus,
-                                               hasFocus && !mouseOver);
-
-  const AnimationMode mode(
-      _animations->widgetStateEngine().buttonAnimationMode(widget));
-  const qreal opacity(_animations->widgetStateEngine().buttonOpacity(widget));
-
-  // render as push button
-  // const auto shadow( _helper->shadowColor( palette ) );
-  const auto outline(
-      _helper->buttonOutlineColor(palette, mouseOver, hasFocus, opacity, mode));
-  const auto background(_helper->buttonBackgroundColor(
-      palette, mouseOver, hasFocus, false, opacity, mode));
-
-  auto frameRect(rect);
-  painter->setClipRect(rect);
-  frameRect.adjust(-StyleConfigData::cornerRadius() - 1, 0, 0, 0);
-  frameRect = visualRect(option, frameRect);
-
-  // render
-  _helper->renderButtonFrame(painter, frameRect, background, palette, hasFocus,
-                             sunken, mouseOver, enabled,
-                             windowActive); // TODO: use sides?
-
-  // also render separator
-  auto separatorRect(rect.adjusted(0, 9, -2, -9));
-  separatorRect.setWidth(1);
-  separatorRect = visualRect(option, separatorRect);
-  if (sunken)
-    separatorRect.translate(1, 1);
-  _helper->renderSeparator(painter, separatorRect, outline, true);
-
-  return true;
-}
-
 bool Style::drawIndicatorTabClosePrimitive(const QStyleOption *option,
                                            QPainter *painter,
                                            const QWidget *widget) const {
@@ -406,7 +343,7 @@ bool Style::drawIndicatorToolBarHandlePrimitive(const QStyleOption *option,
   // define color and render
   const auto color(_helper->separatorColor(palette));
   if (separatorIsVertical) {
-    rect.setWidth(Metrics::ToolBar_HandleWidth);
+    rect.setWidth(Render::ToolBar_HandleWidth);
     rect = centerRect(option->rect, rect.size());
     rect.setWidth(3);
     _helper->renderSeparator(painter, rect, color, separatorIsVertical);
@@ -415,7 +352,7 @@ bool Style::drawIndicatorToolBarHandlePrimitive(const QStyleOption *option,
     _helper->renderSeparator(painter, rect, color, separatorIsVertical);
 
   } else {
-    rect.setHeight(Metrics::ToolBar_HandleWidth);
+    rect.setHeight(Render::ToolBar_HandleWidth);
     rect = centerRect(option->rect, rect.size());
     rect.setHeight(3);
     _helper->renderSeparator(painter, rect, color, separatorIsVertical);
@@ -476,7 +413,7 @@ bool Style::drawIndicatorBranchPrimitive(const QStyleOption *option,
 
     // expander rect
     int expanderSize = qMin(rect.width(), rect.height());
-    expanderSize = qMin(expanderSize, int(Metrics::ItemView_ArrowSize));
+    expanderSize = qMin(expanderSize, int(Render::ItemView_ArrowSize));
     expanderAdjust = expanderSize / 2 + 1;
     const auto arrowRect = centerRect(rect, expanderSize, expanderSize);
 
@@ -529,6 +466,97 @@ bool Style::drawIndicatorBranchPrimitive(const QStyleOption *option,
   }
 
   return true;
+}
+
+QColor Helper::arrowColor(const QPalette &palette, QPalette::ColorGroup group,
+                          QPalette::ColorRole role) const {
+  switch (role) {
+  case QPalette::Text:
+    return KColorUtils::mix(palette.color(group, QPalette::Text),
+                            palette.color(group, QPalette::Base), arrowShade);
+  case QPalette::WindowText:
+    return KColorUtils::mix(palette.color(group, QPalette::WindowText),
+                            palette.color(group, QPalette::Window), arrowShade);
+  case QPalette::ButtonText:
+    return KColorUtils::mix(palette.color(group, QPalette::ButtonText),
+                            palette.color(group, QPalette::Button), arrowShade);
+  default:
+    return palette.color(group, role);
+  }
+}
+
+QColor Helper::arrowColor(const QPalette &palette, bool mouseOver,
+                          bool hasFocus, qreal opacity,
+                          AnimationMode mode) const {
+  QColor outline(arrowColor(palette, QPalette::WindowText));
+  if (mode == AnimationHover) {
+    const QColor focus(focusColor(palette));
+    const QColor hover(hoverColor(palette));
+    if (hasFocus)
+      outline = KColorUtils::mix(focus, hover, opacity);
+    else
+      outline = KColorUtils::mix(outline, hover, opacity);
+
+  } else if (mouseOver) {
+    // fix skanlite arrow color bug (mouseOver shows dark color (focusColor),
+    // not light color (hoverColor))
+    outline = focusColor(palette);
+
+  } else if (mode == AnimationFocus) {
+    const QColor focus(focusColor(palette));
+    outline = KColorUtils::mix(outline, focus, opacity);
+
+  } else if (hasFocus) {
+    outline = focusColor(palette);
+  }
+
+  return outline;
+}
+
+void Helper::renderArrow(QPainter *painter, const QRect &rect,
+                         const QColor &color,
+                         ArrowOrientation orientation) const {
+  // define polygon
+  QPolygonF arrow;
+  switch (orientation) {
+  /* The inner points of the normal arrows are not on half pixels because
+   * they need to have an even width (up/down) or height (left/right).
+   * An even width/height makes them easier to align with other UI elements.
+   */
+  case ArrowUp:
+    arrow =
+        QVector<QPointF>{QPointF(-4.5, 1.5), QPointF(0, -3), QPointF(4.5, 1.5)};
+    break;
+  case ArrowDown:
+    arrow = QVector<QPointF>{QPointF(-4.5, -1.5), QPointF(0, 3),
+                             QPointF(4.5, -1.5)};
+    break;
+  case ArrowLeft:
+    arrow =
+        QVector<QPointF>{QPointF(1.5, -4.5), QPointF(-3, 0), QPointF(1.5, 4.5)};
+    break;
+  case ArrowRight:
+    arrow = QVector<QPointF>{QPointF(-1.5, -4.5), QPointF(3, 0),
+                             QPointF(-1.5, 4.5)};
+    break;
+  case ArrowDownSmall:
+    arrow = QVector<QPointF>{QPointF(1.5, 3.5), QPointF(3.5, 5.5),
+                             QPointF(5.5, 3.5)};
+    break;
+  default:
+    break;
+  }
+
+  painter->save();
+  painter->setRenderHints(QPainter::Antialiasing);
+  painter->translate(QRectF(rect).center());
+  painter->setBrush(Qt::NoBrush);
+  QPen pen(color, PenWidth::Symbol);
+  pen.setCapStyle(Qt::SquareCap);
+  pen.setJoinStyle(Qt::MiterJoin);
+  painter->setPen(pen);
+  painter->drawPolyline(arrow);
+  painter->restore();
 }
 
 } // namespace BlossomUI

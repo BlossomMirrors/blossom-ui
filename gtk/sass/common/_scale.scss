@@ -361,22 +361,18 @@ scale {
         // FIXME
         //   min-height: 0;
         //   min-width: 0;
-        //
-        //   trough {
+                //   trough {
         //     background-color: $bg_color;
         //   }
-        //
-        //   &.horizontal {
+                //   &.horizontal {
         //     padding: 0 0 15px 0;
-        //
-        //     trough {
+                //     trough {
         //       padding-bottom: 4px;
         //       background-position: 0 -3px;
         //       border-top-left-radius: 0;
         //       border-top-right-radius: 0;
         //     }
-        //
-        //     slider {
+                //     slider {
         //       &:dir(ltr), &:dir(rtl) { // specificity bumb
         //         &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
         //           margin-bottom: -15px;
@@ -385,37 +381,31 @@ scale {
         //       }
         //     }
         //   }
-        //
-        //   &.vertical {
+                //   &.vertical {
         //     &:dir(ltr) {
         //       padding: 0 0 0 15px;
-        //
-        //       trough {
+                //       trough {
         //         padding-left: 4px;
         //         background-position: 3px 0;
         //         border-bottom-right-radius: 0;
         //         border-top-right-radius: 0;
         //       }
-        //
-        //       slider {
+                //       slider {
         //         &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
         //           margin-left: -15px;
         //           margin-right: 6px;
         //         }
         //       }
         //     }
-        //
-        //     &:dir(rtl) {
+                //     &:dir(rtl) {
         //       padding: 0 15px 0 0;
-        //
-        //       trough {
+                //       trough {
         //         padding-right: 4px;
         //         background-position: -3px 0;
         //         border-bottom-left-radius: 0;
         //         border-top-left-radius: 0;
         //       }
-        //
-        //       slider {
+                //       slider {
         //         &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
         //           margin-right: -15px;
         //           margin-left: 6px;
@@ -423,48 +413,39 @@ scale {
         //       }
         //     }
         //   }
-        //
-        //   &.fine-tune {
+                //   &.fine-tune {
         //     &.horizontal {
         //       &:dir(ltr), &:dir(rtl) { // specificity bump
         //         padding: 0 0 12px 0;
-        //
-        //         trough {
+                //         trough {
         //           padding-bottom: 7px;
         //           background-position: 0 -6px;
         //         }
-        //
-        //         slider {
+                //         slider {
         //           margin-bottom: -15px;
         //           margin-top: 6px;
         //         }
         //       }
         //     }
-        //
-        //     &.vertical {
+                //     &.vertical {
         //       &:dir(ltr) {
         //         padding: 0 0 0 12px;
-        //
-        //         trough {
+                //         trough {
         //           padding-left: 7px;
         //           background-position: 6px 0;
         //         }
-        //
-        //         slider {
+                //         slider {
         //           margin-left: -15px;
         //           margin-right: 6px;
         //         }
         //       }
-        //
-        //       &:dir(rtl) {
+                //       &:dir(rtl) {
         //         padding: 0 12px 0 0;
-        //
-        //         trough {
+                //         trough {
         //           padding-right: 7px;
         //           background-position: -6px 0;
         //         }
-        //
-        //         slider {
+                //         slider {
         //           margin-right: -15px;
         //           margin-left: 6px;
         //         }
@@ -473,4 +454,3 @@ scale {
         //   }
     }
 }
-

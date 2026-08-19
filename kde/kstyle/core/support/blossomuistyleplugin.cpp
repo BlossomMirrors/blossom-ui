@@ -26,7 +26,7 @@
 namespace BlossomUI
 {
 
-//_________________________________________________
+//_
 QStyle *StylePlugin::create(const QString &key)
 {
     if (key.toLower() == QStringLiteral("blossomui")) {
@@ -35,7 +35,7 @@ QStyle *StylePlugin::create(const QString &key)
     return nullptr;
 }
 
-//_________________________________________________
+//_
 QStringList StylePlugin::keys() const
 {
     return QStringList(QStringLiteral("BlossomUI"));

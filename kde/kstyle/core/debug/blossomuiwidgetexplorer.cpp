@@ -29,7 +29,6 @@
 namespace BlossomUI
 {
 
-//________________________________________________
 WidgetExplorer::WidgetExplorer(QObject *parent)
     : QObject(parent)
 {
@@ -50,7 +49,6 @@ WidgetExplorer::WidgetExplorer(QObject *parent)
     // _eventTypes.insert( QEvent::Paint, "Paint" );
 }
 
-//________________________________________________
 void WidgetExplorer::setEnabled(bool value)
 {
     if (value == _enabled)
@@ -62,7 +60,6 @@ void WidgetExplorer::setEnabled(bool value)
         qApp->installEventFilter(this);
 }
 
-//________________________________________________
 bool WidgetExplorer::eventFilter(QObject *object, QEvent *event)
 {
     //         if( object->isWidgetType() )
@@ -123,7 +120,6 @@ bool WidgetExplorer::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-//________________________________________________
 QString WidgetExplorer::eventType(const QEvent::Type &type) const
 {
     switch (type) {
@@ -138,7 +134,6 @@ QString WidgetExplorer::eventType(const QEvent::Type &type) const
     }
 }
 
-//________________________________________________
 QString WidgetExplorer::widgetInformation(const QWidget *widget) const
 {
     QRect r(widget->geometry());
