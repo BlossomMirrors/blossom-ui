@@ -16,7 +16,7 @@ qreal WidgetRenderer::pressShrink(const WidgetSpec &spec,
   return MotionResolver::scale(spec.motionStyle, state);
 }
 
-QRectF WidgetRenderer::contentRect(const QRect &rect, const WidgetSpec &spec,
+QRectF WidgetRenderer::contentRect(const QRectF &rect, const WidgetSpec &spec,
                                    const WidgetInteractionState &state) const {
   const qreal inset = spec.geom.inset;
   QRectF r(rect.adjusted(inset, inset, -inset, -inset));
@@ -25,7 +25,7 @@ QRectF WidgetRenderer::contentRect(const QRect &rect, const WidgetSpec &spec,
   return r;
 }
 
-void WidgetRenderer::render(QPainter *painter, const QRect &rect,
+void WidgetRenderer::render(QPainter *painter, const QRectF &rect,
                             const WidgetSpec &spec,
                             const WidgetInteractionState &state) const {
   painter->setRenderHint(QPainter::Antialiasing, true);

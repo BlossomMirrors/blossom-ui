@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "placement.h"
 
-#include "motionresolver.h"
-
 namespace BlossomUI {
 namespace Render {
 
@@ -43,16 +41,6 @@ Placement Placement::inset(qreal margin) {
   Placement p;
   p.compute = [margin](const QRectF &bounds, const WidgetInteractionState &) {
     return bounds.adjusted(margin, margin, -margin, -margin);
-  };
-  return p;
-}
-
-Placement Placement::insetByMotion(Motion motion, qreal extraMargin) {
-  Placement p;
-  p.compute = [motion, extraMargin](const QRectF &bounds,
-                                    const WidgetInteractionState &state) {
-    const qreal m = extraMargin + MotionResolver::scale(motion, state);
-    return bounds.adjusted(m, m, -m, -m);
   };
   return p;
 }
