@@ -7,7 +7,7 @@
 #include "widgetstate.h"
 
 #include <QIcon>
-#include <QRect>
+#include <QRectF>
 #include <QString>
 
 class QPainter;
@@ -41,18 +41,18 @@ struct Content {
 };
 
 struct ContentRects {
-  QRect icon;
-  QRect text;
+  QRectF icon;
+  QRectF text;
 };
 
 class ContentRenderer {
 public:
   explicit ContentRenderer(Helper *helper) : _helper(helper) {}
 
-  ContentRects layout(const QRect &bounds, const ContentLayout &spec,
+  ContentRects layout(const QRectF &bounds, const ContentLayout &spec,
                       const Content &content, const QFontMetrics &metrics) const;
 
-  void paint(QPainter *painter, const QRect &bounds, const ContentLayout &spec,
+  void paint(QPainter *painter, const QRectF &bounds, const ContentLayout &spec,
              const Content &content, const WidgetInteractionState &state) const;
 
 private:

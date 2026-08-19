@@ -21,8 +21,6 @@ public:
   static Placement anchoredLeft(qreal w);
   static Placement anchoredRight(qreal w);
   static Placement inset(qreal margin);
-  //* keeps a content part locked to a frame animating the same Motion
-  static Placement insetByMotion(Motion motion, qreal extraMargin = 0.0);
   static Placement slide(StateStyle<qreal> position, qreal partSize);
 
   QRectF resolve(const QRectF &bounds, const WidgetInteractionState &state) const;

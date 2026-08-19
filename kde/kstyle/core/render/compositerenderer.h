@@ -23,6 +23,10 @@ struct Part {
   Glyph glyph;
   CustomPart custom;
   Placement placement;
+  //* scales the part's painting (not just its bounds) around its rect's
+  //center, so centered content actually shrinks in sync with an animated
+  //frame instead of an inset that a centered layout would cancel out
+  Motion motion;
 
   static Part fromShape(const WidgetSpec &s, const Placement &p) {
     Part part;
@@ -32,12 +36,13 @@ struct Part {
     return part;
   }
   static Part fromContent(const ContentLayout &l, const Content &c,
-                          const Placement &p) {
+                          const Placement &p, const Motion &m = Motion()) {
     Part part;
     part.kind = Kind::Content;
     part.contentLayout = l;
     part.content = c;
     part.placement = p;
+    part.motion = m;
     return part;
   }
   static Part fromCustom(const CustomPart &c, const Placement &p) {

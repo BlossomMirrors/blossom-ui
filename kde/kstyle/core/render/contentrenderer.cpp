@@ -22,7 +22,7 @@ static bool wantsText(const ContentLayout &spec, const Content &content) {
   return spec.arrangement != ContentArrangement::IconOnly;
 }
 
-ContentRects ContentRenderer::layout(const QRect &bounds,
+ContentRects ContentRenderer::layout(const QRectF &bounds,
                                      const ContentLayout &spec,
                                      const Content &content,
                                      const QFontMetrics &metrics) const {
@@ -42,59 +42,55 @@ ContentRects ContentRenderer::layout(const QRect &bounds,
     return rects;
   }
 
-  const QSize iconSize = spec.iconSize;
-  const QSize textSize = metrics.size(content.textFlags, content.text);
+  const QSizeF iconSize = spec.iconSize;
+  const QSizeF textSize = metrics.size(content.textFlags, content.text);
 
   if (spec.arrangement == ContentArrangement::TextUnderIcon) {
-    const int height = iconSize.height() + textSize.height() + spec.itemSpacing;
-    rects.icon = QRect(
-        QPoint(bounds.left() + qRound((bounds.width() - iconSize.width()) / 2.0),
-               bounds.top() + qRound((bounds.height() - height) / 2.0)),
+    const qreal height = iconSize.height() + textSize.height() + spec.itemSpacing;
+    rects.icon = QRectF(
+        QPointF(bounds.left() + (bounds.width() - iconSize.width()) / 2.0,
+               bounds.top() + (bounds.height() - height) / 2.0),
         iconSize);
-    rects.text = QRect(
-        QPoint(bounds.left() + qRound((bounds.width() - textSize.width()) / 2.0),
-               rects.icon.bottom() + spec.itemSpacing + 1),
+    rects.text = QRectF(
+        QPointF(bounds.left() + (bounds.width() - textSize.width()) / 2.0,
+               rects.icon.bottom() + spec.itemSpacing),
         textSize);
     return rects;
   }
 
   if (spec.alignment & Qt::AlignLeft) {
     rects.icon =
-        QRect(QPoint(bounds.left() + spec.leftMargin,
-                     bounds.top() + (bounds.height() - iconSize.height()) / 2),
+        QRectF(QPointF(bounds.left() + spec.leftMargin,
+                       bounds.top() + (bounds.height() - iconSize.height()) / 2.0),
               iconSize);
   } else {
-    const int width = iconSize.width() + textSize.width() + spec.itemSpacing;
-    rects.icon = QRect(
-        QPoint(bounds.left() + qRound((bounds.width() - width) / 2.0),
-               bounds.top() + qRound((bounds.height() - iconSize.height()) / 2.0)),
+    const qreal width = iconSize.width() + textSize.width() + spec.itemSpacing;
+    rects.icon = QRectF(
+        QPointF(bounds.left() + (bounds.width() - width) / 2.0,
+               bounds.top() + (bounds.height() - iconSize.height()) / 2.0),
         iconSize);
   }
   rects.text =
-      QRect(QPoint(rects.icon.right() + spec.itemSpacing + 1,
-                   bounds.top() + (bounds.height() - textSize.height()) / 2),
+      QRectF(QPointF(rects.icon.right() + spec.itemSpacing,
+                     bounds.top() + (bounds.height() - textSize.height()) / 2.0),
             textSize);
   return rects;
 }
 
-void ContentRenderer::paint(QPainter *painter, const QRect &bounds,
+void ContentRenderer::paint(QPainter *painter, const QRectF &bounds,
                             const ContentLayout &spec, const Content &content,
                             const WidgetInteractionState &state) const {
   ContentRects rects = layout(bounds, spec, content, QFontMetrics(content.font));
 
   if (rects.icon.isValid() && !content.icon.isNull()) {
-    QRect iconRect = rects.icon;
-    iconRect = QRect(iconRect.center() - QPoint(spec.iconSize.width() / 2,
-                                                spec.iconSize.height() / 2),
-                     spec.iconSize);
     const qreal dpr = painter->device() ? painter->device()->devicePixelRatioF()
                                         : qApp->devicePixelRatio();
     const QPixmap pixmap =
         _helper->coloredIcon(content.icon, state.palette, spec.iconSize, dpr,
                              content.iconMode, content.iconState);
-    QRect target(QPoint(), pixmap.size() / pixmap.devicePixelRatio());
-    target.moveCenter(iconRect.center());
-    painter->drawPixmap(target, pixmap);
+    QRectF target(QPointF(), QSizeF(pixmap.size()) / pixmap.devicePixelRatio());
+    target.moveCenter(rects.icon.center());
+    painter->drawPixmap(target.topLeft(), pixmap);
   }
 
   if (rects.text.isValid() && !content.text.isEmpty()) {

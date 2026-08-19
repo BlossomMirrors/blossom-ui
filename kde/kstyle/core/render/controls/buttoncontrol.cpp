@@ -251,8 +251,8 @@ bool ButtonControl::drawPushLabel(const QStyleOption *option, QPainter *painter,
       bounds = menuArrowSplit(option, painter, bounds, content.textRole);
 
     QVector<Part> parts{Part::fromContent(
-        layout, content,
-        flat ? Placement::fill() : Placement::insetByMotion(ButtonSpec.motionStyle))};
+        layout, content, Placement::fill(),
+        flat ? Motion() : ButtonSpec.motionStyle)};
     CompositeRenderer(_style->_helper).render(painter, bounds, parts, state);
     return true;
   }
@@ -265,8 +265,8 @@ bool ButtonControl::drawPushLabel(const QStyleOption *option, QPainter *painter,
     bounds = menuArrowSplit(option, painter, bounds, content.textRole);
 
   QVector<Part> parts{Part::fromContent(
-      layout, content,
-      flat ? Placement::fill() : Placement::insetByMotion(ButtonSpec.motionStyle))};
+      layout, content, Placement::fill(),
+      flat ? Motion() : ButtonSpec.motionStyle)};
   CompositeRenderer(_style->_helper).render(painter, bounds, parts, state);
   return true;
 }
@@ -340,7 +340,7 @@ bool ButtonControl::drawToolLabel(const QStyleOption *option, QPainter *painter,
     content.textFlags |= Qt::AlignLeft | Qt::AlignVCenter;
 
   QVector<Part> parts{Part::fromContent(
-      layout, content, Placement::insetByMotion(ToolButtonSpec.motionStyle))};
+      layout, content, Placement::fill(), ToolButtonSpec.motionStyle)};
   CompositeRenderer(_style->_helper).render(painter, option->rect, parts, state);
 
   if (hasArrow) {

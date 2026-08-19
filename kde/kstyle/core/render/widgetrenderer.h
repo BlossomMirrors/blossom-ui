@@ -23,10 +23,10 @@ public:
   explicit WidgetRenderer(const Helper *helper)
       : _radius(helper), _ripple(helper) {}
 
-  void render(QPainter *painter, const QRect &rect, const WidgetSpec &spec,
+  void render(QPainter *painter, const QRectF &rect, const WidgetSpec &spec,
               const WidgetInteractionState &state) const;
 
-  QRectF contentRect(const QRect &rect, const WidgetSpec &spec,
+  QRectF contentRect(const QRectF &rect, const WidgetSpec &spec,
                      const WidgetInteractionState &state) const;
 
   qreal pressShrink(const WidgetSpec &spec,
