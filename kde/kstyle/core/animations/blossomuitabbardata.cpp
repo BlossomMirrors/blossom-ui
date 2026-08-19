@@ -17,23 +17,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////////
-// blossomuitabbardata.cpp
+////////////////////////////////////////////////////////////////////////////// blossomuitabbardata.cpp
 // data container for QTabBar animations
 // -------------------
-//
 // Copyright (c) 2009 Hugo Pereira Da Costa <hugo.pereira@free.fr>
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -41,8 +36,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////
 #include "blossomuitabbardata.h"
 
 #include <QEasingCurve>
@@ -53,7 +47,7 @@
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 TabBarData::TabBarData(QObject *parent, QWidget *target, int duration)
     : AnimationData(parent, target)
 {
@@ -82,7 +76,7 @@ TabBarData::TabBarData(QObject *parent, QWidget *target, int duration)
     }
 }
 
-//______________________________________________
+//_
 Animation::Pointer TabBarData::animation(const QPoint &position) const
 {
     if (!enabled())
@@ -103,7 +97,7 @@ Animation::Pointer TabBarData::animation(const QPoint &position) const
         return Animation::Pointer();
 }
 
-//______________________________________________
+//_
 bool TabBarData::updateState(const QPoint &position, bool hovered)
 {
     if (!enabled())
@@ -142,7 +136,7 @@ bool TabBarData::updateState(const QPoint &position, bool hovered)
         return false;
 }
 
-//______________________________________________
+//_
 void TabBarData::onCurrentChanged(int index)
 {
     if (!enabled() || index < 0)
@@ -155,13 +149,13 @@ void TabBarData::onCurrentChanged(int index)
     _selectedAnimation.data()->restart();
 }
 
-//______________________________________________
+//_
 bool TabBarData::isSelectedAnimated() const
 {
     return enabled() && _selectedAnimation && _selectedAnimation.data()->isRunning();
 }
 
-//______________________________________________
+//_
 QRect TabBarData::selectedPillRect(const QTabBar *tabBar) const
 {
     if (!tabBar || _previousSelectedIndex < 0 || _selectedIndex < 0)
@@ -175,7 +169,7 @@ QRect TabBarData::selectedPillRect(const QTabBar *tabBar) const
                  qRound(prevRect.height() + t * (currRect.height() - prevRect.height())));
 }
 
-//______________________________________________
+//_
 qreal TabBarData::opacity(const QPoint &position) const
 {
     if (!enabled())

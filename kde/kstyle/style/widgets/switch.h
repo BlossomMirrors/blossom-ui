@@ -1,49 +1,32 @@
-#pragma once
+#ifndef blossomui_style_widgets_switch_h
+#define blossomui_style_widgets_switch_h
 
-#include <QWidget>
+// SPDX-License-Identifier: GPL-2.0-or-later
 
-class QCheckBox;
+#include "widgetspec.h"
 
 namespace BlossomUI {
-class Helper;
-}
+namespace Render {
 
-/** Pill+thumb toggle overlay that sits on top of a QCheckBox indicator. Syncs
- * state with the checkbox and supports dragging. */
-class BlossomUISwitchWidget : public QWidget {
-  Q_OBJECT
-public:
-  explicit BlossomUISwitchWidget(BlossomUI::Helper *helper, QCheckBox *parent);
+// widget-owned size constants (logical pixels)
+static constexpr int Switch_Width = 46;
+static constexpr int Switch_Height = 26;
+static constexpr int Switch_ThumbMargin = 3;
 
-  bool isChecked() const { return _checked; }
-  void setChecked(bool on);
+extern const WidgetSpec SwitchTrackSpec;
+extern const WidgetSpec SwitchThumbSpec;
 
-Q_SIGNALS:
-  void toggled(bool checked);
+Fill switchTrackFill(const QPalette &palette, bool mouseOver);
+Fill switchFillTrailFill(const QPalette &palette, bool mouseOver);
+Border switchTrackBorder(const QPalette &palette, const Fill &track,
+                         const Fill &trail, bool mouseOver, qreal progress);
 
-protected:
-  void paintEvent(QPaintEvent *) override;
-  void mousePressEvent(QMouseEvent *e) override;
-  void mouseMoveEvent(QMouseEvent *e) override;
-  void mouseReleaseEvent(QMouseEvent *e) override;
-  bool event(QEvent *e) override;
+Fill switchThumbFill(const QPalette &palette);
+Fill switchThumbBorder(const Fill &thumb, const QPalette &palette);
+Fill switchThumbCrossColor(const Fill &thumb, qreal opacity);
+Fill switchThumbCheckColor(const Fill &thumb, const Fill &trail, qreal opacity);
 
-private:
-  void updateFromParent();
-  bool hitTrack(const QPoint &pos) const;
+} // namespace Render
+} // namespace BlossomUI
 
-  BlossomUI::Helper *_helper = nullptr;
-  QCheckBox *_checkBox = nullptr;
-  bool _checked = false;
-  bool _hover = false;
-  bool _pressed = false;
-  bool _dragging = false;
-  QPoint _pressPos;
-  static const int _dragThreshold = 4;
-
-  // visual thumb position (0 = off, 1 = on), animated with overshoot on
-  // toggles and following the pointer during drags
-  void animateTo(qreal target);
-  qreal _visualPos = 0.0;
-  class QVariantAnimation *_anim = nullptr;
-};
+#endif

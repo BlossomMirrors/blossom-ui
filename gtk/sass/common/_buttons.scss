@@ -49,9 +49,7 @@ $_dot_color: $selected_bg_color;
     }
 }
 
-//
 // Pressed button ripple effect
-//
 $_ripple_color: gtkalpha($selected_bg_color, 0.35);
 @keyframes ripple_effect {
     0% {
@@ -821,4 +819,3 @@ list row button.image-button:not(.flat) {
         @include button(active);
     }
 }
-

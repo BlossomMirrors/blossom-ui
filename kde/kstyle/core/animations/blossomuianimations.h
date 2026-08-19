@@ -36,6 +36,9 @@
 namespace BlossomUI
 {
 
+// default animation duration, in milliseconds
+static constexpr int Animation_BaseDuration = 250;
+
 //* stores engines
 class Animations : public QObject
 {

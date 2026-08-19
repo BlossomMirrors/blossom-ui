@@ -17,26 +17,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////////
-// blossomuiwindowmanager.cpp
+////////////////////////////////////////////////////////////////////////////// blossomuiwindowmanager.cpp
 // pass some window mouse press/release/move event actions to window manager
 // -------------------
-//
 // Copyright (c) 2014 Hugo Pereira Da Costa <hugo.pereira@free.fr>
-//
 // Largely inspired from BeSpin style
 // Copyright (C) 2007 Thomas Luebking <thomas.luebking@web.de>
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,8 +38,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////
 #include "blossomuiwindowmanager.h"
 #include "blossomuihelper.h"
 #include "blossomuipropertynames.h"
@@ -179,7 +172,7 @@ private:
     WindowManager *_parent = nullptr;
 };
 
-//_____________________________________________________________
+//_
 WindowManager::WindowManager(QObject *parent)
     : QObject(parent)
 {
@@ -188,7 +181,7 @@ WindowManager::WindowManager(QObject *parent)
     qApp->installEventFilter(_appEventFilter);
 }
 
-//_____________________________________________________________
+//_
 void WindowManager::initialize()
 {
     setEnabled(StyleConfigData::windowDragMode() != StyleConfigData::WD_NONE);
@@ -203,7 +196,7 @@ void WindowManager::initialize()
     initializeWayland();
 }
 
-//_______________________________________________________
+//_
 void WindowManager::initializeWayland()
 {
 #if BLOSSOMUI_HAVE_KWAYLAND
@@ -232,7 +225,7 @@ void WindowManager::initializeWayland()
 #endif
 }
 
-//_______________________________________________________
+//_
 void WindowManager::waylandHasPointerChanged(bool hasPointer)
 {
 #if BLOSSOMUI_HAVE_KWAYLAND
@@ -253,7 +246,7 @@ void WindowManager::waylandHasPointerChanged(bool hasPointer)
 #endif
 }
 
-//_____________________________________________________________
+//_
 void WindowManager::registerWidget(QWidget *widget)
 {
     if ((isBlackListed(widget) || isDragable(widget)) || widget->inherits("QQuickWidget")) {
@@ -269,7 +262,7 @@ void WindowManager::registerWidget(QWidget *widget)
 }
 
 #if BLOSSOMUI_HAVE_QTQUICK
-//_____________________________________________________________
+//_
 void WindowManager::registerQuickItem(QQuickItem *item)
 {
     if (!item)
@@ -284,14 +277,14 @@ void WindowManager::registerQuickItem(QQuickItem *item)
 }
 #endif
 
-//_____________________________________________________________
+//_
 void WindowManager::unregisterWidget(QWidget *widget)
 {
     if (widget)
         widget->removeEventFilter(this);
 }
 
-//_____________________________________________________________
+//_
 void WindowManager::initializeWhiteList()
 {
     _whiteList = Util::makeT<ExceptionSet>({ExceptionId(QStringLiteral("MplayerWindow")),
@@ -306,7 +299,7 @@ void WindowManager::initializeWhiteList()
     }
 }
 
-//_____________________________________________________________
+//_
 void WindowManager::initializeBlackList()
 {
     _blackList = Util::makeT<ExceptionSet>(
@@ -320,7 +313,7 @@ void WindowManager::initializeBlackList()
     }
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::eventFilter(QObject *object, QEvent *event)
 {
     if (!enabled())
@@ -356,7 +349,7 @@ bool WindowManager::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-//_____________________________________________________________
+//_
 void WindowManager::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == _dragTimer.timerId()) {
@@ -377,7 +370,7 @@ void WindowManager::timerEvent(QTimerEvent *event)
     }
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::mousePressEvent(QObject *object, QEvent *event)
 {
     // cast event and check buttons/modifiers
@@ -484,7 +477,7 @@ bool WindowManager::mousePressEvent(QObject *object, QEvent *event)
     return false;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::mouseMoveEvent(QObject *object, QEvent *event)
 {
     Q_UNUSED(object);
@@ -535,7 +528,7 @@ bool WindowManager::mouseMoveEvent(QObject *object, QEvent *event)
         return false;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::mouseReleaseEvent(QObject *object, QEvent *event)
 {
     Q_UNUSED(object);
@@ -544,7 +537,7 @@ bool WindowManager::mouseReleaseEvent(QObject *object, QEvent *event)
     return false;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::isDragable(QWidget *widget)
 {
     // check widget
@@ -614,7 +607,7 @@ bool WindowManager::isDragable(QWidget *widget)
     return false;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::isBlackListed(QWidget *widget)
 {
     // check against noAnimations property
@@ -640,7 +633,7 @@ bool WindowManager::isBlackListed(QWidget *widget)
     return false;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::isWhiteListed(QWidget *widget) const
 {
     const auto appName(qApp->applicationName());
@@ -654,7 +647,7 @@ bool WindowManager::isWhiteListed(QWidget *widget) const
     return false;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::canDrag(QWidget *widget)
 {
     // check if enabled
@@ -680,7 +673,7 @@ bool WindowManager::canDrag(QWidget *widget)
     return true;
 }
 
-//_____________________________________________________________
+//_
 bool WindowManager::canDrag(QWidget *widget, QWidget *child, const QPoint &position)
 {
     // retrieve child at given position and check cursor again
@@ -824,7 +817,6 @@ bool WindowManager::canDrag(QWidget *widget, QWidget *child, const QPoint &posit
     return true;
 }
 
-//____________________________________________________________
 void WindowManager::resetDrag()
 {
     if ((!useWMMoveResize()) && _target && _cursorOverride) {
@@ -844,7 +836,6 @@ void WindowManager::resetDrag()
     _dragInProgress = false;
 }
 
-//____________________________________________________________
 void WindowManager::startDrag(QWindow *window)
 {
     if (!(enabled() && window)) {
@@ -871,7 +862,7 @@ void WindowManager::startDrag(QWindow *window)
     }
 }
 
-//_______________________________________________________
+//_
 void WindowManager::startDragX11(QWindow *window, const QPoint &position)
 {
 #if BLOSSOMUI_HAVE_X11
@@ -894,7 +885,7 @@ void WindowManager::startDragX11(QWindow *window, const QPoint &position)
 #endif
 }
 
-//_______________________________________________________
+//_
 void WindowManager::startDragWayland(QWindow *window, const QPoint &)
 {
 #if BLOSSOMUI_HAVE_KWAYLAND
@@ -914,7 +905,6 @@ void WindowManager::startDragWayland(QWindow *window, const QPoint &)
 #endif
 }
 
-//____________________________________________________________
 bool WindowManager::supportWMMoveResize() const
 {
 #if BLOSSOMUI_HAVE_KWAYLAND
@@ -930,7 +920,6 @@ bool WindowManager::supportWMMoveResize() const
 #endif
 }
 
-//____________________________________________________________
 bool WindowManager::isDockWidgetTitle(const QWidget *widget) const
 {
     if (!widget)

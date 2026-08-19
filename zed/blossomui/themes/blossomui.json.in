@@ -1,0 +1,831 @@
+{
+  "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+  "name": "BlossomUI",
+  "author": "Blossom Labs",
+  "themes": [
+    {
+      "name": "BlossomUI Dark",
+      "appearance": "dark",
+      "style": {
+        "border": "@NEUTRAL_600_HEX@ff",
+        "border.variant": "@NEUTRAL_700_HEX@ff",
+        "border.focused": "@PRIMARY_300_HEX@ff",
+        "border.selected": "@PRIMARY_300_HEX@33",
+        "border.transparent": "#00000000",
+        "border.disabled": "@NEUTRAL_700_HEX@ff",
+        "elevated_surface.background": "@NEUTRAL_900_HEX@ff",
+        "surface.background": "@NEUTRAL_900_HEX@ff",
+        "background": "@NEUTRAL_900_HEX@ff",
+        "element.background": "@NEUTRAL_800_HEX@ff",
+        "element.hover": "@NEUTRAL_700_HEX@ff",
+        "element.active": "@NEUTRAL_600_HEX@ff",
+        "element.selected": "@NEUTRAL_600_HEX@ff",
+        "element.disabled": "@NEUTRAL_800_HEX@ff",
+        "drop_target.background": "@PRIMARY_300_HEX@33",
+        "ghost_element.background": "#00000000",
+        "ghost_element.hover": "@NEUTRAL_700_HEX@ff",
+        "ghost_element.active": "@NEUTRAL_600_HEX@ff",
+        "ghost_element.selected": "@NEUTRAL_600_HEX@ff",
+        "ghost_element.disabled": "@NEUTRAL_800_HEX@ff",
+        "text": "@NEUTRAL_25_HEX@ff",
+        "text.muted": "@NEUTRAL_300_HEX@ff",
+        "text.placeholder": "@NEUTRAL_400_HEX@ff",
+        "text.disabled": "@NEUTRAL_400_HEX@ff",
+        "text.accent": "@PRIMARY_300_HEX@ff",
+        "icon": "@NEUTRAL_25_HEX@ff",
+        "icon.muted": "@NEUTRAL_300_HEX@ff",
+        "icon.disabled": "@NEUTRAL_400_HEX@ff",
+        "icon.placeholder": "@NEUTRAL_300_HEX@ff",
+        "icon.accent": "@PRIMARY_300_HEX@ff",
+        "status_bar.background": "@NEUTRAL_900_HEX@ff",
+        "title_bar.background": "@NEUTRAL_900_HEX@ff",
+        "title_bar.inactive_background": "@NEUTRAL_800_HEX@ff",
+        "toolbar.background": "@NEUTRAL_850_HEX@ff",
+        "tab_bar.background": "@NEUTRAL_900_HEX@ff",
+        "tab.inactive_background": "@NEUTRAL_900_HEX@ff",
+        "tab.active_background": "@NEUTRAL_850_HEX@ff",
+        "search.match_background": "@PRIMARY_300_HEX@66",
+        "search.active_match_background": "@QUATERNARY_300_HEX@66",
+        "panel.background": "@NEUTRAL_900_HEX@ff",
+        "panel.focused_border": "@PRIMARY_300_HEX@ff",
+        "pane.focused_border": "@PRIMARY_300_HEX@ff",
+        "scrollbar.thumb.background": "@NEUTRAL_300_HEX@4c",
+        "scrollbar.thumb.hover_background": "@NEUTRAL_700_HEX@ff",
+        "scrollbar.thumb.border": "@NEUTRAL_700_HEX@ff",
+        "scrollbar.track.background": "#00000000",
+        "scrollbar.track.border": "@NEUTRAL_800_HEX@ff",
+        "editor.foreground": "@NEUTRAL_100_HEX@ff",
+        "editor.background": "@NEUTRAL_850_HEX@ff",
+        "editor.gutter.background": "@NEUTRAL_850_HEX@ff",
+        "editor.subheader.background": "@NEUTRAL_900_HEX@ff",
+        "editor.active_line.background": "@NEUTRAL_700_HEX@bf",
+        "editor.highlighted_line.background": "@NEUTRAL_900_HEX@ff",
+        "editor.line_number": "@NEUTRAL_500_HEX@ff",
+        "editor.active_line_number": "@NEUTRAL_100_HEX@ff",
+        "editor.hover_line_number": "@NEUTRAL_200_HEX@ff",
+        "editor.invisible": "@NEUTRAL_400_HEX@ff",
+        "editor.wrap_guide": "@NEUTRAL_25_HEX@0d",
+        "editor.active_wrap_guide": "@NEUTRAL_25_HEX@1a",
+        "editor.document_highlight.read_background": "@PRIMARY_300_HEX@1a",
+        "editor.document_highlight.write_background": "@NEUTRAL_500_HEX@66",
+        "terminal.background": "@NEUTRAL_850_HEX@ff",
+        "terminal.foreground": "@NEUTRAL_100_HEX@ff",
+        "terminal.bright_foreground": "@NEUTRAL_25_HEX@ff",
+        "terminal.dim_foreground": "@NEUTRAL_400_HEX@ff",
+        "terminal.ansi.black": "@NEUTRAL_900_HEX@ff",
+        "terminal.ansi.bright_black": "@NEUTRAL_500_HEX@ff",
+        "terminal.ansi.dim_black": "@NEUTRAL_950_HEX@ff",
+        "terminal.ansi.red": "@RED_300_HEX@ff",
+        "terminal.ansi.bright_red": "#ec8a8aff",
+        "terminal.ansi.dim_red": "#a84f4fff",
+        "terminal.ansi.green": "@TERTIARY_500_HEX@ff",
+        "terminal.ansi.bright_green": "@TERTIARY_400_HEX@ff",
+        "terminal.ansi.dim_green": "@TERTIARY_700_HEX@ff",
+        "terminal.ansi.yellow": "@QUATERNARY_500_HEX@ff",
+        "terminal.ansi.bright_yellow": "@QUATERNARY_300_HEX@ff",
+        "terminal.ansi.dim_yellow": "#b3a900ff",
+        "terminal.ansi.blue": "@PRIMARY_300_HEX@ff",
+        "terminal.ansi.bright_blue": "@PRIMARY_200_HEX@ff",
+        "terminal.ansi.dim_blue": "@PRIMARY_400_HEX@ff",
+        "terminal.ansi.magenta": "@SECONDARY_300_HEX@ff",
+        "terminal.ansi.bright_magenta": "@SECONDARY_200_HEX@ff",
+        "terminal.ansi.dim_magenta": "@SECONDARY_500_HEX@ff",
+        "terminal.ansi.cyan": "@PRIMARY_200_HEX@ff",
+        "terminal.ansi.bright_cyan": "#a3e2ffff",
+        "terminal.ansi.dim_cyan": "#4a99bfff",
+        "terminal.ansi.white": "@NEUTRAL_100_HEX@ff",
+        "terminal.ansi.bright_white": "@NEUTRAL_25_HEX@ff",
+        "terminal.ansi.dim_white": "@NEUTRAL_300_HEX@ff",
+        "link_text.hover": "@PRIMARY_300_HEX@ff",
+        "version_control.added": "@TERTIARY_300_HEX@ff",
+        "version_control.modified": "@QUATERNARY_300_HEX@ff",
+        "version_control.word_added": "@TERTIARY_300_HEX@59",
+        "version_control.word_deleted": "@RED_300_HEX@cc",
+        "version_control.deleted": "@RED_300_HEX@ff",
+        "version_control.conflict_marker.ours": "@TERTIARY_300_HEX@1a",
+        "version_control.conflict_marker.theirs": "@PRIMARY_300_HEX@1a",
+        "conflict": "@QUATERNARY_300_HEX@ff",
+        "conflict.background": "@QUATERNARY_300_HEX@1a",
+        "conflict.border": "@QUATERNARY_300_HEX@4d",
+        "created": "@TERTIARY_300_HEX@ff",
+        "created.background": "@TERTIARY_300_HEX@1a",
+        "created.border": "@TERTIARY_300_HEX@4d",
+        "deleted": "@RED_300_HEX@ff",
+        "deleted.background": "@RED_300_HEX@1a",
+        "deleted.border": "@RED_300_HEX@4d",
+        "error": "@RED_300_HEX@ff",
+        "error.background": "@RED_300_HEX@1a",
+        "error.border": "@RED_300_HEX@4d",
+        "hidden": "@NEUTRAL_400_HEX@ff",
+        "hidden.background": "@NEUTRAL_400_HEX@1a",
+        "hidden.border": "@NEUTRAL_600_HEX@ff",
+        "hint": "@PRIMARY_200_HEX@ff",
+        "hint.background": "@PRIMARY_200_HEX@1a",
+        "hint.border": "@PRIMARY_200_HEX@4d",
+        "ignored": "@NEUTRAL_400_HEX@ff",
+        "ignored.background": "@NEUTRAL_400_HEX@1a",
+        "ignored.border": "@NEUTRAL_600_HEX@ff",
+        "info": "@PRIMARY_200_HEX@ff",
+        "info.background": "@PRIMARY_200_HEX@1a",
+        "info.border": "@PRIMARY_200_HEX@4d",
+        "modified": "@QUATERNARY_300_HEX@ff",
+        "modified.background": "@QUATERNARY_300_HEX@1a",
+        "modified.border": "@QUATERNARY_300_HEX@4d",
+        "predictive": "@NEUTRAL_400_HEX@ff",
+        "predictive.background": "@NEUTRAL_400_HEX@1a",
+        "predictive.border": "@NEUTRAL_600_HEX@ff",
+        "renamed": "@PRIMARY_300_HEX@ff",
+        "renamed.background": "@PRIMARY_300_HEX@1a",
+        "renamed.border": "@PRIMARY_300_HEX@4d",
+        "success": "@TERTIARY_300_HEX@ff",
+        "success.background": "@TERTIARY_300_HEX@1a",
+        "success.border": "@TERTIARY_300_HEX@4d",
+        "unreachable": "@NEUTRAL_300_HEX@ff",
+        "unreachable.background": "@NEUTRAL_300_HEX@1a",
+        "unreachable.border": "@NEUTRAL_600_HEX@ff",
+        "warning": "@QUATERNARY_300_HEX@ff",
+        "warning.background": "@QUATERNARY_300_HEX@1a",
+        "warning.border": "@QUATERNARY_300_HEX@4d",
+        "players": [
+          {
+            "cursor": "@PRIMARY_300_HEX@ff",
+            "background": "@PRIMARY_300_HEX@ff",
+            "selection": "@PRIMARY_300_HEX@3d"
+          },
+          {
+            "cursor": "@RED_300_HEX@ff",
+            "background": "@RED_300_HEX@ff",
+            "selection": "@RED_300_HEX@3d"
+          },
+          {
+            "cursor": "@QUATERNARY_300_HEX@ff",
+            "background": "@QUATERNARY_300_HEX@ff",
+            "selection": "@QUATERNARY_300_HEX@3d"
+          },
+          {
+            "cursor": "@SECONDARY_300_HEX@ff",
+            "background": "@SECONDARY_300_HEX@ff",
+            "selection": "@SECONDARY_300_HEX@3d"
+          },
+          {
+            "cursor": "@PRIMARY_200_HEX@ff",
+            "background": "@PRIMARY_200_HEX@ff",
+            "selection": "@PRIMARY_200_HEX@3d"
+          },
+          {
+            "cursor": "@TERTIARY_300_HEX@ff",
+            "background": "@TERTIARY_300_HEX@ff",
+            "selection": "@TERTIARY_300_HEX@3d"
+          },
+          {
+            "cursor": "@PRIMARY_100_HEX@ff",
+            "background": "@PRIMARY_100_HEX@ff",
+            "selection": "@PRIMARY_100_HEX@3d"
+          },
+          {
+            "cursor": "@TERTIARY_700_HEX@ff",
+            "background": "@TERTIARY_700_HEX@ff",
+            "selection": "@TERTIARY_700_HEX@3d"
+          }
+        ],
+        "syntax": {
+          "attribute": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "boolean": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "comment": {
+            "color": "@NEUTRAL_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "comment.doc": {
+            "color": "@NEUTRAL_350_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "constant": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "constructor": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "embedded": {
+            "color": "@NEUTRAL_25_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "emphasis": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "emphasis.strong": {
+            "color": "@SECONDARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": 700
+          },
+          "enum": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "function": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "hint": {
+            "color": "@PRIMARY_200_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "keyword": {
+            "color": "@SECONDARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "label": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "link_text": {
+            "color": "@PRIMARY_200_HEX@ff",
+            "font_style": "normal",
+            "font_weight": null
+          },
+          "link_uri": {
+            "color": "@PRIMARY_200_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "namespace": {
+            "color": "@NEUTRAL_25_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "number": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "operator": {
+            "color": "@QUATERNARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "predictive": {
+            "color": "@NEUTRAL_400_HEX@ff",
+            "font_style": "italic",
+            "font_weight": null
+          },
+          "preproc": {
+            "color": "@NEUTRAL_25_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "primary": {
+            "color": "@NEUTRAL_100_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "property": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation": {
+            "color": "@NEUTRAL_100_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.bracket": {
+            "color": "@NEUTRAL_200_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.delimiter": {
+            "color": "@NEUTRAL_200_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.list_marker": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.markup": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.special": {
+            "color": "@SECONDARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "selector": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "selector.pseudo": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.escape": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.regex": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.special": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.special.symbol": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "tag": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "text.literal": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "title": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": 400
+          },
+          "type": {
+            "color": "@PRIMARY_200_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "variable": {
+            "color": "@NEUTRAL_100_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "variable.special": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "variant": {
+            "color": "@TERTIARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          }
+        },
+        "panel.overlay_background": "@NEUTRAL_900_HEX@ff",
+        "panel.overlay_hover": "@NEUTRAL_800_HEX@ff",
+        "minimap.thumb.background": "@NEUTRAL_300_HEX@4c",
+        "minimap.thumb.hover_background": "@NEUTRAL_700_HEX@ff",
+        "minimap.thumb.border": "@NEUTRAL_700_HEX@ff",
+        "version_control.renamed": "@PRIMARY_300_HEX@ff",
+        "version_control.conflict": "@QUATERNARY_300_HEX@ff",
+        "version_control.ignored": "@NEUTRAL_400_HEX@ff"
+      }
+    },
+    {
+      "name": "BlossomUI Light",
+      "appearance": "light",
+      "style": {
+        "border": "@NEUTRAL_300_HEX@ff",
+        "border.variant": "@NEUTRAL_200_HEX@ff",
+        "border.focused": "@PRIMARY_300_HEX@ff",
+        "border.selected": "@PRIMARY_300_HEX@33",
+        "border.transparent": "#00000000",
+        "border.disabled": "@NEUTRAL_200_HEX@ff",
+        "elevated_surface.background": "@NEUTRAL_50_HEX@ff",
+        "surface.background": "@NEUTRAL_50_HEX@ff",
+        "background": "@NEUTRAL_50_HEX@ff",
+        "element.background": "@NEUTRAL_25_HEX@ff",
+        "element.hover": "@NEUTRAL_50_HEX@ff",
+        "element.active": "@NEUTRAL_100_HEX@ff",
+        "element.selected": "@NEUTRAL_100_HEX@ff",
+        "element.disabled": "@NEUTRAL_25_HEX@ff",
+        "drop_target.background": "@PRIMARY_300_HEX@33",
+        "ghost_element.background": "#00000000",
+        "ghost_element.hover": "@NEUTRAL_50_HEX@ff",
+        "ghost_element.active": "@NEUTRAL_100_HEX@ff",
+        "ghost_element.selected": "@NEUTRAL_100_HEX@ff",
+        "ghost_element.disabled": "@NEUTRAL_25_HEX@ff",
+        "text": "@NEUTRAL_900_HEX@ff",
+        "text.muted": "@NEUTRAL_500_HEX@ff",
+        "text.placeholder": "@NEUTRAL_400_HEX@ff",
+        "text.disabled": "@NEUTRAL_400_HEX@ff",
+        "text.accent": "@PRIMARY_300_HEX@ff",
+        "icon": "@NEUTRAL_900_HEX@ff",
+        "icon.muted": "@NEUTRAL_500_HEX@ff",
+        "icon.disabled": "@NEUTRAL_400_HEX@ff",
+        "icon.placeholder": "@NEUTRAL_500_HEX@ff",
+        "icon.accent": "@PRIMARY_300_HEX@ff",
+        "status_bar.background": "@NEUTRAL_50_HEX@ff",
+        "title_bar.background": "@NEUTRAL_50_HEX@ff",
+        "title_bar.inactive_background": "@NEUTRAL_25_HEX@ff",
+        "toolbar.background": "@NEUTRAL_25_HEX@ff",
+        "tab_bar.background": "@NEUTRAL_50_HEX@ff",
+        "tab.inactive_background": "@NEUTRAL_50_HEX@ff",
+        "tab.active_background": "@NEUTRAL_25_HEX@ff",
+        "search.match_background": "@PRIMARY_300_HEX@66",
+        "search.active_match_background": "#a35a0066",
+        "panel.background": "@NEUTRAL_50_HEX@ff",
+        "panel.focused_border": "@PRIMARY_300_HEX@ff",
+        "pane.focused_border": "@PRIMARY_300_HEX@ff",
+        "scrollbar.thumb.background": "@NEUTRAL_500_HEX@4c",
+        "scrollbar.thumb.hover_background": "@NEUTRAL_300_HEX@ff",
+        "scrollbar.thumb.border": "@NEUTRAL_300_HEX@ff",
+        "scrollbar.track.background": "#00000000",
+        "scrollbar.track.border": "@NEUTRAL_25_HEX@ff",
+        "editor.foreground": "@NEUTRAL_800_HEX@ff",
+        "editor.background": "@NEUTRAL_25_HEX@ff",
+        "editor.gutter.background": "@NEUTRAL_25_HEX@ff",
+        "editor.subheader.background": "@NEUTRAL_50_HEX@ff",
+        "editor.active_line.background": "@NEUTRAL_50_HEX@bf",
+        "editor.highlighted_line.background": "@NEUTRAL_50_HEX@ff",
+        "editor.line_number": "@NEUTRAL_400_HEX@ff",
+        "editor.active_line_number": "@NEUTRAL_800_HEX@ff",
+        "editor.hover_line_number": "@NEUTRAL_600_HEX@ff",
+        "editor.invisible": "@NEUTRAL_400_HEX@ff",
+        "editor.wrap_guide": "@NEUTRAL_900_HEX@0d",
+        "editor.active_wrap_guide": "@NEUTRAL_900_HEX@1a",
+        "editor.document_highlight.read_background": "@PRIMARY_300_HEX@1a",
+        "editor.document_highlight.write_background": "@NEUTRAL_400_HEX@66",
+        "terminal.background": "@NEUTRAL_25_HEX@ff",
+        "terminal.foreground": "@NEUTRAL_800_HEX@ff",
+        "terminal.bright_foreground": "@NEUTRAL_900_HEX@ff",
+        "terminal.dim_foreground": "@NEUTRAL_500_HEX@ff",
+        "terminal.ansi.black": "@NEUTRAL_900_HEX@ff",
+        "terminal.ansi.bright_black": "@NEUTRAL_600_HEX@ff",
+        "terminal.ansi.dim_black": "@NEUTRAL_400_HEX@ff",
+        "terminal.ansi.red": "@RED_300_HEX@ff",
+        "terminal.ansi.bright_red": "#ec8a8aff",
+        "terminal.ansi.dim_red": "#a84f4fff",
+        "terminal.ansi.green": "@TERTIARY_700_HEX@ff",
+        "terminal.ansi.bright_green": "@TERTIARY_500_HEX@ff",
+        "terminal.ansi.dim_green": "@TERTIARY_800_HEX@ff",
+        "terminal.ansi.yellow": "#a35a00ff",
+        "terminal.ansi.bright_yellow": "@QUATERNARY_500_HEX@ff",
+        "terminal.ansi.dim_yellow": "#7a4400ff",
+        "terminal.ansi.blue": "@PRIMARY_300_HEX@ff",
+        "terminal.ansi.bright_blue": "@PRIMARY_400_HEX@ff",
+        "terminal.ansi.dim_blue": "@PRIMARY_200_HEX@ff",
+        "terminal.ansi.magenta": "@SECONDARY_600_HEX@ff",
+        "terminal.ansi.bright_magenta": "@SECONDARY_500_HEX@ff",
+        "terminal.ansi.dim_magenta": "@SECONDARY_300_HEX@ff",
+        "terminal.ansi.cyan": "@PRIMARY_400_HEX@ff",
+        "terminal.ansi.bright_cyan": "@PRIMARY_400_HEX@ff",
+        "terminal.ansi.dim_cyan": "#075670ff",
+        "terminal.ansi.white": "@NEUTRAL_700_HEX@ff",
+        "terminal.ansi.bright_white": "@NEUTRAL_900_HEX@ff",
+        "terminal.ansi.dim_white": "@NEUTRAL_500_HEX@ff",
+        "link_text.hover": "@PRIMARY_300_HEX@ff",
+        "version_control.added": "@TERTIARY_700_HEX@ff",
+        "version_control.modified": "#a35a00ff",
+        "version_control.word_added": "@TERTIARY_700_HEX@59",
+        "version_control.word_deleted": "@RED_300_HEX@cc",
+        "version_control.deleted": "@RED_300_HEX@ff",
+        "version_control.conflict_marker.ours": "@TERTIARY_700_HEX@1a",
+        "version_control.conflict_marker.theirs": "@PRIMARY_300_HEX@1a",
+        "conflict": "#a35a00ff",
+        "conflict.background": "#a35a001a",
+        "conflict.border": "#a35a004d",
+        "created": "@TERTIARY_700_HEX@ff",
+        "created.background": "@TERTIARY_700_HEX@1a",
+        "created.border": "@TERTIARY_700_HEX@4d",
+        "deleted": "@RED_300_HEX@ff",
+        "deleted.background": "@RED_300_HEX@1a",
+        "deleted.border": "@RED_300_HEX@4d",
+        "error": "@RED_300_HEX@ff",
+        "error.background": "@RED_300_HEX@1a",
+        "error.border": "@RED_300_HEX@4d",
+        "hidden": "@NEUTRAL_500_HEX@ff",
+        "hidden.background": "@NEUTRAL_500_HEX@1a",
+        "hidden.border": "@NEUTRAL_300_HEX@ff",
+        "hint": "@PRIMARY_400_HEX@ff",
+        "hint.background": "@PRIMARY_400_HEX@1a",
+        "hint.border": "@PRIMARY_400_HEX@4d",
+        "ignored": "@NEUTRAL_500_HEX@ff",
+        "ignored.background": "@NEUTRAL_500_HEX@1a",
+        "ignored.border": "@NEUTRAL_300_HEX@ff",
+        "info": "@PRIMARY_400_HEX@ff",
+        "info.background": "@PRIMARY_400_HEX@1a",
+        "info.border": "@PRIMARY_400_HEX@4d",
+        "modified": "#a35a00ff",
+        "modified.background": "#a35a001a",
+        "modified.border": "#a35a004d",
+        "predictive": "@NEUTRAL_500_HEX@ff",
+        "predictive.background": "@NEUTRAL_500_HEX@1a",
+        "predictive.border": "@NEUTRAL_300_HEX@ff",
+        "renamed": "@PRIMARY_300_HEX@ff",
+        "renamed.background": "@PRIMARY_300_HEX@1a",
+        "renamed.border": "@PRIMARY_300_HEX@4d",
+        "success": "@TERTIARY_700_HEX@ff",
+        "success.background": "@TERTIARY_700_HEX@1a",
+        "success.border": "@TERTIARY_700_HEX@4d",
+        "unreachable": "@NEUTRAL_400_HEX@ff",
+        "unreachable.background": "@NEUTRAL_400_HEX@1a",
+        "unreachable.border": "@NEUTRAL_300_HEX@ff",
+        "warning": "#a35a00ff",
+        "warning.background": "#a35a001a",
+        "warning.border": "#a35a004d",
+        "players": [
+          {
+            "cursor": "@PRIMARY_300_HEX@ff",
+            "background": "@PRIMARY_300_HEX@ff",
+            "selection": "@PRIMARY_300_HEX@3d"
+          },
+          {
+            "cursor": "@RED_300_HEX@ff",
+            "background": "@RED_300_HEX@ff",
+            "selection": "@RED_300_HEX@3d"
+          },
+          {
+            "cursor": "#a35a00ff",
+            "background": "#a35a00ff",
+            "selection": "#a35a003d"
+          },
+          {
+            "cursor": "@SECONDARY_600_HEX@ff",
+            "background": "@SECONDARY_600_HEX@ff",
+            "selection": "@SECONDARY_600_HEX@3d"
+          },
+          {
+            "cursor": "@PRIMARY_400_HEX@ff",
+            "background": "@PRIMARY_400_HEX@ff",
+            "selection": "@PRIMARY_400_HEX@3d"
+          },
+          {
+            "cursor": "@TERTIARY_700_HEX@ff",
+            "background": "@TERTIARY_700_HEX@ff",
+            "selection": "@TERTIARY_700_HEX@3d"
+          },
+          {
+            "cursor": "@PRIMARY_400_HEX@ff",
+            "background": "@PRIMARY_400_HEX@ff",
+            "selection": "@PRIMARY_400_HEX@3d"
+          },
+          {
+            "cursor": "@TERTIARY_900_HEX@ff",
+            "background": "@TERTIARY_900_HEX@ff",
+            "selection": "@TERTIARY_900_HEX@3d"
+          }
+        ],
+        "syntax": {
+          "attribute": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "boolean": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "comment": {
+            "color": "@NEUTRAL_500_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "comment.doc": {
+            "color": "@NEUTRAL_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "constant": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "constructor": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "embedded": {
+            "color": "@NEUTRAL_900_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "emphasis": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "emphasis.strong": {
+            "color": "@SECONDARY_600_HEX@ff",
+            "font_style": null,
+            "font_weight": 700
+          },
+          "enum": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "function": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "hint": {
+            "color": "@PRIMARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "keyword": {
+            "color": "@SECONDARY_600_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "label": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "link_text": {
+            "color": "@PRIMARY_400_HEX@ff",
+            "font_style": "normal",
+            "font_weight": null
+          },
+          "link_uri": {
+            "color": "@PRIMARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "namespace": {
+            "color": "@NEUTRAL_900_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "number": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "operator": {
+            "color": "#a35a00ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "predictive": {
+            "color": "@NEUTRAL_400_HEX@ff",
+            "font_style": "italic",
+            "font_weight": null
+          },
+          "preproc": {
+            "color": "@NEUTRAL_900_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "primary": {
+            "color": "@NEUTRAL_800_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "property": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation": {
+            "color": "@NEUTRAL_800_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.bracket": {
+            "color": "@NEUTRAL_600_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.delimiter": {
+            "color": "@NEUTRAL_600_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.list_marker": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.markup": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "punctuation.special": {
+            "color": "@SECONDARY_600_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "selector": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "selector.pseudo": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.escape": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.regex": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.special": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "string.special.symbol": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "tag": {
+            "color": "@PRIMARY_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "text.literal": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "title": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": 400
+          },
+          "type": {
+            "color": "@PRIMARY_400_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "variable": {
+            "color": "@NEUTRAL_800_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "variable.special": {
+            "color": "@RED_300_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          },
+          "variant": {
+            "color": "@TERTIARY_700_HEX@ff",
+            "font_style": null,
+            "font_weight": null
+          }
+        },
+        "panel.overlay_background": "@NEUTRAL_50_HEX@ff",
+        "panel.overlay_hover": "@NEUTRAL_25_HEX@ff",
+        "minimap.thumb.background": "@NEUTRAL_500_HEX@4c",
+        "minimap.thumb.hover_background": "@NEUTRAL_300_HEX@ff",
+        "minimap.thumb.border": "@NEUTRAL_300_HEX@ff",
+        "version_control.renamed": "@PRIMARY_300_HEX@ff",
+        "version_control.conflict": "#a35a00ff",
+        "version_control.ignored": "@NEUTRAL_500_HEX@ff"
+      }
+    }
+  ]
+}

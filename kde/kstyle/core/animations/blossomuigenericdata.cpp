@@ -24,7 +24,7 @@
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 GenericData::GenericData(QObject *parent, QObject *target, int duration)
     : AnimationData(parent, target)
     , _animation(new Animation(duration, this))

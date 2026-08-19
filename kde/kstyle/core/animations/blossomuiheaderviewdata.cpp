@@ -17,23 +17,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////////
-// blossomuiheaderviewdata.cpp
+////////////////////////////////////////////////////////////////////////////// blossomuiheaderviewdata.cpp
 // data container for QHeaderView animations
 // -------------------
-//
 // Copyright (c) 2009 Hugo Pereira Da Costa <hugo.pereira@free.fr>
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -41,8 +36,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////
 #include "blossomuiheaderviewdata.h"
 
 #include <QHoverEvent>
@@ -51,7 +45,7 @@
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 HeaderViewData::HeaderViewData(QObject *parent, QWidget *target, int duration)
     : AnimationData(parent, target)
 {
@@ -64,7 +58,7 @@ HeaderViewData::HeaderViewData(QObject *parent, QWidget *target, int duration)
     previousIndexAnimation().data()->setDirection(Animation::Backward);
 }
 
-//______________________________________________
+//_
 bool HeaderViewData::updateState(const QPoint &position, bool hovered)
 {
     if (!enabled())
@@ -104,7 +98,7 @@ bool HeaderViewData::updateState(const QPoint &position, bool hovered)
         return false;
 }
 
-//______________________________________________
+//_
 Animation::Pointer HeaderViewData::animation(const QPoint &position) const
 {
     if (!enabled())
@@ -125,7 +119,7 @@ Animation::Pointer HeaderViewData::animation(const QPoint &position) const
         return Animation::Pointer();
 }
 
-//______________________________________________
+//_
 qreal HeaderViewData::opacity(const QPoint &position) const
 {
     if (!enabled())
@@ -146,7 +140,7 @@ qreal HeaderViewData::opacity(const QPoint &position) const
         return OpacityInvalid;
 }
 
-//__________________________________________________________
+//_
 void HeaderViewData::setDirty() const
 {
     QHeaderView *header = qobject_cast<QHeaderView *>(target().data());

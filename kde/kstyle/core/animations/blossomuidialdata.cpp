@@ -25,7 +25,7 @@
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 DialData::DialData(QObject *parent, QWidget *target, int duration)
     : WidgetStateData(parent, target, duration)
     , _position(-1, -1)
@@ -33,7 +33,7 @@ DialData::DialData(QObject *parent, QWidget *target, int duration)
     target->installEventFilter(this);
 }
 
-//______________________________________________
+//_
 bool DialData::eventFilter(QObject *object, QEvent *event)
 {
     if (object != target().data()) {
@@ -58,7 +58,7 @@ bool DialData::eventFilter(QObject *object, QEvent *event)
     return WidgetStateData::eventFilter(object, event);
 }
 
-//______________________________________________
+//_
 void DialData::hoverMoveEvent(QObject *object, QEvent *event)
 {
     // try cast object to dial
@@ -81,7 +81,7 @@ void DialData::hoverMoveEvent(QObject *object, QEvent *event)
     updateState(_handleRect.contains(_position));
 }
 
-//______________________________________________
+//_
 void DialData::hoverLeaveEvent(QObject *, QEvent *)
 {
     // reset hover state

@@ -70,8 +70,7 @@ combobox {
                     &:hover {
                         outline-color: $selected_fg_color; //FIXME
                         color: $selected_fg_color; // untested colors
-                        background-color: $selected_bg_color; //
-                        border-radius: $button_radius;
+                        background-color: $selected_bg_color;                         border-radius: $button_radius;
                     }
                 }
             }

@@ -1,0 +1,7 @@
+id = "blossomui"
+name = "BlossomUI"
+version = "0.0.1"
+schema_version = 1
+authors = ["Blossom Labs"]
+description = "Dark and light Zed themes matching the BlossomUI desktop theme."
+repository = "https://dev.blossomos.org/blossom/ui/desktop-theme"

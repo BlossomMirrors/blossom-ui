@@ -28,7 +28,7 @@ Q_GUI_EXPORT QStyleOptionSlider qt_qscrollbarStyleOption(QScrollBar *);
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 ScrollBarData::ScrollBarData(QObject *parent, QWidget *target, int duration)
     : WidgetStateData(parent, target, duration)
     , _position(-1, -1)
@@ -48,7 +48,7 @@ ScrollBarData::ScrollBarData(QObject *parent, QWidget *target, int duration)
     setupAnimation(grooveAnimation(), "grooveOpacity");
 }
 
-//______________________________________________
+//_
 bool ScrollBarData::eventFilter(QObject *object, QEvent *event)
 {
     if (object != target().data()) {
@@ -83,7 +83,7 @@ bool ScrollBarData::eventFilter(QObject *object, QEvent *event)
     return WidgetStateData::eventFilter(object, event);
 }
 
-//______________________________________________
+//_
 const Animation::Pointer &ScrollBarData::animation(QStyle::SubControl subcontrol) const
 {
     switch (subcontrol) {
@@ -102,7 +102,7 @@ const Animation::Pointer &ScrollBarData::animation(QStyle::SubControl subcontrol
     }
 }
 
-//______________________________________________
+//_
 qreal ScrollBarData::opacity(QStyle::SubControl subcontrol) const
 {
     switch (subcontrol) {
@@ -121,7 +121,7 @@ qreal ScrollBarData::opacity(QStyle::SubControl subcontrol) const
     }
 }
 
-//______________________________________________
+//_
 void ScrollBarData::hoverMoveEvent(QObject *object, QEvent *event)
 {
     // try cast object to scrollbar
@@ -154,7 +154,7 @@ void ScrollBarData::hoverMoveEvent(QObject *object, QEvent *event)
 #endif
 }
 
-//______________________________________________
+//_
 void ScrollBarData::hoverLeaveEvent(QObject *, QEvent *)
 {
     // reset hover state
@@ -165,7 +165,6 @@ void ScrollBarData::hoverLeaveEvent(QObject *, QEvent *)
     _position = QPoint(-1, -1);
 }
 
-//_____________________________________________________________________
 void ScrollBarData::updateSubLineArrow(QStyle::SubControl hoverControl)
 {
     if (hoverControl == QStyle::SC_ScrollBarSubLine) {
@@ -192,7 +191,6 @@ void ScrollBarData::updateSubLineArrow(QStyle::SubControl hoverControl)
     }
 }
 
-//_____________________________________________________________________
 void ScrollBarData::updateAddLineArrow(QStyle::SubControl hoverControl)
 {
     if (hoverControl == QStyle::SC_ScrollBarAddLine) {

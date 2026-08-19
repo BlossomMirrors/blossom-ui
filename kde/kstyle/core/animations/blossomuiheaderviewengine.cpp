@@ -24,7 +24,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool HeaderViewEngine::registerWidget(QWidget *widget)
 {
     if (!widget)
@@ -39,7 +38,6 @@ bool HeaderViewEngine::registerWidget(QWidget *widget)
     return true;
 }
 
-//____________________________________________________________
 bool HeaderViewEngine::updateState(const QObject *object, const QPoint &position, bool value)
 {
     DataMap<HeaderViewData>::Value data(_data.find(object));

@@ -24,7 +24,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool ScrollBarEngine::registerWidget(QWidget *widget, AnimationModes mode)
 {
     // check widget
@@ -45,7 +44,6 @@ bool ScrollBarEngine::registerWidget(QWidget *widget, AnimationModes mode)
     return true;
 }
 
-//____________________________________________________________
 bool ScrollBarEngine::isAnimated(const QObject *object, AnimationMode mode, QStyle::SubControl control)
 {
     if (mode == AnimationHover) {
@@ -64,7 +62,6 @@ bool ScrollBarEngine::isAnimated(const QObject *object, AnimationMode mode, QSty
         return false;
 }
 
-//____________________________________________________________
 AnimationMode ScrollBarEngine::animationMode(const QObject *object, QStyle::SubControl control)
 {
     // enable state
@@ -78,7 +75,6 @@ AnimationMode ScrollBarEngine::animationMode(const QObject *object, QStyle::SubC
         return AnimationNone;
 }
 
-//____________________________________________________________
 qreal ScrollBarEngine::opacity(const QObject *object, QStyle::SubControl control)
 {
     if (isAnimated(object, AnimationHover, control))

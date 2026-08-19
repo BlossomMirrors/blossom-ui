@@ -25,7 +25,7 @@
 namespace BlossomUI
 {
 
-//____________________________________________________
+//_
 void Mnemonics::setMode(int mode)
 {
     switch (mode) {
@@ -48,7 +48,7 @@ void Mnemonics::setMode(int mode)
     }
 }
 
-//____________________________________________________
+//_
 bool Mnemonics::eventFilter(QObject *, QEvent *event)
 {
     switch (event->type()) {
@@ -75,7 +75,7 @@ bool Mnemonics::eventFilter(QObject *, QEvent *event)
     return false;
 }
 
-//____________________________________________________
+//_
 void Mnemonics::setEnabled(bool value)
 {
     if (_enabled == value)

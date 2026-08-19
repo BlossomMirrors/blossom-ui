@@ -29,7 +29,7 @@ K_PLUGIN_CLASS_WITH_JSON(BlossomUI::ConfigurationModule, "blossomuistyleconfig.j
 namespace BlossomUI
 {
 
-//_______________________________________________________________________
+
 ConfigurationModule::ConfigurationModule(QObject *parent, const KPluginMetaData &data)
     : KCModule(parent, data)
 {
@@ -38,21 +38,21 @@ ConfigurationModule::ConfigurationModule(QObject *parent, const KPluginMetaData 
     connect(m_config, &StyleConfig::changed, this, &KCModule::setNeedsSave);
 }
 
-//_______________________________________________________________________
+
 void ConfigurationModule::defaults()
 {
     m_config->defaults();
     KCModule::defaults();
 }
 
-//_______________________________________________________________________
+
 void ConfigurationModule::load()
 {
     m_config->load();
     KCModule::load();
 }
 
-//_______________________________________________________________________
+
 void ConfigurationModule::save()
 {
     m_config->save();

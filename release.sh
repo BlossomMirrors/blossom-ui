@@ -24,7 +24,7 @@ Version:        $VERSION
 Release:        $RELEASE%{?dist}
 Summary:        A modern global theme for Qt/KDE (Application Style, Window Decoration, Icons, Wallpapers, Plasma Theme)
 License:        GPL-2.0-or-later
-URL:            https://git.blossomos.org/Blossom/ui
+URL:            https://dev.blossomos.org/Blossom/ui/desktop-theme
 %define debug_package %{nil}
 
 # Build requirements for QT6
@@ -84,11 +84,8 @@ This package includes both Qt5 and Qt6 application styles:
 - Wallpapers
 - Color Schemes
 
-%pretrans -p <lua>
-st = posix.stat("/usr/share/icons/BlossomUI/actions/22")
-if st and st.type == 'link' then
-    os.remove("/usr/share/icons/BlossomUI/actions/22")
-end
+%pretrans
+rm -rf /usr/share/icons/BlossomUI
 
 %prep
 # nothing to unpack: binaries come from the incremental CMake tree in build/rpm
@@ -219,6 +216,9 @@ fi
 # GTK Theme
 %{_datadir}/themes/BlossomUI/
 
+# Zed Theme
+%{_datadir}/blossomui/zed/
+
 # QML style module (QtQuick Controls + Kirigami platform plugin)
 %{_libdir}/qt6/qml/org/blossomos/
 %{_libdir}/qt6/plugins/kf6/kirigami/platform/org.blossomos.style.so
@@ -288,9 +288,11 @@ echo "Ensuring Flatpak SDKs and runtimes are installed..."
 flatpak install --noninteractive --system flathub \
     org.kde.Sdk/x86_64/6.9 \
     org.kde.Sdk/x86_64/6.10 \
+    org.kde.Sdk/x86_64/6.11 \
     org.kde.Sdk/x86_64/5.15-24.08 \
     org.kde.Platform/x86_64/6.9 \
     org.kde.Platform/x86_64/6.10 \
+    org.kde.Platform/x86_64/6.11 \
     org.kde.Platform/x86_64/5.15-24.08 \
     org.freedesktop.Sdk/x86_64/24.08 \
     org.freedesktop.Platform/x86_64/24.08 \
@@ -325,6 +327,9 @@ $builder "$SRC_DIR/flatpak/build/qt6" --repo="$REPO" --force-clean --ccache "$SR
 echo "Building Qt6 Flatpak extension with all theme components (KDE Platform 6.10)..."
 $builder "$SRC_DIR/flatpak/build/qt6-6.10" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt6-6.10.json"
 
+echo "Building Qt6 Flatpak extension with all theme components (KDE Platform 6.11)..."
+$builder "$SRC_DIR/flatpak/build/qt6-6.11" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt6-6.11.json"
+
 echo "Building Qt5 Flatpak extension with all theme components..."
 $builder "$SRC_DIR/flatpak/build/qt5" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt5.json"
 
@@ -337,6 +342,9 @@ echo "Qt6 Flatpak bundle (6.9) created with all theme components"
 
 flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt6-6.10.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.10" --runtime
 echo "Qt6 Flatpak bundle (6.10) created with all theme components"
+
+flatpak build-bundle "$REPO" "release/${NAME}-${VERSION}-qt6-6.11.flatpak" "runtime/org.kde.KStyle.BlossomUI/$ARCH/6.11" --runtime
+echo "Qt6 Flatpak bundle (6.11) created with all theme components"
 
 echo "Building GTK3 theme Flatpak extension..."
 $builder "$SRC_DIR/flatpak/build/gtk3theme" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.gtk.Gtk3theme.BlossomUI.json"

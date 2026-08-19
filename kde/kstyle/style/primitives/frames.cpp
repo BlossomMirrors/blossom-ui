@@ -3,6 +3,7 @@
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
+#include "frame.h"
 
 #include <KColorUtils>
 #include <QAbstractScrollArea>
@@ -28,29 +29,6 @@ bool Style::drawFramePrimitive(const QStyleOption *option, QPainter *painter,
   // copy palette and rect
   const auto &palette(option->palette);
   const auto &rect(option->rect);
-
-  // from kvantum
-  if (_app.isDolphin) {
-    if (QWidget *pw = widget->parentWidget()) {
-      if (StyleConfigData::transparentDolphinView()
-          // not renaming area
-          && !qobject_cast<QAbstractScrollArea *>(pw)
-          // only Dolphin's view
-          //
-          //
-          && QString(pw->metaObject()->className()).startsWith("Dolphin")) {
-        if (widget->property("VISIBLE-SEPARATORS").toBool()) {
-          QRect copy = rect.adjusted(12, 0, -12, 0);
-          painter->setRenderHint(QPainter::Antialiasing);
-          painter->setBrush(Qt::NoBrush);
-          painter->setPen(Qt::NoPen);
-          painter->drawLine(copy.topLeft(), copy.topRight());
-          painter->drawLine(copy.bottomLeft(), copy.bottomRight());
-        }
-        return true;
-      }
-    }
-  }
 
   // detect title widgets
   const bool isTitleWidget(StyleConfigData::titleWidgetDrawFrame() && widget &&
@@ -138,7 +116,7 @@ bool Style::drawFrameLineEditPrimitive(const QStyleOption *option,
 
   // make sure there is enough room to render frame
   if (rect.height() <
-      2 * Metrics::LineEdit_FrameWidth + option->fontMetrics.height()) {
+      2 * Render::LineEdit_FrameWidth + option->fontMetrics.height()) {
     const auto &background = palette.color(QPalette::Base);
 
     painter->setPen(Qt::NoPen);
@@ -428,4 +406,201 @@ bool Style::drawFrameWindowPrimitive(const QStyleOption *option,
 
   return true;
 }
+QColor Helper::frameOutlineColor(const QPalette &palette, bool mouseOver,
+                                 bool hasFocus, qreal opacity,
+                                 AnimationMode mode) const {
+  QColor outline = windowAlternateBackground(palette);
+
+  // focus takes precedence over hover
+  if (mode == AnimationFocus) {
+    const QColor focus(focusColor(palette));
+    const QColor hover(hoverColor(palette));
+
+    if (mouseOver)
+      outline = KColorUtils::mix(hover, focus, opacity);
+    else
+      outline = KColorUtils::mix(outline, focus, opacity);
+
+  } else if (hasFocus) {
+    outline = focusColor(palette);
+
+  } else if (mode == AnimationHover) {
+    const QColor hover(hoverColor(palette));
+    outline = KColorUtils::mix(outline, hover, opacity);
+
+  } else if (mouseOver) {
+    outline = hoverColor(palette);
+  }
+
+  return outline;
+}
+
+QColor Helper::sidePanelOutlineColor(const QPalette &palette) const {
+  QColor outline(qGray(palette.color(QPalette::Window).rgb()) > 150
+                     ? QColor(0, 0, 0, 20)
+                     : QColor(0, 0, 0, 50));
+  return outline;
+}
+
+QColor Helper::frameBackgroundColor(const QPalette &palette,
+                                    QPalette::ColorGroup group) const {
+  return KColorUtils::mix(palette.color(group, QPalette::Window),
+                          palette.color(group, QPalette::Base), 0.3);
+}
+
+QColor Helper::separatorColor(const QPalette &palette) const {
+  return isDarkTheme(palette) ? QColor(255, 255, 255, 10) : QColor(0, 0, 0, 16);
+}
+
+void Helper::renderFocusLine(QPainter *painter, const QRect &rect,
+                             const QColor &color) const {
+  if (!color.isValid())
+    return;
+
+  painter->save();
+  painter->setRenderHint(QPainter::Antialiasing, false);
+  painter->setBrush(Qt::NoBrush);
+  painter->setPen(color);
+
+  painter->translate(0, 2);
+  painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+  painter->restore();
+}
+
+void Helper::renderFrame(QPainter *painter, const QRect &rect,
+                         const QColor &color, const bool windowActive,
+                         const bool enabled) const {
+  painter->setRenderHint(QPainter::Antialiasing);
+
+  const qreal radius = frameRadius(PenWidth::NoPen);
+
+  painter->setPen(Qt::NoPen);
+  painter->setBrush(color);
+  painter->drawRoundedRect(QRectF(rect), radius, radius);
+
+  const QPalette appPalette(QApplication::palette());
+  const bool dark(isDarkTheme(appPalette));
+  const qreal borderAlpha = enabled ? (dark ? 0.08 : 0.12)
+                                    : (dark ? 0.05 : 0.08);
+  const QColor borderColor(
+      alphaColor(appPalette.color(QPalette::WindowText), borderAlpha));
+  QPen borderPen(borderColor, 1);
+  borderPen.setCosmetic(true);
+  painter->setPen(borderPen);
+  painter->setBrush(Qt::NoBrush);
+  painter->drawRoundedRect(QRectF(rect).adjusted(0.5, 0.5, -0.5, -0.5),
+                           radius - 0.5, radius - 0.5);
+
+  Q_UNUSED(windowActive)
+}
+
+void Helper::renderSidePanelFrame(QPainter *painter, const QRect &rect,
+                                  const QColor &outline, Side side) const {
+  // check color
+  if (!outline.isValid())
+    return;
+
+  // adjust rect
+  QRectF frameRect(strokedRect(rect));
+
+  // setup painter
+  painter->setRenderHint(QPainter::Antialiasing);
+  painter->setPen(outline);
+
+  // render
+  switch (side) {
+  default:
+  case SideLeft:
+    painter->drawLine(frameRect.topRight(), frameRect.bottomRight());
+    break;
+
+  case SideTop:
+    painter->drawLine(frameRect.topLeft(), frameRect.topRight());
+    break;
+
+  case SideRight:
+    painter->drawLine(frameRect.topLeft(), frameRect.bottomLeft());
+    break;
+
+  case SideBottom:
+    painter->drawLine(frameRect.bottomLeft(), frameRect.bottomRight());
+    break;
+
+  case AllSides: {
+    const qreal radius(frameRadius(PenWidth::Frame, -1));
+    painter->drawRoundedRect(frameRect, radius, radius);
+    break;
+  }
+  }
+}
+
+void Helper::renderSeparator(QPainter *painter, const QRect &rect,
+                             const QColor &color, bool vertical) const {
+  painter->setRenderHint(QPainter::Antialiasing, false);
+  painter->setBrush(Qt::NoBrush);
+  painter->setPen(color);
+
+  if (vertical) {
+    painter->translate(rect.width() * 0.5, 0);
+    painter->drawLine(rect.topLeft(), rect.bottomLeft());
+
+  } else {
+    painter->translate(0, rect.height() * 0.5);
+    painter->drawLine(rect.topLeft(), rect.topRight());
+  }
+}
+
+void Helper::renderLineEdit(QPainter *painter, const QRect &rect,
+                            const QColor &background, const QColor &outline,
+                            const bool hasFocus, const bool mouseOver,
+                            bool enabled, const bool windowActive,
+                            const AnimationMode mode,
+                            const qreal opacity) const {
+  painter->setRenderHint(QPainter::Antialiasing);
+  painter->setRenderHint(QPainter::SmoothPixmapTransform);
+
+  QRectF frameRect(
+      rect.adjusted(Render::Frame_FrameWidth, Render::Frame_FrameWidth,
+                    -Render::Frame_FrameWidth, -Render::Frame_FrameWidth));
+  qreal radius(inputFrameRadius(PenWidth::NoPen, -1));
+
+  QColor border(KColorUtils::mix(background, outline, 0.15));
+  if (mouseOver && !hasFocus)
+    border = KColorUtils::mix(background, outline, 0.3);
+  if (hasFocus && mode != AnimationFocus)
+    border = KColorUtils::mix(background, outline, 0.65);
+  if (mode == AnimationFocus && opacity >= 0) {
+    // Smooth fade in both directions: opacity 0 = unfocused, 1 = focused
+    border = KColorUtils::mix(background, outline, 0.15 + 0.5 * opacity);
+  }
+
+  if (!enabled)
+    border = KColorUtils::mix(background, outline, 0.08);
+
+  // focus ring - stroked path for smooth corners (avoids jagged fill in
+  // Slint/Qt Quick)
+  if (enabled && (hasFocus || (mode == AnimationFocus && opacity > 0))) {
+    const qreal ringOpacity = (mode == AnimationFocus) ? opacity : 1.0;
+    painter->setBrush(Qt::NoBrush);
+    QPen ringPen(alphaColor(outline, 0.5 * ringOpacity), 2, Qt::SolidLine,
+                 Qt::RoundCap, Qt::RoundJoin);
+    painter->setPen(ringPen);
+    const QRectF ringPath(frameRect.adjusted(-1, -1, 1, 1));
+    painter->drawRoundedRect(ringPath, radius + 1, radius + 1);
+  }
+
+  // base fill + border
+  painter->setBrush(background.isValid() ? background : Qt::NoBrush);
+  painter->setPen(border.isValid() ? QPen(border, 1) : Qt::NoPen);
+  painter->drawRoundedRect(frameRect, radius, radius);
+
+  Q_UNUSED(windowActive)
+}
+
+void Helper::renderTransparentArea(QPainter *painter, const QRect &rect) const {
+  painter->setCompositionMode(QPainter::CompositionMode_DestinationOut);
+  painter->fillRect(rect, Qt::black);
+  painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+}
+
 } // namespace BlossomUI

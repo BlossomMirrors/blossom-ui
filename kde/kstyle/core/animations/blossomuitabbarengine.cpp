@@ -24,7 +24,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool TabBarEngine::registerWidget(QWidget *widget)
 {
     if (!widget)
@@ -41,35 +40,30 @@ bool TabBarEngine::registerWidget(QWidget *widget)
     return true;
 }
 
-//____________________________________________________________
 bool TabBarEngine::isSelectedAnimated(const QObject *object) const
 {
     DataMap<TabBarData>::Value d(_hoverData.value(object));
     return d && d.data()->isSelectedAnimated();
 }
 
-//____________________________________________________________
 QRect TabBarEngine::selectedPillRect(const QObject *object, const QTabBar *tabBar) const
 {
     DataMap<TabBarData>::Value d(_hoverData.value(object));
     return d ? d.data()->selectedPillRect(tabBar) : QRect();
 }
 
-//____________________________________________________________
 bool TabBarEngine::updateState(const QObject *object, const QPoint &position, AnimationMode mode, bool value)
 {
     DataMap<TabBarData>::Value data(TabBarEngine::data(object, mode));
     return (data && data.data()->updateState(position, value));
 }
 
-//____________________________________________________________
 bool TabBarEngine::isAnimated(const QObject *object, const QPoint &position, AnimationMode mode)
 {
     DataMap<TabBarData>::Value data(TabBarEngine::data(object, mode));
     return (data && data.data()->animation(position) && data.data()->animation(position).data()->isRunning());
 }
 
-//____________________________________________________________
 DataMap<TabBarData>::Value TabBarEngine::data(const QObject *object, AnimationMode mode)
 {
     switch (mode) {

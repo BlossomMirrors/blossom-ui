@@ -23,6 +23,7 @@
 #include "blossomui.h"
 #include "blossomuihelper.h"
 #include "config-blossomui.h"
+#include "scrollbar.h"
 
 #if BLOSSOMUI_HAVE_KSTYLE
 #include <KStyle>
@@ -66,6 +67,25 @@ class WindowManager;
 class BlurHelper;
 class ToolsAreaManager;
 
+namespace Render {
+class ButtonControl;
+class CheckBoxControl;
+class ComboBoxControl;
+class GroupBoxControl;
+class HeaderControl;
+class ItemViewControl;
+class MenuControl;
+class MiscControl;
+class ProgressBarControl;
+class ScrollBarControl;
+class SliderControl;
+class SpinBoxControl;
+class TabsControl;
+class TitleBarControl;
+class ToolBarControl;
+class ToolTipControl;
+}
+
 //* convenience typedef for base class
 #if !BLOSSOMUI_HAVE_KSTYLE
 using ParentStyleClass = QCommonStyle;
@@ -105,6 +125,47 @@ public:
 
   //* polish scrollarea
   void polishScrollArea(QAbstractScrollArea *);
+
+  //*@name polish specialized functions
+  //@{
+
+  void polishLineEditIconButton(QWidget *);
+  void polishButton(QWidget *);
+  bool polishCheckableHover(QWidget *);
+  void polishComboBoxHover(QWidget *);
+  void polishSwitchCheckBox(QWidget *);
+  void polishComboBoxPopupViewBackground(QWidget *);
+  void polishOpaqueBar(QWidget *);
+  void polishDolphinView(QWidget *);
+  void polishDolphinViewAutofill(QWidget *);
+  void polishQuickWidget(QWidget *);
+  bool polishItemView(QWidget *);
+  bool polishCheckableGroupBox(QWidget *);
+  bool polishDockWidgetButton(QWidget *);
+  bool polishToolBoxButton(QWidget *);
+  bool polishTitleWidgetFrame(QWidget *);
+  bool polishScrollBarOpaque(QWidget *);
+  bool polishKTextEditorView(QWidget *);
+  bool polishAutoRaiseToolButton(QWidget *);
+  bool polishDockWidget(QWidget *);
+  bool polishMdiSubWindow(QWidget *);
+  bool polishToolBox(QWidget *);
+  bool polishToolBoxChild(QWidget *);
+  bool polishMenu(QWidget *);
+  bool polishCommandLinkButton(QWidget *);
+  bool polishComboBoxListViewChild(QWidget *);
+  bool polishComboBox(QWidget *);
+  bool polishComboBoxPopupContainer(QWidget *);
+  bool polishTipLabel(QWidget *);
+  bool polishMainWindow(QWidget *);
+  bool polishDialogButtonBox(QWidget *);
+  void polishKPageViewHeaders(QWidget *);
+
+  void unpolishMenu(QWidget *);
+  void unpolishSwitchCheckBox(QWidget *);
+  void unpolishOpaqueBar(QWidget *);
+
+  //@}
 
   //* pixel metrics
   int pixelMetric(PixelMetric, const QStyleOption * = nullptr,
@@ -325,6 +386,12 @@ private:
                                 const QWidget *) const;
   bool drawWidgetPrimitive(const QStyleOption *, QPainter *,
                            const QWidget *) const;
+  bool drawMainWindowToolsAreaPrimitive(const QStyleOption *, QPainter *,
+                                        const QWidget *) const;
+  bool drawDialogHeaderSeparatorPrimitive(const QStyleOption *, QPainter *,
+                                          const QWidget *) const;
+  bool drawMultiTabBarSeparatorPrimitive(const QStyleOption *, QPainter *,
+                                         const QWidget *) const;
 
   bool drawIndicatorArrowUpPrimitive(const QStyleOption *option,
                                      QPainter *painter,
@@ -496,11 +563,11 @@ private:
   int scrollBarButtonHeight(const ScrollBarButtonType &type) const {
     switch (type) {
     case NoButton:
-      return Metrics::ScrollBar_NoButtonHeight;
+      return Render::ScrollBar_NoButtonHeight;
     case SingleButton:
-      return Metrics::ScrollBar_SingleButtonHeight;
+      return Render::ScrollBar_SingleButtonHeight;
     case DoubleButton:
-      return Metrics::ScrollBar_DoubleButtonHeight;
+      return Render::ScrollBar_DoubleButtonHeight;
     default:
       return 0;
     }
@@ -735,9 +802,26 @@ private:
     bool isBarsOpaque = false; // toolbar/menubar/tabbar need blur when opaque
   };
   AppInfo _app;
+
+  //* spec-driven control classes in core/render/controls/
+  friend class Render::ButtonControl;
+  friend class Render::CheckBoxControl;
+  friend class Render::ComboBoxControl;
+  friend class Render::GroupBoxControl;
+  friend class Render::HeaderControl;
+  friend class Render::ItemViewControl;
+  friend class Render::MenuControl;
+  friend class Render::MiscControl;
+  friend class Render::ProgressBarControl;
+  friend class Render::ScrollBarControl;
+  friend class Render::SliderControl;
+  friend class Render::SpinBoxControl;
+  friend class Render::TabsControl;
+  friend class Render::TitleBarControl;
+  friend class Render::ToolBarControl;
+  friend class Render::ToolTipControl;
 };
 
-//_________________________________________________________________________
 bool Style::preceeds(const QPoint &point, const QRect &bound,
                      const QStyleOption *option) const {
   if (option->state & QStyle::State_Horizontal) {
@@ -750,7 +834,6 @@ bool Style::preceeds(const QPoint &point, const QRect &bound,
     return point.y() < bound.y();
 }
 
-//_________________________________________________________________________
 QStyle::SubControl Style::scrollBarHitTest(const QRect &rect,
                                            const QPoint &point,
                                            const QStyleOption *option) const {
@@ -767,7 +850,6 @@ QStyle::SubControl Style::scrollBarHitTest(const QRect &rect,
                                          : QStyle::SC_ScrollBarAddLine;
 }
 
-//_________________________________________________________________________
 bool Style::hasParent(const QWidget *widget, const char *className) const {
   if (!widget)
     return false;
@@ -780,7 +862,6 @@ bool Style::hasParent(const QWidget *widget, const char *className) const {
   return false;
 }
 
-//_________________________________________________________________________
 template <typename T> bool Style::hasParent(const QWidget *widget) const {
   if (!widget)
     return false;

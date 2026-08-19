@@ -32,7 +32,7 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________________
+
 MdiWindowShadow::MdiWindowShadow(QWidget *parent, const TileSet &shadowTiles)
     : QWidget(parent)
     , _shadowTiles(shadowTiles)
@@ -42,7 +42,7 @@ MdiWindowShadow::MdiWindowShadow(QWidget *parent, const TileSet &shadowTiles)
     setFocusPolicy(Qt::NoFocus);
 }
 
-//____________________________________________________________________
+
 void MdiWindowShadow::updateGeometry()
 {
     if (!_widget)
@@ -64,10 +64,10 @@ void MdiWindowShadow::updateGeometry()
     QRectF boxRect(QPoint(0, 0), boxSize);
     boxRect.moveCenter(shadowRect.center());
 
-    const double topSize(boxRect.top() - shadowRect.top() - int(Metrics::Shadow_Overlap) - params.offset.y());
-    const double bottomSize(shadowRect.bottom() - boxRect.bottom() - int(Metrics::Shadow_Overlap) + params.offset.y());
-    const double leftSize(boxRect.left() - shadowRect.left() - int(Metrics::Shadow_Overlap) - params.offset.x());
-    const double rightSize(shadowRect.right() - boxRect.right() - int(Metrics::Shadow_Overlap) + params.offset.x());
+    const double topSize(boxRect.top() - shadowRect.top() - int(Shadow_Overlap) - params.offset.y());
+    const double bottomSize(shadowRect.bottom() - boxRect.bottom() - int(Shadow_Overlap) + params.offset.y());
+    const double leftSize(boxRect.left() - shadowRect.left() - int(Shadow_Overlap) - params.offset.x());
+    const double rightSize(shadowRect.right() - boxRect.right() - int(Shadow_Overlap) + params.offset.x());
 
     // get tileSet rect
     auto hole = _widget->frameGeometry();
@@ -104,13 +104,13 @@ void MdiWindowShadow::updateGeometry()
     _shadowTilesRect.translate(-geometry.topLeft());
 }
 
-//____________________________________________________________________
+
 void MdiWindowShadow::updateZOrder()
 {
     stackUnder(_widget);
 }
 
-//____________________________________________________________________
+
 void MdiWindowShadow::paintEvent(QPaintEvent *event)
 {
     if (!_shadowTiles.isValid())
@@ -122,13 +122,12 @@ void MdiWindowShadow::paintEvent(QPaintEvent *event)
     _shadowTiles.render(_shadowTilesRect, &painter);
 }
 
-//____________________________________________________________________
+
 MdiWindowShadowFactory::MdiWindowShadowFactory(QObject *parent)
     : QObject(parent)
 {
 }
 
-//____________________________________________________________________________________
 bool MdiWindowShadowFactory::registerWidget(QWidget *widget)
 {
     // check widget type
@@ -160,7 +159,6 @@ bool MdiWindowShadowFactory::registerWidget(QWidget *widget)
     return true;
 }
 
-//____________________________________________________________________________________
 void MdiWindowShadowFactory::unregisterWidget(QWidget *widget)
 {
     if (!isRegistered(widget))
@@ -170,7 +168,6 @@ void MdiWindowShadowFactory::unregisterWidget(QWidget *widget)
     removeShadow(widget);
 }
 
-//____________________________________________________________________________________
 bool MdiWindowShadowFactory::eventFilter(QObject *object, QEvent *event)
 {
     switch (event->type()) {
@@ -209,7 +206,6 @@ bool MdiWindowShadowFactory::eventFilter(QObject *object, QEvent *event)
     return QObject::eventFilter(object, event);
 }
 
-//____________________________________________________________________________________
 MdiWindowShadow *MdiWindowShadowFactory::findShadow(QObject *object) const
 {
     // check object,
@@ -228,7 +224,6 @@ MdiWindowShadow *MdiWindowShadowFactory::findShadow(QObject *object) const
     return nullptr;
 }
 
-//____________________________________________________________________________________
 void MdiWindowShadowFactory::installShadow(QObject *object)
 {
     // cast
@@ -248,7 +243,6 @@ void MdiWindowShadowFactory::installShadow(QObject *object)
     windowShadow->setWidget(widget);
 }
 
-//____________________________________________________________________________________
 void MdiWindowShadowFactory::removeShadow(QObject *object)
 {
     if (MdiWindowShadow *windowShadow = findShadow(object)) {
@@ -257,7 +251,6 @@ void MdiWindowShadowFactory::removeShadow(QObject *object)
     }
 }
 
-//____________________________________________________________________________________
 void MdiWindowShadowFactory::widgetDestroyed(QObject *object)
 {
     _registeredWidgets.remove(object);

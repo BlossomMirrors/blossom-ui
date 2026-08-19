@@ -2,7 +2,17 @@
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
+#include "button.h"
+#include "checkbox.h"
+#include "frame.h"
+#include "groupboxcontrol.h"
+#include "header.h"
 #include "private.h"
+#include "progressbar.h"
+#include "slider.h"
+#include "spinbox.h"
+#include "switch.h"
+#include "tabbar.h"
 
 #include <QAbstractScrollArea>
 #include <QAccessible>
@@ -86,14 +96,14 @@ QRect Style::subElementRect(SubElement element, const QStyleOption *option,
       if ((option->direction == Qt::RightToLeft) !=
           (viewOption->decorationPosition == QStyleOptionViewItem::Right)) {
         const auto adjustment = baseRect.right() - margins.right() -
-                                Metrics::ItemView_ItemPaddingWidth +
+                                Render::ItemView_ItemPaddingWidth +
                                 marginAdjust;
         if (viewOption->rect.width() > adjustment) {
           baseRect.moveLeft(adjustment);
         }
       } else {
         const auto adjustment = baseRect.left() + margins.left() +
-                                Metrics::ItemView_ItemPaddingWidth -
+                                Render::ItemView_ItemPaddingWidth -
                                 marginAdjust;
         if (viewOption->rect.width() > adjustment) {
           baseRect.moveLeft(adjustment);
@@ -111,10 +121,10 @@ QRect Style::subElementRect(SubElement element, const QStyleOption *option,
     if (viewItem) {
       const QMargins margins = _helper->itemViewItemMargins(viewItem);
       rect.setRight(rect.right() - margins.right() -
-                    Metrics::ItemView_ItemPaddingWidth);
+                    Render::ItemView_ItemPaddingWidth);
       rect.setLeft(rect.left() + margins.left() +
-                   Metrics::ItemView_ItemPaddingWidth +
-                   Metrics::ItemView_IconTextSpacing);
+                   Render::ItemView_ItemPaddingWidth +
+                   Render::ItemView_IconTextSpacing);
       rect.moveTop(rect.top() + margins.top() - margins.bottom());
     }
     return rect;
@@ -155,7 +165,7 @@ QRect Style::subControlRect(ComplexControl element,
 
 QRect Style::pushButtonContentsRect(const QStyleOption *option,
                                     const QWidget *) const {
-  return insideMargin(option->rect, Metrics::Frame_FrameWidth);
+  return insideMargin(option->rect, Render::Frame_FrameWidth);
 }
 
 bool Style::isSwitchWidget(const QWidget *widget) const {
@@ -185,11 +195,11 @@ bool Style::isSwitchCheckBox(const QStyleOption *option,
 QRect Style::checkBoxContentsRect(const QStyleOption *option,
                                   const QWidget *widget) const {
   const int indicatorWidth = isSwitchCheckBox(option, widget)
-                                 ? Metrics::Switch_Width
-                                 : Metrics::CheckBox_Size;
+                                 ? Render::Switch_Width
+                                 : Render::CheckBox_Size;
   return visualRect(
       option, option->rect.adjusted(
-                  indicatorWidth + Metrics::CheckBox_ItemSpacing, 0, 0, 0));
+                  indicatorWidth + Render::CheckBox_ItemSpacing, 0, 0, 0));
 }
 
 QRect Style::lineEditContentsRect(const QStyleOption *option,
@@ -210,7 +220,7 @@ QRect Style::lineEditContentsRect(const QStyleOption *option,
   // take out margins if there is enough room; add horizontal padding for inputs
   const int frameWidth(pixelMetric(PM_DefaultFrameWidth, option, widget));
   if (rect.height() >= option->fontMetrics.height() + 2 * frameWidth)
-    return insideMargin(rect, frameWidth + Metrics::LineEdit_HPadding,
+    return insideMargin(rect, frameWidth + Render::LineEdit_HPadding,
                         frameWidth);
   else
     return rect;
@@ -242,15 +252,15 @@ QRect Style::progressBarGrooveRect(const QStyleOption *option,
   if (textVisible && !busy && horizontal) {
     auto textRect(subElementRect(SE_ProgressBarLabel, option, widget));
     textRect = visualRect(option, textRect);
-    rect.setRight(textRect.left() - Metrics::ProgressBar_ItemSpacing - 1);
+    rect.setRight(textRect.left() - Render::ProgressBar_ItemSpacing - 1);
     rect = visualRect(option, rect);
-    rect = centerRect(rect, rect.width(), Metrics::ProgressBar_Thickness);
+    rect = centerRect(rect, rect.width(), Render::ProgressBar_Thickness);
 
   } else if (horizontal) {
-    rect = centerRect(rect, rect.width(), Metrics::ProgressBar_Thickness);
+    rect = centerRect(rect, rect.width(), Render::ProgressBar_Thickness);
 
   } else {
-    rect = centerRect(rect, Metrics::ProgressBar_Thickness, rect.height());
+    rect = centerRect(rect, Render::ProgressBar_Thickness, rect.height());
   }
 
   return rect;
@@ -349,7 +359,7 @@ QRect Style::progressBarLabelRect(const QStyleOption *option,
       option->fontMetrics.size(_mnemonics->textFlags(), QStringLiteral("100%"))
           .width());
 
-  auto rect(insideMargin(option->rect, Metrics::Frame_FrameWidth, 0));
+  auto rect(insideMargin(option->rect, Render::Frame_FrameWidth, 0));
   rect.setLeft(rect.right() - textWidth + 1);
   rect = visualRect(option, rect);
 
@@ -368,8 +378,8 @@ QRect Style::headerArrowRect(const QStyleOption *option,
   if (headerOption->sortIndicator == QStyleOptionHeader::None)
     return QRect();
 
-  auto arrowRect(insideMargin(option->rect, Metrics::Header_MarginWidth));
-  arrowRect.setLeft(arrowRect.right() - Metrics::Header_ArrowSize + 1);
+  auto arrowRect(insideMargin(option->rect, Render::Header_MarginWidth));
+  arrowRect.setLeft(arrowRect.right() - Render::Header_ArrowSize + 1);
 
   return visualRect(option, arrowRect);
 }
@@ -383,12 +393,12 @@ QRect Style::headerLabelRect(const QStyleOption *option,
     return option->rect;
 
   // check if arrow is necessary
-  auto labelRect(insideMargin(option->rect, Metrics::Header_MarginWidth, 0));
+  auto labelRect(insideMargin(option->rect, Render::Header_MarginWidth, 0));
   if (headerOption->sortIndicator == QStyleOptionHeader::None)
     return labelRect;
 
   labelRect.adjust(0, 0,
-                   -Metrics::Header_ArrowSize - Metrics::Header_ItemSpacing, 0);
+                   -Render::Header_ArrowSize - Render::Header_ItemSpacing, 0);
   return visualRect(option, labelRect);
 }
 
@@ -410,20 +420,20 @@ QRect Style::tabBarTabLeftButtonRect(const QStyleOption *option,
 
   case QTabBar::RoundedSouth:
   case QTabBar::TriangularSouth:
-    buttonRect.moveLeft(rect.left() + Metrics::TabBar_TabMarginWidth);
+    buttonRect.moveLeft(rect.left() + Render::TabBar_TabMarginWidth);
     buttonRect.moveTop((rect.height() - buttonRect.height()) / 2.0);
     buttonRect = visualRect(option, buttonRect);
     break;
 
   case QTabBar::RoundedWest:
   case QTabBar::TriangularWest:
-    buttonRect.moveBottom(rect.bottom() - Metrics::TabBar_TabMarginWidth);
+    buttonRect.moveBottom(rect.bottom() - Render::TabBar_TabMarginWidth);
     buttonRect.moveLeft((rect.width() - buttonRect.width()) / 2.0);
     break;
 
   case QTabBar::RoundedEast:
   case QTabBar::TriangularEast:
-    buttonRect.moveTop(rect.top() + Metrics::TabBar_TabMarginWidth);
+    buttonRect.moveTop(rect.top() + Render::TabBar_TabMarginWidth);
     buttonRect.moveLeft((rect.width() - buttonRect.width()) / 2.0);
     break;
 
@@ -452,20 +462,20 @@ QRect Style::tabBarTabRightButtonRect(const QStyleOption *option,
 
   case QTabBar::RoundedSouth:
   case QTabBar::TriangularSouth:
-    buttonRect.moveRight(rect.right() - Metrics::TabBar_TabMarginWidth);
+    buttonRect.moveRight(rect.right() - Render::TabBar_TabMarginWidth);
     buttonRect.moveTop((rect.height() - buttonRect.height()) / 2.0);
     buttonRect = visualRect(option, buttonRect);
     break;
 
   case QTabBar::RoundedWest:
   case QTabBar::TriangularWest:
-    buttonRect.moveTop(rect.top() + Metrics::TabBar_TabMarginWidth);
+    buttonRect.moveTop(rect.top() + Render::TabBar_TabMarginWidth);
     buttonRect.moveLeft((rect.width() - buttonRect.width()) / 2.0);
     break;
 
   case QTabBar::RoundedEast:
   case QTabBar::TriangularEast:
-    buttonRect.moveBottom(rect.bottom() - Metrics::TabBar_TabMarginWidth);
+    buttonRect.moveBottom(rect.bottom() - Render::TabBar_TabMarginWidth);
     buttonRect.moveLeft((rect.width() - buttonRect.width()) / 2.0);
     break;
 
@@ -514,16 +524,16 @@ QRect Style::tabWidgetTabBarRect(const QStyleOption *option,
         option, subElementRect(SE_TabWidgetRightCorner, option, widget)));
 
     rect.setLeft(leftButtonRect.width() +
-                 (documentMode ? 0 : Metrics::Frame_FrameWidth));
+                 (documentMode ? 0 : Render::Frame_FrameWidth));
     rect.setRight(rightButtonRect.left() +
-                  (documentMode ? 0 : Metrics::Frame_FrameWidth));
+                  (documentMode ? 0 : Render::Frame_FrameWidth));
     const int sizeCorrection =
         -1; // HACK: for some reason, the rect size is 1px larger than expected,
             // so it needs to be reduced
     if (StyleConfigData::tabBarTabExpandFullWidth() &&
         /*StyleConfigData::tabBarOpacity() == 100 ||*/ StyleConfigData::
             documentModeTabs()) {
-      tabBarRect.setWidth(rect.width() - 2 * Metrics::Frame_FrameWidth -
+      tabBarRect.setWidth(rect.width() - 2 * Render::Frame_FrameWidth -
                           sizeCorrection); // adwaita qt style tab
     } else {
       tabBarRect.setWidth(
@@ -546,7 +556,7 @@ QRect Style::tabWidgetTabBarRect(const QStyleOption *option,
   case QTabBar::RoundedNorth:
   case QTabBar::TriangularNorth:
     if (!documentMode)
-      tabBarRect.moveTop(rect.top() + Metrics::Frame_FrameWidth - 1);
+      tabBarRect.moveTop(rect.top() + Render::Frame_FrameWidth - 1);
     break;
 
   case QTabBar::RoundedSouth:
@@ -592,25 +602,25 @@ QRect Style::tabWidgetTabContentsRect(const QStyleOption *option,
     case QTabBar::RoundedNorth:
     case QTabBar::TriangularNorth:
       return rect.adjusted(
-          0, Metrics::TabWidget_MarginWidth /*+ Metrics::Frame_FrameWidth*/, 0,
+          0, Render::TabWidget_MarginWidth /*+ Render::Frame_FrameWidth*/, 0,
           0);
 
     case QTabBar::RoundedSouth:
     case QTabBar::TriangularSouth:
       return rect.adjusted(
           0, 0, 0,
-          -Metrics::TabWidget_MarginWidth /*- Metrics::Frame_FrameWidth*/);
+          -Render::TabWidget_MarginWidth /*- Render::Frame_FrameWidth*/);
 
     case QTabBar::RoundedWest:
     case QTabBar::TriangularWest:
       return rect.adjusted(
-          Metrics::TabWidget_MarginWidth /*+ Metrics::Frame_FrameWidth*/, 0, 0,
+          Render::TabWidget_MarginWidth /*+ Render::Frame_FrameWidth*/, 0, 0,
           0);
 
     case QTabBar::RoundedEast:
     case QTabBar::TriangularEast:
       return rect.adjusted(
-          0, 0, -Metrics::TabWidget_MarginWidth /*- Metrics::Frame_FrameWidth*/,
+          0, 0, -Render::TabWidget_MarginWidth /*- Render::Frame_FrameWidth*/,
           0);
 
     default:
@@ -620,7 +630,7 @@ QRect Style::tabWidgetTabContentsRect(const QStyleOption *option,
     // include tabbar and margins
   } else {
     QRect r = insideMargin(
-        rect, Metrics::TabWidget_MarginWidth /*+ Metrics::Frame_FrameWidth*/);
+        rect, Render::TabWidget_MarginWidth /*+ Render::Frame_FrameWidth*/);
 
     // add margin only to the relevant side
     switch (tabOption->shape) {
@@ -659,7 +669,7 @@ QRect Style::tabWidgetTabPaneRect(const QStyleOption *option,
       (StyleConfigData::documentModeTabs() && !(tabOption->lineWidth == 0)))
     return option->rect;
 
-  const int overlap = Metrics::TabBar_BaseOverlap - 1;
+  const int overlap = Render::TabBar_BaseOverlap - 1;
   const QSize tabBarSize(tabOption->tabBarSize - QSize(overlap, overlap));
 
   // adjust
@@ -771,7 +781,7 @@ QRect Style::toolBoxTabContentsRect(const QStyleOption *option,
     contentsWidth += iconSize;
 
     if (!toolBoxOption->text.isEmpty())
-      contentsWidth += Metrics::ToolBox_TabItemSpacing;
+      contentsWidth += Render::ToolBox_TabItemSpacing;
   }
 
   if (!toolBoxOption->text.isEmpty()) {
@@ -782,15 +792,15 @@ QRect Style::toolBoxTabContentsRect(const QStyleOption *option,
     contentsWidth += textWidth;
   }
 
-  contentsWidth += 2 * Metrics::ToolBox_TabMarginWidth;
+  contentsWidth += 2 * Render::ToolBox_TabMarginWidth;
   contentsWidth = qMin(contentsWidth, rect.width());
-  contentsWidth = qMax(contentsWidth, int(Metrics::ToolBox_TabMinWidth));
+  contentsWidth = qMax(contentsWidth, int(Render::ToolBox_TabMinWidth));
   return centerRect(rect, contentsWidth, rect.height());
 }
 
 QRect Style::genericLayoutItemRect(const QStyleOption *option,
                                    const QWidget *) const {
-  return insideMargin(option->rect, -Metrics::Frame_FrameWidth);
+  return insideMargin(option->rect, -Render::Frame_FrameWidth);
 }
 
 QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
@@ -809,7 +819,7 @@ QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
       break;
 
     // take out frame width
-    rect = insideMargin(rect, Metrics::Frame_FrameWidth);
+    rect = insideMargin(rect, Render::Frame_FrameWidth);
 
     // get state
     const bool checkable(groupBoxOption->subControls &
@@ -821,11 +831,11 @@ QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
     if (!emptyText)
       titleHeight = groupBoxOption->fontMetrics.height();
     if (checkable)
-      titleHeight = qMax(titleHeight, int(Metrics::CheckBox_Size));
+      titleHeight = qMax(titleHeight, int(Render::CheckBox_Size));
 
     // add margin
     if (titleHeight > 0)
-      titleHeight += 2 * Metrics::GroupBox_TitleMarginWidth;
+      titleHeight += 2 * Render::GroupBox_TitleMarginWidth;
 
     rect.adjust(0, titleHeight, 0, 0);
     return rect;
@@ -840,7 +850,7 @@ QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
       break;
 
     // take out frame width
-    rect = insideMargin(rect, Metrics::Frame_FrameWidth);
+    rect = insideMargin(rect, Render::Frame_FrameWidth);
 
     const bool emptyText(groupBoxOption->text.isEmpty());
     const bool checkable(groupBoxOption->subControls &
@@ -858,27 +868,27 @@ QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
     }
 
     if (checkable) {
-      titleHeight = qMax(titleHeight, int(Metrics::CheckBox_Size));
-      titleWidth += Metrics::CheckBox_Size;
+      titleHeight = qMax(titleHeight, int(Render::CheckBox_Size));
+      titleWidth += Render::CheckBox_Size;
       if (!emptyText)
-        titleWidth += Metrics::CheckBox_ItemSpacing;
+        titleWidth += Render::CheckBox_ItemSpacing;
     }
 
     // adjust height
     auto titleRect(rect);
     titleRect.setHeight(titleHeight);
-    titleRect.translate(0, Metrics::GroupBox_TitleMarginWidth);
+    titleRect.translate(0, Render::GroupBox_TitleMarginWidth);
 
     // center
     titleRect = centerRect(titleRect, titleWidth, titleHeight);
 
     if (subControl == SC_GroupBoxCheckBox) {
       // vertical centering
-      titleRect = centerRect(titleRect, titleWidth, Metrics::CheckBox_Size);
+      titleRect = centerRect(titleRect, titleWidth, Render::CheckBox_Size);
 
       // horizontal positioning
       const QRect subRect(titleRect.topLeft(),
-                          QSize(Metrics::CheckBox_Size, titleRect.height()));
+                          QSize(Render::CheckBox_Size, titleRect.height()));
       return visualRect(option->direction, titleRect, subRect);
 
     } else {
@@ -889,7 +899,7 @@ QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
       // horizontal positioning
       auto subRect(titleRect);
       if (checkable)
-        subRect.adjust(Metrics::CheckBox_Size + Metrics::CheckBox_ItemSpacing,
+        subRect.adjust(Render::CheckBox_Size + Render::CheckBox_ItemSpacing,
                        0, 0, 0);
       return visualRect(option->direction, titleRect, subRect);
     }
@@ -922,7 +932,7 @@ QRect Style::toolButtonSubControlRect(const QStyleOptionComplex *option,
 
   // store rect
   const auto &rect(option->rect);
-  const int menuButtonWidth(Metrics::MenuButton_IndicatorWidth);
+  const int menuButtonWidth(Render::MenuButton_IndicatorWidth);
   switch (subControl) {
   case SC_ToolButtonMenu: {
     // check features
@@ -979,14 +989,14 @@ QRect Style::comboBoxSubControlRect(const QStyleOptionComplex *option,
   case SC_ComboBoxArrow: {
     // take out frame width
     if (!flat)
-      rect = insideMargin(rect, Metrics::Frame_FrameWidth);
+      rect = insideMargin(rect, Render::Frame_FrameWidth);
 
-    QRect arrowRect(rect.right() - Metrics::MenuButton_IndicatorWidth + 1,
-                    rect.top(), Metrics::MenuButton_IndicatorWidth,
+    QRect arrowRect(rect.right() - Render::MenuButton_IndicatorWidth + 1,
+                    rect.top(), Render::MenuButton_IndicatorWidth,
                     rect.height());
 
-    arrowRect = centerRect(arrowRect, Metrics::MenuButton_IndicatorWidth,
-                           Metrics::MenuButton_IndicatorWidth);
+    arrowRect = centerRect(arrowRect, Render::MenuButton_IndicatorWidth,
+                           Render::MenuButton_IndicatorWidth);
     return visualRect(option, arrowRect);
   }
 
@@ -995,7 +1005,7 @@ QRect Style::comboBoxSubControlRect(const QStyleOptionComplex *option,
     const int frameWidth(pixelMetric(PM_ComboBoxFrameWidth, option, widget));
     labelRect =
         QRect(rect.left(), rect.top(),
-              rect.width() - Metrics::MenuButton_IndicatorWidth, rect.height());
+              rect.width() - Render::MenuButton_IndicatorWidth, rect.height());
 
     // remove margins
     if (!flat &&
@@ -1035,19 +1045,19 @@ QRect Style::spinBoxSubControlRect(const QStyleOptionComplex *option,
   case SC_SpinBoxUp:
   case SC_SpinBoxDown: {
     // take out frame width
-    if (!flat && rect.height() >= 2 * Metrics::Frame_FrameWidth +
-                                      Metrics::SpinBox_ArrowButtonWidth)
-      rect = insideMargin(rect, Metrics::Frame_FrameWidth);
+    if (!flat && rect.height() >= 2 * Render::Frame_FrameWidth +
+                                      Render::SpinBox_ArrowButtonWidth)
+      rect = insideMargin(rect, Render::Frame_FrameWidth);
 
     QRect arrowRect;
     arrowRect =
-        QRect(rect.right() - Metrics::SpinBox_ArrowButtonWidth + 1, rect.top(),
-              Metrics::SpinBox_ArrowButtonWidth, rect.height());
+        QRect(rect.right() - Render::SpinBox_ArrowButtonWidth + 1, rect.top(),
+              Render::SpinBox_ArrowButtonWidth, rect.height());
 
     const int arrowHeight(
-        qMin(rect.height(), int(Metrics::SpinBox_ArrowButtonWidth)));
+        qMin(rect.height(), int(Render::SpinBox_ArrowButtonWidth)));
     arrowRect =
-        centerRect(arrowRect, Metrics::SpinBox_ArrowButtonWidth, arrowHeight);
+        centerRect(arrowRect, Render::SpinBox_ArrowButtonWidth, arrowHeight);
     arrowRect.setHeight(arrowHeight / 2);
     if (subControl == SC_SpinBoxDown)
       arrowRect.translate(0, arrowHeight / 2);
@@ -1059,7 +1069,7 @@ QRect Style::spinBoxSubControlRect(const QStyleOptionComplex *option,
     QRect labelRect;
     labelRect =
         QRect(rect.left(), rect.top(),
-              rect.width() - Metrics::SpinBox_ArrowButtonWidth, rect.height());
+              rect.width() - Render::SpinBox_ArrowButtonWidth, rect.height());
 
     // remove right side line editor margins
     const int frameWidth(pixelMetric(PM_SpinBoxFrameWidth, option, widget));
@@ -1170,7 +1180,7 @@ QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option,
                      (sliderOption->maximum - sliderOption->minimum +
                       sliderOption->pageStep);
     sliderSize =
-        qMax(sliderSize, static_cast<int>(Metrics::ScrollBar_MinSliderHeight));
+        qMax(sliderSize, static_cast<int>(Render::ScrollBar_MinSliderHeight));
     sliderSize = qMin(sliderSize, space);
 
     space -= sliderSize;
@@ -1253,8 +1263,8 @@ QRect Style::dialSubControlRect(const QStyleOptionComplex *option,
   switch (subControl) {
   case QStyle::SC_DialGroove:
     return insideMargin(rect,
-                        static_cast<int>(Metrics::Slider_ControlThickness -
-                                         Metrics::Slider_GrooveThickness) /
+                        static_cast<int>(Render::Slider_ControlThickness -
+                                         Render::Slider_GrooveThickness) /
                             2.0);
   case QStyle::SC_DialHandle: {
     // calculate angle at which handle needs to be drawn
@@ -1262,7 +1272,7 @@ QRect Style::dialSubControlRect(const QStyleOptionComplex *option,
 
     // groove rect
     const QRectF grooveRect(insideMargin(
-        rect, static_cast<int>(Metrics::Slider_ControlThickness) / 2.0));
+        rect, static_cast<int>(Render::Slider_ControlThickness) / 2.0));
     qreal radius(grooveRect.width() / 2.0);
 
     // slider center
@@ -1270,8 +1280,8 @@ QRect Style::dialSubControlRect(const QStyleOptionComplex *option,
                                                  -radius * std::sin(angle)));
 
     // slider rect
-    QRect handleRect(0, 0, Metrics::Slider_ControlThickness,
-                     Metrics::Slider_ControlThickness);
+    QRect handleRect(0, 0, Render::Slider_ControlThickness,
+                     Render::Slider_ControlThickness);
     handleRect.moveCenter(center.toPoint());
     return handleRect;
   }
@@ -1285,8 +1295,8 @@ QRect Style::dialSubControlRect(const QStyleOptionComplex *option,
 
 int Style::sliderTickMarksLength() {
   const int tickLength =
-      Metrics::Slider_TickLength + Metrics::Slider_TickMarginWidth +
-      (Metrics::Slider_GrooveThickness - Metrics::Slider_ControlThickness) / 2;
+      Render::Slider_TickLength + Render::Slider_TickMarginWidth +
+      (Render::Slider_GrooveThickness - Render::Slider_ControlThickness) / 2;
   constexpr int builtInTickLength(5);
   return tickLength - builtInTickLength;
 }
@@ -1335,19 +1345,19 @@ QRect Style::sliderSubControlRect(const QStyleOptionComplex *option,
 
   switch (subControl) {
   case SC_SliderHandle: {
-    QRect ret(centerRect(rect, Metrics::Slider_ControlThickness,
-                         Metrics::Slider_ControlThickness));
+    QRect ret(centerRect(rect, Render::Slider_ControlThickness,
+                         Render::Slider_ControlThickness));
 
-    constexpr int len = Metrics::Slider_ControlThickness + 2 * Metrics::Slider_HoverMargin;
+    constexpr int len = Render::Slider_ControlThickness + 2 * Render::Slider_HoverMargin;
     const int sliderPos = sliderPositionFromValue(
         sliderOption->minimum, sliderOption->maximum,
         sliderOption->sliderPosition,
         (horizontal ? rect.width() : rect.height()) - len,
         sliderOption->upsideDown);
     if (horizontal) {
-      ret.moveLeft(rect.x() + Metrics::Slider_HoverMargin + sliderPos);
+      ret.moveLeft(rect.x() + Render::Slider_HoverMargin + sliderPos);
     } else {
-      ret.moveTop(rect.y() + Metrics::Slider_HoverMargin + sliderPos);
+      ret.moveTop(rect.y() + Render::Slider_HoverMargin + sliderPos);
     }
     ret = visualRect(option->direction, rect, ret);
     return ret;
@@ -1357,11 +1367,11 @@ QRect Style::sliderSubControlRect(const QStyleOptionComplex *option,
         insideMargin(rect, pixelMetric(PM_DefaultFrameWidth, option, widget));
 
     if (horizontal) {
-      grooveRect = centerRect(rect, grooveRect.width(), Metrics::Slider_GrooveThickness);
-      grooveRect.adjust(Metrics::Slider_HoverMargin, 0, -Metrics::Slider_HoverMargin, 0);
+      grooveRect = centerRect(rect, grooveRect.width(), Render::Slider_GrooveThickness);
+      grooveRect.adjust(Render::Slider_HoverMargin, 0, -Render::Slider_HoverMargin, 0);
     } else {
-      grooveRect = centerRect(rect, Metrics::Slider_GrooveThickness, grooveRect.height());
-      grooveRect.adjust(0, Metrics::Slider_HoverMargin, 0, -Metrics::Slider_HoverMargin);
+      grooveRect = centerRect(rect, Render::Slider_GrooveThickness, grooveRect.height());
+      grooveRect.adjust(0, Render::Slider_HoverMargin, 0, -Render::Slider_HoverMargin);
     }
     return grooveRect;
   }

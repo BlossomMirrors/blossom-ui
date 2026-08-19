@@ -1,20 +1,15 @@
-//////////////////////////////////////////////////////////////////////////////
-// blossomuitransitionwidget.cpp
+////////////////////////////////////////////////////////////////////////////// blossomuitransitionwidget.cpp
 // stores event filters and maps widgets to transitions for transitions
 // -------------------
-//
 // Copyright (c) 2009 Hugo Pereira Da Costa <hugo.pereira@free.fr>
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,8 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////
 #include "blossomuitransitionwidget.h"
 
 #include <QPaintEvent>
@@ -34,7 +28,6 @@
 namespace BlossomUI
 {
 
-//________________________________________________
 bool TransitionWidget::_paintEnabled = true;
 bool TransitionWidget::paintEnabled()
 {
@@ -43,7 +36,6 @@ bool TransitionWidget::paintEnabled()
 
 int TransitionWidget::_steps = 0;
 
-//________________________________________________
 TransitionWidget::TransitionWidget(QWidget *parent, int duration)
     : QWidget(parent)
     , _animation(new Animation(duration, this))
@@ -62,7 +54,6 @@ TransitionWidget::TransitionWidget(QWidget *parent, int duration)
     connect(_animation.data(), &QAbstractAnimation::finished, this, &QWidget::hide);
 }
 
-//________________________________________________
 QPixmap TransitionWidget::grab(QWidget *widget, QRect rect)
 {
     // change rect
@@ -93,7 +84,6 @@ QPixmap TransitionWidget::grab(QWidget *widget, QRect rect)
     return out;
 }
 
-//________________________________________________
 bool TransitionWidget::event(QEvent *event)
 {
     switch (event->type()) {
@@ -111,7 +101,6 @@ bool TransitionWidget::event(QEvent *event)
     }
 }
 
-//________________________________________________
 void TransitionWidget::paintEvent(QPaintEvent *event)
 {
     // fully transparent case
@@ -187,7 +176,6 @@ void TransitionWidget::paintEvent(QPaintEvent *event)
     }
 }
 
-//________________________________________________
 void TransitionWidget::grabBackground(QPixmap &pixmap, QWidget *widget, QRect &rect) const
 {
     if (!widget)
@@ -249,13 +237,11 @@ void TransitionWidget::grabBackground(QPixmap &pixmap, QWidget *widget, QRect &r
     p.end();
 }
 
-//________________________________________________
 void TransitionWidget::grabWidget(QPixmap &pixmap, QWidget *widget, QRect &rect) const
 {
     widget->render(&pixmap, pixmap.rect().topLeft(), rect, QWidget::DrawChildren);
 }
 
-//________________________________________________
 void TransitionWidget::fade(const QPixmap &source, QPixmap &target, qreal opacity, const QRect &rect) const
 {
     if (target.isNull() || target.size() != size()) {

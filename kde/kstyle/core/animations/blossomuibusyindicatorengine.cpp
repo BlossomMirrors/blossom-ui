@@ -18,6 +18,7 @@
  *************************************************************************/
 
 #include "blossomuibusyindicatorengine.h"
+#include "progressbar.h"
 
 #include "blossomui.h"
 
@@ -26,13 +27,13 @@
 namespace BlossomUI
 {
 
-//_______________________________________________
+
 BusyIndicatorEngine::BusyIndicatorEngine(QObject *object)
     : BaseEngine(object)
 {
 }
 
-//_______________________________________________
+
 bool BusyIndicatorEngine::registerWidget(QObject *object)
 {
     // check widget validity
@@ -50,14 +51,12 @@ bool BusyIndicatorEngine::registerWidget(QObject *object)
     return true;
 }
 
-//____________________________________________________________
 bool BusyIndicatorEngine::isAnimated(const QObject *object)
 {
     DataMap<BusyIndicatorData>::Value data(BusyIndicatorEngine::data(object));
     return data && data.data()->isAnimated();
 }
 
-//____________________________________________________________
 void BusyIndicatorEngine::setDuration(int value)
 {
     if (duration() == value)
@@ -70,7 +69,6 @@ void BusyIndicatorEngine::setDuration(int value)
     }
 }
 
-//____________________________________________________________
 void BusyIndicatorEngine::setAnimated(const QObject *object, bool value)
 {
     DataMap<BusyIndicatorData>::Value data(BusyIndicatorEngine::data(object));
@@ -86,7 +84,7 @@ void BusyIndicatorEngine::setAnimated(const QObject *object, bool value)
 
                 // setup
                 _animation.data()->setStartValue(0);
-                _animation.data()->setEndValue(2 * Metrics::ProgressBar_BusyIndicatorSize);
+                _animation.data()->setEndValue(2 * Render::ProgressBar_BusyIndicatorSize);
                 _animation.data()->setTargetObject(this);
                 _animation.data()->setPropertyName("value");
                 _animation.data()->setLoopCount(-1);
@@ -101,13 +99,12 @@ void BusyIndicatorEngine::setAnimated(const QObject *object, bool value)
     }
 }
 
-//____________________________________________________________
 DataMap<BusyIndicatorData>::Value BusyIndicatorEngine::data(const QObject *object)
 {
     return _data.find(object).data();
 }
 
-//_______________________________________________
+
 void BusyIndicatorEngine::setValue(int value)
 {
     // update
@@ -139,7 +136,7 @@ void BusyIndicatorEngine::setValue(int value)
     }
 }
 
-//__________________________________________________________
+//_
 bool BusyIndicatorEngine::unregisterWidget(QObject *object)
 {
     const bool removed(_data.unregisterWidget(object));

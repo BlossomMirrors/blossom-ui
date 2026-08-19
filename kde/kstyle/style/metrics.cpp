@@ -1,7 +1,23 @@
+#include "blossomuianimations.h"
 #include "blossomuipropertynames.h"
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
+#include "button.h"
+#include "checkbox.h"
+#include "comboboxcontrol.h"
+#include "frame.h"
+#include "header.h"
+#include "menucontrol.h"
+#include "misccontrol.h"
 #include "private.h"
+#include "progressbar.h"
+#include "slider.h"
+#include "spinbox.h"
+#include "switch.h"
+#include "tabbar.h"
+#include "titlebarcontrol.h"
+#include "toolbarcontrol.h"
+#include "tooltipcontrol.h"
 
 #include <QAbstractScrollArea>
 #include <QCheckBox>
@@ -38,6 +54,13 @@
 
 namespace BlossomUI {
 
+// generic top-level layout fallbacks, in logical pixels - not tied to any
+// specific widget, only used by the pixelMetric()/sizeFromContents()
+// dispatchers below
+static constexpr int Layout_TopLevelMarginWidth = 10;
+static constexpr int Layout_ChildMarginWidth = 6;
+static constexpr int Layout_DefaultSpacing = 12;
+
 int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
                        const QWidget *widget) const {
   // handle special cases
@@ -53,19 +76,19 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
     if (qobject_cast<const QMenu *>(widget))
       return StyleConfigData::cornerRadius() > 1 ? 4 : 0;
     if (qobject_cast<const QLineEdit *>(widget))
-      return Metrics::LineEdit_FrameWidth;
+      return Render::LineEdit_FrameWidth;
     else if (isControl) {
       const QString &elementType =
           option->styleObject->property("elementType").toString();
       if (elementType == QLatin1String("edit") ||
           elementType == QLatin1String("spinbox")) {
-        return Metrics::LineEdit_FrameWidth;
+        return Render::LineEdit_FrameWidth;
 
       } else if (elementType == QLatin1String("combobox")) {
-        return Metrics::ComboBox_FrameWidth;
+        return Render::ComboBox_FrameWidth;
       }
 
-      return Metrics::Frame_FrameWidth;
+      return Render::Frame_FrameWidth;
     }
 
     const auto forceFrame = widget->property(PropertyNames::forceFrame);
@@ -75,45 +98,31 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
     }
     if ((forceFrame.isValid() && forceFrame.toBool()) ||
         widget->property(PropertyNames::bordersSides).isValid()) {
-      return Metrics::Frame_FrameWidth;
+      return Render::Frame_FrameWidth;
     }
 
     if (widget && widget->inherits("KTextEditor::View") &&
         !StyleConfigData::kTextEditDrawFrame() && !_app.isKdevelop)
       return 0;
 
-    // from kvantum
-    else if (widget && _app.isDolphin) {
-      if (QWidget *pw = widget->parentWidget()) {
-        if (StyleConfigData::transparentDolphinView()
-            // not renaming area
-            && !qobject_cast<QAbstractScrollArea *>(pw)
-            // only Dolphin's view
-            && QString(pw->metaObject()->className()).startsWith("Dolphin")) {
-          // for the top and bottom separators
-          return 1;
-        }
-      }
-    }
-
     // fallback
-    return Metrics::Frame_FrameWidth;
+    return Render::Frame_FrameWidth;
   }
 
   case PM_ComboBoxFrameWidth: {
     const auto comboBoxOption(
         qstyleoption_cast<const QStyleOptionComboBox *>(option));
     return comboBoxOption && comboBoxOption->editable
-               ? Metrics::LineEdit_FrameWidth
-               : Metrics::ComboBox_FrameWidth;
+               ? Render::LineEdit_FrameWidth
+               : Render::ComboBox_FrameWidth;
   }
 
   case PM_SpinBoxFrameWidth:
-    return Metrics::SpinBox_FrameWidth;
+    return Render::SpinBox_FrameWidth;
   case PM_ToolBarFrameWidth:
-    return Metrics::ToolBar_FrameWidth;
+    return Render::ToolBar_FrameWidth;
   case PM_ToolTipLabelFrameWidth:
-    return Metrics::ToolTip_FrameWidth;
+    return Render::ToolTip_FrameWidth;
 
   // layout
   case PM_LayoutLeftMargin:
@@ -126,29 +135,29 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
      */
     if ((option && (option->state & QStyle::State_Window)) ||
         (widget && widget->isWindow())) {
-      return Metrics::Layout_TopLevelMarginWidth;
+      return Layout_TopLevelMarginWidth;
 
     } else if (widget && widget->inherits("KPageView")) {
       return 0;
 
     } else {
-      return Metrics::Layout_ChildMarginWidth;
+      return Layout_ChildMarginWidth;
     }
   }
 
   case PM_LayoutHorizontalSpacing:
-    return Metrics::Layout_DefaultSpacing;
+    return Layout_DefaultSpacing;
   case PM_LayoutVerticalSpacing:
-    return Metrics::Layout_DefaultSpacing;
+    return Layout_DefaultSpacing;
 
   // buttons
   case PM_ButtonMargin: {
     // needs special case for kcalc buttons, to prevent the application to set
     // too small margins
     if (widget && widget->inherits("KCalcButton"))
-      return Metrics::Button_MarginWidth + 4;
+      return Render::Button_MarginWidth + 4;
     else
-      return Metrics::Button_MarginWidth;
+      return Render::Button_MarginWidth;
   }
 
   case PM_ButtonDefaultIndicator:
@@ -172,21 +181,21 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
 
   // menu buttons
   case PM_MenuButtonIndicator:
-    return Metrics::MenuButton_IndicatorWidth;
+    return Render::MenuButton_IndicatorWidth;
 
   // toolbars
   case PM_ToolBarHandleExtent:
-    return Metrics::ToolBar_HandleExtent;
+    return Render::ToolBar_HandleExtent;
   case PM_ToolBarSeparatorExtent:
-    return Metrics::ToolBar_SeparatorWidth;
+    return Render::ToolBar_SeparatorWidth;
   case PM_ToolBarExtensionExtent:
     return pixelMetric(PM_SmallIconSize, option, widget) +
-           2 * Metrics::ToolButton_MarginWidth;
+           2 * Render::ToolButton_MarginWidth;
 
   case PM_ToolBarItemMargin:
     return 2;
   case PM_ToolBarItemSpacing:
-    return Metrics::ToolBar_ItemSpacing;
+    return Render::ToolBar_ItemSpacing;
 
   // tabbars
   case PM_TabBarIconSize:
@@ -196,14 +205,14 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
   case PM_TabBarTabShiftHorizontal:
     return 0;
   case PM_TabBarTabOverlap:
-    return Metrics::TabBar_TabOverlap;
+    return Render::TabBar_TabOverlap;
   // case PM_TabBarTabOverlap: return StyleConigData::cornerRadius() + 2;
   case PM_TabBarBaseOverlap:
-    return Metrics::TabBar_BaseOverlap;
+    return Render::TabBar_BaseOverlap;
   case PM_TabBarTabHSpace:
-    return 2 * Metrics::TabBar_TabMarginWidth;
+    return 2 * Render::TabBar_TabMarginWidth;
   case PM_TabBarTabVSpace:
-    return 2 * Metrics::TabBar_TabMarginHeight;
+    return 2 * Render::TabBar_TabMarginHeight;
   case PM_TabCloseIndicatorWidth:
   case PM_TabCloseIndicatorHeight:
     return pixelMetric(PM_SmallIconSize, option, widget);
@@ -212,54 +221,54 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
 
   // scrollbars
   case PM_ScrollBarExtent:
-    return Metrics::ScrollBar_Extend;
+    return Render::ScrollBar_Extend;
   case PM_ScrollBarSliderMin:
-    return Metrics::ScrollBar_MinSliderHeight;
+    return Render::ScrollBar_MinSliderHeight;
 
   // title bar
   case PM_TitleBarHeight:
-    return 2 * Metrics::TitleBar_MarginWidth +
+    return 2 * Render::TitleBar_MarginWidth +
            pixelMetric(PM_SmallIconSize, option, widget);
 
   // sliders
   case PM_SliderThickness:
-    return Metrics::Slider_ControlThickness + 2 * Metrics::Slider_HoverMargin;
+    return Render::Slider_ControlThickness + 2 * Render::Slider_HoverMargin;
   case PM_SliderControlThickness:
-    return Metrics::Slider_ControlThickness + 2 * Metrics::Slider_HoverMargin;
+    return Render::Slider_ControlThickness + 2 * Render::Slider_HoverMargin;
   case PM_SliderLength:
-    return Metrics::Slider_ControlThickness;
+    return Render::Slider_ControlThickness;
 
   // checkboxes and radio buttons
   case PM_IndicatorWidth:
-    return isSwitchCheckBox(option, widget) ? Metrics::Switch_Width
-                                            : Metrics::CheckBox_Size;
+    return isSwitchCheckBox(option, widget) ? Render::Switch_Width
+                                            : Render::CheckBox_Size;
   case PM_IndicatorHeight:
-    return isSwitchCheckBox(option, widget) ? Metrics::Switch_Height
-                                            : int(Metrics::CheckBox_Size);
+    return isSwitchCheckBox(option, widget) ? Render::Switch_Height
+                                            : int(Render::CheckBox_Size);
   case PM_ExclusiveIndicatorWidth:
-    return Metrics::CheckBox_Size;
+    return Render::CheckBox_Size;
   case PM_ExclusiveIndicatorHeight:
-    return Metrics::CheckBox_Size;
+    return Render::CheckBox_Size;
 
   // list heaaders
   case PM_HeaderMarkSize:
-    return Metrics::Header_ArrowSize;
+    return Render::Header_ArrowSize;
   case PM_HeaderMargin:
-    return Metrics::Header_MarginWidth;
+    return Render::Header_MarginWidth;
 
   // dock widget
   // return 0 here, since frame is handled directly in polish
   case PM_DockWidgetFrameWidth:
     return 0;
   case PM_DockWidgetTitleMargin:
-    return Metrics::Frame_FrameWidth;
+    return Render::Frame_FrameWidth;
   case PM_DockWidgetTitleBarButtonMargin:
-    return Metrics::ToolButton_MarginWidth;
+    return Render::ToolButton_MarginWidth;
 
   case PM_SplitterWidth:
-    return Metrics::Splitter_SplitterWidth;
+    return Render::Splitter_SplitterWidth;
   case PM_DockWidgetSeparatorExtent:
-    return Metrics::Splitter_SplitterWidth;
+    return Render::Splitter_SplitterWidth;
 
   // fallback
   default:
@@ -332,18 +341,15 @@ int Style::styleHint(StyleHint hint, const QStyleOption *option,
 
   // TODO Qt6: drop deprecated SH_Widget_Animate
   case SH_Widget_Animate:
-    return StyleConfigData::animationsEnabled();
+    return true;
   case SH_Menu_SupportsSections:
     return true;
   case SH_Widget_Animation_Duration: {
-    if (!StyleConfigData::animationsEnabled())
-      return 0;
-    const int base = StyleConfigData::animationsDuration();
     const KConfigGroup g(
         KSharedConfig::openConfig(QStringLiteral("kdeglobals")),
-        QStringLiteral("General"));
+        QStringLiteral("KDE"));
     const qreal factor = g.readEntry("AnimationDurationFactor", 1.0);
-    return qRound(base * qBound(0.0, factor, 10.0));
+    return qRound(Animation_BaseDuration * qBound(0.0, factor, 10.0));
   }
 
   case SH_DialogButtonBox_ButtonsHaveIcons:
@@ -484,21 +490,21 @@ QSize Style::checkBoxSizeFromContents(const QStyleOption *option,
 
   const bool isSwitch = isSwitchCheckBox(option, widget);
   const int indicatorW =
-      isSwitch ? Metrics::Switch_Width : Metrics::CheckBox_Size;
+      isSwitch ? Render::Switch_Width : Render::CheckBox_Size;
   const int indicatorH =
-      isSwitch ? Metrics::Switch_Height : int(Metrics::CheckBox_Size);
+      isSwitch ? Render::Switch_Height : int(Render::CheckBox_Size);
 
   // add focus height
-  size = expandSize(size, 0, Metrics::CheckBox_FocusMarginWidth);
+  size = expandSize(size, 0, Render::CheckBox_FocusMarginWidth);
 
   // make sure there is enough height for indicator
   size.setHeight(qMax(size.height(), indicatorH));
 
   // Add space for the indicator and the icon
-  size.rwidth() += indicatorW + Metrics::CheckBox_ItemSpacing;
+  size.rwidth() += indicatorW + Render::CheckBox_ItemSpacing;
 
   // also add extra space, to leave room to the right of the label
-  size.rwidth() += Metrics::CheckBox_ItemSpacing;
+  size.rwidth() += Render::CheckBox_ItemSpacing;
 
   return size;
 }
@@ -515,7 +521,7 @@ QSize Style::lineEditSizeFromContents(const QStyleOption *option,
   const int frameWidth(pixelMetric(PM_DefaultFrameWidth, option, widget));
   return flat ? contentsSize
               : expandSize(contentsSize,
-                           frameWidth + Metrics::LineEdit_HPadding, frameWidth);
+                           frameWidth + Render::LineEdit_HPadding, frameWidth);
 }
 
 QSize Style::comboBoxSizeFromContents(const QStyleOption *option,
@@ -532,15 +538,15 @@ QSize Style::comboBoxSizeFromContents(const QStyleOption *option,
   QSize size(contentsSize);
 
   // make sure there is enough height for the button
-  size.setHeight(qMax(size.height(), int(Metrics::MenuButton_IndicatorWidth)));
+  size.setHeight(qMax(size.height(), int(Render::MenuButton_IndicatorWidth)));
 
   // add relevant margin
   const int frameWidth(pixelMetric(PM_ComboBoxFrameWidth, option, widget));
   size = expandSize(size, frameWidth);
 
   // add button width and spacing
-  size.rwidth() += Metrics::MenuButton_IndicatorWidth + 2;
-  size.rwidth() += Metrics::Button_ItemSpacing;
+  size.rwidth() += Render::MenuButton_IndicatorWidth + 2;
+  size.rwidth() += Render::Button_ItemSpacing;
 
   return size;
 }
@@ -565,11 +571,11 @@ QSize Style::spinBoxSizeFromContents(const QStyleOption *option,
     size = expandSize(size, frameWidth);
 
   // make sure there is enough height for the button
-  size.setHeight(qMax(size.height() + Metrics::Frame_FrameWidth,
-                      int(Metrics::SpinBox_ArrowButtonWidth)));
+  size.setHeight(qMax(size.height() + Render::Frame_FrameWidth,
+                      int(Render::SpinBox_ArrowButtonWidth)));
 
   // add button width and spacing
-  size.rwidth() += Metrics::SpinBox_ArrowButtonWidth;
+  size.rwidth() += Render::SpinBox_ArrowButtonWidth;
 
   return size;
 }
@@ -596,8 +602,8 @@ QSize Style::sliderSizeFromContents(const QStyleOption *option,
    * Take it out and replace by ours, if needed
    */
   const int tickLength(
-      Metrics::Slider_TickLength + Metrics::Slider_TickMarginWidth +
-      (Metrics::Slider_GrooveThickness - Metrics::Slider_ControlThickness) / 2);
+      Render::Slider_TickLength + Render::Slider_TickMarginWidth +
+      (Render::Slider_GrooveThickness - Render::Slider_ControlThickness) / 2);
 
   const int builtInTickLength(5);
 
@@ -668,24 +674,24 @@ QSize Style::pushButtonSizeFromContents(const QStyleOption *option,
       size.rwidth() += iconSize.width();
 
       if (hasText)
-        size.rwidth() += Metrics::Button_ItemSpacing;
+        size.rwidth() += Render::Button_ItemSpacing;
     }
   }
 
   // menu
   const bool hasMenu(buttonOption->features & QStyleOptionButton::HasMenu);
   if (hasMenu) {
-    size.rwidth() += Metrics::MenuButton_IndicatorWidth;
+    size.rwidth() += Render::MenuButton_IndicatorWidth;
     if (hasText || hasIcon)
-      size.rwidth() += Metrics::Button_ItemSpacing;
+      size.rwidth() += Render::Button_ItemSpacing;
   }
 
   // expand with buttons margin
-  size = expandSize(size, Metrics::Button_MarginWidth);
+  size = expandSize(size, Render::Button_MarginWidth);
 
   // make sure buttons have a minimum width
   if (hasText) {
-    size.setWidth(qMax(size.width(), int(Metrics::Button_MinWidth)));
+    size.setWidth(qMax(size.width(), int(Render::Button_MinWidth)));
   }
 
   // adjust the size add on the button size from StyleConfigData
@@ -694,7 +700,7 @@ QSize Style::pushButtonSizeFromContents(const QStyleOption *option,
   size.rheight() += StyleConfigData::buttonHeight();
 
   // finally add frame margins
-  return expandSize(size, Metrics::Frame_FrameWidth);
+  return expandSize(size, Render::Frame_FrameWidth);
 }
 
 QSize Style::toolButtonSizeFromContents(const QStyleOption *option,
@@ -713,9 +719,9 @@ QSize Style::toolButtonSizeFromContents(const QStyleOption *option,
   const State &state(option->state);
   const bool autoRaise(state & State_AutoRaise);
 
-  const int marginWidth(autoRaise ? Metrics::ToolButton_MarginWidth
-                                  : Metrics::Button_MarginWidth +
-                                        Metrics::Frame_FrameWidth);
+  const int marginWidth(autoRaise ? Render::ToolButton_MarginWidth
+                                  : Render::Button_MarginWidth +
+                                        Render::Frame_FrameWidth);
 
   size = expandSize(size, marginWidth);
 
@@ -725,8 +731,8 @@ QSize Style::toolButtonSizeFromContents(const QStyleOption *option,
 QSize Style::menuBarItemSizeFromContents(const QStyleOption *,
                                          const QSize &contentsSize,
                                          const QWidget *) const {
-  return expandSize(contentsSize, Metrics::MenuBarItem_MarginWidth,
-                    Metrics::MenuBarItem_MarginHeight);
+  return expandSize(contentsSize, Render::MenuBarItem_MarginWidth,
+                    Render::MenuBarItem_MarginHeight);
 }
 
 QSize Style::menuItemSizeFromContents(const QStyleOption *option,
@@ -768,12 +774,12 @@ QSize Style::menuItemSizeFromContents(const QStyleOption *option,
 
     // add icon width
     if (iconWidth > 0) {
-      leftColumnWidth += iconWidth + Metrics::MenuItem_ItemSpacing;
+      leftColumnWidth += iconWidth + Render::MenuItem_ItemSpacing;
     }
 
     // add checkbox indicator width
     if (menuItemOption->menuHasCheckableItems) {
-      leftColumnWidth += Metrics::CheckBox_Size + Metrics::MenuItem_ItemSpacing;
+      leftColumnWidth += Render::CheckBox_Size + Render::MenuItem_ItemSpacing;
     }
 
     // add spacing for accelerator
@@ -785,22 +791,22 @@ QSize Style::menuItemSizeFromContents(const QStyleOption *option,
      * ( see QMenuPrivate::calcActionRects() )
      */
     if (hasAccelerator) {
-      size.rwidth() += Metrics::MenuItem_AcceleratorSpace;
+      size.rwidth() += Render::MenuItem_AcceleratorSpace;
     }
 
     // right column
     const int rightColumnWidth =
-        Metrics::MenuButton_IndicatorWidth + Metrics::MenuItem_ItemSpacing;
+        Render::MenuButton_IndicatorWidth + Render::MenuItem_ItemSpacing;
     size.rwidth() += leftColumnWidth + rightColumnWidth;
 
     // make sure height is large enough for icon and arrow
     size.setHeight(
-        qMax(size.height(), int(Metrics::MenuButton_IndicatorWidth)));
-    size.setHeight(qMax(size.height(), int(Metrics::CheckBox_Size)));
+        qMax(size.height(), int(Render::MenuButton_IndicatorWidth)));
+    size.setHeight(qMax(size.height(), int(Render::CheckBox_Size)));
     size.setHeight(qMax(size.height(), iconWidth));
     return expandSize(
-        size, Metrics::MenuItem_MarginWidth,
-        (Metrics::MenuItem_MarginHeight + StyleConfigData::menuItemHeight()));
+        size, Render::MenuItem_MarginWidth,
+        (Render::MenuItem_MarginHeight + StyleConfigData::menuItemHeight()));
   }
 
   case QStyleOptionMenuItem::Separator: {
@@ -831,16 +837,16 @@ QSize Style::menuItemSizeFromContents(const QStyleOption *option,
       }
 
       if (menuItemOption->menuHasCheckableItems) {
-        h = qMax(h, int(Metrics::CheckBox_Size));
+        h = qMax(h, int(Render::CheckBox_Size));
       }
 
-      h = qMax(h, int(Metrics::MenuButton_IndicatorWidth));
-      h += (Metrics::MenuItem_MarginHeight +
+      h = qMax(h, int(Render::MenuButton_IndicatorWidth));
+      h += (Render::MenuItem_MarginHeight +
             StyleConfigData::menuItemHeight()); // extra top padding
     }
 
-    return {w + Metrics::MenuItem_MarginWidth * 2,
-            h + (Metrics::MenuItem_MarginHeight +
+    return {w + Render::MenuItem_MarginWidth * 2,
+            h + (Render::MenuItem_MarginHeight +
                  StyleConfigData::menuItemHeight()) *
                     2};
   }
@@ -870,14 +876,14 @@ QSize Style::progressBarSizeFromContents(const QStyleOption *option,
     // check text visibility
     const bool textVisible(progressBarOption->textVisible);
 
-    size.setWidth(qMax(size.width(), int(Metrics::ProgressBar_Thickness)));
-    size.setHeight(qMax(size.height(), int(Metrics::ProgressBar_Thickness)));
+    size.setWidth(qMax(size.width(), int(Render::ProgressBar_Thickness)));
+    size.setHeight(qMax(size.height(), int(Render::ProgressBar_Thickness)));
     if (textVisible)
       size.setHeight(qMax(size.height(), option->fontMetrics.height()));
 
   } else {
-    size.setHeight(qMax(size.height(), int(Metrics::ProgressBar_Thickness)));
-    size.setWidth(qMax(size.width(), int(Metrics::ProgressBar_Thickness)));
+    size.setHeight(qMax(size.height(), int(Render::ProgressBar_Thickness)));
+    size.setWidth(qMax(size.width(), int(Render::ProgressBar_Thickness)));
   }
 
   return size;
@@ -890,13 +896,13 @@ QSize Style::tabWidgetSizeFromContents(const QStyleOption *option,
   const auto tabOption =
       qstyleoption_cast<const QStyleOptionTabWidgetFrame *>(option);
   if (!tabOption)
-    return expandSize(contentsSize, Metrics::TabWidget_MarginWidth);
+    return expandSize(contentsSize, Render::TabWidget_MarginWidth);
 
   // try find direct children of type QTabBar and QStackedWidget
   // this is needed in order to add TabWidget margins only if they are necessary
   // around tabWidget content, not the tabbar
   if (!widget)
-    return expandSize(contentsSize, Metrics::TabWidget_MarginWidth);
+    return expandSize(contentsSize, Render::TabWidget_MarginWidth);
   QTabBar *tabBar = nullptr;
   QStackedWidget *stack = nullptr;
   auto children(widget->children());
@@ -910,7 +916,7 @@ QSize Style::tabWidgetSizeFromContents(const QStyleOption *option,
   }
 
   if (!(tabBar && stack))
-    return expandSize(contentsSize, Metrics::TabWidget_MarginWidth);
+    return expandSize(contentsSize, Render::TabWidget_MarginWidth);
 
   // tab orientation
   const bool verticalTabs(tabOption && isVerticalTab(tabOption->shape));
@@ -918,23 +924,23 @@ QSize Style::tabWidgetSizeFromContents(const QStyleOption *option,
     const int tabBarHeight = tabBar->minimumSizeHint().height();
     const int stackHeight = stack->minimumSizeHint().height();
     if (contentsSize.height() == tabBarHeight &&
-        tabBarHeight + 2 * (Metrics::Frame_FrameWidth - 1) >=
-            stackHeight + 2 * Metrics::TabWidget_MarginWidth)
-      return QSize(contentsSize.width() + 2 * Metrics::TabWidget_MarginWidth,
-                   contentsSize.height() + 2 * (Metrics::Frame_FrameWidth - 1));
+        tabBarHeight + 2 * (Render::Frame_FrameWidth - 1) >=
+            stackHeight + 2 * Render::TabWidget_MarginWidth)
+      return QSize(contentsSize.width() + 2 * Render::TabWidget_MarginWidth,
+                   contentsSize.height() + 2 * (Render::Frame_FrameWidth - 1));
     else
-      return expandSize(contentsSize, Metrics::TabWidget_MarginWidth);
+      return expandSize(contentsSize, Render::TabWidget_MarginWidth);
 
   } else {
     const int tabBarWidth = tabBar->minimumSizeHint().width();
     const int stackWidth = stack->minimumSizeHint().width();
     if (contentsSize.width() == tabBarWidth &&
-        tabBarWidth + 2 * (Metrics::Frame_FrameWidth - 1) >=
-            stackWidth + 2 * Metrics::TabWidget_MarginWidth)
-      return QSize(contentsSize.width() + 2 * (Metrics::Frame_FrameWidth - 1),
-                   contentsSize.height() + 2 * Metrics::TabWidget_MarginWidth);
+        tabBarWidth + 2 * (Render::Frame_FrameWidth - 1) >=
+            stackWidth + 2 * Render::TabWidget_MarginWidth)
+      return QSize(contentsSize.width() + 2 * (Render::Frame_FrameWidth - 1),
+                   contentsSize.height() + 2 * Render::TabWidget_MarginWidth);
     else
-      return expandSize(contentsSize, Metrics::TabWidget_MarginWidth);
+      return expandSize(contentsSize, Render::TabWidget_MarginWidth);
   }
 }
 
@@ -952,11 +958,11 @@ QSize Style::tabBarTabSizeFromContents(const QStyleOption *option,
   if (hasIcon && !(hasText || hasLeftButton || hasRightButton))
     widthIncrement -= 4;
   if (hasText && hasIcon)
-    widthIncrement += Metrics::TabBar_TabItemSpacing;
+    widthIncrement += Render::TabBar_TabItemSpacing;
   if (hasLeftButton && (hasText || hasIcon))
-    widthIncrement += Metrics::TabBar_TabItemSpacing;
+    widthIncrement += Render::TabBar_TabItemSpacing;
   if (hasRightButton && (hasText || hasIcon || hasLeftButton))
-    widthIncrement += Metrics::TabBar_TabItemSpacing;
+    widthIncrement += Render::TabBar_TabItemSpacing;
   const bool documentMode(tabOption && tabOption->documentMode);
 
   int extra;
@@ -974,20 +980,20 @@ QSize Style::tabBarTabSizeFromContents(const QStyleOption *option,
     size.rheight() += widthIncrement;
     if (hasIcon && !hasText)
       size = size.expandedTo(QSize(
-          Metrics::TabBar_TabMinHeight + StyleConfigData::tabsHeight(), 0));
+          Render::TabBar_TabMinHeight + StyleConfigData::tabsHeight(), 0));
     else
       size = size.expandedTo(
-          QSize(Metrics::TabBar_TabMinHeight + StyleConfigData::tabsHeight(),
-                Metrics::TabBar_TabMinWidth));
+          QSize(Render::TabBar_TabMinHeight + StyleConfigData::tabsHeight(),
+                Render::TabBar_TabMinWidth));
 
   } else {
     size.rwidth() += widthIncrement;
     if (hasIcon && !hasText)
-      size = size.expandedTo(QSize(0, Metrics::TabBar_TabMinHeight +
+      size = size.expandedTo(QSize(0, Render::TabBar_TabMinHeight +
                                           StyleConfigData::tabsHeight()));
     else
-      size = size.expandedTo(QSize(Metrics::TabBar_TabMinWidth,
-                                   Metrics::TabBar_TabMinHeight +
+      size = size.expandedTo(QSize(Render::TabBar_TabMinWidth,
+                                   Render::TabBar_TabMinHeight +
                                        StyleConfigData::tabsHeight() + extra));
   }
 
@@ -1020,7 +1026,7 @@ QSize Style::headerSectionSizeFromContents(const QStyleOption *option,
   if (hasIcon) {
     contentsWidth += iconSize.width();
     if (hasText)
-      contentsWidth += Metrics::Header_ItemSpacing;
+      contentsWidth += Render::Header_ItemSpacing;
   }
 
   // contents height
@@ -1030,14 +1036,14 @@ QSize Style::headerSectionSizeFromContents(const QStyleOption *option,
 
   if (horizontal && headerOption->sortIndicator != QStyleOptionHeader::None) {
     // also add space for sort indicator
-    contentsWidth += Metrics::Header_ArrowSize + Metrics::Header_ItemSpacing;
-    contentsHeight = qMax(contentsHeight, int(Metrics::Header_ArrowSize));
+    contentsWidth += Render::Header_ArrowSize + Render::Header_ItemSpacing;
+    contentsHeight = qMax(contentsHeight, int(Render::Header_ArrowSize));
   }
 
   // update contents size, add margins and return
   const QSize size(
       contentsSize.expandedTo(QSize(contentsWidth, contentsHeight)));
-  return expandSize(size, Metrics::Header_MarginWidth);
+  return expandSize(size, Render::Header_MarginWidth);
 }
 
 QSize Style::itemViewItemSizeFromContents(const QStyleOption *option,
@@ -1052,14 +1058,14 @@ QSize Style::itemViewItemSizeFromContents(const QStyleOption *option,
     const QMargins margins = _helper->itemViewItemMargins(
         qstyleoption_cast<const QStyleOptionViewItem *>(option));
     return size + QSize(margins.left() + margins.right() +
-                            Metrics::ItemView_ItemPaddingWidth * 2,
+                            Render::ItemView_ItemPaddingWidth * 2,
                         margins.top() + margins.bottom() +
-                            Metrics::ItemView_ItemPaddingHeight * 2);
+                            Render::ItemView_ItemPaddingHeight * 2);
   }
   return expandSize(
       size,
-      Metrics::ItemView_ItemMarginLeft + Metrics::ItemView_ItemMarginRight,
-      Metrics::ItemView_ItemMarginBottom + Metrics::ItemView_ItemMarginTop);
+      Render::ItemView_ItemMarginLeft + Render::ItemView_ItemMarginRight,
+      Render::ItemView_ItemMarginBottom + Render::ItemView_ItemMarginTop);
 }
 
 } // namespace BlossomUI

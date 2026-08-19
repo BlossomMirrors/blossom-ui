@@ -18,12 +18,13 @@
  *************************************************************************/
 
 #include "blossomuiwidgetstatedata.h"
-#include "blossomuistyleconfigdata.h"
+#include "blossomui.h"
+#include "blossomuianimations.h"
 
 namespace BlossomUI
 {
 
-//______________________________________________
+//_
 bool WidgetStateData::updateState(bool value, AnimationParameters parameters)
 {
     if (!_initialized) {
@@ -45,7 +46,7 @@ bool WidgetStateData::updateState(bool value, AnimationParameters parameters)
                                                                                    : QEasingCurve::InQuint);
 
         if ((parameters & AnimationLongDuration))
-            animation().data()->setDuration(StyleConfigData::animationsDuration() * 3); // FIXME find a better way to set the duration
+            animation().data()->setDuration(Animation_BaseDuration * 3); // FIXME find a better way to set the duration
 
         if (!animation().data()->isRunning())
             animation().data()->start();

@@ -3,7 +3,10 @@ include_directories(
     style
     core/animations
     core/debug
+    core/render
+    core/render/controls
     core/support
+    style/widgets
     ${CMAKE_SOURCE_DIR}/kde/libblossomuicommon
     ${CMAKE_BINARY_DIR}/libblossomuicommon
 )
@@ -39,6 +42,33 @@ set(blossomui_PART_SRCS
     core/animations/blossomuiwidgetstateengine.cpp
     core/animations/blossomuiwidgetstatedata.cpp
     core/debug/blossomuiwidgetexplorer.cpp
+    core/render/traits.cpp
+    core/render/placement.cpp
+    core/render/radiusresolver.cpp
+    core/render/motionresolver.cpp
+    core/render/fillrenderer.cpp
+    core/render/borderrenderer.cpp
+    core/render/ripplerenderer.cpp
+    core/render/contentrenderer.cpp
+    core/render/widgetrenderer.cpp
+    core/render/compositerenderer.cpp
+    core/render/stateextractor.cpp
+    core/render/controls/buttoncontrol.cpp
+    core/render/controls/checkboxcontrol.cpp
+    core/render/controls/comboboxcontrol.cpp
+    core/render/controls/groupboxcontrol.cpp
+    core/render/controls/headercontrol.cpp
+    core/render/controls/itemviewcontrol.cpp
+    core/render/controls/menucontrol.cpp
+    core/render/controls/misccontrol.cpp
+    core/render/controls/progressbarcontrol.cpp
+    core/render/controls/scrollbarcontrol.cpp
+    core/render/controls/slidercontrol.cpp
+    core/render/controls/spinboxcontrol.cpp
+    core/render/controls/tabscontrol.cpp
+    core/render/controls/titlebarcontrol.cpp
+    core/render/controls/toolbarcontrol.cpp
+    core/render/controls/tooltipcontrol.cpp
     core/support/blossomuiaddeventfilter.cpp
     core/support/blossomuiblurhelper.cpp
     core/support/blossomuiframeshadow.cpp
@@ -51,8 +81,8 @@ set(blossomui_PART_SRCS
     core/support/blossomuitileset.cpp
     core/support/blossomuitoolsareamanager.cpp
     core/support/blossomuiwindowmanager.cpp
-    blossomuihelper.cpp
-    style/widgets/switch.h
+    core/render/controls/switchwidget.h
+    blossomuihelper.h
     style/blossomuistyle.cpp
     style/eventfilter.cpp
     style/dolphin/dockwidget.cpp
@@ -61,23 +91,28 @@ set(blossomui_PART_SRCS
     style/metrics.cpp
     style/geometry.cpp
     style/utils.cpp
+    style/helpers/color.cpp
+    style/helpers/compositing.cpp
+    style/helpers/geometry.cpp
+    style/helpers/icon.cpp
+    style/helpers/lifecycle.cpp
+    style/helpers/shadow.cpp
+    style/helpers/toolsarea.cpp
     style/primitives/frames.cpp
     style/primitives/indicators.cpp
-    style/primitives/panels.cpp
     style/widgets/button.cpp
     style/widgets/checkbox.cpp
-    style/widgets/combobox.cpp
-    style/widgets/groupbox.cpp
+    style/widgets/frame.cpp
     style/widgets/header.cpp
-    style/widgets/menu.cpp
-    style/widgets/misc.cpp
-    style/widgets/progressbar.cpp
-    style/widgets/scrollbar.cpp
+    style/widgets/radiobutton.cpp
+    style/widgets/switch.cpp
+    style/widgets/tabbar.cpp
     style/widgets/slider.cpp
+    style/widgets/progressbar.cpp
     style/widgets/spinbox.cpp
-    style/widgets/tabs.cpp
-    style/widgets/titlebar.cpp
-    style/widgets/toolbar.cpp
+    style/widgets/scrollbar.cpp
+    style/widgets/itemview.cpp
+    style/widgets/card.cpp
 )
 
 kconfig_add_kcfg_files(blossomui_PART_SRCS ../kdecoration/config/blossomuisettings.kcfgc)

@@ -1,19 +1,14 @@
-//////////////////////////////////////////////////////////////////////////////
-// blossomuiexceptionlistwidget.cpp
+////////////////////////////////////////////////////////////////////////////// blossomuiexceptionlistwidget.cpp
 // -------------------
-//
 // Copyright (c) 2009 Hugo Pereira Da Costa <hugo.pereira@free.fr>
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,8 +16,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////
 #include "blossomuiexceptionlistwidget.h"
 #include "blossomuiexceptiondialog.h"
 
@@ -32,11 +26,11 @@
 #include <QMessageBox>
 #include <QPointer>
 
-//__________________________________________________________
+//_
 namespace BlossomUI
 {
 
-//__________________________________________________________
+//_
 ExceptionListWidget::ExceptionListWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -71,7 +65,7 @@ ExceptionListWidget::ExceptionListWidget(QWidget *parent)
     resizeColumns();
 }
 
-//__________________________________________________________
+//_
 void ExceptionListWidget::setExceptions(const InternalSettingsList &exceptions)
 {
     model().set(exceptions);
@@ -79,14 +73,14 @@ void ExceptionListWidget::setExceptions(const InternalSettingsList &exceptions)
     setChanged(false);
 }
 
-//__________________________________________________________
+//_
 InternalSettingsList ExceptionListWidget::exceptions()
 {
     return model().get();
     setChanged(false);
 }
 
-//__________________________________________________________
+//_
 void ExceptionListWidget::updateButtons()
 {
     bool hasSelection(!m_ui.exceptionListView->selectionModel()->selectedRows().empty());
@@ -97,7 +91,7 @@ void ExceptionListWidget::updateButtons()
     m_ui.moveDownButton->setEnabled(hasSelection && !m_ui.exceptionListView->selectionModel()->isRowSelected(model().rowCount() - 1, QModelIndex()));
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::add()
 {
     QPointer<ExceptionDialog> dialog = new ExceptionDialog(this);
@@ -135,7 +129,7 @@ void ExceptionListWidget::add()
     resizeColumns();
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::edit()
 {
     // retrieve selection
@@ -171,7 +165,7 @@ void ExceptionListWidget::edit()
     setChanged(true);
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::remove()
 {
     // confirmation dialog
@@ -194,7 +188,7 @@ void ExceptionListWidget::remove()
     setChanged(true);
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::toggle(const QModelIndex &index)
 {
     if (!model().contains(index))
@@ -208,7 +202,7 @@ void ExceptionListWidget::toggle(const QModelIndex &index)
     setChanged(true);
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::up()
 {
     InternalSettingsList selection(model().get(m_ui.exceptionListView->selectionModel()->selectedRows()));
@@ -248,7 +242,7 @@ void ExceptionListWidget::up()
     setChanged(true);
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::down()
 {
     InternalSettingsList selection(model().get(m_ui.exceptionListView->selectionModel()->selectedRows()));
@@ -293,7 +287,7 @@ void ExceptionListWidget::down()
     setChanged(true);
 }
 
-//_______________________________________________________
+//_
 void ExceptionListWidget::resizeColumns() const
 {
     m_ui.exceptionListView->resizeColumnToContents(ExceptionModel::ColumnEnabled);
@@ -301,7 +295,7 @@ void ExceptionListWidget::resizeColumns() const
     m_ui.exceptionListView->resizeColumnToContents(ExceptionModel::ColumnRegExp);
 }
 
-//_______________________________________________________
+//_
 bool ExceptionListWidget::checkException(InternalSettingsPtr exception)
 {
     while (exception->exceptionPattern().isEmpty() || !QRegularExpression(exception->exceptionPattern()).isValid()) {

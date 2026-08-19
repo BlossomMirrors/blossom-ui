@@ -24,7 +24,6 @@
 namespace BlossomUI
 {
 
-//____________________________________________________________
 bool SpinBoxEngine::registerWidget(QWidget *widget)
 {
     if (!widget)

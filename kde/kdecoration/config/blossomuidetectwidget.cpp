@@ -1,23 +1,18 @@
 
-//////////////////////////////////////////////////////////////////////////////
-// blossomuidetectwidget.cpp
+////////////////////////////////////////////////////////////////////////////// blossomuidetectwidget.cpp
 // Note: this class is a stripped down version of
 // /kdebase/workspace/kwin/kcmkwin/kwinrules/detectwidget.cpp
 // Copyright (c) 2004 Lubos Lunak <l.lunak@kde.org>
 // -------------------
-//
 // Copyright (c) 2009 Hugo Pereira Da Costa <hugo.pereira@free.fr>
-//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 // sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,8 +20,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////
 #include "blossomuidetectwidget.h"
 
 #include "blossomui.h"
@@ -44,7 +38,6 @@
 namespace BlossomUI
 {
 
-//_________________________________________________________
 DetectDialog::DetectDialog(QWidget *parent)
     : QDialog(parent)
 {
@@ -66,7 +59,6 @@ DetectDialog::DetectDialog(QWidget *parent)
 #endif
 }
 
-//_________________________________________________________
 void DetectDialog::detect(WId window)
 {
     if (window == 0)
@@ -75,7 +67,6 @@ void DetectDialog::detect(WId window)
         readWindow(window);
 }
 
-//_________________________________________________________
 void DetectDialog::readWindow(WId window)
 {
     if (window == 0) {
@@ -97,7 +88,6 @@ void DetectDialog::readWindow(WId window)
     emit detectionDone(exec() == QDialog::Accepted);
 }
 
-//_________________________________________________________
 void DetectDialog::selectWindow()
 {
     // use a dialog, so that all user input is blocked
@@ -114,7 +104,6 @@ void DetectDialog::selectWindow()
     m_grabber->installEventFilter(this);
 }
 
-//_________________________________________________________
 bool DetectDialog::eventFilter(QObject *o, QEvent *e)
 {
     // check object and event type
@@ -140,7 +129,6 @@ bool DetectDialog::eventFilter(QObject *o, QEvent *e)
     return true;
 }
 
-//_________________________________________________________
 WId DetectDialog::findWindow()
 {
 #if BLOSSOMUI_HAVE_X11

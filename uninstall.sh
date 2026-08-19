@@ -66,9 +66,15 @@ rm -rf "/usr/share/icons/${_PROJECT}"
 # GTK themes
 rm -rf /usr/share/themes/${_PROJECT}
 
-# GTK4 user config (copied there by install.sh for flatpak/libadwaita apps)
+# Zed theme
+rm -rf /usr/share/blossomui/zed
+
+# User config copied there by install.sh
 REAL_HOME=$(getent passwd "${SUDO_USER:-$USER}" | cut -d: -f6)
 if [ -n "$REAL_HOME" ] && [ -d "$REAL_HOME/.config/gtk-4.0" ]; then
     rm -f "$REAL_HOME/.config/gtk-4.0/gtk.css"
     rm -rf "$REAL_HOME/.config/gtk-4.0/blossomui-gtk-assets"
+fi
+if [ -n "$REAL_HOME" ]; then
+    rm -f "$REAL_HOME/.config/zed/themes/blossomui.json"
 fi
