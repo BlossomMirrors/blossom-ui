@@ -321,6 +321,8 @@ tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.ta
     .
 
 
+export FLATPAK_GL_DRIVERS=''
+
 echo "Building Qt6 Flatpak extension with all theme components (KDE Platform 6.9)..."
 $builder "$SRC_DIR/flatpak/build/qt6" --repo="$REPO" --force-clean --ccache "$SRC_DIR/flatpak/org.kde.KStyle.BlossomUI-qt6.json"
 
