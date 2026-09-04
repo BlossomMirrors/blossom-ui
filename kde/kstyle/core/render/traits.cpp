@@ -53,9 +53,9 @@ Border lerp(const Border &a, const Border &b, qreal t) {
 
 Shadow lerp(const Shadow &a, const Shadow &b, qreal t) {
   Shadow result;
-  result.offset = a.offset + (b.offset - a.offset) * t;
-  result.blurRadius = lerp(a.blurRadius, b.blurRadius, t);
-  result.spread = lerp(a.spread, b.spread, t);
+  result.xOffset = qRound(lerp(qreal(a.xOffset), qreal(b.xOffset), t));
+  result.yOffset = qRound(lerp(qreal(a.yOffset), qreal(b.yOffset), t));
+  result.blur = qRound(lerp(qreal(a.blur), qreal(b.blur), t));
   result.color = lerp(a.color, b.color, t);
   return result;
 }

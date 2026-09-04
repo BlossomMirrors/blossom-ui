@@ -3,6 +3,7 @@
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
 #include "button.h"
+#include "card.h"
 #include "checkbox.h"
 #include "frame.h"
 #include "groupboxcontrol.h"
@@ -818,8 +819,10 @@ QRect Style::groupBoxSubControlRect(const QStyleOptionComplex *option,
     if (!groupBoxOption)
       break;
 
-    // take out frame width
-    rect = insideMargin(rect, Render::Frame_FrameWidth);
+    // card padding, not just the frame width: QGroupBox derives its
+    // contentsMargins from here, so this both insets the content and grows
+    // the size hint to match
+    rect = insideMargin(rect, Render::Card_Padding);
 
     // get state
     const bool checkable(groupBoxOption->subControls &

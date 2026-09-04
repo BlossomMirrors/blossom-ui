@@ -46,6 +46,20 @@ ForegroundNormal=@NEUTRAL_25_RGB@
 ForegroundPositive=@TERTIARY_500_RGB@
 ForegroundVisited=@PRIMARY_50_RGB@
 
+[Colors:Header]
+BackgroundAlternate=@NEUTRAL_900_RGB@
+BackgroundNormal=@NEUTRAL_925_RGB@
+DecorationFocus=@PRIMARY_300_RGB@
+DecorationHover=@PRIMARY_300_RGB@
+ForegroundActive=@PRIMARY_100_RGB@
+ForegroundInactive=@NEUTRAL_100_RGB@
+ForegroundLink=@PRIMARY_300_RGB@
+ForegroundNegative=@RED_300_RGB@
+ForegroundNeutral=@QUATERNARY_500_RGB@
+ForegroundNormal=@NEUTRAL_25_RGB@
+ForegroundPositive=@TERTIARY_500_RGB@
+ForegroundVisited=@PRIMARY_50_RGB@
+
 [Colors:Selection]
 BackgroundAlternate=@PRIMARY_300_RGB@
 BackgroundNormal=@PRIMARY_300_RGB@
@@ -109,6 +123,7 @@ shadeSortColumn=true
 
 [KDE]
 contrast=0
+frameContrast=0.1
 
 [WM]
 activeBackground=@NEUTRAL_900_RGB@

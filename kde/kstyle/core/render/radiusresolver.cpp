@@ -26,7 +26,7 @@ qreal RadiusResolver::resolve(const Geometry &geometry) const {
     radius = _helper->buttonFrameRadius(PenWidth::NoPen);
     break;
   }
-  return radius - geometry.inset;
+  return radius + geometry.radiusAdjust - geometry.inset;
 }
 
 } // namespace Render

@@ -54,14 +54,16 @@ struct Progress {
   Fill unfilled;
 };
 
-//* in-widget drop shadow, not the native window shadow (ShadowHelper)
+//* in-widget drop shadow, not the native window shadow (ShadowHelper).
+//Fields match Helper::renderBoxShadow one to one so no conversion happens at
+//the call site.
 struct Shadow {
-  QPointF offset;
-  qreal blurRadius = 0.0;
-  qreal spread = 0.0;
+  int xOffset = 0;
+  int yOffset = 0;
+  int blur = 0;
   QColor color;
 
-  bool isValid() const { return color.isValid() && blurRadius > 0.0; }
+  bool isValid() const { return color.isValid() && blur > 0; }
 };
 
 //* which StyleConfigData corner radius a frame uses
@@ -80,6 +82,10 @@ struct Geometry {
   }
   Geometry &fixedRadius(qreal v) {
     radiusOverride = v;
+    return *this;
+  }
+  Geometry &radiusBias(qreal v) {
+    radiusAdjust = v;
     return *this;
   }
   Geometry &minSize(qreal w, qreal h) {
@@ -119,6 +125,7 @@ struct Geometry {
   qreal inset = 0.0;
   RadiusRole radiusRole = RadiusRole::Button;
   qreal radiusOverride = -1.0;
+  qreal radiusAdjust = 0.0;
   QSizeF minimumSize;
   QSizeF maximumSize;
   QMarginsF padding;

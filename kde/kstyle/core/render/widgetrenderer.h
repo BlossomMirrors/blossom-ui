@@ -21,7 +21,7 @@ namespace Render {
 class WidgetRenderer {
 public:
   explicit WidgetRenderer(const Helper *helper)
-      : _radius(helper), _ripple(helper) {}
+      : _helper(helper), _radius(helper), _ripple(helper) {}
 
   void render(QPainter *painter, const QRectF &rect, const WidgetSpec &spec,
               const WidgetInteractionState &state) const;
@@ -33,6 +33,7 @@ public:
                     const WidgetInteractionState &state) const;
 
 private:
+  const Helper *_helper;
   RadiusResolver _radius;
   RippleRenderer _ripple;
 };

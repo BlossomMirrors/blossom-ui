@@ -38,6 +38,13 @@ else
     return
 fi
 
+KREADCONFIG=""
+if command -v kreadconfig6 >/dev/null 2>&1; then
+    KREADCONFIG="kreadconfig6"
+elif command -v kreadconfig5 >/dev/null 2>&1; then
+    KREADCONFIG="kreadconfig5"
+fi
+
 echo "applying blossomui $MODE theme..."
 
 # drop stale per-user color-scheme and desktoptheme copies that shadow the
@@ -96,6 +103,15 @@ if [ -n "$_scheme_path" ] && command -v sha1sum >/dev/null 2>&1; then
     _hash=$(sha1sum "$_scheme_path" | awk '{print $1}')
     $KWRITECONFIG --file ~/.config/kdeglobals --group General --key ColorScheme --type string "$COLOR_SCHEME"
     $KWRITECONFIG --file ~/.config/kdeglobals --group General --key ColorSchemeHash --type string "$_hash"
+fi
+
+# frameContrast is written by the same plasma-apply-colorscheme call that gets
+# skipped when the scheme name is unchanged, so copy it across ourselves too
+if [ -n "$_scheme_path" ] && [ -n "$KREADCONFIG" ]; then
+    _frame_contrast=$($KREADCONFIG --file "$_scheme_path" --group KDE --key frameContrast 2>/dev/null)
+    if [ -n "$_frame_contrast" ]; then
+        $KWRITECONFIG --file ~/.config/kdeglobals --group KDE --key frameContrast --type string "$_frame_contrast"
+    fi
 fi
 
 

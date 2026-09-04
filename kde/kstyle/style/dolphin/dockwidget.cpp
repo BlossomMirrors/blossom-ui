@@ -90,7 +90,7 @@ bool Style::eventFilterDockWidget(QDockWidget *dockWidget, QEvent *event) {
             int shadowSize = 5;
             shadowRect.adjust(1, -shadowSize, 0, 0);
             _helper->renderBoxShadow(&painter, shadowRect, 0, 0, shadowSize,
-                                     QColor(0, 0, 0, 120), 2, true);
+                                     QColor(0, 0, 0, 45), 2, true);
           }
         }
       }

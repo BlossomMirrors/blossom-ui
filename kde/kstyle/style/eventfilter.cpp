@@ -3,6 +3,7 @@
 #include "blossomuistyle.h"
 #include "blossomuitoolsareamanager.h"
 #include "button.h"
+#include "card.h"
 #include "frame.h"
 #include "switchwidget.h"
 #include "toolbarcontrol.h"
@@ -113,7 +114,7 @@ bool Style::eventFilter(QObject *object, QEvent *event) {
         return false;
       }
       if (event->type() == QEvent::Paint) {
-        const int radius = 8;
+        const int radius = Render::cardRadius();
         QPainter painter(widget);
         painter.setRenderHint(QPainter::Antialiasing);
 
@@ -126,12 +127,7 @@ bool Style::eventFilter(QObject *object, QEvent *event) {
         full.addRect(widget->rect());
         painter.fillPath(full.subtracted(cardShape), win);
 
-        const bool isDark = QApplication::palette()
-                                .color(QPalette::Active, QPalette::Window)
-                                .lightness() < 128;
-        const QColor borderColor =
-            isDark ? QColor(255, 255, 255, 35) : QColor(0, 0, 0, 22);
-        painter.setPen(QPen(borderColor, 1));
+        painter.setPen(QPen(Render::cardBorder(widget->palette()).color, 1));
         painter.setBrush(Qt::NoBrush);
         painter.drawRoundedRect(
             QRectF(widget->rect()).adjusted(0.5, 0.5, -0.5, -0.5), radius - 0.5,
