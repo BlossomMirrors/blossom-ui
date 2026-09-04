@@ -48,7 +48,7 @@ ForegroundVisited=@PRIMARY_50_RGB@
 
 [Colors:Header]
 BackgroundAlternate=@NEUTRAL_900_RGB@
-BackgroundNormal=@NEUTRAL_925_RGB@
+BackgroundNormal=@NEUTRAL_900_RGB@
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_100_RGB@
