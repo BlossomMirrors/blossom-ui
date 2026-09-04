@@ -3,7 +3,7 @@
 #include "blossomuianimations.h"
 #include "blossomuimnemonics.h"
 #include "blossomuistyle.h"
-#include "frame.h"
+#include "card.h"
 #include "widgetrenderer.h"
 
 #include <KColorUtils>
@@ -76,16 +76,12 @@ void Helper::renderGroupBox(QPainter *painter, const QRect &rect,
                             const QColor &color, const bool mouseOver) const {
   Q_UNUSED(mouseOver)
 
-  Render::WidgetSpec spec = Render::PlainFrameSpec;
-  spec.geom.fixedRadius(frameRadius(PenWidth::NoPen, -1) + spec.geom.inset);
-  spec.fill(Render::StateStyle<Render::Fill>(Render::Fill(color)));
-  spec.border(Render::plainFrameBorder(QApplication::palette()));
-
   Render::WidgetInteractionState wstate;
   wstate.enabled = true;
   wstate.palette = QApplication::palette();
 
-  Render::WidgetRenderer(this).render(painter, rect, spec, wstate);
+  Render::WidgetRenderer(this).render(
+      painter, rect, Render::cardFrame(wstate.palette, color), wstate);
 }
 
 //* checkable group boxes: enable hover

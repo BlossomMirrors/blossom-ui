@@ -30,7 +30,7 @@ void Style::polishDolphinScrollArea(QAbstractScrollArea *scrollArea) {
       if (auto viewport = scrollArea->viewport())
         viewport->setContentsMargins(0, 0, 0, 0);
 
-      const int radius = 8;
+      const int radius = Render::cardRadius();
       scrollArea->setProperty("_blossomui_viewport_radius", radius);
       scrollArea->setProperty("_blossomui_card", true);
       scrollArea->installEventFilter(this);

@@ -491,8 +491,8 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
         // no shadow for translucent tab
         if (!(color.alphaF() < 1))
           _style->_helper->renderBoxShadow(painter, pillRect, 0, 1, 2,
-                                   QColor(0, 0, 0, 80), qRound(tabRadius),
-                                   true);
+                                   _style->_helper->shadowColor(palette, 80, 28),
+                                   qRound(tabRadius), true);
         _style->_helper->renderTabBarTab(painter, pillRect, color, AllCorners,
                                  tabRadius);
         if (color.alphaF() >= 1)
@@ -502,13 +502,13 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
         _style->_helper->renderTabBarTab(painter, backgroundRect, backgroundColor,
                                  backgroundCorners);
         _style->_helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize,
-                                 QColor(0, 0, 0, 220),
+                                 _style->_helper->shadowColor(palette, 220, 75),
                                  StyleConfigData::cornerRadius(), true);
 
         if (color.alphaF() >= 1) {
           _style->_helper->renderBoxShadow(painter, pillRect, 0, 1, 2,
-                                   QColor(0, 0, 0, 80), qRound(tabRadius),
-                                   true);
+                                   _style->_helper->shadowColor(palette, 80, 28),
+                                   qRound(tabRadius), true);
         }
         _style->_helper->renderTabBarTab(
             painter, pillRect,
@@ -560,7 +560,8 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
         backgroundRect.adjust(4, 4, -4, -4);
       if (color.alphaF() >= 1) {
         _style->_helper->renderBoxShadow(painter, backgroundRect, 0, 1, 2,
-                                 QColor(0, 0, 0, 60), qRound(tabRadius), true);
+                                 _style->_helper->shadowColor(palette, 60, 20),
+                                 qRound(tabRadius), true);
       }
       painter->setBrush(color);
       painter->drawRoundedRect(backgroundRect, tabRadius, tabRadius);
@@ -868,7 +869,8 @@ void Helper::renderTabWidgetFrame(QPainter *painter, const QRect &rect,
   qreal radius(frameRadius(PenWidth::NoPen, -1));
 
   // shadow
-  renderBoxShadow(painter, frameRect, 0, 1, 5, QColor(0, 0, 0, 115), radius,
+  renderBoxShadow(painter, frameRect, 0, 1, 5,
+                  shadowColor(QApplication::palette(), 115, 40), radius,
                   windowActive);
 
   painter->setPen(Qt::NoPen);
