@@ -41,6 +41,10 @@ struct WidgetSpec {
     shadowStyle = s;
     return *this;
   }
+  WidgetSpec &shadow(const Shadow &s) {
+    shadowStyle = StateStyle<Shadow>(s);
+    return *this;
+  }
   WidgetSpec &motion(const Motion &m) {
     motionStyle = m;
     return *this;

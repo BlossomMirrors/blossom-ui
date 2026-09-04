@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "widgetrenderer.h"
 
+#include "blossomuihelper.h"
 #include "borderrenderer.h"
 #include "fillrenderer.h"
 #include "motionresolver.h"
@@ -33,6 +34,18 @@ void WidgetRenderer::render(QPainter *painter, const QRectF &rect,
   const QRectF frameRect = contentRect(rect, spec, state);
   const qreal maxRadius = qMin(frameRect.height(), frameRect.width()) / 2.0;
   const qreal radius = qMin(_radius.resolve(spec.geom), maxRadius);
+
+  // drawn before the fill and border so those cover any corner bleed;
+  // renderBoxShadow itself no-ops unless StyleConfigData::widgetDrawShadow()
+  if (spec.shadowStyle) {
+    const Shadow shadow = spec.shadowStyle->resolve(
+        state.enabled, state.pressed, state.hovered, state.focused);
+    if (shadow.isValid()) {
+      _helper->renderBoxShadow(painter, frameRect, shadow.xOffset,
+                               shadow.yOffset, shadow.blur, shadow.color,
+                               qRound(radius), true);
+    }
+  }
 
   const Fill fill = spec.fillStyle.resolve(state.enabled, state.pressed,
                                            state.hovered, state.focused);

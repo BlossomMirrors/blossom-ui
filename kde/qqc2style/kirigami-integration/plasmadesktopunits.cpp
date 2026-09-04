@@ -18,6 +18,7 @@
 namespace
 {
 constexpr int defaultLongDuration = 200;
+constexpr qreal defaultCornerRadius = 12;
 }
 
 PlasmaDesktopUnits::PlasmaDesktopUnits(QObject *parent)
@@ -32,6 +33,10 @@ PlasmaDesktopUnits::PlasmaDesktopUnits(QObject *parent)
         updateAnimationSpeed();
     });
     updateAnimationSpeed();
+
+    // constant with no config source, and Units is constructed once per QML
+    // engine before any binding evaluates, so no notifier is needed
+    setcornerRadius(defaultCornerRadius);
 }
 
 // Copy from plasma-framework/src/declarativeimports/core/units.cpp, since we don't want to depend on plasma-framework here

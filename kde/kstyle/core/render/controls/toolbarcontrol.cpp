@@ -135,7 +135,7 @@ bool Render::ToolBarControl::drawToolBarBackgroundControl(const QStyleOption *op
               QRect(copy.bottomLeft() - QPoint(shadowSize, -1),
                     QSize(copy.width() + shadowSize * 2, shadowSize));
           _style->_helper->renderBoxShadow(painter, shadowRect, 0, 0, shadowSize,
-                                   QColor(0, 0, 0, 160), 2, true);
+                                   QColor(0, 0, 0, 55), 2, true);
         }
 
         else {

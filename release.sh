@@ -224,6 +224,10 @@ fi
 %{_libdir}/qt6/plugins/kf6/kirigami/platform/org.blossomos.style.so
 %{_sysconfdir}/xdg/plasma-workspace/env/blossom-qqc2-style.sh
 
+# Kirigami control overrides. We own only our own style subdirectory, the same
+# way plasma-union owns styles/org.kde.union/; styles/ itself stays kf6-kirigami's.
+%{_libdir}/qt6/qml/org/kde/kirigami/styles/org.blossomos.style/
+
 %{_sysconfdir}/plasmalogin.conf.d/10-blossomui.conf
 %{_datadir}/blossomui/plasmalogin/
 

@@ -333,6 +333,13 @@ public:
     return qGray(palette.color(QPalette::Window).rgb()) > 110 ? false : true;
   }
 
+  //* in-widget shadow tint. Light themes need a much weaker black than dark
+  //ones, where the same alpha reads as dirt instead of elevation
+  QColor shadowColor(const QPalette &palette, int darkAlpha,
+                     int lightAlpha) const {
+    return QColor(0, 0, 0, isDarkTheme(palette) ? darkAlpha : lightAlpha);
+  }
+
   //* returns true if the tools area should be drawn
   bool shouldDrawToolsArea(const QWidget *) const;
 
