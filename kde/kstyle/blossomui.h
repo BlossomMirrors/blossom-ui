@@ -41,46 +41,6 @@ static constexpr qreal Shadow = 1.0;
 static constexpr qreal NoPen = 0.0;
 } // namespace PenWidth
 
-// Opacity/alpha values used for mixing and tinting throughout the style.
-// Keeps magic numbers out of render code and makes the design system explicit.
-namespace Alpha {
-// outline / border
-static constexpr qreal OutlineBase = 0.12;  // default border alpha
-static constexpr qreal OutlineHover = 0.16; // border on hover
-static constexpr qreal OutlineEmph =
-    0.22; // emphasized border (e.g. focus ring)
-static constexpr qreal OutlineFocusMix = 0.15; // focus color mix into outline
-
-// button
-static constexpr qreal ButtonSunken = 0.20;    // pressed background mix
-static constexpr qreal ButtonTint = 0.28;      // tinted background mix
-static constexpr qreal ButtonTintHover = 0.38; // tinted + hover
-
-// checkbox / radio
-static constexpr qreal CheckboxBorder = 0.10;
-static constexpr qreal CheckboxBorderHover = 0.16;
-
-// switch
-static constexpr qreal SwitchBorder = 0.10;
-static constexpr qreal SwitchBorderHover = 0.16;
-static constexpr qreal SwitchThumbBorder = 0.12;
-
-// radio button
-static constexpr qreal RadioBorder = 0.14;
-static constexpr qreal RadioBorderHover = 0.20;
-
-// scrollbar
-static constexpr qreal ScrollbarHandle = 0.5;
-
-// hover/resting tabs and item views
-static constexpr qreal ItemViewResting = 0.10;
-static constexpr qreal ItemViewHover = 0.20;
-
-// generic half-dimension used in radius/geometry calculations
-static constexpr qreal Half = 0.5;
-
-} // namespace Alpha
-
 // Animation mode flags.
 enum AnimationMode {
   AnimationNone = 0,
