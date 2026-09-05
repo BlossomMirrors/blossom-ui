@@ -47,20 +47,12 @@ fi
 
 echo "applying blossomui $MODE theme..."
 
-# drop stale per-user color-scheme and desktoptheme copies that shadow the
-# system files, and clear plasma/ksycoca caches so the new files get picked up
+# drop stale per-user color-scheme and desktoptheme copies that shadow the system files
 rm -f ~/.local/share/color-schemes/BlossomUILight.colors \
       ~/.local/share/color-schemes/BlossomUIDark.colors \
       ~/.local/share/color-schemes/BlossomUIDarkOLED.colors
 
 rm -rf ~/.local/share/plasma/desktoptheme/BlossomUI
-
-rm -rf ~/.cache/plasma-svgelements-* \
-       ~/.cache/ksvg-elements \
-       ~/.cache/plasma_theme_*.kcache \
-       ~/.cache/icon-cache.kcache \
-       ~/.cache/ksycoca6* \
-       ~/.cache/ksycoca5*
 
 if command -v kbuildsycoca6 >/dev/null 2>&1; then
     kbuildsycoca6 --noincremental >/dev/null 2>&1 || true

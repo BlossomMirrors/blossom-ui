@@ -127,11 +127,16 @@ if [ -d /var/lib/plasmalogin ]; then
         cp -r '%{_datadir}/wallpapers/Blossom Rays' /var/lib/plasmalogin/wallpapers/
     fi
     mkdir -p /var/lib/plasmalogin/.config
-    for f in kdeglobals plasmarc; do
-        if [ ! -e "/var/lib/plasmalogin/.config/\$f" ]; then
-            cp "%{_datadir}/blossomui/plasmalogin/greeter-\$f" "/var/lib/plasmalogin/.config/\$f"
-        fi
-    done
+    # Bump when the greeter defaults change:
+    greeter_rev=1
+    greeter_config=/var/lib/plasmalogin/.config/kdeglobals
+    greeter_stamp=/var/lib/plasmalogin/.config/.blossomui-greeter-rev
+    if [ "\$(cat "\$greeter_stamp" 2>/dev/null)" != "\$greeter_rev" ]; then
+        cp '%{_datadir}/color-schemes/BlossomUIDark.colors' "\$greeter_config"
+        cat '%{_datadir}/blossomui/plasmalogin/greeter-kdeglobals' >> "\$greeter_config"
+        cp '%{_datadir}/blossomui/plasmalogin/greeter-plasmarc' /var/lib/plasmalogin/.config/plasmarc
+        echo "\$greeter_rev" > "\$greeter_stamp"
+    fi
     chown -R plasmalogin:plasmalogin /var/lib/plasmalogin/wallpapers /var/lib/plasmalogin/.config 2>/dev/null || true
 fi
 

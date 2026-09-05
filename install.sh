@@ -23,6 +23,12 @@ fi
 
 echo " *** Clearing cache *** "
 rm -rf ~/.cache/*/qmlcache
+rm -rf ~/.cache/plasma-svgelements-* \
+       ~/.cache/ksvg-elements \
+       ~/.cache/plasma_theme_*.kcache \
+       ~/.cache/icon-cache.kcache \
+       ~/.cache/ksycoca6* \
+       ~/.cache/ksycoca5*
 
 echo " *** Installing $(basename "$RPM") *** "
 if rpm -q blossomui >/dev/null 2>&1; then
