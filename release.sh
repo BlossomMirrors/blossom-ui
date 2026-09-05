@@ -120,6 +120,15 @@ if command -v flatpak >/dev/null 2>&1; then
     flatpak override --system --filesystem=xdg-config/gtk-4.0:ro 2>/dev/null || true
 fi
 
+if [ -d '%{_datadir}/wallpapers/Blossom Rays' ]; then
+    wp_default=%{_datadir}/wallpapers/Default
+    wp_stamp=%{_datadir}/wallpapers/.blossomui-default-orig
+    if [ ! -e "\$wp_stamp" ] && [ -L "\$wp_default" ]; then
+        readlink "\$wp_default" > "\$wp_stamp"
+    fi
+    ln -sfn 'Blossom Rays' "\$wp_default"
+fi
+
 if [ -d /var/lib/plasmalogin ]; then
     if [ -d '%{_datadir}/wallpapers/Blossom Rays' ]; then
         mkdir -p /var/lib/plasmalogin/wallpapers
@@ -148,6 +157,17 @@ if [ \$1 -eq 0 ]; then
     fi
 
     rm -rf '/var/lib/plasmalogin/wallpapers/Blossom Rays'
+
+    wp_default=%{_datadir}/wallpapers/Default
+    wp_stamp=%{_datadir}/wallpapers/.blossomui-default-orig
+    if [ "\$(readlink "\$wp_default" 2>/dev/null)" = 'Blossom Rays' ]; then
+        if [ -s "\$wp_stamp" ]; then
+            ln -sfn "\$(cat "\$wp_stamp")" "\$wp_default"
+        else
+            rm -f "\$wp_default"
+        fi
+    fi
+    rm -f "\$wp_stamp"
 
     if command -v kwriteconfig6 >/dev/null 2>&1; then
         KWRITE=kwriteconfig6

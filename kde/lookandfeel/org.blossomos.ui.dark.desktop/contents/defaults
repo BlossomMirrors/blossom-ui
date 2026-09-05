@@ -24,6 +24,10 @@ name=BlossomUI
 [Wallpaper]
 Image=Blossom Rays
 
+[kscreenlockerrc][Greeter][Wallpaper][org.kde.image][General]
+Image=/usr/share/wallpapers/Blossom Rays/
+PreviewImage=/usr/share/wallpapers/Blossom Rays/
+
 [kcminputrc][Mouse]
 cursorTheme=Bibata-Modern-Classic
 cursorThemeFallback=breeze_cursors
