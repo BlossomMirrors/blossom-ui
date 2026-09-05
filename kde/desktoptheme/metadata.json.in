@@ -7,18 +7,18 @@
         "Name": "BlossomOS"
       },
       {
-        "Email": "yannik@blossomos.org",
+        "Email": "yannikain@blossomos.org",
         "Name": "Yannik Ain"
       }
     ],
     "Category": "Plasma Theme",
-    "ServiceTypes": ["Plasma/Theme"],
     "EnabledByDefault": true,
     "Name": "BlossomUI",
     "Description": "BlossomUI Plasma Theme with more margins, blur and rounded corners.",
     "Id": "BlossomUI",
-    "Version": "1.0",
+    "Version": "@PROJECT_VERSION@",
     "License": "GPLv2",
     "X-KPackage-Dependencies": []
-  }
+  },
+  "X-Plasma-API": "5.0"
 }
