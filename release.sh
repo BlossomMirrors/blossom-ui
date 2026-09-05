@@ -132,7 +132,7 @@ if [ -d /var/lib/plasmalogin ]; then
     greeter_config=/var/lib/plasmalogin/.config/kdeglobals
     greeter_stamp=/var/lib/plasmalogin/.config/.blossomui-greeter-rev
     if [ "\$(cat "\$greeter_stamp" 2>/dev/null)" != "\$greeter_rev" ]; then
-        cp '%{_datadir}/color-schemes/BlossomUIDark.colors' "\$greeter_config"
+        cp '%{_datadir}/color-schemes/BlossomUILight.colors' "\$greeter_config"
         cat '%{_datadir}/blossomui/plasmalogin/greeter-kdeglobals' >> "\$greeter_config"
         cp '%{_datadir}/blossomui/plasmalogin/greeter-plasmarc' /var/lib/plasmalogin/.config/plasmarc
         echo "\$greeter_rev" > "\$greeter_stamp"
