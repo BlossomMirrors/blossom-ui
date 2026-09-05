@@ -89,12 +89,7 @@ Color=@NEUTRAL_50_RGB@
 Color=@NEUTRAL_25_RGB@
 
 [General]
-Anchor=0.5,0.5
 Blur=true
 ColorRandomization=false
 Description=BlossomUI
-FillStyle=Tile
 Opacity=0.75
-Wallpaper=
-WallpaperFlipType=NoFlip
-WallpaperOpacity=1
