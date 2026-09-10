@@ -22,10 +22,8 @@ void Style::polishDolphinScrollArea(QAbstractScrollArea *scrollArea) {
   if (scrollArea->inherits("KItemListContainer")) {
     if (QWidget *parent = scrollArea->parentWidget();
         parent && parent->inherits("DolphinView")) {
-      // Card margins: left aligns with toolbar item inset (ToolBar_FrameWidth=2
-      // + PM_ToolBarItemMargin=2 = 4)
       const int margin = 8;
-      const int leftMargin = 4;
+      const int leftMargin = 0;
       parent->setContentsMargins(leftMargin, margin, margin, margin);
       if (auto viewport = scrollArea->viewport())
         viewport->setContentsMargins(0, 0, 0, 0);
@@ -132,7 +130,7 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
         if (QWidget *parent = scrollArea->parentWidget();
             parent && parent->inherits("DolphinView")) {
           const int margin = 8;
-          const int leftMargin = 4;
+          const int leftMargin = 0;
           parent->setContentsMargins(leftMargin, margin, margin, margin);
         }
         // reapply margins to the entire Dolphin window

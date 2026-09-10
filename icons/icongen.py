@@ -1,35 +1,27 @@
 #!/usr/bin/env python3
-"""
-Lucide Icon Generator for BlossomUI Icon Theme
-Fetches icons from Lucide icon library and applies KDE theme text color.
-
-Usage:
-    python icongen.py <icon-name> [additional/symlink/path...]
-
-The source icon is always saved to source/<icon-name>.svg.
-All target paths become symlinks pointing to the source file.
-
-Example:
-    python icongen.py wifi actions/16/network-wifi actions/22/network-wifi
-"""
-
 import sys
 import os
-import gzip
 import json
 import argparse
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
 
-LUCIDE_BASE_URL = "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons"
+TABLER_VERSION = "3.46.0"
+TABLER_VARIANT = "outline"
+TABLER_BASE_URL = f"https://cdn.jsdelivr.net/npm/@tabler/icons@{TABLER_VERSION}/icons/{TABLER_VARIANT}"
+
+STROKE_WIDTH = "1.25"
 
 SVG_NS = 'http://www.w3.org/2000/svg'
 
+ROOT = Path(__file__).parent
+MANIFEST = ROOT / 'icons.json'
 
-def fetch_lucide_icon(icon_name):
+
+def fetch_tabler_icon(icon_name):
     import requests
-    url = f"{LUCIDE_BASE_URL}/{icon_name}.svg"
+    url = f"{TABLER_BASE_URL}/{icon_name}.svg"
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
@@ -39,95 +31,98 @@ def fetch_lucide_icon(icon_name):
         return None
 
 
-def apply_kde_theme_colors(svg_content, size=16):
+def strip_invisible(root):
+    for parent in [root] + list(root.iter()):
+        for child in list(parent):
+            if child.get('stroke') == 'none' and child.get('fill') == 'none':
+                parent.remove(child)
+
+
+def apply_kde_theme_colors(svg_content, size=16, stroke_width=None):
+    stroke_width = stroke_width or STROKE_WIDTH
     ET.register_namespace('', 'http://www.w3.org/2000/svg')
     root = ET.fromstring(svg_content)
-    
+
     ns = {'svg': 'http://www.w3.org/2000/svg'}
-    
+
+    strip_invisible(root)
+
     original_viewbox = root.get('viewBox', '0 0 24 24')
     vb_parts = [float(x) for x in original_viewbox.split()]
     vb_x, vb_y, vb_w, vb_h = vb_parts[0], vb_parts[1], vb_parts[2], vb_parts[3]
-    
+
     padding = 3
     new_viewbox = f"{vb_x - padding} {vb_y - padding} {vb_w + padding * 2} {vb_h + padding * 2}"
-    
+
     root.set('width', '16')
     root.set('height', '16')
     root.set('viewBox', new_viewbox)
-    root.set('stroke-width', '1.5')
-    
+    root.set('stroke-width', stroke_width)
+
     if 'stroke' in root.attrib:
         del root.attrib['stroke']
     if 'fill' in root.attrib and root.get('fill') != 'none':
         del root.attrib['fill']
     if 'class' in root.attrib:
         del root.attrib['class']
-    
+
     defs = root.find('svg:defs', ns)
     if defs is None:
         defs = ET.Element('defs')
         root.insert(0, defs)
-    
+
     style = ET.SubElement(defs, 'style')
     style.set('id', 'current-color-scheme')
     style.set('type', 'text/css')
     style.text = '.ColorScheme-Text { color: #232629; }'
-    
+
     for elem in root.iter():
         if elem.tag.endswith('svg') or elem.tag.endswith('defs') or elem.tag.endswith('style'):
             continue
-        
+
         if 'stroke-width' in elem.attrib:
-            elem.set('stroke-width', '1.5')
-        
+            elem.set('stroke-width', stroke_width)
+
         elem.set('class', 'ColorScheme-Text')
-        
+
         if 'stroke' in elem.attrib:
             if elem.get('stroke') != 'none':
                 elem.set('stroke', 'currentColor')
         else:
             elem.set('stroke', 'currentColor')
-        
+
         if 'fill' in elem.attrib and elem.get('fill') != 'none':
             elem.set('fill', 'currentColor')
-        
+
         style_attr = elem.get('style', '')
         if style_attr:
             style_parts = [s.strip() for s in style_attr.split(';') if s.strip()]
             new_style_parts = []
-            
+
             for part in style_parts:
                 if ':' in part:
                     key, value = part.split(':', 1)
                     key = key.strip()
                     value = value.strip()
-                    
+
                     if key == 'stroke' and value != 'none':
                         new_style_parts.append('stroke:currentColor')
                     elif key == 'fill' and value != 'none':
                         new_style_parts.append('fill:currentColor')
                     elif key == 'stroke-width':
-                        new_style_parts.append('stroke-width:1.5')
+                        new_style_parts.append(f'stroke-width:{stroke_width}')
                     else:
                         new_style_parts.append(part)
                 else:
                     new_style_parts.append(part)
-            
+
             if new_style_parts:
                 elem.set('style', ';'.join(new_style_parts))
-    
+
     return ET.tostring(root, encoding='unicode', method='xml')
 
 
 def outline_strokes(svg_content):
-    """Convert stroked shapes to filled paths.
-
-    GTK recolors symbolic icons by force-filling every shape (fill: <fg>
-    !important on rect/circle/path/...), which turns stroke-based Lucide icons
-    into solid blobs. KDE recolors via the ColorScheme-Text class, which works
-    for fills exactly like breeze, so outlined icons render right everywhere.
-    """
     try:
         from picosvg.svg import SVG as PicoSVG
     except ImportError:
@@ -141,8 +136,9 @@ def outline_strokes(svg_content):
     height = root.get('height', '16')
     viewbox = root.get('viewBox')
 
-    # picosvg does not inherit presentation attributes from the root element,
-    # so push them down onto each shape before converting
+    strip_invisible(root)
+
+
     inherited = {}
     for attr in ('stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'fill'):
         if attr in root.attrib:
@@ -217,6 +213,14 @@ def reprocess_sources(src_dir):
     return len(failed) == 0
 
 
+def build_icon(tabler_name, stroke_width=None):
+    svg_content = fetch_tabler_icon(tabler_name)
+    if not svg_content:
+        return None
+    return outline_strokes(apply_kde_theme_colors(svg_content,
+                                                  stroke_width=stroke_width))
+
+
 def save_icon(svg_content, target_path):
     path = Path(target_path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -229,12 +233,11 @@ def save_icon(svg_content, target_path):
     if svgz_path.is_symlink() or svgz_path.exists():
         svgz_path.unlink()
 
-    # plain svg: GTK's icon lookup only accepts .png/.svg/.xpm, .svgz is a
-    # KDE-only extension and makes icons invisible to GTK apps
+
     with open(svg_path, 'w', encoding='utf-8') as f:
         f.write(svg_content)
 
-    print(f"Created: {svg_path}")
+    return svg_path
 
 
 def create_symlink(source, target):
@@ -255,141 +258,158 @@ def create_symlink(source, target):
         print(f"Error creating symlink {target}: {e}", file=sys.stderr)
 
 
-def load_mapping(mapping_file):
-    """Load icon mapping from JSON file."""
+def links_to(target, source):
+    target = Path(target)
+    return target.is_symlink() and os.path.realpath(target) == str(Path(source).resolve())
+
+
+def load_manifest():
     try:
-        with open(mapping_file, 'r') as f:
+        with open(MANIFEST) as f:
             return json.load(f)
     except Exception as e:
-        print(f"Warning: Could not load mapping file: {e}", file=sys.stderr)
-        return {'icons': []}
+        print(f"Error: could not load {MANIFEST}: {e}", file=sys.stderr)
+        sys.exit(1)
 
 
-def save_mapping(mapping, mapping_file):
-    """Save icon mapping to JSON file."""
-    try:
-        with open(mapping_file, 'w') as f:
-            json.dump(mapping, f, indent=2)
-    except Exception as e:
-        print(f"Warning: Could not save mapping file: {e}", file=sys.stderr)
+def save_manifest(manifest):
+    with open(MANIFEST, 'w') as f:
+        json.dump(manifest, f, indent=2)
+        f.write('\n')
 
 
-def update_mapping(mapping, source_file, target_paths):
-    """Update mapping with new source file and target paths."""
-    source_file = str(source_file)
+def sync(only=None, relink=True):
+    manifest = load_manifest()
+    entries = manifest['icons']
+    if only:
+        entries = [e for e in entries if e['name'] in only]
+        missing = sorted(set(only) - {e['name'] for e in entries})
+        if missing:
+            print(f"Error: not in {MANIFEST.name}: {', '.join(missing)}", file=sys.stderr)
+            return False
 
-    # Find existing entry
-    for icon in mapping['icons']:
-        if icon['source_file'] == source_file:
-            # Update target paths (merge with existing)
-            existing = set(icon.get('target_paths', []))
-            existing.update(target_paths)
-            icon['target_paths'] = sorted(existing)
-            return mapping
+    cache = {}
+    failed = []
+    for entry in entries:
+        name, tabler_name = entry['name'], entry['icon']
+        if tabler_name not in cache:
+            print(f"Fetching {tabler_name} ...")
+            cache[tabler_name] = build_icon(tabler_name)
+        svg = cache[tabler_name]
+        if not svg:
+            failed.append(name)
+            continue
 
-    # Create new entry
-    mapping['icons'].append({
-        'source_file': source_file,
-        'target_paths': sorted(target_paths)
-    })
+        source_path = ROOT / 'source' / f'{name}.svg'
+        save_icon(svg, source_path)
+        print(f"Created: source/{name}.svg ({tabler_name})")
 
-    # Sort by source file
-    mapping['icons'].sort(key=lambda x: x['source_file'])
+        if not relink:
+            continue
 
-    return mapping
+
+        for target in entry.get('targets', []):
+            target = ROOT / target
+            if not links_to(target, source_path):
+                create_symlink(source_path, target)
+
+    print(f"\nSynced {len(entries) - len(failed)}/{len(entries)} icons "
+          f"from tabler {TABLER_VARIANT} {TABLER_VERSION} at stroke-width {STROKE_WIDTH}")
+    for name in failed:
+        print(f"  FAILED {name}", file=sys.stderr)
+    return not failed
+
+
+def prune():
+    manifest = load_manifest()
+    for entry in manifest.get('removed', []):
+        source_path = ROOT / 'source' / f"{entry['name']}.svg"
+        for target in entry.get('targets', []):
+            target = ROOT / target
+            if target.is_symlink() or target.exists():
+                target.unlink()
+                print(f"Removed link: {target.relative_to(ROOT)}")
+        if source_path.is_symlink() or source_path.exists():
+            source_path.unlink()
+            print(f"Removed: source/{source_path.name}")
+    return True
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Lucide Icon Generator for BlossomUI Icon Theme',
+        description='Tabler Icon Generator for BlossomUI Icon Theme',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Basic usage (source saved to source/wifi.svgz automatically)
-  python icongen.py wifi actions/16/network-wifi actions/22/network-wifi
+  ./icongen.py --sync
 
-  # With mapping file
-  python icongen.py --map=icon_mapping.json wifi actions/16/network-wifi
+  ./icongen.py --sync --only folder-open --only folder
 
-  # Use existing mapping (fetch from mapping file)
-  python icongen.py --map=icon_mapping.json --from-map wifi
+  ./icongen.py wifi actions/16/network-wifi actions/22/network-wifi
+
+  ./icongen.py folder-open --as open-menu-symbolic actions/symbolic/document-open-symbolic
+
+  ./icongen.py --prune
         """
     )
 
-    parser.add_argument('icon_name', nargs='?', help='Lucide icon name to fetch')
-    parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<icon-name>.svg is always the source)')
-    parser.add_argument('--map', metavar='FILE', help='Icon mapping JSON file to update')
-    parser.add_argument('--from-map', action='store_true',
-                        help='Use source and target paths from mapping file (requires --map)')
+    parser.add_argument('icon_name', nargs='?', help='Tabler outline icon name to fetch')
+    parser.add_argument('target_paths', nargs='*', help='Paths for symlinks (source/<name>.svg is always the source)')
+    parser.add_argument('--as', dest='as_name', metavar='NAME',
+                        help='Save as source/<NAME>.svg instead of source/<icon-name>.svg')
+    parser.add_argument('--sync', action='store_true',
+                        help=f'Regenerate every icon listed in {MANIFEST.name}')
+    parser.add_argument('--only', action='append', metavar='NAME',
+                        help='With --sync: limit to these source names (repeatable)')
+    parser.add_argument('--no-relink', action='store_true',
+                        help='With --sync: only rewrite source files, never touch symlinks')
+    parser.add_argument('--prune', action='store_true',
+                        help=f'Delete the icons listed under "removed" in {MANIFEST.name}')
     parser.add_argument('--reprocess', action='store_true',
                         help='Convert all existing source/ icons from strokes to filled paths (GTK compatibility)')
 
     args = parser.parse_args()
 
     if args.reprocess:
-        src = Path(__file__).parent / 'source'
-        sys.exit(0 if reprocess_sources(src) else 1)
+        sys.exit(0 if reprocess_sources(ROOT / 'source') else 1)
+
+    if args.prune:
+        sys.exit(0 if prune() else 1)
+
+    if args.sync:
+        sys.exit(0 if sync(only=args.only, relink=not args.no_relink) else 1)
 
     if not args.icon_name:
-        parser.error('icon_name is required unless --reprocess is used')
+        parser.error('icon_name is required unless --sync, --prune or --reprocess is used')
 
-    # Handle --from-map mode
-    if args.from_map:
-        if not args.map:
-            print("Error: --from-map requires --map=<file>", file=sys.stderr)
-            sys.exit(1)
+    name = args.as_name or args.icon_name
+    source_path = ROOT / 'source' / f'{name}.svg'
 
-        mapping = load_mapping(args.map)
-
-        # Find icon in mapping
-        icon_entry = None
-        for icon in mapping['icons']:
-            source_name = Path(icon['source_file']).stem
-            if source_name == args.icon_name or icon['source_file'] == f"source/{args.icon_name}.svgz":
-                icon_entry = icon
-                break
-
-        if not icon_entry:
-            print(f"Error: Icon '{args.icon_name}' not found in mapping file", file=sys.stderr)
-            sys.exit(1)
-
-        source_path = icon_entry['source_file']
-        target_paths = icon_entry.get('target_paths', [])
-
-        print(f"Using mapping from {args.map}:")
-        print(f"  Source: {source_path}")
-        print(f"  Targets: {len(target_paths)} paths")
-
-    else:
-        source_path = f"source/{args.icon_name}.svgz"
-        target_paths = args.target_paths
-
-    # Fetch and process icon
-    print(f"Fetching '{args.icon_name}' from Lucide...")
-    svg_content = fetch_lucide_icon(args.icon_name)
-
-    if not svg_content:
+    print(f"Fetching '{args.icon_name}' from tabler {TABLER_VARIANT} {TABLER_VERSION}...")
+    svg = build_icon(args.icon_name)
+    if not svg:
         sys.exit(1)
 
-    print("Applying KDE theme colors...")
-    themed_svg = apply_kde_theme_colors(svg_content)
+    save_icon(svg, source_path)
+    print(f"Created: source/{name}.svg")
 
-    print("Outlining strokes for GTK compatibility...")
-    themed_svg = outline_strokes(themed_svg)
+    targets = []
+    for target_path in args.target_paths:
+        create_symlink(source_path, ROOT / target_path)
+        targets.append(str(Path(target_path).with_suffix('.svg')))
 
-    # Save source icon
-    save_icon(themed_svg, source_path)
-
-    # Create symlinks
-    for target_path in target_paths:
-        create_symlink(source_path, target_path)
-
-    # Update mapping file if specified
-    if args.map:
-        mapping = load_mapping(args.map)
-        mapping = update_mapping(mapping, source_path, target_paths)
-        save_mapping(mapping, args.map)
-        print(f"Updated mapping file: {args.map}")
+    manifest = load_manifest()
+    for entry in manifest['icons']:
+        if entry['name'] == name:
+            entry['icon'] = args.icon_name
+            entry['targets'] = sorted(set(entry.get('targets', [])) | set(targets))
+            break
+    else:
+        manifest['icons'].append({'name': name, 'icon': args.icon_name,
+                                  'targets': sorted(targets)})
+        manifest['icons'].sort(key=lambda e: e['name'])
+    save_manifest(manifest)
+    print(f"Updated {MANIFEST.name}")
 
     print(f"\n✓ Icon '{args.icon_name}' generated successfully!")
 

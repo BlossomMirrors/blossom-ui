@@ -1,0 +1,2521 @@
+{
+  "icons": [
+    {
+      "name": "ac-adapter-symbolic",
+      "icon": "plug-connected",
+      "targets": [
+        "status/symbolic/ac-adapter-symbolic.svg"
+      ]
+    },
+    {
+      "name": "alarm-symbolic",
+      "icon": "alarm",
+      "targets": [
+        "status/symbolic/alarm-symbolic.svg",
+        "status/symbolic/kalarm-disabled-symbolic.svg",
+        "status/symbolic/kalarm-partdisabled-symbolic.svg"
+      ]
+    },
+    {
+      "name": "app-window",
+      "icon": "app-window",
+      "targets": []
+    },
+    {
+      "name": "app-window-plus",
+      "icon": "browser-plus",
+      "targets": [
+        "apps/symbolic/app-window-plus-symbolic.svg"
+      ]
+    },
+    {
+      "name": "application-menu",
+      "icon": "dots",
+      "targets": [
+        "actions/symbolic/application-menu-symbolic.svg",
+        "actions/symbolic/application-menu.svg",
+        "actions/symbolic/open-menu-symbolic.svg",
+        "actions/symbolic/open-menu.svg",
+        "actions/symbolic/overflow-menu.svg"
+      ]
+    },
+    {
+      "name": "application-menu-22",
+      "icon": "dots",
+      "targets": [
+        "actions/22/application-menu-symbolic.svg",
+        "actions/22/application-menu.svg",
+        "actions/22/open-menu-symbolic.svg",
+        "actions/22/overflow-menu.svg"
+      ]
+    },
+    {
+      "name": "applications-accessories",
+      "icon": "tools",
+      "targets": [
+        "categories/16/applications-accessories-symbolic.svg",
+        "categories/16/applications-accessories.svg",
+        "categories/22/applications-accessories-symbolic.svg",
+        "categories/22/applications-accessories.svg",
+        "categories/symbolic/applications-accessories-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-all",
+      "icon": "apps",
+      "targets": [
+        "categories/16/applications-all-symbolic.svg",
+        "categories/16/applications-all.svg",
+        "categories/22/applications-all-symbolic.svg",
+        "categories/22/applications-all.svg",
+        "categories/symbolic/applications-all-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-audio",
+      "icon": "music",
+      "targets": [
+        "categories/16/applications-audio-symbolic.svg",
+        "categories/16/applications-audio.svg",
+        "categories/22/applications-audio-symbolic.svg",
+        "categories/22/applications-audio.svg",
+        "categories/symbolic/applications-audio-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-development",
+      "icon": "code",
+      "targets": [
+        "categories/16/applications-development-symbolic.svg",
+        "categories/16/applications-development.svg",
+        "categories/22/applications-development-symbolic.svg",
+        "categories/22/applications-development.svg",
+        "categories/symbolic/applications-development-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-education",
+      "icon": "school",
+      "targets": [
+        "categories/16/applications-education-symbolic.svg",
+        "categories/16/applications-education.svg",
+        "categories/22/applications-education-symbolic.svg",
+        "categories/22/applications-education.svg",
+        "categories/symbolic/applications-education-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-engineering",
+      "icon": "ruler-measure",
+      "targets": [
+        "categories/16/applications-engineering-symbolic.svg",
+        "categories/16/applications-engineering.svg",
+        "categories/22/applications-engineering-symbolic.svg",
+        "categories/22/applications-engineering.svg",
+        "categories/symbolic/applications-engineering-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-games",
+      "icon": "device-gamepad-2",
+      "targets": [
+        "categories/16/applications-games-symbolic.svg",
+        "categories/16/applications-games.svg",
+        "categories/22/applications-games-symbolic.svg",
+        "categories/22/applications-games.svg",
+        "categories/symbolic/applications-games-symbolic.svg",
+        "categories/symbolic/arc-list-gaming-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-graphics",
+      "icon": "palette",
+      "targets": [
+        "categories/16/applications-graphics-symbolic.svg",
+        "categories/16/applications-graphics.svg",
+        "categories/22/applications-graphics-symbolic.svg",
+        "categories/22/applications-graphics.svg",
+        "categories/symbolic/applications-graphics-symbolic.svg",
+        "categories/symbolic/arc-list-creative-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-multimedia",
+      "icon": "movie",
+      "targets": [
+        "categories/16/applications-multimedia-symbolic.svg",
+        "categories/16/applications-multimedia.svg",
+        "categories/22/applications-multimedia-symbolic.svg",
+        "categories/22/applications-multimedia.svg"
+      ]
+    },
+    {
+      "name": "applications-office",
+      "icon": "briefcase",
+      "targets": [
+        "categories/16/applications-office.svg",
+        "categories/22/applications-office.svg",
+        "categories/symbolic/applications-office-symbolic.svg",
+        "categories/symbolic/arc-list-office-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-other",
+      "icon": "archive",
+      "targets": [
+        "categories/16/applications-other.svg",
+        "categories/22/applications-other.svg",
+        "categories/symbolic/applications-other-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-science",
+      "icon": "flask",
+      "targets": [
+        "categories/16/applications-education-science-symbolic.svg",
+        "categories/16/applications-science.svg",
+        "categories/22/applications-education-science-symbolic.svg",
+        "categories/22/applications-science.svg",
+        "categories/symbolic/applications-science-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-utilities",
+      "icon": "tool",
+      "targets": [
+        "categories/16/applications-utilities.svg",
+        "categories/22/applications-utilities.svg",
+        "categories/symbolic/applications-utilities-symbolic.svg"
+      ]
+    },
+    {
+      "name": "applications-video",
+      "icon": "video",
+      "targets": [
+        "categories/16/applications-video-symbolic.svg",
+        "categories/16/applications-video.svg",
+        "categories/22/applications-video-symbolic.svg",
+        "categories/22/applications-video.svg",
+        "categories/symbolic/applications-video-symbolic.svg"
+      ]
+    },
+    {
+      "name": "appointment-symbolic",
+      "icon": "calendar",
+      "targets": [
+        "actions/symbolic/appointment-symbolic.svg",
+        "status/symbolic/appointment-missed-symbolic.svg",
+        "status/symbolic/appointment-soon-symbolic.svg"
+      ]
+    },
+    {
+      "name": "archive",
+      "icon": "archive",
+      "targets": [
+        "places/24/folder-tar-symbolic.svg",
+        "places/24/folder-tar.svg"
+      ]
+    },
+    {
+      "name": "arrow-down",
+      "icon": "chevron-down",
+      "targets": [
+        "actions/symbolic/arrow-down.svg"
+      ]
+    },
+    {
+      "name": "arrow-up",
+      "icon": "chevron-up",
+      "targets": [
+        "actions/symbolic/arrow-up.svg"
+      ]
+    },
+    {
+      "name": "audio-headphones-symbolic",
+      "icon": "headphones",
+      "targets": [
+        "devices/symbolic/audio-headphones-symbolic.svg"
+      ]
+    },
+    {
+      "name": "audio-speakers-symbolic",
+      "icon": "volume",
+      "targets": [
+        "devices/symbolic/audio-speakers-symbolic.svg",
+        "status/symbolic/audio-volume-high-danger-symbolic.svg"
+      ]
+    },
+    {
+      "name": "audio-volume-low-symbolic",
+      "icon": "volume-4",
+      "targets": []
+    },
+    {
+      "name": "audio-volume-medium-symbolic",
+      "icon": "volume-2",
+      "targets": []
+    },
+    {
+      "name": "audio-volume-muted-symbolic",
+      "icon": "volume-3",
+      "targets": []
+    },
+    {
+      "name": "avatar-default-symbolic",
+      "icon": "user-circle",
+      "targets": [
+        "status/symbolic/avatar-default-symbolic.svg"
+      ]
+    },
+    {
+      "name": "bluetooth",
+      "icon": "bluetooth",
+      "targets": [
+        "actions/symbolic/cs-bluetooth.svg",
+        "actions/symbolic/dcc_navi_bluetooth.svg",
+        "actions/symbolic/preferences-system-bluetooth.svg",
+        "apps/16/org.gnome.Settings-bluetooth.svg",
+        "apps/16/org.kde.plasma.bluetooth.svg",
+        "apps/22/org.gnome.Settings-bluetooth.svg",
+        "apps/22/org.kde.plasma.bluetooth.svg",
+        "devices/symbolic/bluetooth-symbolic.svg",
+        "devices/symbolic/bluetooth.svg",
+        "devices/symbolic/bluetoothradio.svg",
+        "status/symbolic/bluetooth-48.svg",
+        "status/symbolic/bluetooth-active-symbolic.svg",
+        "status/symbolic/bluetooth-active.svg",
+        "status/symbolic/bluetooth-online.svg",
+        "status/symbolic/bluetooth-symbolic.svg",
+        "status/symbolic/bluetooth.svg",
+        "status/symbolic/network-bluetooth-activated-locked-symbolic.svg",
+        "status/symbolic/network-bluetooth-activated-symbolic.svg",
+        "status/symbolic/network-bluetooth-activated.svg",
+        "status/symbolic/network-bluetooth-symbolic.svg",
+        "status/symbolic/network-bluetooth.svg",
+        "status/symbolic/preferences-system-bluetooth-active.svg",
+        "status/symbolic/xsi-bluetooth-active-symbolic.svg"
+      ]
+    },
+    {
+      "name": "bluetooth-offline",
+      "icon": "bluetooth-off",
+      "targets": [
+        "status/symbolic/bluetooth-disabled-symbolic.svg",
+        "status/symbolic/bluetooth-disabled.svg",
+        "status/symbolic/bluetooth-disconnected-symbolic.svg",
+        "status/symbolic/bluetooth-disconnected.svg",
+        "status/symbolic/bluetooth-hardware-disabled-symbolic.svg",
+        "status/symbolic/bluetooth-hardware-disabled.svg",
+        "status/symbolic/bluetooth-offline.svg",
+        "status/symbolic/network-bluetooth-inactive-symbolic.svg",
+        "status/symbolic/network-bluetooth-inactive.svg",
+        "status/symbolic/preferences-system-bluetooth-inactive.svg"
+      ]
+    },
+    {
+      "name": "bluetooth-paired",
+      "icon": "bluetooth-connected",
+      "targets": [
+        "status/symbolic/bluetooth-paired-symbolic.svg",
+        "status/symbolic/bluetooth-paired.svg"
+      ]
+    },
+    {
+      "name": "bolt-symbolic",
+      "icon": "nut",
+      "targets": [
+        "devices/symbolic/bolt-symbolic.svg"
+      ]
+    },
+    {
+      "name": "book",
+      "icon": "book-2",
+      "targets": []
+    },
+    {
+      "name": "bookmark",
+      "icon": "bookmark",
+      "targets": [
+        "actions/symbolic/bookmark-add.svg",
+        "actions/symbolic/bookmark-remove.svg",
+        "actions/symbolic/bookmark.svg",
+        "actions/symbolic/bookmarks.svg",
+        "places/24/folder-bookmark-symbolic.svg",
+        "places/24/folder-bookmark.svg",
+        "places/64/bookmarks.svg",
+        "status/symbolic/non-starred-symbolic.svg",
+        "status/symbolic/starred-symbolic.svg"
+      ]
+    },
+    {
+      "name": "bookmarks-symbolic",
+      "icon": "check",
+      "targets": [
+        "actions/symbolic/bookmarks-bookmarked-symbolic.svg",
+        "actions/symbolic/bookmarks-symbolic.svg",
+        "actions/symbolic/ephy-bookmark-tag-symbolic.svg",
+        "actions/symbolic/ephy-bookmarks-symbolic.svg",
+        "emblems/symbolic/emblem-default-symbolic.svg",
+        "emblems/symbolic/emblem-ok-symbolic.svg",
+        "status/symbolic/network-cellular-secure-signal-ok-symbolic.svg",
+        "status/symbolic/network-cellular-signal-ok-secure-symbolic.svg",
+        "status/symbolic/network-cellular-signal-ok-symbolic.svg"
+      ]
+    },
+    {
+      "name": "brightness-low-symbolic",
+      "icon": "sun-low",
+      "targets": [
+        "status/symbolic/brightness-low-symbolic.svg"
+      ]
+    },
+    {
+      "name": "brightness-medium-symbolic",
+      "icon": "sun-high",
+      "targets": [
+        "status/symbolic/brightness-medium-symbolic.svg"
+      ]
+    },
+    {
+      "name": "bug",
+      "icon": "bug",
+      "targets": [
+        "actions/symbolic/tools-report-bug-symbolic.svg",
+        "actions/symbolic/tools-report-bug.svg"
+      ]
+    },
+    {
+      "name": "calendar-go-today-symbolic",
+      "icon": "calendar",
+      "targets": [
+        "actions/symbolic/calendar-go-today-symbolic.svg"
+      ]
+    },
+    {
+      "name": "call-start-symbolic",
+      "icon": "phone",
+      "targets": [
+        "actions/symbolic/call-start-symbolic.svg"
+      ]
+    },
+    {
+      "name": "call-stop-symbolic",
+      "icon": "phone-off",
+      "targets": [
+        "actions/symbolic/call-stop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "camera-symbolic",
+      "icon": "camera",
+      "targets": [
+        "actions/symbolic/camera-switch-symbolic.svg",
+        "devices/symbolic/camera-photo-symbolic.svg",
+        "devices/symbolic/camera-symbolic.svg",
+        "devices/symbolic/camera-video-symbolic.svg",
+        "devices/symbolic/camera-web-symbolic.svg",
+        "status/symbolic/camera-disabled-symbolic.svg",
+        "status/symbolic/camera-hardware-disabled-symbolic.svg"
+      ]
+    },
+    {
+      "name": "cancel",
+      "icon": "circle-x",
+      "targets": [
+        "actions/symbolic/cancel.svg",
+        "actions/symbolic/dialog-cancel.svg",
+        "actions/symbolic/process-stop.svg"
+      ]
+    },
+    {
+      "name": "circle-alert",
+      "icon": "alert-circle",
+      "targets": [
+        "places/24/folder-important-symbolic.svg",
+        "places/24/folder-important.svg"
+      ]
+    },
+    {
+      "name": "circle-question-mark",
+      "icon": "help-circle",
+      "targets": [
+        "actions/symbolic/help-contents-symbolic.svg",
+        "actions/symbolic/help-contents-vmware.svg",
+        "actions/symbolic/help-contents.svg",
+        "actions/symbolic/help-contextual.svg"
+      ]
+    },
+    {
+      "name": "close",
+      "icon": "x",
+      "targets": [
+        "actions/symbolic/window-close-symbolic.svg"
+      ]
+    },
+    {
+      "name": "cloud",
+      "icon": "cloud",
+      "targets": [
+        "places/24/folder-cloud-symbolic.svg",
+        "places/24/folder-cloud.svg"
+      ]
+    },
+    {
+      "name": "cloud-download",
+      "icon": "cloud-download",
+      "targets": [
+        "actions/symbolic/cloud-download.svg",
+        "actions/symbolic/get-hot-new-stuff.svg"
+      ]
+    },
+    {
+      "name": "columns-2",
+      "icon": "layout-columns",
+      "targets": [
+        "actions/symbolic/view-split-left-right-symbolic.svg",
+        "actions/symbolic/view-split-left-right.svg"
+      ]
+    },
+    {
+      "name": "compass",
+      "icon": "compass",
+      "targets": [
+        "actions/symbolic/compass.svg",
+        "categories/symbolic/arc-list-browser-symbolic.svg"
+      ]
+    },
+    {
+      "name": "computer-symbolic",
+      "icon": "device-desktop",
+      "targets": [
+        "devices/symbolic/computer-apple-ipad-symbolic.svg",
+        "devices/symbolic/computer-symbolic.svg",
+        "status/symbolic/computer-fail-symbolic.svg"
+      ]
+    },
+    {
+      "name": "configure",
+      "icon": "settings",
+      "targets": [
+        "actions/symbolic/configuration.svg",
+        "actions/symbolic/configure-toolbars.svg",
+        "actions/symbolic/configure.svg",
+        "actions/symbolic/settings-configure.svg",
+        "actions/symbolic/user-group-properties-symbolic.svg",
+        "categories/16/applications-system-symbolic.svg",
+        "categories/16/applications-system.svg",
+        "categories/22/applications-system-symbolic.svg",
+        "categories/22/applications-system.svg",
+        "categories/symbolic/applications-system-symbolic.svg"
+      ]
+    },
+    {
+      "name": "copy",
+      "icon": "copy",
+      "targets": [
+        "actions/symbolic/edit-copy-symbolic.svg",
+        "actions/symbolic/edit-copy.svg",
+        "actions/symbolic/editcopy.svg",
+        "actions/symbolic/gtk-copy.svg",
+        "actions/symbolic/stock-copy.svg"
+      ]
+    },
+    {
+      "name": "cpu-symbolic",
+      "icon": "cpu",
+      "targets": [
+        "devices/symbolic/cpu-symbolic.svg"
+      ]
+    },
+    {
+      "name": "daytime-sunset-symbolic",
+      "icon": "clock",
+      "targets": [
+        "categories/symbolic/applications-multimedia-symbolic.svg",
+        "status/symbolic/daytime-sunrise-symbolic.svg",
+        "status/symbolic/daytime-sunset-symbolic.svg"
+      ]
+    },
+    {
+      "name": "delete",
+      "icon": "backspace",
+      "targets": [
+        "actions/symbolic/clear_left.svg",
+        "actions/symbolic/edit-clear-list.svg",
+        "actions/symbolic/edit-clear-locationbar-rtl.svg",
+        "actions/symbolic/edit-clear-rtl.svg",
+        "actions/symbolic/edit-clear.svg",
+        "actions/symbolic/editclear.svg",
+        "actions/symbolic/gtk-clear.svg"
+      ]
+    },
+    {
+      "name": "dialog-cancel-symbolic",
+      "icon": "ban",
+      "targets": [
+        "actions/symbolic/dialog-cancel-symbolic.svg"
+      ]
+    },
+    {
+      "name": "dialog-password-symbolic",
+      "icon": "key",
+      "targets": [
+        "status/symbolic/dialog-password-symbolic.svg"
+      ]
+    },
+    {
+      "name": "dialog-warning-symbolic",
+      "icon": "alert-triangle",
+      "targets": [
+        "status/symbolic/audio-volume-high-warning-symbolic.svg",
+        "status/symbolic/dialog-warning-symbolic.svg"
+      ]
+    },
+    {
+      "name": "document-edit-symbolic",
+      "icon": "file-pencil",
+      "targets": [
+        "actions/symbolic/document-edit-symbolic.svg"
+      ]
+    },
+    {
+      "name": "document-export-symbolic",
+      "icon": "upload",
+      "targets": [
+        "actions/symbolic/document-export-rtl-symbolic.svg"
+      ]
+    },
+    {
+      "name": "document-properties-symbolic",
+      "icon": "file-settings",
+      "targets": []
+    },
+    {
+      "name": "documentation-symbolic",
+      "icon": "file",
+      "targets": [
+        "actions/symbolic/document-page-setup-symbolic.svg",
+        "actions/symbolic/document-properties-symbolic.svg",
+        "actions/symbolic/document-revert-rtl-symbolic.svg",
+        "actions/symbolic/document-revert-symbolic.svg",
+        "actions/symbolic/documentation-symbolic.svg",
+        "actions/symbolic/nautilus-file-chooser-options-symbolic.svg",
+        "actions/symbolic/twitter-profile-symbolic.svg",
+        "emblems/symbolic/emblem-documents-symbolic.svg"
+      ]
+    },
+    {
+      "name": "download-symbolic",
+      "icon": "download",
+      "targets": [
+        "actions/symbolic/browser-download-symbolic.svg",
+        "actions/symbolic/document-import-rtl-symbolic.svg",
+        "actions/symbolic/download-symbolic.svg",
+        "actions/symbolic/mail-mark-important-symbolic.svg"
+      ]
+    },
+    {
+      "name": "draw-arrow",
+      "icon": "arrow-up-right",
+      "targets": [
+        "actions/symbolic/draw-arrow.svg"
+      ]
+    },
+    {
+      "name": "draw-arrow-back",
+      "icon": "arrow-left",
+      "targets": [
+        "actions/symbolic/back.svg",
+        "actions/symbolic/draw-arrow-back.svg",
+        "actions/symbolic/go-left.svg",
+        "actions/symbolic/go-previous.svg",
+        "actions/symbolic/gtk-go-forward-rtl.svg"
+      ]
+    },
+    {
+      "name": "draw-arrow-down",
+      "icon": "arrow-down",
+      "targets": [
+        "actions/symbolic/draw-arrow-down.svg"
+      ]
+    },
+    {
+      "name": "draw-arrow-forward",
+      "icon": "arrow-right",
+      "targets": [
+        "actions/symbolic/draw-arrow-forward.svg",
+        "actions/symbolic/go-next.svg",
+        "actions/symbolic/go-right.svg",
+        "actions/symbolic/gtk-go-forward-ltr.svg"
+      ]
+    },
+    {
+      "name": "draw-arrow-up",
+      "icon": "arrow-up",
+      "targets": [
+        "actions/symbolic/draw-arrow-up.svg"
+      ]
+    },
+    {
+      "name": "edit-copy-symbolic",
+      "icon": "copy",
+      "targets": []
+    },
+    {
+      "name": "edit-cut-symbolic",
+      "icon": "scissors",
+      "targets": [
+        "status/symbolic/media-playlist-consecutive-rtl-symbolic.svg",
+        "status/symbolic/media-playlist-consecutive-symbolic.svg"
+      ]
+    },
+    {
+      "name": "edit-delete-symbolic",
+      "icon": "trash",
+      "targets": [
+        "actions/symbolic/format-text-remove-formatting-symbolic.svg",
+        "actions/symbolic/list-remove-all-symbolic.svg",
+        "actions/symbolic/list-remove-symbolic.svg",
+        "actions/symbolic/ymuse-delete-symbolic.svg",
+        "actions/symbolic/ymuse-delete-track-symbolic.svg",
+        "status/symbolic/user-trash-full-symbolic.svg"
+      ]
+    },
+    {
+      "name": "edit-find-mail",
+      "icon": "search",
+      "targets": [
+        "actions/symbolic/cm_search.svg",
+        "actions/symbolic/edit-find-mail.svg",
+        "actions/symbolic/edit-find-project.svg",
+        "actions/symbolic/edit-find-symbolic.svg",
+        "actions/symbolic/edit-find.svg",
+        "actions/symbolic/file-search-symbolic.svg",
+        "actions/symbolic/filefind.svg",
+        "actions/symbolic/find.svg",
+        "actions/symbolic/gtk-find.svg",
+        "actions/symbolic/search-icon.svg",
+        "actions/symbolic/search-symbolic.svg",
+        "actions/symbolic/search.svg",
+        "actions/symbolic/spacefm-find.svg",
+        "actions/symbolic/stock_search.svg",
+        "actions/symbolic/system-search-symbolic.svg",
+        "actions/symbolic/system-search.svg",
+        "actions/symbolic/ymuse-search-symbolic.svg"
+      ]
+    },
+    {
+      "name": "edit-paste",
+      "icon": "clipboard-copy",
+      "targets": [
+        "actions/symbolic/edit-paste.svg"
+      ]
+    },
+    {
+      "name": "edit-redo-symbolic",
+      "icon": "arrow-forward-up",
+      "targets": []
+    },
+    {
+      "name": "edit-select-all-symbolic",
+      "icon": "checkbox",
+      "targets": []
+    },
+    {
+      "name": "edit-select-symbolic",
+      "icon": "pointer",
+      "targets": []
+    },
+    {
+      "name": "edit-symbolic",
+      "icon": "pencil",
+      "targets": [
+        "actions/symbolic/edit-clear-all-symbolic.svg",
+        "actions/symbolic/edit-clear-rtl-symbolic.svg",
+        "actions/symbolic/edit-clear-symbolic.svg",
+        "actions/symbolic/edit-cut-symbolic.svg",
+        "actions/symbolic/edit-delete-symbolic.svg",
+        "actions/symbolic/edit-find-replace-symbolic.svg",
+        "actions/symbolic/edit-none-symbolic.svg",
+        "actions/symbolic/edit-paste-symbolic.svg",
+        "actions/symbolic/edit-redo-rtl-symbolic.svg",
+        "actions/symbolic/edit-redo-symbolic.svg",
+        "actions/symbolic/edit-select-all-symbolic.svg",
+        "actions/symbolic/edit-select-symbolic.svg",
+        "actions/symbolic/edit-symbolic.svg",
+        "actions/symbolic/edit-tag-symbolic.svg",
+        "actions/symbolic/edit-undo-rtl-symbolic.svg",
+        "actions/symbolic/edit-undo-symbolic.svg",
+        "actions/symbolic/ymuse-edit-symbolic.svg"
+      ]
+    },
+    {
+      "name": "edit-undo-symbolic",
+      "icon": "arrow-back-up",
+      "targets": []
+    },
+    {
+      "name": "emblem-shared-symbolic",
+      "icon": "share",
+      "targets": [
+        "emblems/symbolic/emblem-shared-symbolic.svg",
+        "status/symbolic/screen-shared-symbolic.svg"
+      ]
+    },
+    {
+      "name": "emoji-flags-symbolic",
+      "icon": "flag",
+      "targets": [
+        "categories/symbolic/emoji-flags-symbolic.svg"
+      ]
+    },
+    {
+      "name": "error-symbolic",
+      "icon": "alert-circle",
+      "targets": [
+        "actions/symbolic/error-correct-symbolic.svg",
+        "actions/symbolic/error-symbolic.svg",
+        "status/symbolic/arch-error-symbolic.svg",
+        "status/symbolic/dialog-error-symbolic.svg",
+        "status/symbolic/network-cellular-error-symbolic.svg",
+        "status/symbolic/network-error-symbolic.svg",
+        "status/symbolic/network-vpn-error-symbolic.svg",
+        "status/symbolic/process-error-symbolic.svg"
+      ]
+    },
+    {
+      "name": "eye-off",
+      "icon": "eye-off",
+      "targets": [
+        "actions/symbolic/hint.svg",
+        "actions/symbolic/view-hidden.svg"
+      ]
+    },
+    {
+      "name": "file-badge",
+      "icon": "file-certificate",
+      "targets": [
+        "places/64/certificate-server.svg"
+      ]
+    },
+    {
+      "name": "file-down",
+      "icon": "file-download",
+      "targets": [
+        "actions/symbolic/document-download.svg",
+        "actions/symbolic/document-export-ocal.svg",
+        "actions/symbolic/document-export-symbolic-rtl.svg",
+        "actions/symbolic/document-export-symbolic.svg",
+        "actions/symbolic/document-export-table.svg",
+        "actions/symbolic/document-export.svg"
+      ]
+    },
+    {
+      "name": "file-up",
+      "icon": "file-upload",
+      "targets": [
+        "actions/symbolic/document-import-ocal.svg",
+        "actions/symbolic/document-import-symbolic-rtl.svg",
+        "actions/symbolic/document-import-symbolic.svg",
+        "actions/symbolic/document-import.svg"
+      ]
+    },
+    {
+      "name": "firewall-applet-shields_up-symbolic",
+      "icon": "shield",
+      "targets": [
+        "status/symbolic/firewall-applet-shields_up-symbolic.svg"
+      ]
+    },
+    {
+      "name": "fm-details",
+      "icon": "list-details",
+      "targets": [
+        "actions/symbolic/fm-details.svg",
+        "actions/symbolic/view-list-details.svg",
+        "actions/symbolic/view_detailed.svg"
+      ]
+    },
+    {
+      "name": "fm-icons",
+      "icon": "layout-grid",
+      "targets": [
+        "actions/symbolic/fm-icons.svg",
+        "actions/symbolic/view-icon.svg",
+        "actions/symbolic/view-list-icons.svg",
+        "actions/symbolic/view_icon.svg"
+      ]
+    },
+    {
+      "name": "folder",
+      "icon": "folder",
+      "targets": [
+        "places/24/folder.svg",
+        "places/24/inode-directory.svg",
+        "places/24/stock_older.svg"
+      ]
+    },
+    {
+      "name": "folder-development",
+      "icon": "braces",
+      "targets": [
+        "categories/symbolic/arc-list-code-symbolic.svg",
+        "places/24/folder-development.svg"
+      ]
+    },
+    {
+      "name": "folder-documents",
+      "icon": "files",
+      "targets": [
+        "places/24/folder-documents.svg"
+      ]
+    },
+    {
+      "name": "folder-documents-symbolic",
+      "icon": "files",
+      "targets": [
+        "places/24/folder-documents-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-downloads",
+      "icon": "download",
+      "targets": [
+        "places/24/folder-downloads.svg"
+      ]
+    },
+    {
+      "name": "folder-downloads-symbolic",
+      "icon": "download",
+      "targets": [
+        "places/24/folder-downloads-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-drag-accept-symbolic",
+      "icon": "folder-symlink",
+      "targets": [
+        "status/symbolic/folder-drag-accept-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-music",
+      "icon": "music",
+      "targets": [
+        "places/24/folder-music.svg"
+      ]
+    },
+    {
+      "name": "folder-music-symbolic",
+      "icon": "music",
+      "targets": [
+        "categories/symbolic/arc-list-music-symbolic.svg",
+        "places/24/folder-music-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-network",
+      "icon": "sitemap",
+      "targets": [
+        "places/24/folder-network.svg"
+      ]
+    },
+    {
+      "name": "folder-new-symbolic",
+      "icon": "folder-plus",
+      "targets": [
+        "actions/symbolic/folder-new-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-open",
+      "icon": "folder-open",
+      "targets": [
+        "places/24/folder-open.svg"
+      ]
+    },
+    {
+      "name": "folder-open-symbolic",
+      "icon": "folder-open",
+      "targets": [
+        "places/24/folder-open-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-pictures",
+      "icon": "photo",
+      "targets": [
+        "places/24/folder-pictures.svg"
+      ]
+    },
+    {
+      "name": "folder-pictures-symbolic",
+      "icon": "photo",
+      "targets": [
+        "places/24/folder-pictures-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-public",
+      "icon": "users",
+      "targets": [
+        "places/24/folder-public.svg",
+        "places/24/folder-publicshare.svg"
+      ]
+    },
+    {
+      "name": "folder-public-symbolic",
+      "icon": "users",
+      "targets": [
+        "places/24/folder-public-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-symbolic",
+      "icon": "folder",
+      "targets": [
+        "places/24/folder-symbolic.svg",
+        "places/24/inode-directory-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-templates",
+      "icon": "template",
+      "targets": [
+        "places/24/folder-templates.svg"
+      ]
+    },
+    {
+      "name": "folder-templates-symbolic",
+      "icon": "template",
+      "targets": [
+        "places/24/folder-templates-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-up",
+      "icon": "folder-up",
+      "targets": [
+        "actions/symbolic/albumfolder-importdir.svg",
+        "actions/symbolic/albumfolder-importdir2.svg"
+      ]
+    },
+    {
+      "name": "folder-videos",
+      "icon": "movie",
+      "targets": [
+        "places/24/folder-videos.svg"
+      ]
+    },
+    {
+      "name": "folder-videos-symbolic",
+      "icon": "movie",
+      "targets": [
+        "places/24/folder-videos-symbolic.svg"
+      ]
+    },
+    {
+      "name": "folder-visiting-symbolic",
+      "icon": "folder",
+      "targets": []
+    },
+    {
+      "name": "folders",
+      "icon": "folders",
+      "targets": [
+        "actions/symbolic/folder-copy.svg",
+        "actions/symbolic/stock_folder-copy.svg"
+      ]
+    },
+    {
+      "name": "format-justify-center-symbolic",
+      "icon": "align-center",
+      "targets": [
+        "actions/symbolic/format-justify-center-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-justify-fill-symbolic",
+      "icon": "align-justified",
+      "targets": [
+        "actions/symbolic/format-justify-fill-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-justify-left-symbolic",
+      "icon": "align-left",
+      "targets": [
+        "actions/symbolic/format-justify-left-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-justify-right-symbolic",
+      "icon": "align-right",
+      "targets": [
+        "actions/symbolic/format-justify-right-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-text-bold-symbolic",
+      "icon": "bold",
+      "targets": [
+        "actions/symbolic/format-text-bold-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-text-italic-symbolic",
+      "icon": "italic",
+      "targets": [
+        "actions/symbolic/format-text-italic-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-text-strikethrough-symbolic",
+      "icon": "strikethrough",
+      "targets": [
+        "actions/symbolic/format-text-strikethrough-symbolic.svg"
+      ]
+    },
+    {
+      "name": "format-text-underline-symbolic",
+      "icon": "underline",
+      "targets": [
+        "actions/symbolic/format-text-underline-symbolic.svg"
+      ]
+    },
+    {
+      "name": "gamepad-2",
+      "icon": "device-gamepad-2",
+      "targets": [
+        "places/24/folder-games-symbolic.svg",
+        "places/24/folder-games.svg"
+      ]
+    },
+    {
+      "name": "globe-symbolic",
+      "icon": "world",
+      "targets": [
+        "actions/symbolic/globe-symbolic.svg",
+        "actions/symbolic/internet-services-symbolic.svg",
+        "categories/16/applications-internet-symbolic.svg",
+        "categories/16/applications-internet.svg",
+        "categories/22/applications-internet-symbolic.svg",
+        "categories/22/applications-internet.svg",
+        "categories/symbolic/applications-internet-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-down-symbolic",
+      "icon": "arrow-down",
+      "targets": [
+        "actions/symbolic/go-down-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-first-symbolic",
+      "icon": "chevrons-left",
+      "targets": [
+        "actions/symbolic/go-first-rtl-symbolic.svg",
+        "actions/symbolic/go-first-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-home-symbolic",
+      "icon": "home",
+      "targets": [
+        "actions/symbolic/go-home-symbolic.svg",
+        "actions/symbolic/twitter-home-symbolic.svg",
+        "actions/symbolic/ymuse-home-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-jump-symbolic",
+      "icon": "arrows-move",
+      "targets": [
+        "actions/symbolic/go-jump-rtl-symbolic.svg",
+        "actions/symbolic/go-jump-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-last-symbolic",
+      "icon": "chevrons-right",
+      "targets": [
+        "actions/symbolic/go-last-rtl-symbolic.svg",
+        "actions/symbolic/go-last-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-next-symbolic",
+      "icon": "arrow-right",
+      "targets": [
+        "actions/symbolic/arrow-right-symbolic.svg",
+        "actions/symbolic/go-next-rtl-symbolic.svg",
+        "actions/symbolic/go-next-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-previous-symbolic",
+      "icon": "arrow-left",
+      "targets": [
+        "actions/symbolic/go-previous-rtl-symbolic.svg",
+        "actions/symbolic/go-previous-symbolic.svg"
+      ]
+    },
+    {
+      "name": "go-up-symbolic",
+      "icon": "arrow-up",
+      "targets": [
+        "actions/symbolic/go-up-symbolic.svg"
+      ]
+    },
+    {
+      "name": "help-about-symbolic",
+      "icon": "info-circle",
+      "targets": [
+        "actions/symbolic/info-outline-symbolic.svg",
+        "status/symbolic/dialog-information-symbolic.svg"
+      ]
+    },
+    {
+      "name": "help-contents-symbolic",
+      "icon": "book",
+      "targets": []
+    },
+    {
+      "name": "help-faq-symbolic",
+      "icon": "help-circle",
+      "targets": [
+        "actions/symbolic/help-about-symbolic.svg",
+        "actions/symbolic/help-donate-symbolic.svg",
+        "actions/symbolic/help-faq-symbolic.svg",
+        "actions/symbolic/help-info-symbolic.svg",
+        "categories/symbolic/system-help-symbolic.svg",
+        "status/symbolic/dialog-question-symbolic.svg"
+      ]
+    },
+    {
+      "name": "highlighter",
+      "icon": "highlight",
+      "targets": [
+        "actions/symbolic/draw-highlight.svg"
+      ]
+    },
+    {
+      "name": "hourglass",
+      "icon": "hourglass",
+      "targets": [
+        "places/24/folder-temp-symbolic.svg",
+        "places/24/folder-temp.svg"
+      ]
+    },
+    {
+      "name": "image-crop-symbolic",
+      "icon": "crop",
+      "targets": [
+        "actions/symbolic/image-crop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "image-up",
+      "icon": "photo-up",
+      "targets": [
+        "actions/symbolic/albumfolder-importimages.svg"
+      ]
+    },
+    {
+      "name": "input-mouse-symbolic",
+      "icon": "mouse",
+      "targets": [
+        "devices/symbolic/input-mouse-symbolic.svg"
+      ]
+    },
+    {
+      "name": "insert-image-symbolic",
+      "icon": "photo-plus",
+      "targets": [
+        "actions/symbolic/insert-image-symbolic.svg"
+      ]
+    },
+    {
+      "name": "insert-text-symbolic",
+      "icon": "typography",
+      "targets": [
+        "actions/symbolic/insert-text-symbolic.svg"
+      ]
+    },
+    {
+      "name": "keyboard-symbolic",
+      "icon": "keyboard",
+      "targets": [
+        "actions/symbolic/keyboard-caps-lock-filled-symbolic.svg",
+        "actions/symbolic/keyboard-enter-symbolic.svg",
+        "actions/symbolic/keyboard-hide-symbolic.svg",
+        "actions/symbolic/keyboard-layout-filled-symbolic.svg",
+        "actions/symbolic/keyboard-shift-filled-symbolic.svg",
+        "devices/symbolic/input-keyboard-symbolic.svg",
+        "devices/symbolic/keyboard-symbolic.svg",
+        "status/symbolic/input-keyboard-battery-symbolic.svg",
+        "status/symbolic/input-keyboard-brightness-symbolic.svg",
+        "status/symbolic/input-keyboard-color-symbolic.svg",
+        "status/symbolic/keyboard-battery-good-symbolic.svg",
+        "status/symbolic/keyboard-brightness-symbolic.svg",
+        "status/symbolic/keyboard-layout-symbolic.svg"
+      ]
+    },
+    {
+      "name": "klipper-symbolic",
+      "icon": "clipboard-list",
+      "targets": [
+        "status/symbolic/clipboard-symbolic.svg",
+        "status/symbolic/klipper-symbolic.svg"
+      ]
+    },
+    {
+      "name": "laptop-symbolic",
+      "icon": "device-laptop",
+      "targets": [
+        "devices/symbolic/laptop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "library-big",
+      "icon": "books",
+      "targets": [
+        "places/64/library-music.svg"
+      ]
+    },
+    {
+      "name": "link",
+      "icon": "link",
+      "targets": [
+        "actions/symbolic/insert-link-symbolic.svg",
+        "actions/symbolic/insert-link.svg",
+        "actions/symbolic/itmages-copy-link.svg"
+      ]
+    },
+    {
+      "name": "link-2",
+      "icon": "link",
+      "targets": [
+        "actions/symbolic/url-copy.svg"
+      ]
+    },
+    {
+      "name": "link-symbolic",
+      "icon": "link",
+      "targets": [
+        "actions/symbolic/link-symbolic.svg",
+        "emblems/symbolic/emblem-symbolic-link-symbolic.svg"
+      ]
+    },
+    {
+      "name": "list-remove-symbolic",
+      "icon": "minus",
+      "targets": []
+    },
+    {
+      "name": "lock",
+      "icon": "lock",
+      "targets": [
+        "actions/symbolic/cards-block-symbolic.svg",
+        "actions/symbolic/changes-prevent.svg",
+        "actions/symbolic/lock-symbolic.svg",
+        "actions/symbolic/lock.svg",
+        "actions/symbolic/system-lock-screen-symbolic.svg",
+        "actions/symbolic/system-lock-screen.svg",
+        "emblems/symbolic/emblem-readonly-symbolic.svg",
+        "status/symbolic/audio-volume-muted-blocking-symbolic.svg",
+        "status/symbolic/auth-sim-locked-symbolic.svg",
+        "status/symbolic/caps-lock-symbolic.svg",
+        "status/symbolic/capslock-disabled-symbolic.svg",
+        "status/symbolic/capslock-enabled-symbolic.svg",
+        "status/symbolic/lock-symbolic.svg",
+        "status/symbolic/lock.svg",
+        "status/symbolic/num-lock-symbolic.svg",
+        "status/symbolic/numlock-disabled-symbolic.svg",
+        "status/symbolic/numlock-enabled-symbolic.svg",
+        "status/symbolic/rotation-locked-symbolic.svg",
+        "status/symbolic/security-high-symbolic.svg",
+        "status/symbolic/security-high.svg"
+      ]
+    },
+    {
+      "name": "mail",
+      "icon": "mail",
+      "targets": [
+        "places/24/folder-mail-symbolic.svg",
+        "places/24/folder-mail.svg"
+      ]
+    },
+    {
+      "name": "mail-attachment-symbolic",
+      "icon": "paperclip",
+      "targets": [
+        "actions/symbolic/mail-attachment-symbolic.svg"
+      ]
+    },
+    {
+      "name": "mail-flag-symbolic",
+      "icon": "mail",
+      "targets": [
+        "actions/symbolic/mail-flag-symbolic.svg",
+        "actions/symbolic/mail-forward-rtl-symbolic.svg",
+        "actions/symbolic/mail-mark-junk-symbolic.svg",
+        "actions/symbolic/mail-mark-notjunk-symbolic.svg",
+        "actions/symbolic/mail-mark-unread-symbolic.svg",
+        "actions/symbolic/mail-reply-all-rtl-symbolic.svg",
+        "actions/symbolic/mail-reply-all-symbolic.svg",
+        "actions/symbolic/mail-reply-rtl-symbolic.svg",
+        "actions/symbolic/mail-spam-symbolic.svg",
+        "status/symbolic/mail-read-symbolic.svg",
+        "status/symbolic/mail-replied-symbolic.svg",
+        "status/symbolic/mail-unread-symbolic.svg"
+      ]
+    },
+    {
+      "name": "mail-forward-symbolic",
+      "icon": "arrow-forward",
+      "targets": [
+        "actions/symbolic/mail-forward-symbolic.svg"
+      ]
+    },
+    {
+      "name": "mail-mark-read-symbolic",
+      "icon": "mail-opened",
+      "targets": [
+        "actions/symbolic/mail-mark-read-symbolic.svg"
+      ]
+    },
+    {
+      "name": "mail-message-new-symbolic",
+      "icon": "mail-plus",
+      "targets": []
+    },
+    {
+      "name": "mail-reply-symbolic",
+      "icon": "arrow-back",
+      "targets": [
+        "actions/symbolic/mail-reply-symbolic.svg"
+      ]
+    },
+    {
+      "name": "maximize",
+      "icon": "square",
+      "targets": [
+        "actions/symbolic/window-maximize-rtl-symbolic.svg",
+        "actions/symbolic/window-maximize-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-eject-symbolic",
+      "icon": "disc",
+      "targets": [
+        "actions/symbolic/media-eject-symbolic.svg",
+        "devices/symbolic/drive-optical-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-record-symbolic",
+      "icon": "circle",
+      "targets": [
+        "actions/symbolic/media-record-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-removable-symbolic",
+      "icon": "usb",
+      "targets": [
+        "devices/symbolic/drive-removable-media-pendrive-symbolic.svg",
+        "devices/symbolic/drive-removable-media-symbolic.svg",
+        "devices/symbolic/drive-removable-media-usb-pendrive-symbolic.svg",
+        "devices/symbolic/drive-removable-media-usb-symbolic.svg",
+        "devices/symbolic/media-removable-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-seek-backward-symbolic",
+      "icon": "player-track-prev",
+      "targets": [
+        "actions/symbolic/media-seek-backward-rtl-symbolic.svg",
+        "actions/symbolic/media-seek-backward-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-seek-forward-symbolic",
+      "icon": "player-track-next",
+      "targets": [
+        "actions/symbolic/media-seek-forward-rtl-symbolic.svg",
+        "actions/symbolic/media-seek-forward-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-skip-backward-symbolic",
+      "icon": "player-skip-back",
+      "targets": [
+        "actions/symbolic/media-skip-backward-rtl-symbolic.svg",
+        "actions/symbolic/media-skip-backward-symbolic.svg"
+      ]
+    },
+    {
+      "name": "media-skip-forward-symbolic",
+      "icon": "player-skip-forward",
+      "targets": [
+        "actions/symbolic/media-skip-forward-rtl-symbolic.svg",
+        "actions/symbolic/media-skip-forward-symbolic.svg"
+      ]
+    },
+    {
+      "name": "message-circle",
+      "icon": "message-circle",
+      "targets": [
+        "categories/symbolic/arc-list-chat-symbolic.svg"
+      ]
+    },
+    {
+      "name": "message-circle-question-mark",
+      "icon": "message-circle-question",
+      "targets": []
+    },
+    {
+      "name": "microphone-sensitivity-high-symbolic",
+      "icon": "microphone",
+      "targets": [
+        "status/symbolic/microphone-sensitivity-high-symbolic.svg"
+      ]
+    },
+    {
+      "name": "microphone-sensitivity-muted-symbolic",
+      "icon": "microphone-off",
+      "targets": [
+        "status/symbolic/microphone-sensitivity-muted-symbolic.svg"
+      ]
+    },
+    {
+      "name": "minimize",
+      "icon": "minus",
+      "targets": [
+        "actions/symbolic/window-minimize-symbolic.svg"
+      ]
+    },
+    {
+      "name": "monitor-down",
+      "icon": "device-desktop-down",
+      "targets": [
+        "actions/symbolic/download-amarok.svg",
+        "actions/symbolic/download.svg",
+        "actions/symbolic/edit-download.svg"
+      ]
+    },
+    {
+      "name": "network-server-symbolic",
+      "icon": "server",
+      "targets": [
+        "devices/symbolic/network-server-symbolic.svg"
+      ]
+    },
+    {
+      "name": "network-vpn-symbolic",
+      "icon": "sitemap",
+      "targets": [
+        "actions/symbolic/network-vpn-symbolic.svg",
+        "categories/16/applications-network-symbolic.svg",
+        "categories/16/applications-network.svg",
+        "categories/22/applications-network-symbolic.svg",
+        "categories/22/applications-network.svg",
+        "categories/symbolic/applications-network-symbolic.svg",
+        "status/symbolic/network-acquiring-symbolic.svg"
+      ]
+    },
+    {
+      "name": "network-wired",
+      "icon": "route",
+      "targets": [
+        "actions/symbolic/preferences-system-network.svg"
+      ]
+    },
+    {
+      "name": "network-wired-disconnected-symbolic",
+      "icon": "plug-connected-x",
+      "targets": [
+        "status/symbolic/network-wired-disconnected-symbolic.svg"
+      ]
+    },
+    {
+      "name": "network-wired-error-symbolic",
+      "icon": "wifi-off",
+      "targets": [
+        "status/symbolic/network-wired-error-symbolic.svg"
+      ]
+    },
+    {
+      "name": "network-wireless-0-symbolic",
+      "icon": "wifi-0",
+      "targets": []
+    },
+    {
+      "name": "network-wireless-20-symbolic",
+      "icon": "wifi-1",
+      "targets": []
+    },
+    {
+      "name": "network-wireless-40-symbolic",
+      "icon": "wifi-1",
+      "targets": []
+    },
+    {
+      "name": "network-wireless-60-symbolic",
+      "icon": "wifi-2",
+      "targets": []
+    },
+    {
+      "name": "network-wireless-80-symbolic",
+      "icon": "wifi-2",
+      "targets": []
+    },
+    {
+      "name": "network-wireless-symbolic",
+      "icon": "wifi",
+      "targets": []
+    },
+    {
+      "name": "network-workgroup",
+      "icon": "sitemap",
+      "targets": [
+        "places/24/network-workgroup.svg",
+        "places/64/network-workgroup.svg"
+      ]
+    },
+    {
+      "name": "network-workgroup-symbolic",
+      "icon": "sitemap",
+      "targets": [
+        "places/24/network-workgroup-symbolic.svg"
+      ]
+    },
+    {
+      "name": "normalize",
+      "icon": "layers-union",
+      "targets": [
+        "actions/symbolic/window-restore-rtl-symbolic.svg",
+        "actions/symbolic/window-restore-symbolic.svg"
+      ]
+    },
+    {
+      "name": "notification-disabled-symbolic",
+      "icon": "bell-off",
+      "targets": [
+        "status/symbolic/notification-disabled-symbolic.svg",
+        "status/symbolic/notifications-disabled-symbolic.svg"
+      ]
+    },
+    {
+      "name": "notification-new-symbolic",
+      "icon": "bell-ringing",
+      "targets": [
+        "status/symbolic/notification-new-symbolic.svg"
+      ]
+    },
+    {
+      "name": "notification-symbolic",
+      "icon": "bell",
+      "targets": [
+        "actions/symbolic/preferences-desktop-notification.svg",
+        "status/symbolic/notification-symbolic.svg",
+        "status/symbolic/notifications-symbolic.svg"
+      ]
+    },
+    {
+      "name": "object-flip-horizontal-symbolic",
+      "icon": "flip-horizontal",
+      "targets": [
+        "actions/symbolic/object-flip-horizontal-symbolic.svg"
+      ]
+    },
+    {
+      "name": "object-flip-vertical-symbolic",
+      "icon": "flip-vertical",
+      "targets": [
+        "actions/symbolic/object-flip-vertical-symbolic.svg"
+      ]
+    },
+    {
+      "name": "open-menu",
+      "icon": "dots-vertical",
+      "targets": []
+    },
+    {
+      "name": "open-menu-22",
+      "icon": "dots-vertical",
+      "targets": [
+        "actions/22/open-menu.svg"
+      ]
+    },
+    {
+      "name": "open-menu-symbolic",
+      "icon": "folder-open",
+      "targets": [
+        "actions/symbolic/document-open-recent-symbolic.svg",
+        "actions/symbolic/document-open-symbolic.svg",
+        "status/symbolic/folder-open-symbolic.svg",
+        "status/symbolic/folder-visiting-symbolic.svg"
+      ]
+    },
+    {
+      "name": "package-plus",
+      "icon": "package-import",
+      "targets": [
+        "actions/symbolic/extension-symbolic.svg"
+      ]
+    },
+    {
+      "name": "peek-desktop-symbolic",
+      "icon": "grid-dots",
+      "targets": [
+        "actions/symbolic/peek-desktop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "peek-desktop-symbolic-22",
+      "icon": "grid-dots",
+      "targets": [
+        "actions/22/peek-desktop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "phone-symbolic",
+      "icon": "device-mobile",
+      "targets": [
+        "devices/symbolic/audio-input-microphone-symbolic.svg",
+        "devices/symbolic/microphone-symbolic.svg",
+        "devices/symbolic/phone-apple-iphone-symbolic.svg",
+        "devices/symbolic/phone-google-nexus-one-symbolic.svg",
+        "devices/symbolic/phone-htc-g1-white-symbolic.svg",
+        "devices/symbolic/phone-old-symbolic.svg",
+        "devices/symbolic/phone-palm-pre-symbolic.svg",
+        "devices/symbolic/phone-samsung-galaxy-s-symbolic.svg",
+        "devices/symbolic/phone-symbolic.svg",
+        "devices/symbolic/smartphone-symbolic.svg",
+        "status/symbolic/audio-input-microphone-high-symbolic.svg",
+        "status/symbolic/audio-input-microphone-low-symbolic.svg",
+        "status/symbolic/audio-input-microphone-medium-symbolic.svg",
+        "status/symbolic/audio-input-microphone-muted-symbolic.svg",
+        "status/symbolic/audio-volume-headphones-symbolic.svg",
+        "status/symbolic/audio-volume-muted-blocking-headphones-symbolic.svg",
+        "status/symbolic/audio-volume-muted-headphones-symbolic.svg",
+        "status/symbolic/microphone-disabled-symbolic.svg",
+        "status/symbolic/microphone-hardware-disabled-symbolic.svg",
+        "status/symbolic/microphone-sensitivity-low-symbolic.svg",
+        "status/symbolic/microphone-sensitivity-medium-symbolic.svg",
+        "status/symbolic/microphone-sensitivity-none-symbolic.svg"
+      ]
+    },
+    {
+      "name": "pin",
+      "icon": "pin",
+      "targets": [
+        "actions/symbolic/pin.svg",
+        "actions/symbolic/window-pin.svg"
+      ]
+    },
+    {
+      "name": "power-profile-balanced-symbolic",
+      "icon": "gauge",
+      "targets": [
+        "status/symbolic/battery-000-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-005-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-010-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-015-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-020-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-025-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-030-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-035-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-040-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-045-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-050-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-055-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-060-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-065-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-070-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-075-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-080-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-085-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-090-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-095-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-100-profile-balanced-symbolic.svg",
+        "status/symbolic/battery-profile-balanced-symbolic.svg",
+        "status/symbolic/power-profile-balanced-symbolic.svg"
+      ]
+    },
+    {
+      "name": "power-profile-performance-symbolic",
+      "icon": "bolt",
+      "targets": [
+        "status/symbolic/battery-000-profile-performance-symbolic.svg",
+        "status/symbolic/battery-005-profile-performance-symbolic.svg",
+        "status/symbolic/battery-010-profile-performance-symbolic.svg",
+        "status/symbolic/battery-015-profile-performance-symbolic.svg",
+        "status/symbolic/battery-020-profile-performance-symbolic.svg",
+        "status/symbolic/battery-025-profile-performance-symbolic.svg",
+        "status/symbolic/battery-030-profile-performance-symbolic.svg",
+        "status/symbolic/battery-035-profile-performance-symbolic.svg",
+        "status/symbolic/battery-040-profile-performance-symbolic.svg",
+        "status/symbolic/battery-045-profile-performance-symbolic.svg",
+        "status/symbolic/battery-050-profile-performance-symbolic.svg",
+        "status/symbolic/battery-055-profile-performance-symbolic.svg",
+        "status/symbolic/battery-060-profile-performance-symbolic.svg",
+        "status/symbolic/battery-065-profile-performance-symbolic.svg",
+        "status/symbolic/battery-070-profile-performance-symbolic.svg",
+        "status/symbolic/battery-075-profile-performance-symbolic.svg",
+        "status/symbolic/battery-080-profile-performance-symbolic.svg",
+        "status/symbolic/battery-085-profile-performance-symbolic.svg",
+        "status/symbolic/battery-090-profile-performance-symbolic.svg",
+        "status/symbolic/battery-095-profile-performance-symbolic.svg",
+        "status/symbolic/battery-100-profile-performance-symbolic.svg",
+        "status/symbolic/battery-profile-performance-symbolic.svg",
+        "status/symbolic/power-profile-performance-symbolic.svg"
+      ]
+    },
+    {
+      "name": "power-profile-powersave-symbolic",
+      "icon": "leaf",
+      "targets": [
+        "status/symbolic/battery-000-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-005-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-010-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-015-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-020-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-025-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-030-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-035-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-040-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-045-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-050-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-055-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-060-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-065-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-070-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-075-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-080-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-085-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-090-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-095-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-100-profile-powersave-symbolic.svg",
+        "status/symbolic/battery-profile-powersave-symbolic.svg",
+        "status/symbolic/power-profile-power-saver-symbolic.svg",
+        "status/symbolic/power-profile-powersave-symbolic.svg"
+      ]
+    },
+    {
+      "name": "preferences-other-symbolic",
+      "icon": "adjustments-horizontal",
+      "targets": [
+        "actions/symbolic/preferences-other-symbolic.svg",
+        "categories/symbolic/credentials-preferences-symbolic.svg"
+      ]
+    },
+    {
+      "name": "printer",
+      "icon": "printer",
+      "targets": [
+        "places/24/folder-print-symbolic.svg",
+        "places/24/folder-print.svg"
+      ]
+    },
+    {
+      "name": "printer-symbolic",
+      "icon": "printer",
+      "targets": [
+        "actions/symbolic/document-print-preview-symbolic.svg",
+        "actions/symbolic/document-print-symbolic.svg",
+        "devices/symbolic/auth-fingerprint-symbolic.svg",
+        "devices/symbolic/printer-network-symbolic.svg",
+        "devices/symbolic/printer-symbolic.svg",
+        "status/symbolic/printer-error-symbolic.svg",
+        "status/symbolic/printer-printing-symbolic.svg",
+        "status/symbolic/printer-warning-symbolic.svg"
+      ]
+    },
+    {
+      "name": "process-working-symbolic",
+      "icon": "loader",
+      "targets": [
+        "status/symbolic/process-working-symbolic.svg"
+      ]
+    },
+    {
+      "name": "puzzle",
+      "icon": "puzzle",
+      "targets": [
+        "actions/symbolic/plugins-symbolic.svg"
+      ]
+    },
+    {
+      "name": "radio-symbolic",
+      "icon": "broadcast",
+      "targets": [
+        "status/symbolic/radio-symbolic.svg"
+      ]
+    },
+    {
+      "name": "rows-2",
+      "icon": "layout-rows",
+      "targets": [
+        "actions/symbolic/view-split-top-bottom-symbolic.svg",
+        "actions/symbolic/view-split-top-bottom.svg"
+      ]
+    },
+    {
+      "name": "save-as",
+      "icon": "device-floppy",
+      "targets": []
+    },
+    {
+      "name": "scanner-symbolic",
+      "icon": "scan",
+      "targets": [
+        "actions/symbolic/qrscanner-symbolic.svg",
+        "devices/symbolic/scanner-symbolic.svg"
+      ]
+    },
+    {
+      "name": "search-symbolic",
+      "icon": "search",
+      "targets": [
+        "actions/symbolic/category-search-symbolic.svg",
+        "actions/symbolic/find-location-symbolic.svg",
+        "actions/symbolic/nautilus-folder-search-symbolic.svg",
+        "actions/symbolic/nautilus-search-filters-symbolic.svg",
+        "actions/symbolic/xapp-search-entire-word-symbolic.svg",
+        "actions/symbolic/xapp-search-wrap-symbolic.svg"
+      ]
+    },
+    {
+      "name": "semi-starred-symbolic",
+      "icon": "star-half",
+      "targets": [
+        "status/symbolic/semi-starred-symbolic.svg"
+      ]
+    },
+    {
+      "name": "send-to-symbolic",
+      "icon": "send",
+      "targets": [
+        "actions/symbolic/document-send-symbolic.svg",
+        "actions/symbolic/mail-reply-sender-rtl-symbolic.svg",
+        "actions/symbolic/mail-reply-sender-symbolic.svg",
+        "actions/symbolic/mail-send-receive-symbolic.svg",
+        "actions/symbolic/mail-send-symbolic.svg",
+        "actions/symbolic/send-to-symbolic.svg"
+      ]
+    },
+    {
+      "name": "server",
+      "icon": "server",
+      "targets": [
+        "places/64/network-server.svg"
+      ]
+    },
+    {
+      "name": "session-properties-symbolic",
+      "icon": "user-cog",
+      "targets": [
+        "actions/symbolic/session-properties-symbolic.svg"
+      ]
+    },
+    {
+      "name": "share",
+      "icon": "share-2",
+      "targets": [
+        "actions/symbolic/document-share-symbolic.svg",
+        "actions/symbolic/document-share.svg",
+        "actions/symbolic/emblem-shared-symbolic.svg"
+      ]
+    },
+    {
+      "name": "show-desktop-symbolic",
+      "icon": "layout-rows",
+      "targets": [
+        "actions/symbolic/show-desktop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "sidebar-hide-symbolic",
+      "icon": "layout-sidebar-left-collapse",
+      "targets": [
+        "actions/symbolic/sidebar-hide-symbolic.svg"
+      ]
+    },
+    {
+      "name": "sidebar-show-symbolic",
+      "icon": "layout-sidebar",
+      "targets": [
+        "actions/symbolic/sidebar-show-symbolic.svg"
+      ]
+    },
+    {
+      "name": "square-terminal",
+      "icon": "terminal-2",
+      "targets": [
+        "apps/16/utilities-terminal.svg",
+        "apps/22/utilities-terminal.svg",
+        "apps/24/utilities-terminal.svg",
+        "apps/symbolic/utilities-terminal-symbolic.svg"
+      ]
+    },
+    {
+      "name": "star",
+      "icon": "star",
+      "targets": [
+        "places/64/favorites.svg"
+      ]
+    },
+    {
+      "name": "starred-symbolic",
+      "icon": "star",
+      "targets": [
+        "actions/symbolic/favorite-favorited-symbolic.svg",
+        "actions/symbolic/favorite-symbolic.svg",
+        "actions/symbolic/kstars_stars-symbolic.svg",
+        "actions/symbolic/pan-start-rtl-symbolic.svg",
+        "actions/symbolic/pan-start-symbolic.svg",
+        "actions/symbolic/selection-start-rtl-symbolic.svg",
+        "actions/symbolic/selection-start-symbolic.svg",
+        "actions/symbolic/system-restart-symbolic.svg",
+        "emblems/symbolic/emblem-favorite-symbolic.svg",
+        "emblems/symbolic/emblem-important-symbolic.svg",
+        "status/symbolic/semi-starred-rtl-symbolic.svg"
+      ]
+    },
+    {
+      "name": "system-log-out",
+      "icon": "logout",
+      "targets": [
+        "actions/symbolic/system-log-out-symbolic.svg",
+        "actions/symbolic/system-log-out.svg",
+        "status/symbolic/system-log-out-symbolic.svg"
+      ]
+    },
+    {
+      "name": "system-reboot",
+      "icon": "rotate-clockwise",
+      "targets": [
+        "actions/symbolic/system-reboot.svg",
+        "status/symbolic/software-updater-symbolic.svg",
+        "status/symbolic/system-reboot-symbolic.svg",
+        "status/symbolic/system-restart-panel.svg",
+        "status/symbolic/system-shutdown-panel-restart.svg"
+      ]
+    },
+    {
+      "name": "system-reboot-symbolic",
+      "icon": "rotate",
+      "targets": [
+        "actions/symbolic/system-reboot-symbolic.svg"
+      ]
+    },
+    {
+      "name": "system-run-symbolic",
+      "icon": "player-play",
+      "targets": [
+        "actions/symbolic/media-playback-pause-symbolic.svg",
+        "actions/symbolic/media-playback-start-rtl-symbolic.svg",
+        "actions/symbolic/media-playback-start-symbolic.svg",
+        "actions/symbolic/media-playback-stop-symbolic.svg",
+        "actions/symbolic/music-playlist-symbolic.svg",
+        "actions/symbolic/system-run-symbolic.svg",
+        "actions/symbolic/xapp-prefs-display-symbolic.svg",
+        "actions/symbolic/ymuse-now-playing-symbolic.svg",
+        "actions/symbolic/ymuse-play-symbolic.svg",
+        "devices/symbolic/display-projector-symbolic.svg",
+        "devices/symbolic/multimedia-player-apple-ipod-touch-symbolic.svg",
+        "devices/symbolic/multimedia-player-symbolic.svg",
+        "devices/symbolic/video-display-symbolic.svg",
+        "devices/symbolic/video-joined-displays-symbolic.svg",
+        "devices/symbolic/video-single-display-symbolic.svg",
+        "status/symbolic/display-brightness-high-symbolic.svg",
+        "status/symbolic/display-brightness-low-symbolic.svg",
+        "status/symbolic/display-brightness-medium-symbolic.svg",
+        "status/symbolic/display-brightness-off-symbolic.svg",
+        "status/symbolic/display-brightness-symbolic.svg",
+        "status/symbolic/gser-icon-playing-symbolic.svg",
+        "status/symbolic/media-playback-playing-symbolic.svg",
+        "status/symbolic/media-playlist-no-repeat-symbolic.svg",
+        "status/symbolic/media-playlist-no-shuffle-rtl-symbolic.svg",
+        "status/symbolic/media-playlist-no-shuffle-symbolic.svg",
+        "status/symbolic/media-playlist-repeat-one-rtl-symbolic.svg",
+        "status/symbolic/media-playlist-repeat-one-symbolic.svg",
+        "status/symbolic/media-playlist-repeat-rtl-symbolic.svg",
+        "status/symbolic/media-playlist-repeat-song-rtl-symbolic.svg",
+        "status/symbolic/media-playlist-repeat-song-symbolic.svg",
+        "status/symbolic/media-playlist-repeat-symbolic.svg",
+        "status/symbolic/media-playlist-shuffle-rtl-symbolic.svg",
+        "status/symbolic/media-playlist-shuffle-symbolic.svg"
+      ]
+    },
+    {
+      "name": "system-shutdown",
+      "icon": "power",
+      "targets": [
+        "actions/symbolic/system-shutdown-symbolic.svg",
+        "actions/symbolic/system-shutdown.svg",
+        "devices/symbolic/uninterruptible-power-supply-symbolic.svg",
+        "status/symbolic/system-shutdown-panel.svg",
+        "status/symbolic/system-shutdown-symbolic.svg"
+      ]
+    },
+    {
+      "name": "system-suspend",
+      "icon": "moon",
+      "targets": [
+        "actions/symbolic/system-suspend-hibernate-symbolic.svg",
+        "actions/symbolic/system-suspend-symbolic.svg",
+        "actions/symbolic/system-suspend.svg",
+        "status/symbolic/system-sleep-symbolic.svg",
+        "status/symbolic/system-suspend-symbolic.svg"
+      ]
+    },
+    {
+      "name": "system-users",
+      "icon": "users",
+      "targets": [
+        "actions/symbolic/system-switch-user-symbolic.svg",
+        "actions/symbolic/system-switch-user.svg",
+        "actions/symbolic/system-users.svg",
+        "status/symbolic/system-switch-user-symbolic.svg",
+        "status/symbolic/system-switch-user.svg"
+      ]
+    },
+    {
+      "name": "tab-close-symbolic",
+      "icon": "x",
+      "targets": [
+        "actions/symbolic/tab-close-symbolic.svg"
+      ]
+    },
+    {
+      "name": "tab-new-symbolic",
+      "icon": "file-plus",
+      "targets": [
+        "actions/symbolic/add-files-to-archive-symbolic.svg",
+        "actions/symbolic/address-book-new-symbolic.svg",
+        "actions/symbolic/appointment-new-symbolic.svg",
+        "actions/symbolic/bookmark-new-symbolic.svg",
+        "actions/symbolic/chat-message-new-symbolic.svg",
+        "actions/symbolic/contact-new-symbolic.svg",
+        "actions/symbolic/document-new-symbolic.svg",
+        "actions/symbolic/list-add-symbolic.svg",
+        "actions/symbolic/mail-message-new-symbolic.svg",
+        "actions/symbolic/new-window-symbolic.svg",
+        "actions/symbolic/star-new-symbolic.svg",
+        "actions/symbolic/tab-new-symbolic.svg",
+        "actions/symbolic/view-pim-news-symbolic.svg",
+        "actions/symbolic/ymuse-add-symbolic.svg",
+        "status/symbolic/notification-disabled-new-symbolic.svg"
+      ]
+    },
+    {
+      "name": "table-properties",
+      "icon": "table",
+      "targets": []
+    },
+    {
+      "name": "tablet-symbolic",
+      "icon": "device-tablet",
+      "targets": [
+        "devices/symbolic/tablet-symbolic.svg"
+      ]
+    },
+    {
+      "name": "tag-symbolic",
+      "icon": "tag",
+      "targets": [
+        "actions/symbolic/tag-symbolic.svg",
+        "emblems/symbolic/tag-new-symbolic.svg",
+        "emblems/symbolic/tag-symbolic.svg",
+        "status/symbolic/freon-voltage-symbolic.svg",
+        "status/symbolic/sensors-voltage-symbolic.svg"
+      ]
+    },
+    {
+      "name": "timer-symbolic",
+      "icon": "stopwatch",
+      "targets": [
+        "status/symbolic/timer-symbolic.svg"
+      ]
+    },
+    {
+      "name": "tools-check-spelling-symbolic",
+      "icon": "text-spellcheck",
+      "targets": [
+        "actions/symbolic/tools-check-spelling-symbolic.svg"
+      ]
+    },
+    {
+      "name": "tv-symbolic",
+      "icon": "device-tv",
+      "targets": [
+        "devices/symbolic/tv-symbolic.svg"
+      ]
+    },
+    {
+      "name": "unlock",
+      "icon": "lock-open",
+      "targets": [
+        "actions/symbolic/unlock.svg"
+      ]
+    },
+    {
+      "name": "user-available-symbolic",
+      "icon": "user-check",
+      "targets": [
+        "status/symbolic/user-available-symbolic.svg"
+      ]
+    },
+    {
+      "name": "user-away-symbolic",
+      "icon": "user",
+      "targets": [
+        "actions/symbolic/system-user-list-symbolic.svg",
+        "actions/symbolic/system-user-prompt-symbolic.svg",
+        "status/symbolic/user-away-symbolic.svg",
+        "status/symbolic/user-idle-symbolic.svg",
+        "status/symbolic/user-invisible-symbolic.svg",
+        "status/symbolic/user-not-tracked-symbolic.svg",
+        "status/symbolic/user-offline-symbolic.svg",
+        "status/symbolic/user-status-pending-symbolic.svg"
+      ]
+    },
+    {
+      "name": "user-busy-symbolic",
+      "icon": "user-x",
+      "targets": [
+        "status/symbolic/user-busy-symbolic.svg"
+      ]
+    },
+    {
+      "name": "user-desktop",
+      "icon": "device-desktop",
+      "targets": [
+        "places/24/user-desktop.svg"
+      ]
+    },
+    {
+      "name": "user-desktop-symbolic",
+      "icon": "device-desktop",
+      "targets": [
+        "places/24/user-desktop-symbolic.svg"
+      ]
+    },
+    {
+      "name": "user-home",
+      "icon": "home",
+      "targets": [
+        "places/24/user-home.svg",
+        "places/64/user-home.svg"
+      ]
+    },
+    {
+      "name": "user-home-symbolic",
+      "icon": "home",
+      "targets": [
+        "places/24/folder-home-symbolic.svg",
+        "places/24/user-home-symbolic.svg"
+      ]
+    },
+    {
+      "name": "user-trash",
+      "icon": "trash",
+      "targets": [
+        "places/24/user-trash.svg",
+        "places/64/user-trash.svg"
+      ]
+    },
+    {
+      "name": "user-trash-symbolic",
+      "icon": "trash",
+      "targets": [
+        "places/24/user-trash-full-symbolic.svg",
+        "places/24/user-trash-full.svg",
+        "places/24/user-trash-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-dual-symbolic",
+      "icon": "layout-columns",
+      "targets": [
+        "actions/symbolic/view-dual-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-filter-symbolic",
+      "icon": "filter",
+      "targets": [
+        "actions/symbolic/image-filter-symbolic.svg",
+        "actions/symbolic/tool-filters-symbolic.svg",
+        "actions/symbolic/view-filter-symbolic.svg",
+        "actions/symbolic/ymuse-filter-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-grid-symbolic",
+      "icon": "border-all",
+      "targets": [
+        "actions/symbolic/view-grid-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-hidden-symbolic",
+      "icon": "eye-off",
+      "targets": [
+        "actions/symbolic/view-hidden-symbolic.svg",
+        "emblems/symbolic/emblem-unreadable-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-list-icons-symbolic",
+      "icon": "layout-grid",
+      "targets": [
+        "actions/symbolic/applications-all-symbolic.svg",
+        "actions/symbolic/view-list-icons-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-list-symbolic",
+      "icon": "list",
+      "targets": [
+        "actions/symbolic/view-list-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-list-tree-symbolic",
+      "icon": "binary-tree",
+      "targets": [
+        "actions/symbolic/view-list-tree-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-more-symbolic",
+      "icon": "dots",
+      "targets": [
+        "actions/symbolic/view-more-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-more-symbolic-22",
+      "icon": "dots",
+      "targets": [
+        "actions/22/view-more-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-pin-symbolic",
+      "icon": "eye",
+      "targets": [
+        "actions/symbolic/media-view-subtitles-symbolic.svg",
+        "actions/symbolic/view-app-grid-symbolic.svg",
+        "actions/symbolic/view-bottom-pane-symbolic.svg",
+        "actions/symbolic/view-column-symbolic.svg",
+        "actions/symbolic/view-compact-symbolic.svg",
+        "actions/symbolic/view-conceal-symbolic.svg",
+        "actions/symbolic/view-continuous-symbolic.svg",
+        "actions/symbolic/view-conversation-balloon-symbolic.svg",
+        "actions/symbolic/view-coverflow-symbolic.svg",
+        "actions/symbolic/view-filter-rtl-symbolic.svg",
+        "actions/symbolic/view-fullscreen-symbolic.svg",
+        "actions/symbolic/view-left-pane-rtl-symbolic.svg",
+        "actions/symbolic/view-left-pane-symbolic.svg",
+        "actions/symbolic/view-list-bullet-symbolic.svg",
+        "actions/symbolic/view-list-compact-symbolic.svg",
+        "actions/symbolic/view-list-images-symbolic.svg",
+        "actions/symbolic/view-list-ordered-symbolic.svg",
+        "actions/symbolic/view-list-video-symbolic.svg",
+        "actions/symbolic/view-mirror-symbolic.svg",
+        "actions/symbolic/view-more-horizontal-symbolic.svg",
+        "actions/symbolic/view-paged-symbolic.svg",
+        "actions/symbolic/view-pin-symbolic.svg",
+        "actions/symbolic/view-private-symbolic.svg",
+        "actions/symbolic/view-restore-symbolic.svg",
+        "actions/symbolic/view-reveal-symbolic.svg",
+        "actions/symbolic/view-right-pane-rtl-symbolic.svg",
+        "actions/symbolic/view-right-pane-symbolic.svg",
+        "actions/symbolic/view-sort-ascending-symbolic.svg",
+        "actions/symbolic/view-sort-descending-symbolic.svg",
+        "actions/symbolic/view-top-pane-symbolic.svg",
+        "actions/symbolic/xapp-prefs-preview-symbolic.svg",
+        "status/symbolic/view-wrapped-rtl-symbolic.svg",
+        "status/symbolic/view-wrapped-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-refresh-symbolic",
+      "icon": "refresh",
+      "targets": [
+        "actions/symbolic/view-refresh-symbolic.svg",
+        "status/symbolic/software-update-available-symbolic.svg",
+        "status/symbolic/system-software-update-symbolic.svg",
+        "status/symbolic/update-notifier-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view-restore-symbolic",
+      "icon": "minimize",
+      "targets": []
+    },
+    {
+      "name": "view-sort-ascending-symbolic",
+      "icon": "sort-ascending-letters",
+      "targets": []
+    },
+    {
+      "name": "view-sort-descending-symbolic",
+      "icon": "sort-descending-letters",
+      "targets": []
+    },
+    {
+      "name": "view-sort-symbolic",
+      "icon": "arrows-sort",
+      "targets": [
+        "actions/symbolic/view-sort-symbolic.svg"
+      ]
+    },
+    {
+      "name": "view_tree",
+      "icon": "layout-rows",
+      "targets": [
+        "actions/symbolic/view-list-tree.svg",
+        "actions/symbolic/view_tree.svg"
+      ]
+    },
+    {
+      "name": "volume-full",
+      "icon": "volume",
+      "targets": []
+    },
+    {
+      "name": "volume-low",
+      "icon": "volume-4",
+      "targets": []
+    },
+    {
+      "name": "volume-mid",
+      "icon": "volume-2",
+      "targets": []
+    },
+    {
+      "name": "volume-x",
+      "icon": "volume-3",
+      "targets": []
+    },
+    {
+      "name": "weather-clear-symbolic",
+      "icon": "sun",
+      "targets": [
+        "status/symbolic/brightness-high-symbolic.svg",
+        "status/symbolic/weather-clear-symbolic.svg"
+      ]
+    },
+    {
+      "name": "weather-few-clouds-symbolic",
+      "icon": "cloud",
+      "targets": [
+        "status/symbolic/weather-few-clouds-symbolic.svg"
+      ]
+    },
+    {
+      "name": "wifi-full",
+      "icon": "wifi",
+      "targets": []
+    },
+    {
+      "name": "wifi-low",
+      "icon": "wifi-1",
+      "targets": []
+    },
+    {
+      "name": "wifi-mid",
+      "icon": "wifi-2",
+      "targets": []
+    },
+    {
+      "name": "window-unpin-symbolic",
+      "icon": "pinned-off",
+      "targets": [
+        "actions/symbolic/window-unpin-symbolic.svg"
+      ]
+    },
+    {
+      "name": "xsi-bluetooth-acquiring-symbolic",
+      "icon": "bluetooth-connected",
+      "targets": [
+        "status/symbolic/xsi-bluetooth-acquiring-symbolic.svg"
+      ]
+    },
+    {
+      "name": "ymuse-pause-symbolic",
+      "icon": "player-pause",
+      "targets": [
+        "actions/symbolic/ymuse-pause-symbolic.svg",
+        "status/symbolic/media-playback-paused-symbolic.svg"
+      ]
+    },
+    {
+      "name": "ymuse-save-symbolic",
+      "icon": "device-floppy",
+      "targets": [
+        "actions/symbolic/document-save-symbolic.svg",
+        "actions/symbolic/system-save-session-symbolic.svg",
+        "actions/symbolic/ymuse-save-symbolic.svg"
+      ]
+    },
+    {
+      "name": "zoom-fit-best-symbolic",
+      "icon": "maximize",
+      "targets": [
+        "actions/symbolic/zoom-fit-best-symbolic.svg"
+      ]
+    },
+    {
+      "name": "zoom-in-symbolic",
+      "icon": "zoom-in",
+      "targets": [
+        "actions/symbolic/zoom-in-symbolic.svg",
+        "actions/symbolic/zoom-original-symbolic.svg"
+      ]
+    },
+    {
+      "name": "zoom-original-symbolic",
+      "icon": "arrows-maximize",
+      "targets": []
+    },
+    {
+      "name": "zoom-out-symbolic",
+      "icon": "zoom-out",
+      "targets": [
+        "actions/symbolic/zoom-out-symbolic.svg"
+      ]
+    }
+  ],
+  "removed": [
+    {
+      "name": "book-search",
+      "targets": []
+    },
+    {
+      "name": "drive-harddisk",
+      "targets": [
+        "places/24/drive-harddisk.svg"
+      ]
+    },
+    {
+      "name": "drive-harddisk-symbolic",
+      "targets": [
+        "devices/symbolic/drive-harddisk-ieee1394-symbolic.svg",
+        "devices/symbolic/drive-harddisk-solidstate-symbolic.svg",
+        "devices/symbolic/drive-harddisk-symbolic.svg",
+        "devices/symbolic/drive-harddisk-system-symbolic.svg",
+        "devices/symbolic/drive-harddisk-usb-symbolic.svg",
+        "places/24/drive-harddisk-symbolic.svg"
+      ]
+    }
+  ]
+}

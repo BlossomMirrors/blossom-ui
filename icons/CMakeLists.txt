@@ -5,4 +5,9 @@ install(DIRECTORY .
         PATTERN "CMakeLists.txt" EXCLUDE
         PATTERN "install.sh" EXCLUDE
         PATTERN "icongen.py" EXCLUDE
-        PATTERN "requirements.txt" EXCLUDE)
+        PATTERN "foldergen.py" EXCLUDE
+        PATTERN "icons.json" EXCLUDE
+        PATTERN "MISSING-ICONS.md" EXCLUDE
+        PATTERN "requirements.txt" EXCLUDE
+        PATTERN "__pycache__" EXCLUDE
+        PATTERN "folder-base.svg" EXCLUDE)

@@ -4,6 +4,7 @@
 #include "blossomuistyle.h"
 #include "blossomuistyleconfigdata.h"
 #include "itemview.h"
+#include "selectionstyle.h"
 
 #include <QAbstractItemView>
 #include <QFrame>
@@ -183,14 +184,23 @@ bool Render::ItemViewControl::drawItemViewItemControl(const QStyleOption *option
   if (!(option->state & QStyle::State_Selected))
     return false;
 
-  QStyleOptionViewItem opt = *viewItemOption;
-  opt.font.setBold(true);
-  opt.fontMetrics = QFontMetrics(opt.font);
+  const bool hovered(option->state & QStyle::State_MouseOver);
+  const QColor accent = Render::SelectionStyle::foreground(
+      option->palette, option->palette.currentColorGroup(), QPalette::Base,
+      hovered);
 
-  const QColor accent = option->palette.color(QPalette::Highlight);
+  QStyleOptionViewItem opt = *viewItemOption;
+  opt.font = Render::SelectionStyle::font(opt.font, true);
+  opt.fontMetrics = QFontMetrics(opt.font);
   opt.palette.setColor(QPalette::Active, QPalette::HighlightedText, accent);
   opt.palette.setColor(QPalette::Inactive, QPalette::HighlightedText, accent);
   opt.palette.setColor(QPalette::Disabled, QPalette::HighlightedText, accent);
+
+  if (!opt.icon.isNull() && !opt.decorationSize.isEmpty()) {
+    opt.icon = QIcon(Render::SelectionStyle::icon(
+        opt.icon, opt.decorationSize,
+        widget ? widget->devicePixelRatioF() : 1.0, accent, true));
+  }
 
   _style->ParentStyleClass::drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
   return true;

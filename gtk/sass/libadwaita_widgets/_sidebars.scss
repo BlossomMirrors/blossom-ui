@@ -13,8 +13,6 @@
     color: var(--sidebar-fg-color);
     background-color: var(--sidebar-bg-color);
 
-    @include _shadows($card_shadow);
-
     &:backdrop {
       background-color: var(--sidebar-backdrop-color);
     }

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 Folder Icon Generator for BlossomUI Icon Theme
-Builds all folder type and color variants from source/custom/folder.svg.
+Builds all folder type and color variants from source/custom/folder-base.svg.
 
-Type folders get a matching Lucide icon overlay (white, 0.6 opacity, centered
+Type folders get a matching Tabler icon overlay (white, 0.6 opacity, centered
 on the folder front with margin) and keep the KDE current-color-scheme
 structure so the folder body follows the accent color:
 
@@ -29,9 +29,10 @@ import requests
 from pathlib import Path
 
 
-LUCIDE_BASE_URL = "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons"
+TABLER_VERSION = "3.46.0"
+TABLER_BASE_URL = f"https://cdn.jsdelivr.net/npm/@tabler/icons@{TABLER_VERSION}/icons/outline"
 
-BASE_SVG = Path("source/custom/folder.svg")
+BASE_SVG = Path("source/custom/folder-base.svg")
 OUTPUT_DIR = Path("source/custom")
 SIZES = ["32", "48", "64", "96"]
 
@@ -44,41 +45,42 @@ BODY_FILL = 'fill="#1451FF"'
 OVERLAY_SIZE = 22
 OVERLAY_CENTER = (32.0, 38.4)
 
-# type folders: name -> lucide icon candidates (first that fetches wins)
 TYPES = {
     "folder-activities": ["activity"],
     "folder-bookmark": ["bookmark"],
     "folder-cloud": ["cloud"],
-    "folder-design": ["pen-tool"],
-    "folder-desktop": ["monitor"],
+    "folder-design": ["vector-bezier"],
+    "folder-desktop": ["device-desktop"],
     "folder-development": ["code"],
-    "folder-documents": ["file-text"],
+    "folder-documents": ["files"],
     "folder-downloads": ["download"],
-    "folder-dropbox": ["box"],
+    "folder-dropbox": ["brand-dropbox"],
     "folder-encrypted": ["key"],
     "folder-favorites": ["star"],
-    "folder-games": ["gamepad-2"],
-    "folder-gdrive": ["triangle"],
+    "folder-games": ["device-gamepad-2"],
+    "folder-gdrive": ["brand-google-drive"],
     "folder-gimp": ["brush"],
-    "folder-Github": ["github", "git-branch"],
-    "folder-html": ["code-xml", "code"],
-    "folder-images": ["image"],
+    "folder-Github": ["brand-github"],
+    "folder-html": ["file-type-html"],
+    "folder-images": ["photo"],
     "folder-image-people": ["users"],
-    "folder-important": ["circle-alert", "alert-circle"],
+    "folder-important": ["alert-circle"],
     "folder-locked": ["lock"],
     "folder-mail": ["mail"],
     "folder-music": ["music"],
+    "folder-nextcloud": ["brand-nextcloud"],
     "folder-network": ["network"],
+    "folder-onedrive": ["brand-onedrive"],
     "folder-print": ["printer"],
-    "folder-public": ["share-2"],
+    "folder-public": ["share"],
     "folder-recent": ["history"],
-    "folder-remote": ["globe"],
+    "folder-remote": ["world"],
     "folder-root": ["hash"],
-    "folder-script": ["scroll-text", "scroll"],
+    "folder-script": ["script"],
     "folder-tar": ["archive"],
     "folder-temp": ["hourglass"],
-    "folder-templates": ["layout-template"],
-    "folder-text": ["letter-text", "text"],
+    "folder-templates": ["template"],
+    "folder-text": ["typography"],
     "folder-unlocked": ["lock-open"],
     "folder-videos": ["video"],
 }
@@ -99,7 +101,6 @@ COLORS = {
 }
 
 # small outline glyphs with a baked-in color:
-# name -> (lucide candidates, color, symlink targets)
 COLORED_GLYPHS = {
     # kio-admin: gcr-key is the plugin metadata icon,
     # yast-auth-client is the Open as Administrator action icon
@@ -144,7 +145,6 @@ ALIASES = {
     "folder-KDE": "folder",
     "folder-Manjaro": "folder",
     "folder-Neon": "folder",
-    "folder-onedrive": "folder-cloud",
     "folder-open": "folder",
     "folder-openSUSE": "folder",
     "folder-owncloud": "folder-cloud",
@@ -165,7 +165,7 @@ ALIASES = {
 # small colored folders keep the sidebar symbolic style but bake in the color
 SMALL_TEMPLATE = (
     '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" '
-    'viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="1.5" '
+    'viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="1.25" '
     'stroke-linecap="round" stroke-linejoin="round">\n'
     '  <g stroke="{color}">\n{inner}\n  </g>\n'
     '</svg>\n'
@@ -183,9 +183,9 @@ STYLE_BLOCK = (
 )
 
 
-def fetch_lucide_icon(candidates):
+def fetch_tabler_icon(candidates):
     for name in candidates:
-        url = f"{LUCIDE_BASE_URL}/{name}.svg"
+        url = f"{TABLER_BASE_URL}/{name}.svg"
         try:
             response = requests.get(url, timeout=10)
             response.raise_for_status()
@@ -195,10 +195,11 @@ def fetch_lucide_icon(candidates):
     return None, None
 
 
-def lucide_inner(svg_content):
+def icon_inner(svg_content):
     svg_content = re.sub(r'<!--.*?-->', '', svg_content, flags=re.DOTALL)
     svg_content = re.sub(r'^.*?<svg[^>]*>', '', svg_content, flags=re.DOTALL)
     svg_content = re.sub(r'</svg>\s*$', '', svg_content)
+    svg_content = re.sub(r'<path[^>]*stroke="none"[^>]*/>', '', svg_content)
     return svg_content.strip()
 
 
@@ -279,39 +280,39 @@ def main():
     save_svgz(build_folder(base_svg), "folder")
 
     for name, candidates in TYPES.items():
-        icon_name, icon_svg = fetch_lucide_icon(candidates)
+        icon_name, icon_svg = fetch_tabler_icon(candidates)
         if not icon_svg:
-            print(f"Warning: no lucide icon for {name} "
+            print(f"Warning: no tabler icon for {name} "
                   f"(tried {', '.join(candidates)}), using plain folder",
                   file=sys.stderr)
             save_svgz(build_folder(base_svg), name)
             continue
-        overlay = build_overlay(lucide_inner(icon_svg))
+        overlay = build_overlay(icon_inner(icon_svg))
         save_svgz(build_folder(base_svg, overlay=overlay), name)
 
     for name, color in COLORS.items():
         save_svgz(build_folder(base_svg, color=color), name)
 
-    icon_name, folder_glyph = fetch_lucide_icon(["folder"])
+    icon_name, folder_glyph = fetch_tabler_icon(["folder"])
     if folder_glyph:
-        inner = lucide_inner(folder_glyph)
+        inner = icon_inner(folder_glyph)
         for name, color in COLORS.items():
             svg = SMALL_TEMPLATE.format(color=color, inner=inner)
             save_svgz(svg, f"{name}-small")
             create_symlink(f"{name}-small", f"places/24/{name}.svg")
             create_symlink(f"{name}-small", f"places/24/{name}-symbolic.svg")
     else:
-        print("Warning: could not fetch lucide folder glyph, "
+        print("Warning: could not fetch tabler folder glyph, "
               "skipping small colored folders", file=sys.stderr)
 
     for name, (candidates, color, targets) in COLORED_GLYPHS.items():
-        icon_name, glyph = fetch_lucide_icon(candidates)
+        icon_name, glyph = fetch_tabler_icon(candidates)
         if not glyph:
-            print(f"Warning: no lucide icon for {name} "
+            print(f"Warning: no tabler icon for {name} "
                   f"(tried {', '.join(candidates)}), skipping",
                   file=sys.stderr)
             continue
-        svg = SMALL_TEMPLATE.format(color=color, inner=lucide_inner(glyph))
+        svg = SMALL_TEMPLATE.format(color=color, inner=icon_inner(glyph))
         save_svgz(svg, name)
         for target in targets:
             create_symlink(name, target)

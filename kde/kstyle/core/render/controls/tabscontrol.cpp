@@ -7,6 +7,7 @@
 #include "blossomuitoolsareamanager.h"
 #include "frame.h"
 #include "private.h"
+#include "selectionstyle.h"
 #include "tabbar.h"
 
 #include <KColorUtils>
@@ -76,22 +77,15 @@ bool Render::TabsControl::drawTabBarTabLabelControl(const QStyleOption *option,
       const QIcon::Mode iconMode =
           isEnabled ? QIcon::Normal : QIcon::Disabled;
       const QIcon::State iconState = isSelected ? QIcon::On : QIcon::Off;
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
       const qreal dpr = painter->device()
                             ? painter->device()->devicePixelRatioF()
-                            : qApp->devicePixelRatio();
-      QPixmap tabIcon =
-          tabOption->icon.pixmap(iconSize, dpr, iconMode, iconState);
-#else
-      QPixmap tabIcon = tabOption->icon.pixmap(iconSize, iconMode, iconState);
-#endif
-      if (isSelected && isEnabled) {
-        tabIcon = tabIcon.copy();
-        QPainter tp(&tabIcon);
-        tp.setCompositionMode(QPainter::CompositionMode_SourceIn);
-        tp.fillRect(tabIcon.rect(),
-                    option->palette.brush(QPalette::Highlight).color());
-      }
+                            : 1.0;
+      const QPixmap tabIcon = Render::SelectionStyle::icon(
+          tabOption->icon, iconSize, dpr,
+          Render::SelectionStyle::foreground(option->palette,
+                                             option->palette.currentColorGroup(),
+                                             QPalette::Window, false),
+          isSelected && isEnabled, iconMode, iconState);
 
       const int leftPad = 10;
       const QRect tabR = tabOption->rect;
@@ -112,20 +106,22 @@ bool Render::TabsControl::drawTabBarTabLabelControl(const QStyleOption *option,
       }
     }
 
-    QFont font = painter->font();
-    if (isSelected)
-      font.setBold(true);
-    painter->setFont(font);
+    painter->setFont(
+        Render::SelectionStyle::font(painter->font(), isSelected));
 
     if (!isEnabled) {
       if (isSelected)
-        painter->setPen(option->palette.brush(QPalette::Highlight).color());
+        painter->setPen(Render::SelectionStyle::foreground(
+            option->palette, option->palette.currentColorGroup(),
+            QPalette::Window, false));
       else
         painter->setPen(_style->_helper->alphaColor(
             option->palette.brush(QPalette::WindowText).color(), 0.5));
     } else {
       if (isSelected)
-        painter->setPen(option->palette.brush(QPalette::Highlight).color());
+        painter->setPen(Render::SelectionStyle::foreground(
+            option->palette, option->palette.currentColorGroup(),
+            QPalette::Window, false));
       else if (tabOption->state & QStyle::State_Active &&
                tabOption->state & QStyle::State_MouseOver)
         painter->setPen(option->palette.brush(QPalette::WindowText).color());
@@ -262,6 +258,9 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
   bool isRightOfSelected(!isLocked && tabOption->selectedPosition ==
                                           QStyleOptionTab::PreviousIsSelected);
 
+  bool isFirstTab(isFirst);
+  bool isLastTab(isLast);
+
   // true if widget is aligned to the frame
   // need to check for 'isRightOfSelected' because for some reason the isFirst
   // flag is set when active tab is being moved
@@ -274,6 +273,7 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
   if ((reverseLayout && !verticalTabs) || _style->_app.isLibreoffice) {
     qSwap(isFirst, isLast);
     qSwap(isLeftOfSelected, isRightOfSelected);
+    qSwap(isFirstTab, isLastTab);
   }
 
   // overlap
@@ -305,9 +305,10 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
                                 : _style->_helper->alphaColor(configTabBgColor, 0.2)
                           : _style->_helper->alphaColor(configTabBgColor, 0.1);
   else
-    backgroundColor = isDark
-                          ? palette.color(QPalette::Base)
-                          : _style->_helper->alphaColor(configTabBgColor, 0.2);
+    backgroundColor =
+        isDark ? palette.color(QPalette::Base)
+               : _style->_helper->alphaColor(configTabBgColor,
+                                             Render::TabBar_BackgroundAlpha);
 
   if ((_style->_app.isDolphin || _style->_app.isKonsole) &&
       (StyleConfigData::tabBarOpacity() < 100) && !_style->_app.isOpaque) {
@@ -359,7 +360,7 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
       shadowRect.adjust(0, 0, shadowSize, 0);
 
     backgroundRect = rect;
-    rect.adjust(4, 4, -4, -4);
+    rect.adjust(isFirstTab ? 0 : 4, 4, isLastTab ? 0 : -4, -4);
     break;
 
   case QTabBar::RoundedSouth:
@@ -380,7 +381,7 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
       backgroundCorners |= CornerBottomRight | CornerTopRight;
 
     backgroundRect = rect;
-    rect.adjust(4, 4, -4, -4);
+    rect.adjust(isFirstTab ? 0 : 4, 4, isLastTab ? 0 : -4, -4);
     break;
 
   case QTabBar::RoundedWest:
@@ -459,6 +460,7 @@ bool Render::TabsControl::drawTabBarTabShapeControl(const QStyleOption *option,
     const bool pillAnimated =
         tabBar && documentMode &&
         _style->_animations->tabBarEngine().isSelectedAnimated(tabBar);
+
     const QRect pillRect =
         pillAnimated
             ? _style->_animations->tabBarEngine()
