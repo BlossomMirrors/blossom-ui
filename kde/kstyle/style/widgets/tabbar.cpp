@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "tabbar.h"
 
+#include "selectionstyle.h"
+
 #include <KColorUtils>
 
 namespace BlossomUI {
@@ -8,11 +10,9 @@ namespace Render {
 
 Fill tabFill(const QPalette &palette, bool selected, bool mouseOver, bool animated,
             qreal opacity) {
-  if (selected) {
-    QColor color = palette.color(QPalette::Highlight);
-    color.setAlphaF(0.18);
-    return Fill(color);
-  }
+  if (selected)
+    return Fill(SelectionStyle::tint(palette, palette.currentColorGroup(),
+                                     false));
   const QColor transparent(0, 0, 0, 0);
   const QColor hover = palette.color(QPalette::Button);
   if (animated)

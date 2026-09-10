@@ -11,6 +11,7 @@
 
 #include <QColor>
 #include <QIcon>
+#include <QUrl>
 #include <QObject>
 #include <QPointer>
 #include <QQuickItem>
@@ -26,6 +27,7 @@ public:
     ~PlasmaDesktopTheme() override;
 
     Q_INVOKABLE QIcon iconFromTheme(const QString &name, const QColor &customColor = Qt::transparent) override;
+    Q_INVOKABLE QUrl thickenedIcon(const QString &name, qreal extraStroke);
 
     void syncWindow();
     void syncColors();

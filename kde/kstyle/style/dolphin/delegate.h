@@ -1,6 +1,7 @@
 #pragma once
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "blossomuistyleconfigdata.h"
+#include "selectionstyle.h"
 
 #include <cmath>
 #include <QAbstractItemDelegate>
@@ -125,21 +126,13 @@ public:
                                      : QIcon::Normal;
     auto *winHandle =
         m_view->window() ? m_view->window()->windowHandle() : nullptr;
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     const qreal dpr =
         winHandle ? winHandle->devicePixelRatio() : m_view->devicePixelRatioF();
-    QPixmap pm = icon.pixmap(QSize(iconSize, iconSize), dpr, iconMode);
-#else
-    QPixmap pm =
-        winHandle ? icon.pixmap(winHandle, QSize(iconSize, iconSize), iconMode)
-                  : icon.pixmap(QSize(iconSize, iconSize), iconMode);
-#endif
-    if (selected && (option.state & QStyle::State_Enabled)) {
-      QPainter tp(&pm);
-      tp.setCompositionMode(QPainter::CompositionMode_SourceIn);
-      tp.fillRect(pm.rect(),
-                  option.palette.color(QPalette::Active, QPalette::Highlight));
-    }
+    const QPixmap pm = BlossomUI::Render::SelectionStyle::icon(
+        icon, QSize(iconSize, iconSize), dpr,
+        BlossomUI::Render::SelectionStyle::foreground(
+            option.palette, QPalette::Active, QPalette::Base, mouseOver),
+        selected && (option.state & QStyle::State_Enabled), iconMode);
     const int iconX =
         isLTR
             ? option.rect.left() + s_lateralMargin + s_iconLeftPad
@@ -151,13 +144,12 @@ public:
                           2 * s_lateralMargin - s_extraGap - s_iconLeftPad;
 
     painter->save();
-    QFont textFont = option.font;
-    if (selected)
-      textFont.setBold(true);
-    painter->setFont(textFont);
+    painter->setFont(
+        BlossomUI::Render::SelectionStyle::font(option.font, selected));
     painter->setPen(selected
-                        ? option.palette.color(QPalette::Active,
-                                               QPalette::Highlight)
+                        ? BlossomUI::Render::SelectionStyle::foreground(
+                              option.palette, QPalette::Active, QPalette::Base,
+                              mouseOver)
                         : option.palette.text().color());
 
     const bool hasCapacityBar = index.data(s_capacityBarRole).toBool();

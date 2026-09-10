@@ -37,7 +37,6 @@ stacksidebar {
     .frame {
         margin: 5px;
         border-radius: $radius;
-        @include _shadows($card_shadow);
     }
 
     list separator {

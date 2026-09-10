@@ -19,6 +19,11 @@
 #include <KColorScheme>
 #include <KConfigGroup>
 #include <KIconColors>
+#include <KIconLoader>
+
+#include <QDomDocument>
+#include <QFile>
+#include <QHash>
 
 class StyleSingleton : public QObject
 {
@@ -251,6 +256,55 @@ QIcon PlasmaDesktopTheme::iconFromTheme(const QString &name, const QColor &custo
     } else {
         return KDE::icon(name);
     }
+}
+
+QUrl PlasmaDesktopTheme::thickenedIcon(const QString &name, qreal extraStroke)
+{
+    if (name.isEmpty() || extraStroke <= 0) {
+        return QUrl();
+    }
+
+    static QHash<QString, QUrl> cache;
+    const QString key = name + QLatin1Char('@') + QString::number(extraStroke);
+    const auto cached = cache.constFind(key);
+    if (cached != cache.constEnd()) {
+        return *cached;
+    }
+
+    QUrl result;
+    const QString path = KIconLoader::global()->iconPath(name, KIconLoader::Small, true);
+    QFile file(path);
+    if (path.endsWith(QLatin1String(".svg")) && file.open(QIODevice::ReadOnly)) {
+        QDomDocument document;
+        if (document.setContent(&file)) {
+            static const QStringList shapes{QStringLiteral("path"),
+                                            QStringLiteral("rect"),
+                                            QStringLiteral("circle"),
+                                            QStringLiteral("ellipse"),
+                                            QStringLiteral("polygon"),
+                                            QStringLiteral("polyline")};
+            for (const QString &tag : shapes) {
+                const QDomNodeList nodes = document.elementsByTagName(tag);
+                for (int i = 0; i < nodes.count(); ++i) {
+                    QDomElement shape = nodes.at(i).toElement();
+                    const QString fill = shape.attribute(QStringLiteral("fill"));
+                    if (fill == QLatin1String("none")) {
+                        continue;
+                    }
+                    shape.setAttribute(QStringLiteral("stroke"),
+                                       fill.isEmpty() ? QStringLiteral("currentColor") : fill);
+                    shape.setAttribute(QStringLiteral("stroke-width"), extraStroke);
+                    shape.setAttribute(QStringLiteral("stroke-linejoin"), QStringLiteral("round"));
+                    shape.setAttribute(QStringLiteral("stroke-linecap"), QStringLiteral("round"));
+                }
+            }
+            result = QUrl(QStringLiteral("data:image/svg+xml;base64,")
+                          + QString::fromLatin1(document.toByteArray(-1).toBase64()));
+        }
+    }
+
+    cache.insert(key, result);
+    return result;
 }
 
 void PlasmaDesktopTheme::syncColors()

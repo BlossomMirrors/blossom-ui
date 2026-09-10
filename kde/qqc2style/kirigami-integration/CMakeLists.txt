@@ -29,6 +29,7 @@ target_link_libraries(org.blossomos.style
         KF6::ConfigCore
         KF6::ColorScheme
         KF6::IconThemes
+        Qt6::Xml
 )
 
 if(TARGET Qt6::DBus)

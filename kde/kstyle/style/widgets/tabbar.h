@@ -24,6 +24,8 @@ static constexpr int TabWidget_MarginWidth = 4;
 static constexpr int ToolBox_TabMinWidth = 80;
 static constexpr int ToolBox_TabItemSpacing = 4;
 static constexpr int ToolBox_TabMarginWidth = 8;
+static constexpr int TabBar_PillInset = 1;
+static constexpr qreal TabBar_BackgroundAlpha = 0.08;
 
 Fill tabFill(const QPalette &palette, bool selected, bool mouseOver, bool animated,
             qreal opacity);

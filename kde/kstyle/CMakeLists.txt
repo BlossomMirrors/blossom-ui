@@ -44,6 +44,8 @@ set(blossomui_PART_SRCS
     core/debug/blossomuiwidgetexplorer.cpp
     core/render/traits.cpp
     core/render/placement.cpp
+    core/render/accentresolver.cpp
+    core/render/selectionstyle.cpp
     core/render/radiusresolver.cpp
     core/render/motionresolver.cpp
     core/render/fillrenderer.cpp

@@ -143,7 +143,7 @@ toolbarview {
   }
 
   > .bottom-bar.raised {
-    @include _shadows($card_shadow); // FIXME shadow needs to be upside down
+    box-shadow: none;
 
     &.border {
       box-shadow: none;
