@@ -14,8 +14,6 @@ public:
   static constexpr qreal Alpha = 0.18;
   static constexpr qreal HoverAlpha = 0.28;
   static constexpr qreal MinContrast = 4.5;
-  static constexpr qreal IconCanvas = 30.0;
-  static constexpr qreal IconExtraStroke = 0.75;
 
   static qreal tintAlpha(bool mouseOver) {
     return mouseOver ? HoverAlpha : Alpha;

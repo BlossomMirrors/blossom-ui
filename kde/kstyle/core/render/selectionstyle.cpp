@@ -46,23 +46,9 @@ QPixmap SelectionStyle::icon(const QIcon &source, const QSize &size, qreal dpr,
   if (!selected || pixmap.isNull())
     return pixmap;
 
-  QPixmap result(pixmap.size());
-  result.setDevicePixelRatio(pixmap.devicePixelRatio());
-  result.fill(Qt::transparent);
-
-  const qreal ratio = pixmap.devicePixelRatio();
-  const qreal logicalWidth = pixmap.width() / ratio;
-  const qreal perSide = 0.5 * IconExtraStroke * logicalWidth / IconCanvas;
-  const qreal step = 1.0 / ratio;
+  QPixmap result = pixmap.copy();
 
   QPainter painter(&result);
-  painter.setOpacity(qBound(0.0, perSide / step, 1.0));
-  const QPointF offsets[] = {{-step, 0.0}, {step, 0.0}, {0.0, -step}, {0.0, step}};
-  for (const QPointF &at : offsets)
-    painter.drawPixmap(at, pixmap);
-  painter.setOpacity(1.0);
-  painter.drawPixmap(QPointF(0.0, 0.0), pixmap);
-
   painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
   painter.fillRect(result.rect(), color);
   return result;
