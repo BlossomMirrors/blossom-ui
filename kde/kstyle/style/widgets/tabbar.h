@@ -16,6 +16,7 @@ static constexpr int TabBar_TabMarginWidth = 12;
 static constexpr int TabBar_TabMinWidth = 85;
 static constexpr int TabBar_TabMinHeight = 36;
 static constexpr int TabBar_TabItemSpacing = 8;
+static constexpr qreal TabBar_IconSizeFactor = 1.2;
 static constexpr int TabBar_TabOverlap = 0;
 static constexpr int TabBar_BaseOverlap = 2;
 // tab widget

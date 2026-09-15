@@ -198,8 +198,12 @@ int Style::pixelMetric(PixelMetric metric, const QStyleOption *option,
     return Render::ToolBar_ItemSpacing;
 
   // tabbars
-  case PM_TabBarIconSize:
-    return 20;
+  case PM_TabBarIconSize: {
+    const QFontMetrics metrics =
+        option ? option->fontMetrics
+               : (widget ? widget->fontMetrics() : QFontMetrics(qApp->font()));
+    return qMax(16, qRound(Render::TabBar_IconSizeFactor * metrics.height()));
+  }
   case PM_TabBarTabShiftVertical:
     return 0;
   case PM_TabBarTabShiftHorizontal:

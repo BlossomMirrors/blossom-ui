@@ -11,7 +11,8 @@ import "private/contrast.js" as Contrast
 Desktop.SwitchDelegate {
     id: control
 
-    font.bold: control.highlighted || control.down
+    font.weight: control.highlighted || control.down
+        ? Font.DemiBold : Font.Normal
     Kirigami.Theme.highlightedTextColor: Contrast.accentOnSelection(
         Kirigami.Theme.highlightColor, Kirigami.Theme.backgroundColor,
         control.hovered ? 0.28 : 0.18)
