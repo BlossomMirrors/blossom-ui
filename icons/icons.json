@@ -123,8 +123,7 @@
         "categories/16/applications-games.svg",
         "categories/22/applications-games-symbolic.svg",
         "categories/22/applications-games.svg",
-        "categories/symbolic/applications-games-symbolic.svg",
-        "categories/symbolic/arc-list-gaming-symbolic.svg"
+        "categories/symbolic/applications-games-symbolic.svg"
       ]
     },
     {
@@ -135,8 +134,7 @@
         "categories/16/applications-graphics.svg",
         "categories/22/applications-graphics-symbolic.svg",
         "categories/22/applications-graphics.svg",
-        "categories/symbolic/applications-graphics-symbolic.svg",
-        "categories/symbolic/arc-list-creative-symbolic.svg"
+        "categories/symbolic/applications-graphics-symbolic.svg"
       ]
     },
     {
@@ -155,8 +153,7 @@
       "targets": [
         "categories/16/applications-office.svg",
         "categories/22/applications-office.svg",
-        "categories/symbolic/applications-office-symbolic.svg",
-        "categories/symbolic/arc-list-office-symbolic.svg"
+        "categories/symbolic/applications-office-symbolic.svg"
       ]
     },
     {
@@ -480,8 +477,7 @@
       "name": "compass",
       "icon": "compass",
       "targets": [
-        "actions/symbolic/compass.svg",
-        "categories/symbolic/arc-list-browser-symbolic.svg"
+        "actions/symbolic/compass.svg"
       ]
     },
     {
@@ -859,7 +855,6 @@
       "name": "folder-development",
       "icon": "braces",
       "targets": [
-        "categories/symbolic/arc-list-code-symbolic.svg",
         "places/24/folder-development.svg"
       ]
     },
@@ -909,7 +904,6 @@
       "name": "folder-music-symbolic",
       "icon": "music",
       "targets": [
-        "categories/symbolic/arc-list-music-symbolic.svg",
         "places/24/folder-music-symbolic.svg"
       ]
     },
@@ -1462,13 +1456,6 @@
       "targets": [
         "actions/symbolic/media-skip-forward-rtl-symbolic.svg",
         "actions/symbolic/media-skip-forward-symbolic.svg"
-      ]
-    },
-    {
-      "name": "message-circle",
-      "icon": "message-circle",
-      "targets": [
-        "categories/symbolic/arc-list-chat-symbolic.svg"
       ]
     },
     {
@@ -2515,6 +2502,13 @@
         "devices/symbolic/drive-harddisk-system-symbolic.svg",
         "devices/symbolic/drive-harddisk-usb-symbolic.svg",
         "places/24/drive-harddisk-symbolic.svg"
+      ]
+    },
+    {
+      "name": "message-circle",
+      "icon": "message-circle",
+      "targets": [
+        "categories/symbolic/arc-list-chat-symbolic.svg"
       ]
     }
   ]

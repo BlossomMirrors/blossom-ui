@@ -70,19 +70,7 @@ T.TabButton {
 
                 visible: control.display !== T.AbstractButton.TextOnly
                     && (control.icon.name.length > 0 || control.icon.source.toString().length > 0)
-                source: {
-                    if (control.icon.name.length === 0) {
-                        return control.icon.source
-                    }
-                    if (control.checked
-                        && typeof Kirigami.Theme.thickenedIcon === "function") {
-                        const heavier = Kirigami.Theme.thickenedIcon(control.icon.name, 0.75)
-                        if (heavier.toString().length > 0) {
-                            return heavier
-                        }
-                    }
-                    return control.icon.name
-                }
+                source: control.icon.name.length > 0 ? control.icon.name : control.icon.source
                 color: control.currentTextColor
             }
 
