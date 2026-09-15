@@ -81,7 +81,7 @@ bool Render::TabsControl::drawTabBarTabLabelControl(const QStyleOption *option,
                             ? painter->device()->devicePixelRatioF()
                             : 1.0;
       const QPixmap tabIcon = Render::SelectionStyle::icon(
-          tabOption->icon, iconSize, dpr,
+          tabOption->icon, iconSize, dpr, option->palette,
           Render::SelectionStyle::foreground(option->palette,
                                              option->palette.currentColorGroup(),
                                              QPalette::Window, false),

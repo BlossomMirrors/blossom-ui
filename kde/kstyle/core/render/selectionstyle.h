@@ -28,7 +28,7 @@ public:
   static QFont font(const QFont &base, bool selected);
 
   static QPixmap icon(const QIcon &source, const QSize &size, qreal dpr,
-                      const QColor &color, bool selected,
+                      const QPalette &palette, const QColor &color, bool selected,
                       QIcon::Mode mode = QIcon::Normal,
                       QIcon::State state = QIcon::Off);
 };

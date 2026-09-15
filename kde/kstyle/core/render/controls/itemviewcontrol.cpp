@@ -199,7 +199,8 @@ bool Render::ItemViewControl::drawItemViewItemControl(const QStyleOption *option
   if (!opt.icon.isNull() && !opt.decorationSize.isEmpty()) {
     opt.icon = QIcon(Render::SelectionStyle::icon(
         opt.icon, opt.decorationSize,
-        widget ? widget->devicePixelRatioF() : 1.0, accent, true));
+        widget ? widget->devicePixelRatioF() : 1.0, option->palette, accent,
+        true));
   }
 
   _style->ParentStyleClass::drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);

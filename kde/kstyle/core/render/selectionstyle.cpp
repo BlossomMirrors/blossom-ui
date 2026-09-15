@@ -3,8 +3,9 @@
 #include "accentresolver.h"
 
 #include <KColorUtils>
+#include <KIconColors>
+#include <KIconLoader>
 
-#include <QPainter>
 
 namespace BlossomUI {
 namespace Render {
@@ -30,28 +31,27 @@ QFont SelectionStyle::font(const QFont &base, bool selected) {
   if (!selected)
     return base;
   QFont result(base);
-  result.setBold(true);
+  result.setWeight(QFont::DemiBold);
   return result;
 }
 
 QPixmap SelectionStyle::icon(const QIcon &source, const QSize &size, qreal dpr,
-                             const QColor &color, bool selected,
-                             QIcon::Mode mode, QIcon::State state) {
+                             const QPalette &palette, const QColor &color,
+                             bool selected, QIcon::Mode mode,
+                             QIcon::State state) {
+  QIcon icon = source;
+  if (selected && !source.name().isEmpty()) {
+    KIconColors colors(palette);
+    colors.setText(color);
+    icon = KDE::icon(source.name(), colors);
+  }
+
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-  const QPixmap pixmap = source.pixmap(size, dpr, mode, state);
+  return icon.pixmap(size, dpr, mode, state);
 #else
   Q_UNUSED(dpr)
-  const QPixmap pixmap = source.pixmap(size, mode, state);
+  return icon.pixmap(size, mode, state);
 #endif
-  if (!selected || pixmap.isNull())
-    return pixmap;
-
-  QPixmap result = pixmap.copy();
-
-  QPainter painter(&result);
-  painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-  painter.fillRect(result.rect(), color);
-  return result;
 }
 
 }

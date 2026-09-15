@@ -129,7 +129,7 @@ public:
     const qreal dpr =
         winHandle ? winHandle->devicePixelRatio() : m_view->devicePixelRatioF();
     const QPixmap pm = BlossomUI::Render::SelectionStyle::icon(
-        icon, QSize(iconSize, iconSize), dpr,
+        icon, QSize(iconSize, iconSize), dpr, option.palette,
         BlossomUI::Render::SelectionStyle::foreground(
             option.palette, QPalette::Active, QPalette::Base, mouseOver),
         selected && (option.state & QStyle::State_Enabled), iconMode);

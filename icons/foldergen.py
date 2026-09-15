@@ -34,7 +34,9 @@ TABLER_BASE_URL = f"https://cdn.jsdelivr.net/npm/@tabler/icons@{TABLER_VERSION}/
 
 BASE_SVG = Path("source/custom/folder-base.svg")
 OUTPUT_DIR = Path("source/custom")
+SOURCE_DIR = Path("source")
 SIZES = ["32", "48", "64", "96"]
+SMALL_SIZES = ["16", "22", "24"]
 
 BASE_COLOR = "#1451FF"
 
@@ -171,6 +173,16 @@ SMALL_TEMPLATE = (
     '</svg>\n'
 )
 
+SMALL_SYMBOLIC_TEMPLATE = (
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" '
+    'viewBox="-3.0 -3.0 30.0 30.0" fill="none" stroke-width="1.25" '
+    'stroke-linecap="round" stroke-linejoin="round">'
+    '<defs><style id="current-color-scheme" type="text/css">'
+    '.ColorScheme-Text {{ color: #232629; }}</style></defs>\n'
+    '  <g class="ColorScheme-Text" stroke="currentColor">\n{inner}\n  </g>\n'
+    '</svg>\n'
+)
+
 STYLE_BLOCK = (
     '<style\n'
     '            id="current-color-scheme"\n'
@@ -239,10 +251,10 @@ def build_folder(base_svg, color=None, overlay=None):
     return svg
 
 
-def save_svgz(svg_content, name):
+def save_svgz(svg_content, name, directory=None):
     # plain svg despite the name: GTK's icon lookup only accepts
     # .png/.svg/.xpm, .svgz is a KDE-only extension
-    path = OUTPUT_DIR / f"{name}.svg"
+    path = (directory or OUTPUT_DIR) / f"{name}.svg"
     for ext in ('.svg', '.svgz'):
         old = path.with_suffix(ext)
         if old.is_symlink() or old.exists():
@@ -252,8 +264,8 @@ def save_svgz(svg_content, name):
     print(f"Created: {path}")
 
 
-def create_symlink(source_name, target):
-    source_path = (OUTPUT_DIR / f"{source_name}.svg").resolve()
+def create_symlink(source_name, target, directory=None):
+    source_path = ((directory or OUTPUT_DIR) / f"{source_name}.svg").resolve()
     target_path = Path(target)
     target_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -279,6 +291,8 @@ def main():
 
     save_svgz(build_folder(base_svg), "folder")
 
+    small_sources = set()
+
     for name, candidates in TYPES.items():
         icon_name, icon_svg = fetch_tabler_icon(candidates)
         if not icon_svg:
@@ -287,8 +301,12 @@ def main():
                   file=sys.stderr)
             save_svgz(build_folder(base_svg), name)
             continue
-        overlay = build_overlay(icon_inner(icon_svg))
-        save_svgz(build_folder(base_svg, overlay=overlay), name)
+        inner = icon_inner(icon_svg)
+        save_svgz(build_folder(base_svg, overlay=build_overlay(inner)), name)
+        if not (SOURCE_DIR / f"{name}-symbolic.svg").exists():
+            save_svgz(SMALL_SYMBOLIC_TEMPLATE.format(inner=inner),
+                      f"{name}-symbolic", SOURCE_DIR)
+        small_sources.add(name)
 
     for name, color in COLORS.items():
         save_svgz(build_folder(base_svg, color=color), name)
@@ -296,11 +314,13 @@ def main():
     icon_name, folder_glyph = fetch_tabler_icon(["folder"])
     if folder_glyph:
         inner = icon_inner(folder_glyph)
+        if not (SOURCE_DIR / "folder-symbolic.svg").exists():
+            save_svgz(SMALL_SYMBOLIC_TEMPLATE.format(inner=inner),
+                      "folder-symbolic", SOURCE_DIR)
+        small_sources.add("folder")
         for name, color in COLORS.items():
-            svg = SMALL_TEMPLATE.format(color=color, inner=inner)
-            save_svgz(svg, f"{name}-small")
-            create_symlink(f"{name}-small", f"places/24/{name}.svg")
-            create_symlink(f"{name}-small", f"places/24/{name}-symbolic.svg")
+            save_svgz(SMALL_TEMPLATE.format(color=color, inner=inner), f"{name}-small")
+            small_sources.add(name)
     else:
         print("Warning: could not fetch tabler folder glyph, "
               "skipping small colored folders", file=sys.stderr)
@@ -332,12 +352,23 @@ def main():
     all_names.update({n: n for n in COLORS})
     all_names.update(ALIASES)
 
+    small_links = 0
     for name, source_name in sorted(all_names.items()):
         for size in SIZES:
             create_symlink(source_name, f"places/{size}/{name}.svg")
+        if source_name not in small_sources:
+            continue
+        coloured = source_name in COLORS
+        directory = OUTPUT_DIR if coloured else SOURCE_DIR
+        small_name = f"{source_name}-small" if coloured else f"{source_name}-symbolic"
+        for size in SMALL_SIZES:
+            create_symlink(small_name, f"places/{size}/{name}.svg", directory)
+            create_symlink(small_name, f"places/{size}/{name}-symbolic.svg",
+                           directory)
+            small_links += 2
 
     print(f"\n✓ Generated {len(TYPES) + len(COLORS) + 1} folder icons, "
-          f"{len(all_names) * len(SIZES)} symlinks")
+          f"{len(all_names) * len(SIZES) + small_links} symlinks")
 
 
 if __name__ == '__main__':

@@ -294,6 +294,18 @@
       ]
     },
     {
+      "name": "bluetooth-disconnect-symbolic",
+      "icon": "bluetooth-x",
+      "targets": [
+        "actions/symbolic/bluetooth-disconnect-symbolic.svg",
+        "actions/symbolic/bluetooth-disconnect.svg",
+        "status/symbolic/bluetooth-disconnect-symbolic.svg",
+        "status/symbolic/bluetooth-disconnect.svg",
+        "status/symbolic/bluetooth-disconnected-symbolic.svg",
+        "status/symbolic/bluetooth-disconnected.svg"
+      ]
+    },
+    {
       "name": "bluetooth-offline",
       "icon": "bluetooth-off",
       "targets": [
@@ -1494,10 +1506,95 @@
       ]
     },
     {
+      "name": "network-connect-symbolic",
+      "icon": "plug-connected",
+      "targets": [
+        "actions/symbolic/network-connect-symbolic.svg",
+        "actions/symbolic/network-connect.svg"
+      ]
+    },
+    {
+      "name": "network-disconnect-symbolic",
+      "icon": "plug-connected-x",
+      "targets": [
+        "actions/symbolic/network-disconnect-symbolic.svg",
+        "actions/symbolic/network-disconnect.svg"
+      ]
+    },
+    {
+      "name": "network-flightmode-off-symbolic",
+      "icon": "plane-off",
+      "targets": [
+        "status/symbolic/network-flightmode-off-symbolic.svg",
+        "status/symbolic/network-flightmode-off.svg"
+      ]
+    },
+    {
+      "name": "network-flightmode-on-symbolic",
+      "icon": "plane",
+      "targets": [
+        "status/symbolic/network-flightmode-on-symbolic.svg",
+        "status/symbolic/network-flightmode-on.svg"
+      ]
+    },
+    {
+      "name": "network-modem-symbolic",
+      "icon": "router",
+      "targets": [
+        "devices/symbolic/network-modem-symbolic.svg",
+        "status/symbolic/network-modem-symbolic.svg",
+        "status/symbolic/network-modem.svg"
+      ]
+    },
+    {
+      "name": "network-offline-symbolic",
+      "icon": "world-off",
+      "targets": [
+        "status/symbolic/network-limited-symbolic.svg",
+        "status/symbolic/network-limited.svg",
+        "status/symbolic/network-offline-symbolic.svg",
+        "status/symbolic/network-offline.svg",
+        "status/symbolic/network-unavailable-symbolic.svg",
+        "status/symbolic/network-unavailable.svg",
+        "status/symbolic/network-wired-unavailable-symbolic.svg",
+        "status/symbolic/network-wired-unavailable.svg",
+        "status/symbolic/network-wireless-disconnected-symbolic.svg",
+        "status/symbolic/network-wireless-disconnected.svg",
+        "status/symbolic/network-wireless-off-symbolic.svg",
+        "status/symbolic/network-wireless-off.svg",
+        "status/symbolic/network-wireless-signal-none-symbolic.svg",
+        "status/symbolic/network-wireless-signal-none.svg"
+      ]
+    },
+    {
+      "name": "network-server-database-symbolic",
+      "icon": "database",
+      "targets": [
+        "devices/symbolic/network-server-database-symbolic.svg",
+        "devices/symbolic/network-server-database.svg"
+      ]
+    },
+    {
       "name": "network-server-symbolic",
       "icon": "server",
       "targets": [
         "devices/symbolic/network-server-symbolic.svg"
+      ]
+    },
+    {
+      "name": "network-symbolic",
+      "icon": "network",
+      "targets": [
+        "actions/symbolic/network-connect-symbolic.svg",
+        "actions/symbolic/network-connect.svg",
+        "devices/symbolic/network-rj45-female-symbolic.svg",
+        "devices/symbolic/network-rj45-female.svg",
+        "status/symbolic/network-card-symbolic.svg",
+        "status/symbolic/network-card.svg",
+        "status/symbolic/network-manager-symbolic.svg",
+        "status/symbolic/network-manager.svg",
+        "status/symbolic/network-wired-available-symbolic.svg",
+        "status/symbolic/network-wired-available.svg"
       ]
     },
     {
@@ -1558,6 +1655,14 @@
       "name": "network-wireless-80-symbolic",
       "icon": "wifi-2",
       "targets": []
+    },
+    {
+      "name": "network-wireless-hotspot-symbolic",
+      "icon": "access-point",
+      "targets": [
+        "status/symbolic/network-wireless-hotspot-symbolic.svg",
+        "status/symbolic/network-wireless-hotspot.svg"
+      ]
     },
     {
       "name": "network-wireless-symbolic",
@@ -1672,7 +1777,21 @@
       "name": "phone-symbolic",
       "icon": "device-mobile",
       "targets": [
+        "actions/symbolic/kdeconnect-symbolic.svg",
+        "actions/symbolic/kdeconnect.svg",
+        "apps/16/kdeconnect.svg",
+        "apps/16/org.kde.kdeconnect.app.svg",
+        "apps/16/org.kde.kdeconnect.settings.svg",
+        "apps/16/org.kde.kdeconnect.sms.svg",
+        "apps/16/org.kde.kdeconnect.svg",
+        "apps/22/kdeconnect.svg",
+        "apps/22/org.kde.kdeconnect.app.svg",
+        "apps/22/org.kde.kdeconnect.settings.svg",
+        "apps/22/org.kde.kdeconnect.sms.svg",
+        "apps/22/org.kde.kdeconnect.svg",
         "devices/symbolic/audio-input-microphone-symbolic.svg",
+        "devices/symbolic/kdeconnect-symbolic.svg",
+        "devices/symbolic/kdeconnect.svg",
         "devices/symbolic/microphone-symbolic.svg",
         "devices/symbolic/phone-apple-iphone-symbolic.svg",
         "devices/symbolic/phone-google-nexus-one-symbolic.svg",
@@ -1682,6 +1801,7 @@
         "devices/symbolic/phone-samsung-galaxy-s-symbolic.svg",
         "devices/symbolic/phone-symbolic.svg",
         "devices/symbolic/smartphone-symbolic.svg",
+        "devices/symbolic/smartphone.svg",
         "status/symbolic/audio-input-microphone-high-symbolic.svg",
         "status/symbolic/audio-input-microphone-low-symbolic.svg",
         "status/symbolic/audio-input-microphone-medium-symbolic.svg",
@@ -1689,6 +1809,10 @@
         "status/symbolic/audio-volume-headphones-symbolic.svg",
         "status/symbolic/audio-volume-muted-blocking-headphones-symbolic.svg",
         "status/symbolic/audio-volume-muted-headphones-symbolic.svg",
+        "status/symbolic/kdeconnect-indicator-symbolic.svg",
+        "status/symbolic/kdeconnect-indicator.svg",
+        "status/symbolic/kdeconnect-tray-symbolic.svg",
+        "status/symbolic/kdeconnect-tray.svg",
         "status/symbolic/microphone-disabled-symbolic.svg",
         "status/symbolic/microphone-hardware-disabled-symbolic.svg",
         "status/symbolic/microphone-sensitivity-low-symbolic.svg",
@@ -2486,23 +2610,6 @@
     {
       "name": "book-search",
       "targets": []
-    },
-    {
-      "name": "drive-harddisk",
-      "targets": [
-        "places/24/drive-harddisk.svg"
-      ]
-    },
-    {
-      "name": "drive-harddisk-symbolic",
-      "targets": [
-        "devices/symbolic/drive-harddisk-ieee1394-symbolic.svg",
-        "devices/symbolic/drive-harddisk-solidstate-symbolic.svg",
-        "devices/symbolic/drive-harddisk-symbolic.svg",
-        "devices/symbolic/drive-harddisk-system-symbolic.svg",
-        "devices/symbolic/drive-harddisk-usb-symbolic.svg",
-        "places/24/drive-harddisk-symbolic.svg"
-      ]
     },
     {
       "name": "message-circle",
