@@ -17,6 +17,13 @@
       ]
     },
     {
+      "name": "alert-circle",
+      "icon": "alert-circle",
+      "targets": [
+        "actions/symbolic/alert-circle-symbolic.svg"
+      ]
+    },
+    {
       "name": "app-window",
       "icon": "app-window",
       "targets": []
@@ -342,6 +349,13 @@
       "targets": []
     },
     {
+      "name": "book-open",
+      "icon": "book",
+      "targets": [
+        "actions/symbolic/book-open-symbolic.svg"
+      ]
+    },
+    {
       "name": "bookmark",
       "icon": "bookmark",
       "targets": [
@@ -434,6 +448,13 @@
         "actions/symbolic/cancel.svg",
         "actions/symbolic/dialog-cancel.svg",
         "actions/symbolic/process-stop.svg"
+      ]
+    },
+    {
+      "name": "check",
+      "icon": "check",
+      "targets": [
+        "actions/symbolic/check-symbolic.svg"
       ]
     },
     {
@@ -1190,6 +1211,13 @@
       ]
     },
     {
+      "name": "help-circle",
+      "icon": "help-circle",
+      "targets": [
+        "actions/symbolic/help-circle-symbolic.svg"
+      ]
+    },
+    {
       "name": "help-contents-symbolic",
       "icon": "book",
       "targets": []
@@ -1409,6 +1437,13 @@
       "icon": "arrow-back",
       "targets": [
         "actions/symbolic/mail-reply-symbolic.svg"
+      ]
+    },
+    {
+      "name": "mail-symbolic",
+      "icon": "mail",
+      "targets": [
+        "actions/symbolic/mail-symbolic.svg"
       ]
     },
     {
@@ -2559,6 +2594,13 @@
       "icon": "pinned-off",
       "targets": [
         "actions/symbolic/window-unpin-symbolic.svg"
+      ]
+    },
+    {
+      "name": "x",
+      "icon": "x",
+      "targets": [
+        "actions/symbolic/x-symbolic.svg"
       ]
     },
     {
