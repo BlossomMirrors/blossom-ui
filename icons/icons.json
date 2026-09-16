@@ -486,6 +486,13 @@
       ]
     },
     {
+      "name": "community",
+      "icon": "users",
+      "targets": [
+        "actions/symbolic/community-symbolic.svg"
+      ]
+    },
+    {
       "name": "compass",
       "icon": "compass",
       "targets": [
