@@ -17,6 +17,7 @@ SVG_NS = 'http://www.w3.org/2000/svg'
 
 ROOT = Path(__file__).parent
 MANIFEST = ROOT / 'icons.json'
+REPROCESS_DIRS = (ROOT / 'source', ROOT / 'source' / 'custom' / 'symbols')
 
 
 def fetch_tabler_icon(icon_name):
@@ -371,7 +372,8 @@ Examples:
     args = parser.parse_args()
 
     if args.reprocess:
-        sys.exit(0 if reprocess_sources(ROOT / 'source') else 1)
+        ok = all([reprocess_sources(d) for d in REPROCESS_DIRS])
+        sys.exit(0 if ok else 1)
 
     if args.prune:
         sys.exit(0 if prune() else 1)
