@@ -110,6 +110,7 @@ fi
 \$KWRITE --file /etc/xdg/kdeglobals --group General --key LightColorScheme 'BlossomUI Light'
 \$KWRITE --file /etc/xdg/kdeglobals --group General --key DarkColorScheme 'BlossomUI Dark'
 \$KWRITE --file /etc/xdg/plasmarc --group Theme --key name 'BlossomUI'
+\$KWRITE --file /etc/xdg/kwinrc --group Effect-blur --key BlurStrength 5
 \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightColorScheme 'BlossomUI Light'
 \$KWRITE --file /etc/xdg/plasmarc --group Theme --key DarkColorScheme 'BlossomUI Dark'
 \$KWRITE --file /etc/xdg/plasmarc --group Theme --key LightLookAndFeel 'org.blossomos.ui.light.desktop'

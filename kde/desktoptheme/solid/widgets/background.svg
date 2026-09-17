@@ -791,12 +791,12 @@
        id="path15-8"
        d="m -5,892.36 v 24 h 18 c 0,-3.324 2.676,-6 6,-6 v -18 z"
        style="opacity:0;fill-rule:evenodd" />
-    <path id="path19-7" transform="translate(-135,816.36)" d="M 148,100 H 149 A 5,5 0 0 1 154,95 V 94 V 100 Z"/>
+    <path id="path19-7" d="m 19,910.36 c -3.324,0 -6,2.676 -6,6 h 6 z"/>
   </g>
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-top">
-    <rect id="rect23-20" transform="translate(-135,816.36)" x="154" y="94" width="32" height="6"/>
+    <rect id="rect23-20" height="32" width="6" y="-51" x="-916.35999" transform="matrix(0,-1,-1,0,0,0)"/>
     <rect
        id="rect25-2"
        height="32"
@@ -809,7 +809,7 @@
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-bottom">
-    <rect id="rect28-7" transform="translate(-135,816.36)" x="154" y="132" width="32" height="6"/>
+    <rect id="rect28-7" height="6" width="32" y="948.35999" x="19"/>
     <rect
        id="rect30-5"
        height="32"
@@ -822,7 +822,7 @@
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-left">
-    <rect id="rect33-2" transform="translate(-135,816.36)" x="148" y="100" width="6" height="32"/>
+    <rect id="rect33-2" height="32" width="6" y="916.35999" x="13"/>
     <rect
        id="rect35-2"
        height="32"
@@ -835,7 +835,7 @@
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-right">
-    <rect id="rect38-9" transform="translate(-135,816.36)" x="186" y="100" width="6" height="32"/>
+    <rect id="rect38-9" height="32" width="6" y="916.35999" x="51"/>
     <rect
        id="rect40-7"
        height="32"

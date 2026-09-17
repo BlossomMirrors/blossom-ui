@@ -9,15 +9,15 @@
   <g id="topright"><path d="M 28,0 A 24,24 0 0 1 52,24 H 28 Z" class="ColorScheme-Background" style="opacity:1;fill:currentColor"/><path d="M 28,0 A 24,24 0 0 1 52,24 H 51 A 23,23 0 0 0 28,1 Z" class="ColorScheme-Text" style="opacity:0.15;fill:currentColor"/></g>
   <g id="bottomright"><path d="M 52,28 A 24,24 0 0 1 28,52 V 28 Z" class="ColorScheme-Background" style="opacity:1;fill:currentColor"/><path d="M 52,28 A 24,24 0 0 1 28,52 V 51 A 23,23 0 0 0 51,28 Z" class="ColorScheme-Text" style="opacity:0.15;fill:currentColor"/></g>
   <g id="bottomleft"><path d="M 24,52 A 24,24 0 0 1 0,28 H 24 Z" class="ColorScheme-Background" style="opacity:1;fill:currentColor"/><path d="M 24,52 A 24,24 0 0 1 0,28 H 1 A 23,23 0 0 0 24,51 Z" class="ColorScheme-Text" style="opacity:0.15;fill:currentColor"/></g>
-  <rect id="mask-top" x="104" y="0" width="4" height="24" style="fill:#000"/>
-  <rect id="mask-bottom" x="104" y="28" width="4" height="24" style="fill:#000"/>
-  <rect id="mask-left" x="80" y="24" width="24" height="4" style="fill:#000"/>
-  <rect id="mask-right" x="108" y="24" width="24" height="4" style="fill:#000"/>
+  <path id="mask-top" d="M 104,0 V 0 H 108 V 0 V 24 H 104 Z" style="fill:#000"/>
+  <path id="mask-bottom" d="M 104,28 H 108 V 52 V 52 H 104 Z" style="fill:#000"/>
+  <path id="mask-left" d="M 80,24 H 80 V 28 H 80 H 104 V 24 Z" style="fill:#000"/>
+  <path id="mask-right" d="M 108,24 H 132 H 132 H 132 V 28 H 108 Z" style="fill:#000"/>
   <rect id="mask-center" x="104" y="24" width="4" height="4" style="fill:#000"/>
-  <path id="mask-topleft" d="M 80,24 C 80,14.400 94.400,0 104,0 V 24 Z" style="fill:#000"/>
-  <path id="mask-topright" d="M 108,0 C 117.600,0 132,14.400 132,24 H 108 Z" style="fill:#000"/>
-  <path id="mask-bottomright" d="M 132,28 C 132,37.600 117.600,52 108,52 V 28 Z" style="fill:#000"/>
-  <path id="mask-bottomleft" d="M 104,52 C 94.400,52 80,37.600 80,28 H 104 Z" style="fill:#000"/>
+  <path id="mask-topleft" d="M 80,24 H 81 A 23,23 0 0 1 104,1 V 0 V 24 Z" style="fill:#000"/>
+  <path id="mask-topright" d="M 108,0 V 1 A 23,23 0 0 1 131,24 H 132 H 108 Z" style="fill:#000"/>
+  <path id="mask-bottomright" d="M 132,28 H 131 A 23,23 0 0 1 108,51 V 52 V 28 Z" style="fill:#000"/>
+  <path id="mask-bottomleft" d="M 104,52 V 51 A 23,23 0 0 1 81,28 H 80 H 104 Z" style="fill:#000"/>
   <rect id="hint-top-margin" x="70" y="200" width="5" height="5" style="fill:#ff00ff"/>
   <rect id="hint-top-inset" x="70" y="220" width="9.9999999e-09" height="9.9999999e-09" style="fill:#00ff00"/>
   <rect id="hint-bottom-margin" x="70" y="200" width="5" height="5" style="fill:#ff00ff"/>
