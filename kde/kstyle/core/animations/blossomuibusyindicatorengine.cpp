@@ -84,7 +84,8 @@ void BusyIndicatorEngine::setAnimated(const QObject *object, bool value)
 
                 // setup
                 _animation.data()->setStartValue(0);
-                _animation.data()->setEndValue(2 * Render::ProgressBar_BusyIndicatorSize);
+                _animation.data()->setEndValue(Render::ProgressBar_BusySteps);
+                _animation.data()->setEasingCurve(QEasingCurve::Linear);
                 _animation.data()->setTargetObject(this);
                 _animation.data()->setPropertyName("value");
                 _animation.data()->setLoopCount(-1);
@@ -119,12 +120,12 @@ void BusyIndicatorEngine::setValue(int value)
             animated = true;
 
             // emit update signal on object
-            if (const_cast<QObject *>(iter.key())->inherits("QQuickStyleItem")) {
-                // QtQuickControls "rerender" method is updateItem
-                QMetaObject::invokeMethod(const_cast<QObject *>(iter.key()), "updateItem", Qt::QueuedConnection);
+            QObject *object = const_cast<QObject *>(iter.key());
+            if (object->metaObject()->indexOfMethod("updateItem()") >= 0) {
+                QMetaObject::invokeMethod(object, "updateItem", Qt::QueuedConnection);
 
             } else {
-                QMetaObject::invokeMethod(const_cast<QObject *>(iter.key()), "update", Qt::QueuedConnection);
+                QMetaObject::invokeMethod(object, "update", Qt::QueuedConnection);
             }
         }
     }

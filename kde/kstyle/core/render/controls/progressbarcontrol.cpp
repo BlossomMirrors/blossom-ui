@@ -90,9 +90,8 @@ bool Render::ProgressBarControl::drawProgressBarContentsControl(const QStyleOpti
   if (busy) {
     const qreal progress(_style->_animations->busyIndicatorEngine().value());
 
-    const auto first = Render::progressBarBusyFirst(palette).brush.color();
-    const auto second = Render::progressBarBusySecond(palette).brush.color();
-    _style->_helper->renderProgressBarBusyContents(painter, rect, first, second,
+    const auto color = Render::progressBarBusyFirst(palette).brush.color();
+    _style->_helper->renderProgressBarBusyContents(painter, rect, color,
                                            horizontal, reverse, progress);
 
   } else {
@@ -135,8 +134,7 @@ bool Render::ProgressBarControl::drawProgressBarGrooveControl(const QStyleOption
   const auto &palette(option->palette);
   const auto color(
       _style->_helper->alphaColor(palette.color(QPalette::WindowText), 0.3));
-  _style->_helper->renderProgressBarGroove(painter, option->rect.adjusted(1, 1, -1, -1),
-                                   color);
+  _style->_helper->renderProgressBarGroove(painter, option->rect, color);
   return true;
 }
 
@@ -194,8 +192,7 @@ void Helper::renderProgressBarGroove(QPainter *painter, const QRect &rect,
 }
 
 void Helper::renderProgressBarBusyContents(QPainter *painter, const QRect &rect,
-                                           const QColor &first,
-                                           const QColor &second,
+                                           const QColor &color,
                                            bool horizontal, bool reverse,
                                            int progress) const {
   // setup painter
@@ -204,49 +201,31 @@ void Helper::renderProgressBarBusyContents(QPainter *painter, const QRect &rect,
   const QRectF baseRect(rect);
   const qreal radius(0.5 * static_cast<qreal>(Render::ProgressBar_Thickness));
 
-  // setup brush
-  QPixmap pixmap(horizontal ? 2 * Render::ProgressBar_BusyIndicatorSize : 1,
-                 horizontal ? 1 : 2 * Render::ProgressBar_BusyIndicatorSize);
-  pixmap.fill(second);
+
+  const qreal t(qBound(0, progress, Render::ProgressBar_BusySteps) /
+                static_cast<qreal>(Render::ProgressBar_BusySteps));
+  const qreal length(horizontal ? baseRect.width() : baseRect.height());
+  const qreal segment(length * Render::ProgressBar_BusySegmentFraction);
+  const qreal offset(t * (length + segment) - segment);
+
+  QRectF segmentRect;
   if (horizontal) {
-    QPainter painter(&pixmap);
-    painter.setBrush(first);
-    painter.setPen(Qt::NoPen);
-
-    progress %= 2 * Render::ProgressBar_BusyIndicatorSize;
-    if (reverse)
-      progress = 2 * Render::ProgressBar_BusyIndicatorSize - progress - 1;
-    painter.drawRect(QRect(0, 0, Render::ProgressBar_BusyIndicatorSize, 1)
-                         .translated(progress, 0));
-
-    if (progress > Render::ProgressBar_BusyIndicatorSize) {
-      painter.drawRect(
-          QRect(0, 0, Render::ProgressBar_BusyIndicatorSize, 1)
-              .translated(progress - 2 * Render::ProgressBar_BusyIndicatorSize,
-                          0));
-    }
-
+    const qreal x(reverse ? baseRect.right() - offset - segment
+                          : baseRect.left() + offset);
+    segmentRect = QRectF(x, baseRect.top(), segment, baseRect.height());
   } else {
-    QPainter painter(&pixmap);
-    painter.setBrush(first);
-    painter.setPen(Qt::NoPen);
 
-    progress %= 2 * Render::ProgressBar_BusyIndicatorSize;
-    progress = 2 * Render::ProgressBar_BusyIndicatorSize - progress - 1;
-    painter.drawRect(QRect(0, 0, 1, Render::ProgressBar_BusyIndicatorSize)
-                         .translated(0, progress));
-
-    if (progress > Render::ProgressBar_BusyIndicatorSize) {
-      painter.drawRect(
-          QRect(0, 0, 1, Render::ProgressBar_BusyIndicatorSize)
-              .translated(0, progress -
-                                 2 * Render::ProgressBar_BusyIndicatorSize));
-    }
+    const qreal y(baseRect.bottom() - offset - segment);
+    segmentRect = QRectF(baseRect.left(), y, baseRect.width(), segment);
   }
 
+  segmentRect = segmentRect.intersected(baseRect);
+  if (segmentRect.isEmpty())
+    return;
+
   painter->setPen(Qt::NoPen);
-  painter->setBrush(pixmap);
-  painter->drawRoundedRect(baseRect, radius, radius);
+  painter->setBrush(color);
+  painter->drawRoundedRect(segmentRect, radius, radius);
 }
 bool Style::drawProgressBarControl(const QStyleOption *option, QPainter *painter, const QWidget *widget) const {
   return Render::ProgressBarControl(this).drawProgressBarControl(option, painter, widget);

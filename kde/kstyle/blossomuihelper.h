@@ -41,6 +41,9 @@
 
 namespace BlossomUI {
 class PaletteChangedEventFilter;
+namespace Render {
+struct WidgetSpec;
+}
 
 //* blossomui style helper class.
 /** contains utility functions used at multiple places in both blossomui style
@@ -242,8 +245,8 @@ public:
   void renderSliderGroove(QPainter *, const QRect &, const QColor &) const;
 
   //* slider handle
-  void renderSliderHandle(QPainter *, const QRect &, const QColor &,
-                          const QColor &, qreal hoverOpacity, bool sunken) const;
+  void renderSliderHandle(QPainter *, const QRect &, const Render::WidgetSpec &,
+                          const QColor &hoverColor, qreal hoverOpacity, bool sunken) const;
 
   //* dial groove
   void renderDialGroove(QPainter *, const QRect &, const QColor &, qreal first,
@@ -264,8 +267,8 @@ public:
 
   //* progress bar contents (animated)
   void renderProgressBarBusyContents(QPainter *painter, const QRect &rect,
-                                     const QColor &first, const QColor &second,
-                                     bool horizontal, bool reverse,
+                                     const QColor &color, bool horizontal,
+                                     bool reverse,
                                      int progress) const;
 
   //* scrollbar groove

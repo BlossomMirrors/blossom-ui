@@ -185,6 +185,23 @@ else()
     endif()
 endif()
 
+if(FOR_FLATPAK AND QT_MAJOR_VERSION EQUAL 6)
+    find_package(Qt6 REQUIRED COMPONENTS QuickControls2)
+    if(IS_ABSOLUTE "${KDE_INSTALL_QMLDIR}")
+        set(BLOSSOMUI_FLATPAK_QMLDIR "${KDE_INSTALL_QMLDIR}")
+    else()
+        set(BLOSSOMUI_FLATPAK_QMLDIR "${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_QMLDIR}")
+    endif()
+    target_link_libraries(blossomui${QT_MAJOR_VERSION} PRIVATE Qt6::QuickControls2)
+    target_compile_definitions(blossomui${QT_MAJOR_VERSION} PRIVATE
+        BLOSSOMUI_FLATPAK_QUICK_INTEGRATION=1
+        BLOSSOMUI_FLATPAK_PREFIX="${CMAKE_INSTALL_PREFIX}"
+        BLOSSOMUI_FLATPAK_QMLDIR="${BLOSSOMUI_FLATPAK_QMLDIR}"
+        BLOSSOMUI_FLATPAK_FONTDIR="${KDE_INSTALL_FULL_DATADIR}/fonts/blossomui")
+else()
+    target_compile_definitions(blossomui${QT_MAJOR_VERSION} PRIVATE BLOSSOMUI_FLATPAK_QUICK_INTEGRATION=0)
+endif()
+
 ################# link internal library #################
 target_link_libraries(blossomui${QT_MAJOR_VERSION} PRIVATE blossomuicommon${QT_MAJOR_VERSION})
 
