@@ -16,7 +16,7 @@
     "Name": "BlossomUI",
     "Description": "BlossomUI Plasma Theme with more margins, blur and rounded corners.",
     "Id": "BlossomUI",
-    "Version": "@PROJECT_VERSION@",
+    "Version": "@BLOSSOM_DESKTOPTHEME_VERSION@",
     "License": "GPLv2",
     "X-KPackage-Dependencies": []
   },
