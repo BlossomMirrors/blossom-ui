@@ -9,7 +9,7 @@ if [ "$1" = "remove" ]; then
 fi
 
 echo " *** Unlocking rpm-ostree so the changes persist after restart *** "
-sudo rpm-ostree unlock --hotfix | true || true
+sudo rpm-ostree usroverlay | true || true
 
 sudo dnf install -y kdecoration-devel sassc gettext # FIXME: should be included in the DX OS image
 echo " *** Building *** "
