@@ -198,7 +198,7 @@
   </defs>
   <g
      transform="translate(15,-904.36)"
-     id="topleft">
+     id="topleft"><path d="M 28,12 A 6,6 0 0 1 34,6 V 7 A 5,5 0 0 0 29,12 Z" transform="translate(-15,904.36)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <g
        id="g17"
        fill-rule="evenodd">
@@ -215,7 +215,7 @@
        d="m19 6c-3.324 0-6 2.676-6 6h6v-5z"
        transform="translate(0,904.36)"
       class="ColorScheme-Background"
-      style="opacity:0.75;fill:currentColor;fill-opacity:1" />
+      style="opacity:0.6;fill:currentColor;fill-opacity:1" />
   </g>
   <rect
      fill="#f60"
@@ -225,7 +225,7 @@
      id="hint-tile-center" />
   <g
      transform="translate(15,-904.36)"
-     id="top">
+     id="top"><rect x="34" y="6" width="32" height="1" transform="translate(-15,904.36)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect23"
        fill="#1a1a1a"
@@ -235,7 +235,7 @@
        x="-916.36"
        transform="matrix(0,-1,-1,0,0,0)"
       class="ColorScheme-Background"
-      style="opacity:0.75;fill:currentColor;fill-opacity:1" />
+      style="opacity:0.6;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect25"
        fill="url(#linearGradient948)"
@@ -248,7 +248,7 @@
   </g>
   <g
      transform="translate(15,-904.36)"
-     id="bottom">
+     id="bottom"><rect x="34" y="49" width="32" height="1" transform="translate(-15,904.36)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect28"
        fill="#1a1a1a"
@@ -258,7 +258,7 @@
        x="948.36"
        transform="rotate(90)"
       class="ColorScheme-Background"
-      style="opacity:0.75;fill:currentColor;fill-opacity:1" />
+      style="opacity:0.6;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect30"
        fill="url(#linearGradient956)"
@@ -271,7 +271,7 @@
   </g>
   <g
      transform="translate(15,-904.36)"
-     id="left">
+     id="left"><rect x="28" y="12" width="1" height="32" transform="translate(-15,904.36)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect33"
        fill="#1a1a1a"
@@ -281,7 +281,7 @@
        x="-19"
        transform="scale(-1,1)"
       class="ColorScheme-Background"
-      style="opacity:0.75;fill:currentColor;fill-opacity:1" />
+      style="opacity:0.6;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect35"
        fill="url(#linearGradient952)"
@@ -294,7 +294,7 @@
   </g>
   <g
      transform="translate(15,-904.36)"
-     id="right">
+     id="right"><rect x="71" y="12" width="1" height="32" transform="translate(-15,904.36)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect38"
        fill="#1a1a1a"
@@ -303,7 +303,7 @@
        y="916.36"
        x="51"
       class="ColorScheme-Background"
-      style="opacity:0.75;fill:currentColor;fill-opacity:1" />
+      style="opacity:0.6;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect40"
        fill="url(#linearGradient958)"
@@ -331,7 +331,7 @@
        y="916.36"
        x="19"
       class="ColorScheme-Background"
-      style="opacity:0.75;fill:currentColor;fill-opacity:1" />
+      style="opacity:0.6;fill:currentColor;fill-opacity:1" />
   </g>
   <rect
      height="24"
@@ -577,7 +577,7 @@
      style="fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:1.73205" />
   <g
      transform="translate(15,-817.36001)"
-     id="blurred-topleft">
+     id="blurred-topleft"><path d="M 28,99 A 6,6 0 0 1 34,93 V 94 A 5,5 0 0 0 29,99 Z" transform="translate(-15,817.36001)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <g
        id="g17-5"
        fill-rule="evenodd">
@@ -597,7 +597,7 @@
   </g>
   <g
      transform="translate(15,-817.36001)"
-     id="blurred-top">
+     id="blurred-top"><rect x="34" y="93" width="32" height="1" transform="translate(-15,817.36001)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect23-2"
        fill="#1a1a1a"
@@ -619,7 +619,7 @@
   </g>
   <g
      transform="translate(15,-817.36001)"
-     id="blurred-bottom">
+     id="blurred-bottom"><rect x="34" y="136" width="32" height="1" transform="translate(-15,817.36001)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect28-2"
        fill="#1a1a1a"
@@ -641,7 +641,7 @@
   </g>
   <g
      transform="translate(15,-817.36001)"
-     id="blurred-left">
+     id="blurred-left"><rect x="28" y="99" width="1" height="32" transform="translate(-15,817.36001)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect33-9"
        fill="#1a1a1a"
@@ -663,7 +663,7 @@
   </g>
   <g
      transform="translate(15,-817.36001)"
-     id="blurred-right">
+     id="blurred-right"><rect x="71" y="99" width="1" height="32" transform="translate(-15,817.36001)" class="ColorScheme-Background" style="opacity:0.3;fill:currentColor"/>
     <rect
        id="rect38-0"
        fill="#1a1a1a"
@@ -791,20 +791,12 @@
        id="path15-8"
        d="m -5,892.36 v 24 h 18 c 0,-3.324 2.676,-6 6,-6 v -18 z"
        style="opacity:0;fill-rule:evenodd" />
-    <path
-       id="path19-7"
-       d="m 19,911.36 c -2.77,0 -5,2.23 -5,5 h 5 v -4.16667 z" />
+    <path id="path19-7" transform="translate(-135,816.36)" d="M 148,100 H 149 A 5,5 0 0 1 154,95 V 94 V 100 Z"/>
   </g>
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-top">
-    <rect
-       id="rect23-20"
-       height="32"
-       width="6"
-       y="-51"
-       x="-916.35999"
-       transform="matrix(0,-1,-1,0,0,0)" />
+    <rect id="rect23-20" transform="translate(-135,816.36)" x="154" y="94" width="32" height="6"/>
     <rect
        id="rect25-2"
        height="32"
@@ -817,13 +809,7 @@
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-bottom">
-    <rect
-       id="rect28-7"
-       height="32"
-       width="6"
-       y="-51"
-       x="948.35999"
-       transform="rotate(90)" />
+    <rect id="rect28-7" transform="translate(-135,816.36)" x="154" y="132" width="32" height="6"/>
     <rect
        id="rect30-5"
        height="32"
@@ -836,13 +822,7 @@
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-left">
-    <rect
-       id="rect33-2"
-       height="32"
-       width="6"
-       y="916.35999"
-       x="-19"
-       transform="scale(-1,1)" />
+    <rect id="rect33-2" transform="translate(-135,816.36)" x="148" y="100" width="6" height="32"/>
     <rect
        id="rect35-2"
        height="32"
@@ -855,12 +835,7 @@
   <g
      transform="translate(135,-816.36)"
      id="blurred-mask-right">
-    <rect
-       id="rect38-9"
-       height="32"
-       width="6"
-       y="916.35999"
-       x="51" />
+    <rect id="rect38-9" transform="translate(-135,816.36)" x="186" y="100" width="6" height="32"/>
     <rect
        id="rect40-7"
        height="32"

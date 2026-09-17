@@ -18,7 +18,6 @@
 namespace
 {
 constexpr int defaultLongDuration = 200;
-constexpr int defaultCornerRadius = 10;
 }
 
 PlasmaDesktopUnits::PlasmaDesktopUnits(QObject *parent)
@@ -33,7 +32,6 @@ PlasmaDesktopUnits::PlasmaDesktopUnits(QObject *parent)
         updateAnimationSpeed();
     });
     updateAnimationSpeed();
-    updateCornerRadius();
 }
 
 // Copy from plasma-framework/src/declarativeimports/core/units.cpp, since we don't want to depend on plasma-framework here
@@ -54,13 +52,6 @@ void PlasmaDesktopUnits::updateAnimationSpeed()
     setShortDuration(longDuration / 2);
     setLongDuration(longDuration);
     setVeryLongDuration(longDuration * 2);
-}
-
-void PlasmaDesktopUnits::updateCornerRadius()
-{
-    KConfigGroup cfg = KConfigGroup(KSharedConfig::openConfig(QStringLiteral("blossomuirc")), QStringLiteral("Common"));
-    int radius = cfg.readEntry("CornerRadius", defaultCornerRadius);
-    setcornerRadius(radius);
 }
 
 #include "moc_plasmadesktopunits.cpp"
