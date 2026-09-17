@@ -135,6 +135,8 @@ set_source_files_properties(
 add_library(blossomui${QT_MAJOR_VERSION} MODULE ${blossomui_PART_SRCS})
 set_target_properties(blossomui${QT_MAJOR_VERSION} PROPERTIES
     OUTPUT_NAME "blossomui${QT_MAJOR_VERSION}"
+    # breaks the remaining ninja autogen cycle from the kcfg generated headers
+    AUTOGEN_ORIGIN_DEPENDS OFF
 )
 
 ################# find Qt modules #################
