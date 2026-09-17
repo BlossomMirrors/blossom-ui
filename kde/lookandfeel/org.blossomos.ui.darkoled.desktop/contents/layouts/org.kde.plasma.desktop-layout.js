@@ -21,7 +21,12 @@ systemtray.writeConfig("extraItems", "org.kde.kdeconnect,org.kde.plasma.vault,or
 systemtray.writeConfig("hiddenItems", "chrome_status_icon_1@xdg-dbus-proxy,org.kde.plasma.clipboard,org.kde.merkuro.contact.applet,bitwarden");
 systemtray.writeConfig("knownItems", "org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kscreen,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.notifications,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.merkuro.contact.applet");
 
-panel.addWidget("org.kde.plasma.digitalclock");
+var clock = panel.addWidget("org.kde.plasma.digitalclock");
+clock.currentConfigGroup = ["Appearance"];
+clock.writeConfig("autoFontAndSize", false);
+clock.writeConfig("fontFamily", "Aspekta");
+clock.writeConfig("fontWeight", 350);
+clock.writeConfig("fontSize", 11);
 
 var desktopsArray = desktopsForActivity(currentActivity());
 for (var j = 0; j < desktopsArray.length; j++) {

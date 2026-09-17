@@ -24,7 +24,7 @@ Shadow cardShadow(const QPalette &palette) {
 } // namespace
 
 // RadiusResolver subtracts the inset, so the bias adds Frame_FrameWidth back:
-// painted radius stays cornerRadius + Card_RadiusBias, matching cardRadius()
+// painted radius stays cornerRadius + Card_RadiusBias
 const WidgetSpec CardSpec =
     WidgetBuilder().geometry(
         Geometry()
@@ -41,7 +41,7 @@ WidgetSpec cardFrame(const QPalette &palette, const QColor &background) {
 }
 
 int cardRadius() {
-  return StyleConfigData::cornerRadius() + Card_RadiusBias;
+  return StyleConfigData::cornerRadius() + Card_InsetRadiusBias;
 }
 
 Fill cardBackgroundFill(const QColor &windowColor) {

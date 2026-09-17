@@ -38,7 +38,7 @@ void Decoration::updateButtonsGeometry() {
     auto btn = static_cast<Button *>(b);
 
     const int verticalOffset =
-        (isTopEdge() ? s->smallSpacing() * Metrics::TitleBar_TopMargin : 0);
+        (isTopEdge() ? qRound(s->smallSpacing() * Metrics::TitleBar_TopMargin) : 0);
 
     const QSizeF preferredSize = btn->preferredSize();
     const int bHeight = preferredSize.height() + verticalOffset;
@@ -65,8 +65,8 @@ void Decoration::updateButtonsGeometry() {
     m_leftButtons->setSpacing(0);
 
     const int vPadding =
-        isTopEdge() ? 0 : s->smallSpacing() * Metrics::TitleBar_TopMargin;
-    const int hPadding = s->smallSpacing() * Metrics::TitleBar_SideMargin;
+        isTopEdge() ? 0 : qRound(s->smallSpacing() * Metrics::TitleBar_TopMargin);
+    const int hPadding = qRound(s->smallSpacing() * Metrics::TitleBar_SideMargin);
     if (isLeftEdge()) {
       auto button = static_cast<Button *>(m_leftButtons->buttons().front());
 
@@ -87,8 +87,8 @@ void Decoration::updateButtonsGeometry() {
     m_rightButtons->setSpacing(0);
 
     const int vPadding =
-        isTopEdge() ? 0 : s->smallSpacing() * Metrics::TitleBar_TopMargin;
-    const int hPadding = s->smallSpacing() * Metrics::TitleBar_SideMargin;
+        isTopEdge() ? 0 : qRound(s->smallSpacing() * Metrics::TitleBar_TopMargin);
+    const int hPadding = qRound(s->smallSpacing() * Metrics::TitleBar_SideMargin);
     if (isRightEdge()) {
       auto button = static_cast<Button *>(m_rightButtons->buttons().back());
 

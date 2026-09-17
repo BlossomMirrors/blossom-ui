@@ -14,6 +14,7 @@ namespace Render {
 // widget-owned size constants (logical pixels)
 static constexpr int Card_Padding = 12;
 static constexpr int Card_RadiusBias = 2;
+static constexpr int Card_InsetRadiusBias = -2;
 static constexpr int Card_BorderWidth = 1;
 static constexpr int Card_ShadowYOffset = 1;
 static constexpr int Card_ShadowBlur = 2;

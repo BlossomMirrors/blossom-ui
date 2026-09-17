@@ -52,7 +52,7 @@ QColor Button::backgroundColor() const {
     if (type() == DecorationButtonType::Close)
       return c->color(ColorGroup::Warning, ColorRole::Foreground);
     else
-      return KColorUtils::mix(d->titleBarColor(), d->fontColor(), 0.3);
+      return d->fontColor();
 
   } else if ((type() == DecorationButtonType::KeepBelow ||
               type() == DecorationButtonType::KeepAbove ||
