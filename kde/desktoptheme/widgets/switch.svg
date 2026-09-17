@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    SPDX-License-Identifier: GPL-2.0-or-later
-    Blossom switch for PlasmaComponents3, sized 32x18 to match the QQC2
-    switch at default gridUnit (KSvg can't scale with gridUnit).
-
-    libplasma clamps the handle to the track edges with no margin, so the
-    2px rim is baked into the 18x14 handle elements (invisible spacer rect
-    defines the bounds). libplasma also shows handle-hover regardless of
-    the checked state, so hover/pressed carry a neutral dot instead of a
-    possibly-wrong x/check.
--->
 <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" version="1.1">
   <defs>
     <style type="text/css" id="current-color-scheme">
@@ -31,61 +20,77 @@
     </style>
   </defs>
 
-  <!-- sizing hint for the bar: 32x18 (QQC2 switch at default gridUnit) -->
-  <rect id="hint-bar-size" x="0" y="0" width="32" height="18" fill="none" stroke="none" opacity="0"/>
+  <rect id="hint-bar-size" x="0" y="0" width="34" height="18" fill="none" stroke="none" opacity="0"/>
 
-  <!-- inactive bar (3-part horizontal frame, pill caps) -->
-  <path id="inactive-left" class="ColorScheme-ButtonBackground" fill="currentColor"
-        d="M 9,0 A 9,9 0 0 0 0,9 9,9 0 0 0 9,18 Z"/>
-  <rect id="inactive-center" class="ColorScheme-ButtonBackground" fill="currentColor"
-        x="9" y="0" width="14" height="18"/>
-  <path id="active-right" class="ColorScheme-Highlight" fill="currentColor"
-        transform="translate(0,22)"
-        d="M 23,0 A 9,9 0 0 1 32,9 9,9 0 0 1 23,18 Z"/>
-  <path id="inactive-right" class="ColorScheme-ButtonBackground" fill="currentColor"
-        d="M 23,0 A 9,9 0 0 1 32,9 9,9 0 0 1 23,18 Z"/>
+  <g id="inactive-left">
+    <path class="ColorScheme-ButtonBackground" fill="currentColor"
+          d="M 9,0 A 9,9 0 0 0 0,9 9,9 0 0 0 9,18 Z"/>
+    <path class="ColorScheme-Text" fill="currentColor" opacity="0.1" d="M 9,0 A 9,9 0 0 0 0,9 9,9 0 0 0 9,18 V 17 A 8,8 0 0 1 1,9 8,8 0 0 1 9,1 Z"/>
+  </g>
+  <g id="inactive-center">
+    <rect class="ColorScheme-ButtonBackground" fill="currentColor"
+          x="9" y="0" width="14" height="18"/>
+    <rect class="ColorScheme-Text" fill="currentColor" opacity="0.1" x="9" y="0" width="14" height="1"/><rect class="ColorScheme-Text" fill="currentColor" opacity="0.1" x="9" y="17" width="14" height="1"/>
+  </g>
+  <g id="active-right" transform="translate(0,22)">
+    <path class="ColorScheme-Highlight" fill="currentColor"
+          d="M 23,0 A 9,9 0 0 1 32,9 9,9 0 0 1 23,18 Z"/>
+    <path class="ColorScheme-Text" fill="currentColor" opacity="0.1" d="M 23,0 A 9,9 0 0 1 32,9 9,9 0 0 1 23,18 V 17 A 8,8 0 0 0 31,9 8,8 0 0 0 23,1 Z"/>
+  </g>
+  <g id="inactive-right">
+    <path class="ColorScheme-ButtonBackground" fill="currentColor"
+          d="M 23,0 A 9,9 0 0 1 32,9 9,9 0 0 1 23,18 Z"/>
+    <path class="ColorScheme-Text" fill="currentColor" opacity="0.1" d="M 23,0 A 9,9 0 0 1 32,9 9,9 0 0 1 23,18 V 17 A 8,8 0 0 0 31,9 8,8 0 0 0 23,1 Z"/>
+  </g>
 
-  <!-- active bar (accent fill, drawn behind the handle while it travels) -->
-  <path id="active-left" class="ColorScheme-Highlight" fill="currentColor"
-        transform="translate(0,22)"
-        d="M 9,0 A 9,9 0 0 0 0,9 9,9 0 0 0 9,18 Z"/>
-  <rect id="active-center" class="ColorScheme-Highlight" fill="currentColor"
-        x="9" y="22" width="14" height="18"/>
+  <g id="active-left" transform="translate(0,22)">
+    <path class="ColorScheme-Highlight" fill="currentColor"
+          d="M 9,0 A 9,9 0 0 0 0,9 9,9 0 0 0 9,18 Z"/>
+    <path class="ColorScheme-Text" fill="currentColor" opacity="0.1" d="M 9,0 A 9,9 0 0 0 0,9 9,9 0 0 0 9,18 V 17 A 8,8 0 0 1 1,9 8,8 0 0 1 9,1 Z"/>
+  </g>
+  <g id="active-center">
+    <rect class="ColorScheme-Highlight" fill="currentColor"
+          x="9" y="22" width="14" height="18"/>
+    <rect class="ColorScheme-Text" fill="currentColor" opacity="0.1" x="9" y="22" width="14" height="1"/><rect class="ColorScheme-Text" fill="currentColor" opacity="0.1" x="9" y="39" width="14" height="1"/>
+  </g>
 
-  <!-- handle: light 14px thumb inside 18x14 bounds (2px baked side margins);
-       off carries an x glyph, checked a checkmark, hover/pressed a neutral
-       dot (can't tell checked state apart from hover alone, see above) -->
   <g id="handle">
-    <rect x="40" y="0" width="18" height="14" fill="none" stroke="none" opacity="0"/>
-    <circle class="ColorScheme-ButtonText" fill="currentColor" cx="49" cy="7" r="7"/>
-    <path class="ColorScheme-ButtonBackground" fill="none" stroke="currentColor"
-          stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"
-          d="M 44.8,2.8 L 53.2,11.2 M 53.2,2.8 L 44.8,11.2"/>
+    <rect x="40" y="0" width="20" height="14" fill="none" stroke="none" opacity="0"/>
+    <circle fill="#f2f2f3" cx="50" cy="7" r="7"/>
+    <circle class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12" cx="50" cy="7" r="6.5"/>
+    <g transform="translate(46,3) scale(0.5)" fill="#000000" opacity="0.55">
+      <polygon points="1.87,4.13 11.87,14.13 14.13,11.87 4.13,1.87"/>
+      <polygon points="11.87,1.87 1.87,11.87 4.13,14.13 14.13,4.13"/>
+    </g>
   </g>
   <g id="handle-active">
-    <rect x="40" y="18" width="18" height="14" fill="none" stroke="none" opacity="0"/>
-    <circle class="ColorScheme-ButtonText" fill="currentColor" cx="49" cy="25" r="7"/>
-    <path class="ColorScheme-Highlight" fill="none" stroke="currentColor"
-          stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"
-          d="M 44.6,25.3 L 47.1,28.2 L 53.1,21.1"/>
+    <rect x="40" y="18" width="20" height="14" fill="none" stroke="none" opacity="0"/>
+    <circle fill="#f2f2f3" cx="50" cy="25" r="7"/>
+    <circle class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12" cx="50" cy="25" r="6.5"/>
+    <g class="ColorScheme-Highlight" fill="currentColor" transform="translate(46,21) scale(0.5)">
+      <polygon points="1.50,9.68 5.20,13.48 7.20,11.52 3.50,7.72"/>
+      <polygon points="7.33,13.33 14.63,3.33 12.37,1.67 5.07,11.67"/>
+      <circle cx="6.2" cy="12.5" r="1.4"/>
+    </g>
   </g>
   <g id="handle-hover">
-    <rect x="40" y="36" width="18" height="14" fill="none" stroke="none" opacity="0"/>
-    <circle class="ColorScheme-ButtonText" fill="currentColor" cx="49" cy="43" r="7"/>
-    <circle class="ColorScheme-ButtonBackground" fill="currentColor" cx="49" cy="43" r="1.5"/>
+    <rect x="40" y="36" width="20" height="14" fill="none" stroke="none" opacity="0"/>
+    <circle fill="#f2f2f3" cx="50" cy="43" r="7"/>
+    <circle class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12" cx="50" cy="43" r="6.5"/>
+    <circle fill="#000000" opacity="0.55" cx="50" cy="43" r="1.5"/>
   </g>
   <g id="handle-pressed">
-    <rect x="40" y="54" width="18" height="14" fill="none" stroke="none" opacity="0"/>
-    <circle class="ColorScheme-ButtonText" fill="currentColor" cx="49" cy="61" r="7"/>
-    <circle class="ColorScheme-ButtonBackground" fill="currentColor" cx="49" cy="61" r="1.5"/>
+    <rect x="40" y="54" width="20" height="14" fill="none" stroke="none" opacity="0"/>
+    <circle fill="#f2f2f3" cx="50" cy="61" r="7"/>
+    <circle class="ColorScheme-Text" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12" cx="50" cy="61" r="6.5"/>
+    <circle fill="#000000" opacity="0.55" cx="50" cy="61" r="1.5"/>
   </g>
   <g id="handle-shadow">
-    <rect x="62" y="0" width="18" height="14" fill="none" stroke="none" opacity="0"/>
-    <circle fill="#000000" opacity="0.25" cx="71" cy="7" r="7.35"/>
+    <rect x="62" y="0" width="20" height="14" fill="none" stroke="none" opacity="0"/>
   </g>
   <g id="handle-focus">
-    <rect x="62" y="18" width="18" height="14" fill="none" stroke="none" opacity="0"/>
+    <rect x="62" y="18" width="20" height="14" fill="none" stroke="none" opacity="0"/>
     <circle class="ColorScheme-Highlight" fill="none" stroke="currentColor"
-            stroke-width="1.2" opacity="0.6" cx="71" cy="25" r="6.2"/>
+            stroke-width="1.2" opacity="0.6" cx="72" cy="25" r="6.2"/>
   </g>
 </svg>
