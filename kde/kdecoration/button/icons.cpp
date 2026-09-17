@@ -13,9 +13,41 @@
 #include <QPainterPath>
 #include <QVariantAnimation>
 #include <QtSvg/QSvgRenderer>
+#include <QImage>
 #include <zlib.h>
 
 static QHash<QString, QByteArray> s_svgDataCache;
+static QHash<QString, QRectF> s_glyphBoxCache;
+
+static QRectF glyphBox(QSvgRenderer &renderer) {
+  constexpr int resolution = 256;
+  const QRectF viewBox = renderer.viewBoxF();
+  QImage image(resolution, resolution, QImage::Format_ARGB32);
+  image.fill(Qt::transparent);
+  QPainter painter(&image);
+  renderer.render(&painter, QRectF(0, 0, resolution, resolution));
+  painter.end();
+
+  int left = resolution, right = -1, top = resolution, bottom = -1;
+  for (int y = 0; y < resolution; ++y) {
+    const QRgb *line = reinterpret_cast<const QRgb *>(image.constScanLine(y));
+    for (int x = 0; x < resolution; ++x) {
+      if (qAlpha(line[x]) <= 8)
+        continue;
+      left = qMin(left, x);
+      right = qMax(right, x);
+      top = qMin(top, y);
+      bottom = qMax(bottom, y);
+    }
+  }
+  if (right < left)
+    return viewBox;
+
+  const auto unitX = [&](int px) { return viewBox.x() + px * viewBox.width() / resolution; };
+  const auto unitY = [&](int py) { return viewBox.y() + py * viewBox.height() / resolution; };
+  return QRectF(QPointF(unitX(left), unitY(top)),
+                QPointF(unitX(right + 1), unitY(bottom + 1)));
+}
 
 namespace BlossomUI {
 
@@ -244,9 +276,10 @@ void Button::drawIconWithMask(QPainter *painter) const {
                                     : d->titleBarColor();
 
   const qreal hoverProgress =
-      (m_animation->state() == QAbstractAnimation::Running)
+      isPressed() ? 1.0
+      : (m_animation->state() == QAbstractAnimation::Running)
           ? m_opacity
-          : ((isHovered() || isPressed()) ? 1.0 : 0.0);
+          : (isHovered() ? 1.0 : 0.0);
   const QColor iconColor =
       KColorUtils::mix(d->fontColor(), hoverIconColor, hoverProgress);
 
@@ -270,7 +303,19 @@ void Button::drawIconWithMask(QPainter *painter) const {
   QPainter iconPainter(&iconImage);
   iconPainter.setRenderHints(QPainter::Antialiasing |
                              QPainter::SmoothPixmapTransform);
-  renderer.render(&iconPainter, QRectF(0, 0, iconWidth, iconHeight));
+  auto glyphIt = s_glyphBoxCache.find(iconPath);
+  if (glyphIt == s_glyphBoxCache.end())
+    glyphIt = s_glyphBoxCache.insert(iconPath, glyphBox(renderer));
+  const QRectF glyph = glyphIt.value();
+  renderer.setViewBox(glyph);
+
+  const qreal side = qMin(iconWidth, iconHeight) * Metrics::TitleBar_GlyphFraction;
+  const qreal scale = side / qMax(glyph.width(), glyph.height());
+  const QSizeF glyphSize(glyph.width() * scale, glyph.height() * scale);
+  renderer.render(&iconPainter,
+                  QRectF(QPointF((iconWidth - glyphSize.width()) / 2,
+                                 (iconHeight - glyphSize.height()) / 2),
+                         glyphSize));
   iconPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);
   iconPainter.fillRect(iconImage.rect(), iconColor);
   iconPainter.end();
@@ -280,7 +325,7 @@ void Button::drawIconWithMask(QPainter *painter) const {
     bgColor = d->window()->color(ColorGroup::Warning, ColorRole::Foreground);
   else
     bgColor = d->fontColor();
-  qreal bgOpacity = hoverProgress * .6;
+  qreal bgOpacity = isPressed() ? 1.0 : hoverProgress * .6;
 
   if (bgColor.isValid()) {
     painter->save();
@@ -292,7 +337,7 @@ void Button::drawIconWithMask(QPainter *painter) const {
     painter->drawRoundedRect(drawRect, 3, 3);
 
     QColor outlineColor = bgColor;
-    outlineColor.setAlphaF(bgOpacity / .6);
+    outlineColor.setAlphaF(qMin(1.0, bgOpacity / .6));
     QPen outlinePen(outlineColor);
     outlinePen.setWidthF(1);
     painter->setPen(outlinePen);

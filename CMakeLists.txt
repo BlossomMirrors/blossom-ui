@@ -96,8 +96,8 @@ function(build_qt5)
   set(BLOSSOMUI_HAVE_QTQUICK ${Qt5Quick_FOUND})
 
 
-  add_subdirectory(kde/kstyle kstyle5)
   add_subdirectory(kde/libblossomuicommon libblossomuicommon5)
+  add_subdirectory(kde/kstyle kstyle5)
   unset(QUERY_EXECUTABLE CACHE)
 endfunction()
 if(BUILD_QT5)
@@ -160,8 +160,8 @@ function(build_qt6)
     add_library(Qt::PlatformModuleInternal ALIAS Qt6::PlatformModuleInternal)
   endif()
 
-  add_subdirectory(kde/kstyle kstyle6)
   add_subdirectory(kde/libblossomuicommon libblossomuicommon6)
+  add_subdirectory(kde/kstyle kstyle6)
 
   if(${Qt6Quick_FOUND})
     add_subdirectory(kde/qqc2style)
