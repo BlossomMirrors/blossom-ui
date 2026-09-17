@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Blossom override: kstyle-matching translucent selection background.
 
+import QtQuick
 import org.kde.kirigami as Kirigami
 import org.kde.desktop as Desktop
 import "private" as P

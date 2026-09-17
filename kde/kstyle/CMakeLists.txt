@@ -120,6 +120,18 @@ set(blossomui_PART_SRCS
 kconfig_add_kcfg_files(blossomui_PART_SRCS ../kdecoration/config/blossomuisettings.kcfgc)
 kconfig_add_kcfg_files(blossomui_PART_SRCS blossomuistyleconfigdata.kcfgc)
 
+# Neither generated class declares Q_OBJECT, so they need no moc scanning.
+# Without this, their order-only dependency on the target's own autogen step
+# (added because they are GENERATED sources of an AUTOMOC target) combined
+# with autogen depending on them for scanning creates a ninja dependency cycle.
+set_source_files_properties(
+    ${CMAKE_CURRENT_BINARY_DIR}/blossomuisettings.h
+    ${CMAKE_CURRENT_BINARY_DIR}/blossomuisettings.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/blossomuistyleconfigdata.h
+    ${CMAKE_CURRENT_BINARY_DIR}/blossomuistyleconfigdata.cpp
+    PROPERTIES SKIP_AUTOMOC ON
+)
+
 add_library(blossomui${QT_MAJOR_VERSION} MODULE ${blossomui_PART_SRCS})
 set_target_properties(blossomui${QT_MAJOR_VERSION} PROPERTIES
     OUTPUT_NAME "blossomui${QT_MAJOR_VERSION}"
@@ -171,6 +183,23 @@ else()
     if(BLOSSOMUI_HAVE_QTQUICK)
         target_link_libraries(blossomui${QT_MAJOR_VERSION} PRIVATE KF6::KirigamiPlatform)
     endif()
+endif()
+
+if(FOR_FLATPAK AND QT_MAJOR_VERSION EQUAL 6)
+    find_package(Qt6 REQUIRED COMPONENTS QuickControls2)
+    if(IS_ABSOLUTE "${KDE_INSTALL_QMLDIR}")
+        set(BLOSSOMUI_FLATPAK_QMLDIR "${KDE_INSTALL_QMLDIR}")
+    else()
+        set(BLOSSOMUI_FLATPAK_QMLDIR "${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_QMLDIR}")
+    endif()
+    target_link_libraries(blossomui${QT_MAJOR_VERSION} PRIVATE Qt6::QuickControls2)
+    target_compile_definitions(blossomui${QT_MAJOR_VERSION} PRIVATE
+        BLOSSOMUI_FLATPAK_QUICK_INTEGRATION=1
+        BLOSSOMUI_FLATPAK_PREFIX="${CMAKE_INSTALL_PREFIX}"
+        BLOSSOMUI_FLATPAK_QMLDIR="${BLOSSOMUI_FLATPAK_QMLDIR}"
+        BLOSSOMUI_FLATPAK_FONTDIR="${KDE_INSTALL_FULL_DATADIR}/fonts/blossomui")
+else()
+    target_compile_definitions(blossomui${QT_MAJOR_VERSION} PRIVATE BLOSSOMUI_FLATPAK_QUICK_INTEGRATION=0)
 endif()
 
 ################# link internal library #################

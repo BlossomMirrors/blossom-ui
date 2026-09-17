@@ -6,6 +6,7 @@
  *  styles/<style-name>/AbstractCard.qml over controls/AbstractCard.qml.
  */
 import QtQuick
+import QtQuick.Layouts
 import org.kde.kirigami.platform as Platform
 import org.kde.kirigami.primitives as Primitives
 import org.kde.kirigami.templates as KT
@@ -16,6 +17,19 @@ KT.AbstractCard {
     // same formula KirigamiAddons FormCardUnits uses, so cards and form cards
     // land at the same density and it stays DPI-aware
     padding: Platform.Units.largeSpacing + Platform.Units.smallSpacing
+
+    Component.onCompleted: {
+        const banner = root.header?.contentItem;
+        if (!banner || !("sourceSize" in banner) || !("titleAlignment" in banner)) {
+            return;
+        }
+        banner.implicitHeight = Qt.binding(() => {
+            const border = root.background.border.width;
+            const width = root.width - 2 * border;
+            const hasImage = banner.source.toString().length > 0 && banner.sourceSize.width > 0 && banner.sourceSize.height > 0;
+            return hasImage ? width * banner.sourceSize.height / banner.sourceSize.width : banner.Layout.minimumHeight;
+        });
+    }
 
     background: Primitives.ShadowedRectangle {
         radius: Platform.Units.cornerRadius

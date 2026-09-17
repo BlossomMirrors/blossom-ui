@@ -266,6 +266,8 @@ if (NOT FOR_FLATPAK)
   if(BUILD_GTK_THEME)
     build_gtk()
   endif()
+else()
+  build_fonts()
 endif()
 
 # Set default QT_MAJOR_VERSION for asset builds (icons, themes, etc.)
