@@ -54,6 +54,13 @@ rm -f ~/.local/share/color-schemes/BlossomUILight.colors \
 
 rm -rf ~/.local/share/plasma/desktoptheme/BlossomUI
 
+rm -rf ~/.cache/plasma-svgelements-* \
+       ~/.cache/ksvg-elements \
+       ~/.cache/plasma_theme_*.kcache \
+       ~/.cache/icon-cache.kcache \
+       ~/.cache/ksycoca6* \
+       ~/.cache/ksycoca5*
+
 if command -v kbuildsycoca6 >/dev/null 2>&1; then
     kbuildsycoca6 --noincremental >/dev/null 2>&1 || true
 elif command -v kbuildsycoca5 >/dev/null 2>&1; then
