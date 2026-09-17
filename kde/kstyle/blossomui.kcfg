@@ -155,7 +155,7 @@
 
     <!-- progress bar animation durations -->
     <entry name="ProgressBarBusyStepDuration" type="Int">
-      <default>800</default>
+      <default>1600</default>
     </entry>
 
     <!-- scrollbar buttons -->

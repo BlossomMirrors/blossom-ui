@@ -3,6 +3,8 @@
 #include "blossomuianimations.h"
 #include "blossomuistyle.h"
 #include "slider.h"
+#include "widgetrenderer.h"
+#include "widgetstate.h"
 
 #include <KColorUtils>
 #include <QtMath>
@@ -187,10 +189,11 @@ bool Render::SliderControl::drawSliderComplexControl(const QStyleOptionComplex *
             ? _style->_animations->widgetStateEngine().opacity(styleObject, AnimationHover)
             : (hovered ? 1.0 : 0.0);
 
-    QColor background(Render::sliderHandleFill(palette).brush.color());
-    QColor outline(Render::sliderHandleOutline(palette).brush.color());
+    const QColor outline(Render::sliderHandleOutline(palette).brush.color());
+    const Render::WidgetSpec spec =
+        Render::sliderHandle(palette, Render::sliderHandleFill(palette), outline);
 
-    _style->_helper->renderSliderHandle(painter, handleRect, background, outline,
+    _style->_helper->renderSliderHandle(painter, handleRect, spec, outline,
                                 hoverOpacity, sunken);
   }
 
@@ -269,10 +272,11 @@ bool Render::SliderControl::drawDialComplexControl(const QStyleOptionComplex *op
             ? _style->_animations->dialEngine().opacity(widget, AnimationHover)
             : (hovered ? 1.0 : 0.0);
 
-    const auto background = palette.color(QPalette::Button);
     const auto outline = Render::dialHandleOutline(palette).brush.color();
+    const Render::WidgetSpec spec = Render::sliderHandle(
+        palette, Render::sliderHandleFill(palette), outline);
 
-    _style->_helper->renderSliderHandle(painter, handleRect, background, outline,
+    _style->_helper->renderSliderHandle(painter, handleRect, spec, outline,
                                 hoverOpacity, sunken);
   }
 
@@ -355,39 +359,28 @@ void Helper::renderDialContents(QPainter *painter, const QRect &rect,
 }
 
 void Helper::renderSliderHandle(QPainter *painter, const QRect &rect,
-                                const QColor &color, const QColor &outline,
+                                const Render::WidgetSpec &spec,
+                                const QColor &hoverColor,
                                 qreal hoverOpacity, bool sunken) const {
   painter->setRenderHint(QPainter::Antialiasing, true);
 
   // hover circle behind handle: grows from handle size outward
-  if (hoverOpacity > 0.0 && outline.isValid()) {
+  if (hoverOpacity > 0.0 && hoverColor.isValid()) {
     constexpr qreal maxExpand = Render::Slider_HoverMargin;
     const qreal expand = maxExpand * hoverOpacity;
     QRectF hoverRect = QRectF(rect).adjusted(-expand, -expand, expand, expand);
-    QColor hoverColor(outline);
-    hoverColor.setAlpha(qRound(50 * hoverOpacity));
-    painter->setBrush(hoverColor);
+    QColor color(hoverColor);
+    color.setAlpha(qRound(50 * hoverOpacity));
+    painter->setBrush(color);
     painter->setPen(Qt::NoPen);
     painter->drawEllipse(hoverRect);
   }
 
-  // handle circle on top
-  QRectF frameRect(rect);
-  frameRect.adjust(3, 3, -3, -3);
-  if (sunken)
-    frameRect.translate(0, 2);
-
-  QColor fill(color.isValid() ? color : Qt::transparent);
-  if (sunken)
-    fill = fill.darker(103);
-  if (fill.isValid())
-    fill.setAlpha(255);
-  painter->setBrush(fill);
-  if (outline.isValid())
-    painter->setPen(QPen(outline, 1));
-  else
-    painter->setPen(Qt::NoPen);
-  painter->drawEllipse(frameRect);
+  Render::WidgetInteractionState state;
+  state.pressed = sunken;
+  const QRect handleRect =
+      sunken ? rect.translated(0, Render::Slider_HandleSunkenOffset) : rect;
+  Render::WidgetRenderer(this).render(painter, handleRect, spec, state);
 }
 bool Style::drawSliderComplexControl(const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const {
   return Render::SliderControl(this).drawSliderComplexControl(option, painter, widget);
