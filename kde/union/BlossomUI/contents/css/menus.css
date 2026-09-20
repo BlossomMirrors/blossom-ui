@@ -1,0 +1,40 @@
+menu,
+framemenu
+{
+    padding: var(--blossom-menu-margin);
+    border-radius: var(--blossom-menu-radius);
+}
+
+popup,
+popup.combobox,
+overlay,
+drawer,
+overlaydrawer,
+dialog
+{
+    border-radius: var(--blossom-menu-radius);
+}
+
+menuitem
+{
+    padding: var(--blossom-menuitem-padding-horizontal) var(--blossom-menuitem-padding-vertical);
+    spacing: var(--blossom-menuitem-spacing);
+    border-radius: var(--blossom-menuitem-gtk-radius);
+}
+
+menubaritem
+{
+    padding: var(--blossom-menubaritem-padding-horizontal) var(--blossom-menubaritem-padding-vertical);
+    border-radius: var(--blossom-menuitem-radius);
+}
+
+menuseparator
+{
+    padding: var(--blossom-menuitem-padding-horizontal) var(--blossom-delegate-margin-vertical);
+}
+
+tooltip
+{
+    padding: var(--blossom-tooltip-padding);
+    border-radius: var(--blossom-menuitem-radius);
+}

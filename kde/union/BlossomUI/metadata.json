@@ -1,0 +1,12 @@
+{
+    "input-type": "css",
+    "input-version": 1,
+    "name": "BlossomUI (Union)",
+    "description": "BlossomUI style for KDE Plasma.",
+    "version": "0.1",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        "Yannik Ain",
+        "Blossom Labs"
+    ]
+}

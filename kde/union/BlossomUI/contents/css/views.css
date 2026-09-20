@@ -1,0 +1,58 @@
+itemdelegate,
+itemviewitem,
+checkdelegate,
+radiodelegate,
+switchdelegate,
+swipedelegate,
+treeviewdelegate,
+tableviewdelegate
+{
+    padding: var(--blossom-row-padding-horizontal) var(--blossom-row-padding-vertical);
+    padding-bottom: var(--blossom-row-padding-vertical);
+    spacing: var(--blossom-delegate-spacing);
+    inset: var(--blossom-row-margin-horizontal) var(--blossom-row-margin-vertical);
+    inset-bottom: var(--blossom-row-margin-vertical);
+    border-radius: var(--blossom-row-radius);
+}
+
+headerviewdelegate
+{
+    padding: var(--blossom-header-padding);
+    spacing: var(--blossom-header-spacing);
+}
+
+card
+{
+    padding: var(--blossom-card-padding);
+    border-radius: var(--blossom-card-radius);
+    box-shadow: var(--blossom-card-shadow);
+}
+
+frame,
+framewindow,
+groupbox,
+pane,
+panel,
+scrollview
+{
+    border-radius: var(--blossom-corner-radius);
+}
+
+selectionrectangle,
+rubberband
+{
+    border-radius: var(--blossom-itemview-radius);
+}
+
+itemviewitem.inside-list.hover-enabled,
+itemviewitem.inside-table.hover-enabled,
+itemdelegate.inside-list.hover-enabled,
+itemdelegate.inside-table.hover-enabled,
+treeviewdelegate.inside-list.hover-enabled,
+treeviewdelegate.inside-table.hover-enabled,
+tableviewdelegate.inside-list.hover-enabled,
+tableviewdelegate.inside-table.hover-enabled
+{
+    inset: var(--blossom-row-margin-horizontal) var(--blossom-row-margin-vertical);
+    border-radius: var(--blossom-row-radius);
+}

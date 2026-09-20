@@ -1,0 +1,50 @@
+scrollbar
+{
+    width: var(--blossom-scrollbar-size);
+    height: var(--blossom-scrollbar-size);
+    padding: var(--blossom-scrollbar-padding);
+
+    &.horizontal
+    {
+        border-top: none;
+    }
+
+    &.vertical
+    {
+        border-left: none;
+    }
+
+    & > handle
+    {
+        border-radius: var(--blossom-scrollbar-handle-radius);
+    }
+
+    &.noninteractive
+    {
+        width: var(--blossom-scrollbar-small-size);
+        height: var(--blossom-scrollbar-small-size);
+        padding: var(--blossom-delegate-margin-horizontal);
+    }
+}
+
+toolbar
+{
+    padding: var(--blossom-toolbar-padding);
+    spacing: var(--blossom-toolbar-spacing);
+}
+
+toolseparator
+{
+    visibility: hidden;
+}
+
+splitter,
+splitview
+{
+    width: var(--blossom-splitter-size);
+}
+
+statusbar
+{
+    padding: var(--blossom-header-padding);
+}

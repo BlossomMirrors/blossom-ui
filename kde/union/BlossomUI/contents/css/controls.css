@@ -1,0 +1,89 @@
+checkbox,
+checkdelegate,
+menuitem,
+radiobutton,
+radiodelegate
+{
+    spacing: var(--blossom-checkable-spacing);
+
+    & > indicator
+    {
+        width: var(--blossom-checkable-size);
+        height: var(--blossom-checkable-size);
+        border-radius: var(--blossom-checkable-radius);
+    }
+}
+
+radiobutton,
+radiodelegate
+{
+    & > indicator
+    {
+        border-radius: var(--blossom-pill-radius);
+    }
+}
+
+switch,
+switchdelegate
+{
+    & > indicator
+    {
+        width: var(--blossom-switch-width);
+        height: var(--blossom-switch-height);
+        border-radius: var(--blossom-switch-radius);
+
+        & > handle
+        {
+            width: var(--blossom-switch-handle-size);
+            height: var(--blossom-switch-handle-size);
+            border-radius: var(--blossom-switch-handle-radius);
+        }
+    }
+}
+
+slider,
+rangeslider
+{
+    border-radius: var(--blossom-slider-track-size);
+
+    &.horizontal
+    {
+        height: var(--blossom-slider-track-size);
+    }
+
+    &.vertical
+    {
+        width: var(--blossom-slider-track-size);
+    }
+
+    & > fill
+    {
+        border-radius: var(--blossom-slider-track-size);
+    }
+
+    & > handle
+    {
+        width: var(--blossom-slider-handle-size);
+        height: var(--blossom-slider-handle-size);
+        border-radius: var(--blossom-pill-radius);
+    }
+
+    & > tickmark
+    {
+        width: var(--blossom-slider-tickmark-width);
+        height: var(--blossom-slider-tickmark-length);
+    }
+}
+
+progressbar
+{
+    height: var(--blossom-progressbar-size);
+    spacing: var(--blossom-progressbar-spacing);
+    border-radius: var(--blossom-progressbar-size);
+
+    & > track,
+    & > chunk
+    {
+        border-radius: var(--blossom-progressbar-size);
+    }
+}

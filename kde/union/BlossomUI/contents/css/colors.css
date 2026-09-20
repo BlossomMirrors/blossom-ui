@@ -1,0 +1,608 @@
+:root {
+    --blossom-tint: mix(var(--window-background-color), var(--highlight-color), 0.18);
+    --blossom-tint-hover: mix(var(--window-background-color), var(--highlight-color), 0.28);
+    --blossom-row-hover-color: modify-color(var(--highlight-color) set-alpha 0.2);
+    --blossom-row-tint: modify-color(var(--highlight-color) set-alpha 0.18);
+    --blossom-row-tint-hover: modify-color(var(--highlight-color) set-alpha 0.28);
+    --blossom-row-radius: 10px;
+    --blossom-row-margin-horizontal: 5px;
+    --blossom-row-margin-vertical: 1px;
+    --blossom-row-padding-horizontal: 8px;
+    --blossom-row-padding-vertical: 6px;
+    --blossom-row-weight: 600;
+    --blossom-menuitem-hover-color: var(--highlight-color);
+    --blossom-menuitem-hover-text-color: var(--highlight-text-color);
+    --blossom-tint-text: var(--highlight-color);
+    --blossom-tint-weight: 600;
+    --blossom-tab-outline-color: modify-color(var(--window-text-color) set-alpha 0.12);
+    --blossom-card-background-color: mix(var(--window-background-color), var(--view-background-color), 0.7);
+    --blossom-card-border-color: modify-color(var(--window-text-color) set-alpha 0.1);
+    --blossom-wash: modify-color(var(--window-text-color) set-alpha 0.06);
+    --blossom-ghost-hover: modify-color(var(--window-text-color) set-alpha 0.1);
+    --blossom-ghost-pressed: modify-color(var(--window-text-color) set-alpha 0.2);
+    --blossom-button-hover-color: custom-color("kcolorscheme", "active", "button", "background", "alternate");
+    --blossom-button-pressed-color: mix(mix(var(--button-active-background-color), var(--button-active-text-color), 0.2), rgb(0, 0, 0), 0.05);
+    --blossom-button-focus-color: mix(var(--button-active-background-color), var(--focus-color), 0.28);
+    --blossom-input-border-color: mix(var(--view-background-color), var(--window-text-color), 0.15);
+    --blossom-input-border-hover-color: mix(var(--view-background-color), var(--window-text-color), 0.3);
+    --blossom-input-border-focus-color: mix(var(--view-background-color), var(--highlight-color), 0.65);
+    --blossom-input-border-disabled-color: mix(var(--view-background-color), var(--window-text-color), 0.08);
+    --blossom-checkable-border-color: mix(var(--button-active-background-color), var(--window-text-color), 0.1);
+    --blossom-checkable-border-hover-color: mix(var(--button-active-background-color), var(--window-text-color), 0.16);
+    --blossom-checkable-checked-border-color: mix(var(--highlight-color), var(--window-text-color), 0.1);
+    --blossom-scrollbar-handle-color: modify-color(var(--window-text-color) set-alpha 0.35);
+    --blossom-slider-groove-color: modify-color(var(--window-text-color) set-alpha 0.16);
+    --blossom-slider-fill-color: mix(var(--highlight-color), var(--window-background-color), 0.25);
+    --blossom-progressbar-groove-color: mix(var(--highlight-color), var(--window-background-color), 0.7);
+    --blossom-header-hover-color: mix(var(--button-active-background-color), custom-color("kcolorscheme", "active", "view", "decoration", "hover"), 0.2);
+}
+
+button,
+combobox,
+roundbutton,
+delaybutton,
+toolbutton.raised
+{
+    border: none;
+    box-shadow: none;
+    background-color: var(--button-active-background-color);
+
+    &:hovered
+    {
+        border: none;
+        background-color: var(--blossom-button-hover-color);
+    }
+
+    &:pressed
+    {
+        border: none;
+        background-color: var(--blossom-button-pressed-color);
+    }
+
+    &:visual-focus
+    {
+        border: none;
+        background-color: var(--blossom-button-focus-color);
+    }
+
+    &:checked
+    {
+        border: none;
+        background-color: var(--blossom-tint);
+    }
+
+    &:disabled
+    {
+        border: none;
+        box-shadow: none;
+        background-color: var(--button-disabled-background-color);
+    }
+}
+
+toolbutton,
+button.flat,
+combobox.flat,
+roundbutton.flat,
+tabscrollbutton
+{
+    border: none;
+    box-shadow: none;
+    background-color: modify-color(var(--window-text-color) set-alpha 0.0);
+
+    &:hovered
+    {
+        border: none;
+        background-color: var(--blossom-ghost-hover);
+    }
+
+    &:pressed
+    {
+        border: none;
+        background-color: var(--blossom-ghost-pressed);
+    }
+
+    &:checked
+    {
+        border: none;
+        background-color: var(--blossom-tint);
+    }
+}
+
+tabbutton
+{
+    border: none;
+    background-color: modify-color(var(--window-text-color) set-alpha 0.0);
+
+    &:hovered
+    {
+        border: none;
+        background-color: var(--button-active-background-color);
+    }
+
+    &:checked
+    {
+        border: 1px solid var(--blossom-tab-outline-color);
+        background-color: var(--blossom-tint);
+        color: var(--blossom-tint-text);
+        font-weight: var(--blossom-tint-weight);
+    }
+
+    &:checked:hovered
+    {
+        border: 1px solid var(--blossom-tab-outline-color);
+        background-color: var(--blossom-tint-hover);
+        color: var(--blossom-tint-text);
+        font-weight: var(--blossom-tint-weight);
+    }
+}
+
+tabbar,
+navigationtabbar
+{
+    background-color: var(--blossom-card-background-color);
+    border: none;
+}
+
+checkbox,
+checkdelegate,
+radiobutton,
+radiodelegate
+{
+    & > indicator
+    {
+        background-color: var(--button-active-background-color);
+        border: 1px solid var(--blossom-checkable-border-color);
+    }
+
+    &:hovered > indicator
+    {
+        border: 1px solid var(--blossom-checkable-border-hover-color);
+    }
+
+    &:checked > indicator
+    {
+        background-color: var(--highlight-color);
+        border: 1px solid var(--blossom-checkable-checked-border-color);
+    }
+}
+
+textfield,
+textarea,
+spinbox,
+searchfield
+{
+    background-color: var(--view-background-color);
+    border: none;
+
+    &:hovered
+    {
+        border: none;
+    }
+
+    &:active-focus
+    {
+        border: none;
+        outline: 2px solid var(--focus-color);
+    }
+
+    &:disabled
+    {
+        border: none;
+        background-color: var(--view-disabled-background-color);
+    }
+}
+
+itemdelegate,
+itemviewitem,
+checkdelegate,
+radiodelegate,
+switchdelegate,
+swipedelegate,
+treeviewdelegate,
+tableviewdelegate
+{
+    border: none;
+
+    color: var(--window-text-color);
+
+    &:hovered
+    {
+        border: none;
+        background-color: var(--blossom-row-hover-color);
+        color: var(--window-text-color);
+    }
+
+    &:pressed
+    {
+        border: none;
+        background-color: var(--blossom-row-hover-color);
+        color: var(--window-text-color);
+    }
+
+    &:active-focus
+    {
+        border: none;
+        background-color: var(--blossom-row-hover-color);
+        color: var(--window-text-color);
+    }
+
+    &:highlighted
+    {
+        border: none;
+        background-color: var(--blossom-row-tint);
+        color: var(--blossom-tint-text);
+        icon-color: var(--blossom-tint-text);
+        font-weight: var(--blossom-row-weight);
+    }
+
+    &:highlighted:active-focus,
+    &:highlighted:hovered,
+    &:highlighted:pressed
+    {
+        border: none;
+        background-color: var(--blossom-row-tint-hover);
+        color: var(--blossom-tint-text);
+        icon-color: var(--blossom-tint-text);
+        font-weight: var(--blossom-row-weight);
+    }
+}
+
+menuitem
+{
+    border: none;
+
+    &:hovered,
+    &:highlighted,
+    &:pressed
+    {
+        border: none;
+        background-color: var(--blossom-menuitem-hover-color);
+        color: var(--blossom-menuitem-hover-text-color);
+    }
+}
+
+menubaritem
+{
+    border: none;
+
+    &:hovered,
+    &:highlighted,
+    &:pressed
+    {
+        border: none;
+        background-color: var(--blossom-menuitem-hover-color);
+        color: var(--blossom-menuitem-hover-text-color);
+    }
+}
+
+scrollbar
+{
+    background-color: modify-color(var(--window-text-color) set-alpha 0.0);
+    border: none;
+
+    & > handle
+    {
+        border: none;
+        background-color: var(--blossom-scrollbar-handle-color);
+
+        &:hovered
+        {
+            border: none;
+            background-color: modify-color(var(--window-text-color) set-alpha 0.45);
+        }
+
+        &:pressed
+        {
+            border: none;
+            background-color: var(--highlight-color);
+        }
+    }
+}
+
+slider,
+rangeslider
+{
+    border: none;
+    background-color: var(--blossom-slider-groove-color);
+
+    & > fill
+    {
+        border: none;
+        background-color: var(--blossom-slider-fill-color);
+    }
+
+    & > handle
+    {
+        background-color: var(--bar-handle-active-background-color);
+        border: 1px solid var(--bar-handle-active-border-color);
+
+        &:hovered
+        {
+            border: 1px solid var(--highlight-color);
+        }
+
+        &:pressed
+        {
+            border: 1px solid var(--highlight-color);
+        }
+    }
+}
+
+progressbar
+{
+    border: none;
+    background-color: var(--blossom-progressbar-groove-color);
+
+    & > track
+    {
+        border: none;
+        background-color: var(--blossom-progressbar-groove-color);
+    }
+
+    & > chunk
+    {
+        border: none;
+        background-color: var(--highlight-color);
+    }
+}
+
+switch,
+switchdelegate
+{
+    & > indicator
+    {
+        background-color: var(--button-active-background-color);
+        border: 1px solid var(--blossom-checkable-border-color);
+
+        & > handle
+        {
+            background-color: var(--window-background-color);
+            border: none;
+        }
+    }
+
+    &:checked > indicator
+    {
+        background-color: var(--highlight-color);
+        border: 1px solid var(--blossom-checkable-checked-border-color);
+    }
+}
+
+headerviewdelegate
+{
+    border: none;
+    background-color: var(--button-active-background-color);
+
+    &:hovered
+    {
+        border: none;
+        background-color: var(--blossom-header-hover-color);
+    }
+}
+
+card
+{
+    background-color: var(--blossom-card-background-color);
+    border: 1px solid var(--blossom-card-border-color);
+}
+
+menu,
+framemenu,
+popup,
+popup.combobox,
+drawer,
+overlaydrawer
+{
+    background-color: var(--window-background-color);
+    border: 1px solid var(--blossom-card-border-color);
+}
+
+tooltip
+{
+    border: none;
+    background-color: var(--tooltip-background-color);
+}
+
+toolbar,
+statusbar,
+menubar
+{
+    background-color: var(--window-background-color);
+    border: none;
+
+    &.header
+    {
+        border-bottom: none;
+    }
+
+    &.footer
+    {
+        border-top: none;
+    }
+}
+
+dockwidget
+{
+    background-color: var(--window-background-color);
+    border: none;
+}
+
+splitter,
+splitview
+{
+    background-color: var(--blossom-wash);
+    border: none;
+}
+
+toolseparator,
+menuseparator
+{
+    background-color: var(--blossom-wash);
+    border: none;
+}
+
+spinbox
+{
+    & > indicator
+    {
+        border: none;
+        background-color: modify-color(var(--window-text-color) set-alpha 0.0);
+
+        &:hovered
+        {
+            border: none;
+            background-color: var(--blossom-ghost-hover);
+        }
+
+        &:pressed
+        {
+            border: none;
+            background-color: var(--blossom-ghost-pressed);
+        }
+    }
+}
+
+searchfield
+{
+    & > clearindicator,
+    & > searchindicator
+    {
+        border: none;
+        background-color: modify-color(var(--window-text-color) set-alpha 0.0);
+    }
+}
+
+selectionrectangle,
+rubberband
+{
+    background-color: var(--blossom-tint);
+    border: 1px solid var(--highlight-color);
+}
+
+headerviewdelegate
+{
+    border: none;
+}
+
+groupbox,
+frame,
+pane,
+scrollview,
+tabwidget
+{
+    background-color: var(--window-background-color);
+    border: none;
+}
+
+tabbutton:checked[direction="top"],
+tabbutton:checked[direction="bottom"],
+tabbutton:checked[direction="left"],
+tabbutton:checked[direction="right"],
+tabbutton:highlighted[direction="top"],
+tabbutton:highlighted[direction="bottom"],
+tabbutton:highlighted[direction="left"],
+tabbutton:highlighted[direction="right"]
+{
+    border: 1px solid var(--blossom-tab-outline-color);
+    background-color: var(--blossom-tint);
+    color: var(--blossom-tint-text);
+    font-weight: var(--blossom-tint-weight);
+}
+
+frame[shape="panel"],
+frame[shape="box"]
+{
+    border: none;
+}
+
+toolbar
+{
+    & > handle,
+    & > separator
+    {
+        width: 0px;
+        border: none;
+        background-color: transparent;
+    }
+}
+
+splitter,
+splitview
+{
+    background-color: modify-color(var(--window-text-color) set-alpha 0.0);
+    border: none;
+}
+
+frame[shape="panel"].item-view
+{
+    inset: var(--blossom-view-card-inset);
+    padding: var(--blossom-view-card-padding);
+    border-radius: var(--blossom-view-card-radius);
+    background-color: var(--view-background-color);
+    border: none;
+}
+
+frame[shape="panel"]
+{
+    border: 1px solid var(--blossom-card-border-color);
+    border-radius: var(--blossom-frame-radius);
+    background-color: transparent;
+}
+
+itemdelegate.selected,
+itemviewitem.selected,
+treeviewdelegate.selected,
+tableviewdelegate.selected
+{
+    border: none;
+    background-color: var(--blossom-row-tint);
+    color: var(--blossom-tint-text);
+    icon-color: var(--blossom-tint-text);
+    font-weight: var(--blossom-row-weight);
+}
+
+itemdelegate.selected > label,
+itemviewitem.selected > label,
+treeviewdelegate.selected > label,
+tableviewdelegate.selected > label
+{
+    color: var(--blossom-tint-text);
+}
+
+itemviewitem.inside-list:highlighted,
+itemviewitem.inside-table:highlighted,
+itemviewitem.inside-tree:highlighted,
+itemdelegate.inside-list:highlighted,
+itemdelegate.inside-table:highlighted,
+itemdelegate.inside-tree:highlighted
+{
+    border: none;
+    background-color: var(--blossom-row-tint);
+    color: var(--blossom-tint-text);
+    icon-color: var(--blossom-tint-text);
+}
+
+itemviewitem.inside-list:hovered,
+itemviewitem.inside-table:hovered,
+itemviewitem.inside-tree:hovered,
+itemdelegate.inside-list:hovered,
+itemdelegate.inside-table:hovered,
+itemdelegate.inside-tree:hovered
+{
+    border: none;
+    background-color: var(--button-active-background-color);
+    color: var(--window-text-color);
+}
+
+itemviewitem.inside-list:highlighted:hovered,
+itemviewitem.inside-table:highlighted:hovered,
+itemviewitem.inside-tree:highlighted:hovered,
+itemdelegate.inside-list:highlighted:hovered,
+itemdelegate.inside-table:highlighted:hovered,
+itemdelegate.inside-tree:highlighted:hovered
+{
+    border: none;
+    background-color: var(--blossom-row-tint-hover);
+    color: var(--blossom-tint-text);
+    icon-color: var(--blossom-tint-text);
+}

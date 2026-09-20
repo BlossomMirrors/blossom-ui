@@ -1,6 +1,0 @@
-[Misc]
-Name=BlossomUI
-ConfigPage=kstyle_config/blossomuistyleconfig
-Comment=Widget style for Qt Applications
-[KDE]
-WidgetStyle=BlossomUI

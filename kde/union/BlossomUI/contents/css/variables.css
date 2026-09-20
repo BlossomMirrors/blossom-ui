@@ -1,0 +1,76 @@
+:root {
+    --blossom-corner-radius: 10px;
+    --blossom-button-radius: 8px;
+    --blossom-input-radius: 8px;
+    --blossom-itemview-radius: 7px;
+    --blossom-menuitem-radius: 7px;
+    --blossom-menuitem-gtk-radius: 9px;
+    --blossom-menu-radius: 11px;
+    --blossom-card-radius: 10px;
+    --blossom-checkable-radius: 6px;
+    --blossom-pill-radius: 9999px;
+
+    --blossom-button-height: 35px;
+    --blossom-button-padding: 6px;
+    --blossom-button-spacing: 4px;
+    --blossom-button-indicator-size: 20px;
+
+    --blossom-input-padding-horizontal: 11px;
+    --blossom-input-padding-vertical: 7px;
+    --blossom-spinbox-button-size: 20px;
+
+    --blossom-checkable-size: 18px;
+    --blossom-checkable-spacing: 4px;
+    --blossom-switch-width: 46px;
+    --blossom-switch-height: 26px;
+    --blossom-switch-radius: 13px;
+    --blossom-switch-handle-size: 20px;
+    --blossom-switch-handle-radius: 10px;
+
+    --blossom-delegate-padding: 4px;
+    --blossom-delegate-spacing: 6px;
+    --blossom-delegate-margin-horizontal: 2px;
+    --blossom-delegate-margin-vertical: 1px;
+    --blossom-header-padding: 6px;
+    --blossom-header-spacing: 4px;
+    --blossom-card-padding: 12px;
+    --blossom-view-card-inset: 8px;
+    --blossom-view-card-padding: 4px;
+    --blossom-view-card-radius: 18px;
+    --blossom-frame-radius: 10px;
+
+    --blossom-menu-margin: 4px;
+    --blossom-menuitem-padding-horizontal: 5px;
+    --blossom-menuitem-padding-vertical: 4px;
+    --blossom-menuitem-spacing: 4px;
+    --blossom-menubaritem-padding-horizontal: 10px;
+    --blossom-menubaritem-padding-vertical: 6px;
+    --blossom-tooltip-padding: 3px;
+
+    --blossom-scrollbar-size: 21px;
+    --blossom-scrollbar-padding: 6px;
+    --blossom-scrollbar-handle-radius: 4px;
+    --blossom-scrollbar-small-size: 10px;
+    --blossom-slider-handle-size: 20px;
+    --blossom-slider-track-size: 8px;
+    --blossom-slider-tickmark-length: 8px;
+    --blossom-slider-tickmark-width: 2px;
+    --blossom-progressbar-size: 4px;
+    --blossom-progressbar-spacing: 4px;
+    --blossom-toolbar-padding: 8px;
+    --blossom-toolbar-spacing: 0px;
+    --blossom-splitter-size: 1px;
+
+    --blossom-tabbar-height: 44px;
+    --blossom-tabbar-padding: 10px;
+    --blossom-tabbar-inset: 6px;
+    --blossom-tabbar-radius: 10px;
+
+    --blossom-tab-width: 85px;
+    --blossom-tab-height: 36px;
+    --blossom-tab-padding-horizontal: 12px;
+    --blossom-tab-padding-vertical: 8px;
+    --blossom-tab-spacing: 8px;
+
+    --blossom-card-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.18);
+}

@@ -1,0 +1,17 @@
+textfield,
+textarea,
+spinbox,
+searchfield
+{
+    padding: var(--blossom-input-padding-horizontal) var(--blossom-input-padding-vertical);
+    border-radius: var(--blossom-input-radius);
+}
+
+spinbox
+{
+    & > indicator
+    {
+        width: var(--blossom-spinbox-button-size);
+        height: var(--blossom-spinbox-button-size);
+    }
+}

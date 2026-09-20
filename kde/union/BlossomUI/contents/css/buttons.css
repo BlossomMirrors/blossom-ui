@@ -1,0 +1,88 @@
+button,
+toolbutton,
+combobox,
+roundbutton,
+delaybutton,
+toolbutton.raised
+{
+    height: var(--blossom-button-height);
+    padding: var(--blossom-button-padding);
+    spacing: var(--blossom-button-spacing);
+    border-radius: var(--blossom-button-radius);
+}
+
+button,
+toolbutton,
+combobox,
+roundbutton,
+delaybutton
+{
+    &.with-menu > indicator
+    {
+        width: var(--blossom-button-indicator-size);
+        height: var(--blossom-button-indicator-size);
+    }
+
+    &.with-inline-arrow > indicator
+    {
+        width: 0px;
+        height: 0px;
+        border: none;
+        background-color: transparent;
+    }
+}
+
+roundbutton
+{
+    border-radius: var(--blossom-pill-radius);
+}
+
+tabbar,
+navigationtabbar
+{
+    height: var(--blossom-tabbar-height);
+    padding: var(--blossom-tabbar-padding);
+    inset: var(--blossom-tabbar-inset);
+    border-radius: var(--blossom-tabbar-radius);
+}
+
+tabbutton
+{
+    width: var(--blossom-tab-width);
+    height: var(--blossom-tab-height);
+    padding: var(--blossom-tab-padding-horizontal) var(--blossom-tab-padding-vertical);
+    spacing: var(--blossom-tab-spacing);
+    border-radius: var(--blossom-button-radius);
+
+    &[direction="top"]
+    {
+        border-bottom-left-radius: var(--blossom-button-radius);
+        border-bottom-right-radius: var(--blossom-button-radius);
+        border-bottom: none;
+    }
+
+    &[direction="bottom"]
+    {
+        border-top-left-radius: var(--blossom-button-radius);
+        border-top-right-radius: var(--blossom-button-radius);
+        border-top: none;
+    }
+
+    &[direction="left"]
+    {
+        width: var(--blossom-tab-height);
+        height: var(--blossom-tab-width);
+        border-top-right-radius: var(--blossom-button-radius);
+        border-bottom-right-radius: var(--blossom-button-radius);
+        border-left: none;
+    }
+
+    &[direction="right"]
+    {
+        width: var(--blossom-tab-height);
+        height: var(--blossom-tab-width);
+        border-top-left-radius: var(--blossom-button-radius);
+        border-bottom-left-radius: var(--blossom-button-radius);
+        border-right: none;
+    }
+}
