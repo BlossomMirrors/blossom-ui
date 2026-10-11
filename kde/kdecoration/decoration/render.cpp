@@ -42,7 +42,7 @@ void Decoration::calculateWindowAndTitleBarShapes(const bool windowShapeOnly) {
       const qreal radius = m_scaledCornerRadius * 2;
 
       const qreal W = m_titleRect.width();
-      const qreal bottom = m_titleRect.bottom();
+      const qreal bottom = borderTop();
       path.moveTo(-1.0, bottom);
       path.lineTo(-1.0, radius - 1.0);
       path.arcTo(QRectF(-1.0, -1.0, radius, radius), 180, -90);

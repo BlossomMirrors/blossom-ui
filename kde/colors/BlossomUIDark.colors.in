@@ -128,7 +128,7 @@ frameContrast=0.1
 [WM]
 activeBackground=@NEUTRAL_900_RGB@
 activeBlend=@NEUTRAL_25_RGB@
-activeForeground=@NEUTRAL_50_RGB@
+activeForeground=@NEUTRAL_25_RGB@
 inactiveBackground=@NEUTRAL_900_RGB@
 inactiveBlend=@NEUTRAL_700_RGB@
-inactiveForeground=@NEUTRAL_300_RGB@
+inactiveForeground=@NEUTRAL_200_RGB@
