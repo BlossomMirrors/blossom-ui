@@ -142,13 +142,13 @@ QPalette::ColorRole toolButtonTextRole(bool flat, bool focused, bool pressed,
 
 QIcon::Mode buttonIconMode(bool enabled, bool flat, bool focused, bool pressed,
                            bool hovered) {
-  if (!enabled)
-    return QIcon::Disabled;
-  if (!flat && focused && !pressed)
-    return QIcon::Selected;
-  if (hovered && flat)
-    return QIcon::Active;
-  return QIcon::Normal;
+    Q_UNUSED(focused)
+    Q_UNUSED(pressed)
+    if (!enabled)
+        return QIcon::Disabled;
+    if (hovered && flat)
+        return QIcon::Active;
+    return QIcon::Normal;
 }
 
 QIcon::Mode toolButtonIconMode(bool enabled, bool flat, bool focused,
