@@ -43,7 +43,7 @@ Engine=KSplashQML
 [kwinrc][Plugins]
 blurEnabled=true
 
-[kwinrc][Effect-Blur]
+[kwinrc][Effect-blur]
 BlurStrength=5
 
 [plasmarc][ContrastEffect]

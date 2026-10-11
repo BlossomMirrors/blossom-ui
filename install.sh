@@ -4,7 +4,7 @@ set -e
 SRC_DIR=$(pwd)
 
 echo " *** Unlocking rpm-ostree so the changes persist after restart *** "
-sudo rpm-ostree unlock --hotfix | true || true
+sudo rpm-ostree usroverlay | true || true
 
 if [ "$1" = "--data-only" ]; then
     cmake -S "$SRC_DIR" -B "$SRC_DIR/build/data" -G Ninja \

@@ -56,11 +56,4 @@ void PlasmaDesktopUnits::updateAnimationSpeed()
     setVeryLongDuration(longDuration * 2);
 }
 
-void PlasmaDesktopUnits::updateCornerRadius()
-{
-    KConfigGroup cfg = KConfigGroup(KSharedConfig::openConfig(QStringLiteral("blossomuirc")), QStringLiteral("Common"));
-    int radius = cfg.readEntry("CornerRadius", defaultCornerRadius);
-    setcornerRadius(radius);
-}
-
 #include "moc_plasmadesktopunits.cpp"

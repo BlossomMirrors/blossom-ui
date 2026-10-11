@@ -22,7 +22,6 @@ public:
     explicit PlasmaDesktopUnits(QObject *parent = nullptr);
 
     void updateAnimationSpeed();
-    void updateCornerRadius();
 
 private:
     std::unique_ptr<AnimationSpeedProvider> m_animationSpeedProvider;
