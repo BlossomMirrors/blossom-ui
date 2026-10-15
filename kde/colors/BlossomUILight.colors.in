@@ -20,7 +20,7 @@ IntensityEffect=0
 
 [Colors:Button]
 BackgroundAlternate=@NEUTRAL_25_RGB@
-BackgroundNormal=@NEUTRAL_0_RGB@
+BackgroundNormal=@NEUTRAL_25_RGB@
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_600_RGB@
@@ -48,7 +48,7 @@ ForegroundVisited=@PRIMARY_50_RGB@
 
 [Colors:Header]
 BackgroundAlternate=@NEUTRAL_50_RGB@
-BackgroundNormal=@NEUTRAL_40_RGB@
+BackgroundNormal=@NEUTRAL_25_LIGHT_SUBTLE_RGB@
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_600_RGB@
@@ -104,7 +104,7 @@ ForegroundVisited=@PRIMARY_700_RGB@
 
 [Colors:Window]
 BackgroundAlternate=@NEUTRAL_200_RGB@
-BackgroundNormal=@NEUTRAL_40_RGB@
+BackgroundNormal=@NEUTRAL_25_LIGHT_SUBTLE_RGB@
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_600_RGB@

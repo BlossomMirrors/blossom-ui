@@ -1,6 +1,7 @@
 add_definitions(-DTRANSLATION_DOMAIN="blossomui_kwin_deco")
 
 ################# configuration #################
+include(BlossomUIColors)
 configure_file(config-blossomui.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-blossomui.h )
 
 ################# includes #################

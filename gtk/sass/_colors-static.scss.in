@@ -1,5 +1,5 @@
 @define-color borders_breeze #39393e;
-@define-color content_view_bg_breeze @NEUTRAL_850_HEX@;
+@define-color content_view_bg_breeze @NEUTRAL_900_DARK_SUBTLE_HEX@;
 @define-color error_color_backdrop_breeze #973a3c;
 @define-color error_color_breeze @RED_300_HEX@;
 @define-color error_color_insensitive_backdrop_breeze #7e535f;
@@ -21,7 +21,7 @@
 @define-color success_color_breeze @TERTIARY_500_HEX@;
 @define-color success_color_insensitive_backdrop_breeze #549482;
 @define-color success_color_insensitive_breeze #549482;
-@define-color theme_base_color_breeze @NEUTRAL_850_HEX@;
+@define-color theme_base_color_breeze @NEUTRAL_900_DARK_SUBTLE_HEX@;
 @define-color theme_bg_color_breeze @NEUTRAL_900_HEX@;
 @define-color theme_button_background_alternate_breeze @NEUTRAL_700_HEX@;
 @define-color theme_button_background_backdrop_breeze @NEUTRAL_800_HEX@;
@@ -63,7 +63,7 @@
 @define-color theme_titlebar_foreground_breeze @NEUTRAL_50_HEX@;
 @define-color theme_titlebar_foreground_insensitive_backdrop_breeze @NEUTRAL_300_HEX@;
 @define-color theme_titlebar_foreground_insensitive_breeze @NEUTRAL_300_HEX@;
-@define-color theme_unfocused_base_color_breeze @NEUTRAL_850_HEX@;
+@define-color theme_unfocused_base_color_breeze @NEUTRAL_900_DARK_SUBTLE_HEX@;
 @define-color theme_unfocused_bg_color_breeze @NEUTRAL_900_HEX@;
 @define-color theme_unfocused_fg_color_breeze #9e9ea2;
 @define-color theme_unfocused_selected_bg_color_alt_breeze #172a58;

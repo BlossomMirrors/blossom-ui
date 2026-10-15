@@ -2,9 +2,11 @@
 #include "blossomui.h"
 #include "blossomuibutton.h"
 #include "blossomuidecoration.h"
+#include "config-blossomui.h"
 
 #include <KColorUtils>
 #include <KDecoration3/DecoratedWindow>
+#include <KDecoration3/ScaleHelpers>
 #include <KIconLoader>
 
 #include <QFile>
@@ -264,7 +266,12 @@ void Button::drawIconWithMask(QPainter *painter) const
     }
 
     const qreal hoverProgress = isPressed() ? 1.0 : (m_animation->state() == QAbstractAnimation::Running) ? m_opacity : (isHovered() ? 1.0 : 0.0);
-    const QColor iconColor = foregroundColor();
+    const bool isClose = type() == DecorationButtonType::Close;
+    const bool lightTitleBar = KColorUtils::luma(d->titleBarColor()) > KColorUtils::luma(d->fontColor());
+
+    // the red close button needs a light icon even when the titlebar text is dark
+    const QColor closeIconColor = lightTitleBar ? d->window()->palette().color(QPalette::Button) : d->fontColor();
+    const QColor iconColor = isClose ? KColorUtils::mix(d->fontColor(), closeIconColor, hoverProgress) : d->fontColor();
 
     QSvgRenderer renderer;
     renderer.load(svgData);
@@ -273,63 +280,79 @@ void Button::drawIconWithMask(QPainter *painter) const
         return;
     }
 
+    // fractional scaling puts logical pixels between real ones so the box is snapped to real pixels
+    const qreal scale = d->window()->scale();
     const int buttonMargin = 1;
-    const QRectF drawRect = rect.adjusted(buttonMargin, buttonMargin, -buttonMargin, -buttonMargin);
-
     const qreal hoverInset = 2;
-    const QRectF hoverRect = drawRect.adjusted(hoverInset, hoverInset, -hoverInset, -hoverInset);
+    const QRectF drawRect = rect.adjusted(buttonMargin, buttonMargin, -buttonMargin, -buttonMargin);
+    const QRectF hoverRect = KDecoration3::snapToPixelGrid(drawRect.adjusted(hoverInset, hoverInset, -hoverInset, -hoverInset), scale);
+    const QSize hoverPixels(qRound(hoverRect.width() * scale), qRound(hoverRect.height() * scale));
 
-    int iconWidth = qRound(drawRect.width()) - 2;
-    int iconHeight = qRound(drawRect.height()) - 2;
-
-    QImage iconImage(QSize(iconWidth, iconHeight), QImage::Format_ARGB32_Premultiplied);
-    iconImage.fill(Qt::transparent);
-    QPainter iconPainter(&iconImage);
-    iconPainter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     auto glyphIt = s_glyphBoxCache.find(iconPath);
     if (glyphIt == s_glyphBoxCache.end())
         glyphIt = s_glyphBoxCache.insert(iconPath, glyphBox(renderer));
     const QRectF glyph = glyphIt.value();
     renderer.setViewBox(glyph);
 
-    const qreal side = qMin(iconWidth, iconHeight) * Metrics::TitleBar_GlyphFraction
-        * (type() == DecorationButtonType::Close ? 0.9 : 1.0); // X close icon looks bigger so it gets sized down a bit
-    const qreal scale = side / qMax(glyph.width(), glyph.height());
-    const QSizeF glyphSize(glyph.width() * scale, glyph.height() * scale);
-    renderer.render(&iconPainter, QRectF(QPointF((iconWidth - glyphSize.width()) / 2, (iconHeight - glyphSize.height()) / 2), glyphSize));
+    const qreal side = (qMin(drawRect.width(), drawRect.height()) - 2) * Metrics::TitleBar_GlyphFraction
+        * (isClose ? 0.9 : 1.0); // X close icon looks bigger so it gets sized down a bit
+    const qreal glyphScale = side * scale / qMax(glyph.width(), glyph.height());
+
+    // the icon only sits in the exact middle when its pixel size is odd or even like the box around it
+    const auto matchParity = [](qreal size, int box) {
+        const int pixels = qMax(1, qRound(size));
+        return (box - pixels) % 2 == 0 ? pixels : pixels + 1;
+    };
+    const QSize glyphPixels(matchParity(glyph.width() * glyphScale, hoverPixels.width()), matchParity(glyph.height() * glyphScale, hoverPixels.height()));
+
+    QImage iconImage(hoverPixels, QImage::Format_ARGB32_Premultiplied);
+    iconImage.fill(Qt::transparent);
+    QPainter iconPainter(&iconImage);
+    iconPainter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    renderer.render(&iconPainter,
+                    QRectF(QPointF((hoverPixels.width() - glyphPixels.width()) / 2, (hoverPixels.height() - glyphPixels.height()) / 2), glyphPixels));
     iconPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);
     iconPainter.fillRect(iconImage.rect(), iconColor);
     iconPainter.end();
+    iconImage.setDevicePixelRatio(scale);
 
-    QColor bgColor;
-    if (type() == DecorationButtonType::Close)
-        bgColor = d->window()->color(ColorGroup::Warning, ColorRole::Foreground);
-    else
-        bgColor = d->fontColor();
-    qreal bgOpacity = isPressed() ? 1.0 : hoverProgress * .6;
+    QColor fillColor;
+    QColor borderColor;
+    if (isClose) {
+        fillColor = QColor(isPressed() ? BLOSSOMUI_RED_700 : BLOSSOMUI_RED_800);
+        borderColor = QColor(BLOSSOMUI_RED_700);
+    } else {
+        fillColor = QColor(BLOSSOMUI_SURFACE_MOD);
+        fillColor.setAlphaF((lightTitleBar ? BLOSSOMUI_SURFACE_MOD_LIGHT_NORMAL : BLOSSOMUI_SURFACE_MOD_DARK_NORMAL) / 100.0);
+        // pressed buttons only keep the fill like in the design
+        if (!isPressed()) {
+            borderColor = QColor(BLOSSOMUI_SURFACE_MOD);
+            borderColor.setAlphaF((lightTitleBar ? BLOSSOMUI_SURFACE_MOD_LIGHT_STRONG : BLOSSOMUI_SURFACE_MOD_DARK_STRONG) / 100.0);
+        }
+    }
 
-    if (bgColor.isValid()) {
+    if (hoverProgress > 0) {
         painter->save();
         painter->setPen(Qt::NoPen);
-
-        QColor fillColor = bgColor;
-        fillColor.setAlphaF(bgOpacity);
+        fillColor.setAlphaF(fillColor.alphaF() * hoverProgress);
         painter->setBrush(fillColor);
         painter->drawRoundedRect(hoverRect, 3, 3);
 
-        QColor outlineColor = bgColor;
-        outlineColor.setAlphaF(qMin(1.0, bgOpacity / .6));
-        QPen outlinePen(outlineColor);
-        outlinePen.setWidthF(1);
-        painter->setPen(outlinePen);
-        painter->setBrush(Qt::NoBrush);
-        painter->drawRoundedRect(hoverRect, 3, 3);
+        if (borderColor.isValid()) {
+            // the border sits inside the box so it covers whole pixels at any scale
+            const qreal penWidth = qMax(KDecoration3::pixelSize(scale), KDecoration3::snapToPixelGrid(1.0, scale));
+            borderColor.setAlphaF(borderColor.alphaF() * hoverProgress);
+            QPen borderPen(borderColor);
+            borderPen.setWidthF(penWidth);
+            painter->setPen(borderPen);
+            painter->setBrush(Qt::NoBrush);
+            painter->drawRoundedRect(hoverRect.adjusted(penWidth / 2, penWidth / 2, -penWidth / 2, -penWidth / 2), 3, 3);
+        }
 
         painter->restore();
     }
 
-    const QPoint iconPos(qRound(rect.x() + rect.width() / 2.0 - iconWidth / 2.0), qRound(rect.y() + rect.height() / 2.0 - iconHeight / 2.0));
-    painter->drawImage(iconPos, iconImage);
+    painter->drawImage(hoverRect.topLeft(), iconImage);
 }
 
 } // namespace BlossomUI

@@ -34,7 +34,8 @@ ForegroundVisited=@PRIMARY_50_RGB@
 
 [Colors:Complementary]
 BackgroundAlternate=@NEUTRAL_900_RGB@
-BackgroundNormal=@NEUTRAL_1000_RGB@
+# oled panels switch pixels off only on true black so this is not a palette step
+BackgroundNormal=0,0,0
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_100_RGB@
@@ -48,7 +49,7 @@ ForegroundVisited=@PRIMARY_50_RGB@
 
 [Colors:Header]
 BackgroundAlternate=@NEUTRAL_950_RGB@
-BackgroundNormal=@NEUTRAL_1000_RGB@
+BackgroundNormal=0,0,0
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_100_RGB@
@@ -104,7 +105,7 @@ ForegroundVisited=@PRIMARY_50_RGB@
 
 [Colors:Window]
 BackgroundAlternate=@NEUTRAL_700_RGB@
-BackgroundNormal=@NEUTRAL_1000_RGB@
+BackgroundNormal=0,0,0
 DecorationFocus=@PRIMARY_300_RGB@
 DecorationHover=@PRIMARY_300_RGB@
 ForegroundActive=@PRIMARY_100_RGB@
@@ -126,9 +127,9 @@ contrast=4
 frameContrast=0.1
 
 [WM]
-activeBackground=@NEUTRAL_1000_RGB@
+activeBackground=0,0,0
 activeBlend=@NEUTRAL_25_RGB@
 activeForeground=@NEUTRAL_50_RGB@
-inactiveBackground=@NEUTRAL_1000_RGB@
+inactiveBackground=0,0,0
 inactiveBlend=@NEUTRAL_600_RGB@
 inactiveForeground=@NEUTRAL_200_RGB@

@@ -8,13 +8,13 @@ Color=@NEUTRAL_900_RGB@
 Color=@NEUTRAL_900_RGB@
 
 [Color0]
-Color=@NEUTRAL_350_RGB@
+Color=@NEUTRAL_400_RGB@
 
 [Color0Faint]
-Color=@NEUTRAL_350_RGB@
+Color=@NEUTRAL_400_RGB@
 
 [Color0Intense]
-Color=@NEUTRAL_350_RGB@
+Color=@NEUTRAL_400_RGB@
 
 [Color1]
 Color=@RED_300_RGB@
@@ -62,13 +62,13 @@ Color=@SECONDARY_300_RGB@
 Color=@SECONDARY_300_RGB@
 
 [Color6]
-Color=@CYAN_300_RGB@
+Color=@PRIMARY_100_RGB@
 
 [Color6Faint]
-Color=@CYAN_300_RGB@
+Color=@PRIMARY_100_RGB@
 
 [Color6Intense]
-Color=@CYAN_300_RGB@
+Color=@PRIMARY_100_RGB@
 
 [Color7]
 Color=@NEUTRAL_50_RGB@
