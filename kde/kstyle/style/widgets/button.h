@@ -19,6 +19,11 @@ static constexpr int Button_MinWidth = 80;
 static constexpr int Button_MarginWidth = 6;
 static constexpr int Button_ItemSpacing = 4;
 static constexpr int Button_PressedShrink = 2;
+// same small drop shadow as cards so raised buttons match the web registry buttons
+static constexpr int Button_ShadowYOffset = 1;
+static constexpr int Button_ShadowBlur = 2;
+static constexpr int Button_ShadowAlphaDark = 110;
+static constexpr int Button_ShadowAlphaLight = 45;
 // tool buttons
 static constexpr int ToolButton_MarginWidth = 6;
 static constexpr int ToolButton_ItemSpacing = 4;

@@ -409,30 +409,16 @@ bool Style::drawFrameWindowPrimitive(const QStyleOption *option,
 QColor Helper::frameOutlineColor(const QPalette &palette, bool mouseOver,
                                  bool hasFocus, qreal opacity,
                                  AnimationMode mode) const {
-  QColor outline = windowAlternateBackground(palette);
+    Q_UNUSED(mouseOver)
+    QColor outline = windowAlternateBackground(palette);
 
-  // focus takes precedence over hover
-  if (mode == AnimationFocus) {
-    const QColor focus(focusColor(palette));
-    const QColor hover(hoverColor(palette));
+    // only focus colors the outline like the web registry focus ring and hover leaves it alone
+    if (mode == AnimationFocus)
+        outline = KColorUtils::mix(outline, focusColor(palette), opacity);
+    else if (hasFocus)
+        outline = focusColor(palette);
 
-    if (mouseOver)
-      outline = KColorUtils::mix(hover, focus, opacity);
-    else
-      outline = KColorUtils::mix(outline, focus, opacity);
-
-  } else if (hasFocus) {
-    outline = focusColor(palette);
-
-  } else if (mode == AnimationHover) {
-    const QColor hover(hoverColor(palette));
-    outline = KColorUtils::mix(outline, hover, opacity);
-
-  } else if (mouseOver) {
-    outline = hoverColor(palette);
-  }
-
-  return outline;
+    return outline;
 }
 
 QColor Helper::sidePanelOutlineColor(const QPalette &palette) const {
@@ -444,8 +430,8 @@ QColor Helper::sidePanelOutlineColor(const QPalette &palette) const {
 
 QColor Helper::frameBackgroundColor(const QPalette &palette,
                                     QPalette::ColorGroup group) const {
-  return KColorUtils::mix(palette.color(group, QPalette::Window),
-                          palette.color(group, QPalette::Base), 0.3);
+    // panels like group boxes tab frames and docks are cards so they use the high surface from the color scheme view
+    return palette.color(group, QPalette::Base);
 }
 
 QColor Helper::separatorColor(const QPalette &palette) const {

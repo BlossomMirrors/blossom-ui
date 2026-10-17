@@ -246,8 +246,7 @@ void Helper::renderCheckBox(QPainter *painter, const QRect &rect,
   const bool partial = (state == CheckPartial);
   const qreal anim = (state == CheckAnimated) ? (animation == -1 ? 1.0 : animation) : -1.0;
 
-  const Render::Fill fill =
-      Render::checkBoxFill(palette, on, partial, mouseOver, isInMenu, anim);
+  const Render::Fill fill = Render::checkBoxFill(this, palette, on, partial, mouseOver, isInMenu, anim);
   const Render::Border border = Render::checkBoxBorder(palette, fill, mouseOver, anim);
 
   Render::WidgetSpec spec = Render::CheckBoxBoxSpec;
@@ -314,7 +313,7 @@ void Helper::renderSwitch(QPainter *painter, const QRect &rect,
     t = (animation >= 0) ? qBound(-0.15, animation, 1.15) : 1.0;
   const qreal progress = qBound(0.0, t, 1.0);
 
-  const Render::Fill trackFill = Render::switchTrackFill(palette, mouseOver);
+  const Render::Fill trackFill = Render::switchTrackFill(this, palette, mouseOver);
   const Render::Fill trailFill = Render::switchFillTrailFill(palette, mouseOver);
   const Render::Border trackBorder =
       Render::switchTrackBorder(palette, trackFill, trailFill, mouseOver, progress);
@@ -401,7 +400,7 @@ void Helper::renderRadioButton(QPainter *painter, const QRect &rect,
   const bool on = (state == RadioOn || state == RadioAnimated);
   const qreal anim = (state == RadioAnimated) ? (animation == -1 ? 1.0 : animation) : -1.0;
 
-  const Render::Fill fill = Render::radioButtonFill(palette, on, mouseOver, isInMenu, anim);
+  const Render::Fill fill = Render::radioButtonFill(this, palette, on, mouseOver, isInMenu, anim);
   const Render::Border border = Render::radioButtonBorder(palette, fill, mouseOver, anim);
 
   Render::WidgetSpec spec = Render::RadioButtonSpec;

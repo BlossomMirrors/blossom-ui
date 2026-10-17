@@ -488,27 +488,20 @@ QColor Helper::arrowColor(const QPalette &palette, QPalette::ColorGroup group,
 QColor Helper::arrowColor(const QPalette &palette, bool mouseOver,
                           bool hasFocus, qreal opacity,
                           AnimationMode mode) const {
-  QColor outline(arrowColor(palette, QPalette::WindowText));
-  if (mode == AnimationHover) {
-    const QColor focus(focusColor(palette));
-    const QColor hover(hoverColor(palette));
-    if (hasFocus)
-      outline = KColorUtils::mix(focus, hover, opacity);
-    else
-      outline = KColorUtils::mix(outline, hover, opacity);
+    Q_UNUSED(mouseOver)
+    QColor outline(arrowColor(palette, QPalette::WindowText));
+    // arrows keep the text color on hover and only take the accent for focus
+    if (mode == AnimationHover) {
+        if (hasFocus)
+            outline = focusColor(palette);
 
-  } else if (mouseOver) {
-    // fix skanlite arrow color bug (mouseOver shows dark color (focusColor),
-    // not light color (hoverColor))
-    outline = focusColor(palette);
+    } else if (mode == AnimationFocus) {
+        const QColor focus(focusColor(palette));
+        outline = KColorUtils::mix(outline, focus, opacity);
 
-  } else if (mode == AnimationFocus) {
-    const QColor focus(focusColor(palette));
-    outline = KColorUtils::mix(outline, focus, opacity);
-
-  } else if (hasFocus) {
-    outline = focusColor(palette);
-  }
+    } else if (hasFocus) {
+        outline = focusColor(palette);
+    }
 
   return outline;
 }

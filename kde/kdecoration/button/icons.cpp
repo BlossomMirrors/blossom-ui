@@ -269,9 +269,10 @@ void Button::drawIconWithMask(QPainter *painter) const
     const bool isClose = type() == DecorationButtonType::Close;
     const bool lightTitleBar = KColorUtils::luma(d->titleBarColor()) > KColorUtils::luma(d->fontColor());
 
-    // the red close button needs a light icon even when the titlebar text is dark
-    const QColor closeIconColor = lightTitleBar ? d->window()->palette().color(QPalette::Button) : d->fontColor();
-    const QColor iconColor = isClose ? KColorUtils::mix(d->fontColor(), closeIconColor, hoverProgress) : d->fontColor();
+    // on hover the close icon turns light red on the red fill and in dark mode the other icons take the titlebar color on their light fill
+    // in light mode the fill stays light so those icons keep the text color
+    const QColor activeIconColor = isClose ? QColor(BLOSSOMUI_RED_50) : (lightTitleBar ? d->fontColor() : d->titleBarColor());
+    const QColor iconColor = KColorUtils::mix(d->fontColor(), activeIconColor, hoverProgress);
 
     QSvgRenderer renderer;
     renderer.load(svgData);
@@ -319,15 +320,16 @@ void Button::drawIconWithMask(QPainter *painter) const
     QColor fillColor;
     QColor borderColor;
     if (isClose) {
+        // hover is the dark red with a lighter red border and pressed fills with that lighter red
         fillColor = QColor(isPressed() ? BLOSSOMUI_RED_700 : BLOSSOMUI_RED_800);
         borderColor = QColor(BLOSSOMUI_RED_700);
     } else {
-        fillColor = QColor(BLOSSOMUI_SURFACE_MOD);
-        fillColor.setAlphaF((lightTitleBar ? BLOSSOMUI_SURFACE_MOD_LIGHT_NORMAL : BLOSSOMUI_SURFACE_MOD_DARK_NORMAL) / 100.0);
-        // pressed buttons only keep the fill like in the design
-        if (!isPressed()) {
-            borderColor = QColor(BLOSSOMUI_SURFACE_MOD);
-            borderColor.setAlphaF((lightTitleBar ? BLOSSOMUI_SURFACE_MOD_LIGHT_STRONG : BLOSSOMUI_SURFACE_MOD_DARK_STRONG) / 100.0);
+        // pressed buttons get a stronger fill without the border like in the design
+        if (isPressed()) {
+            fillColor = QColor(lightTitleBar ? BLOSSOMUI_WINDOW_BUTTON_LIGHT_PRESSED : BLOSSOMUI_WINDOW_BUTTON_DARK_PRESSED);
+        } else {
+            fillColor = QColor(lightTitleBar ? BLOSSOMUI_WINDOW_BUTTON_LIGHT_HOVER : BLOSSOMUI_WINDOW_BUTTON_DARK_HOVER);
+            borderColor = QColor(lightTitleBar ? BLOSSOMUI_WINDOW_BUTTON_LIGHT_HOVER_BORDER : BLOSSOMUI_WINDOW_BUTTON_DARK_HOVER_BORDER);
         }
     }
 

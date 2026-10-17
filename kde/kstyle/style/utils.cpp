@@ -198,9 +198,6 @@ QColor Style::scrollBarArrowColor(const QStyleOptionSlider *option,
 
   const bool mouseOver(
       _animations->scrollBarEngine().isHovered(widget, control));
-  const bool animated(_animations->scrollBarEngine().isAnimated(
-      widget, AnimationHover, control));
-  const qreal opacity(_animations->scrollBarEngine().opacity(widget, control));
 
   // retrieve mouse position from engine
   QPoint position(mouseOver ? _animations->scrollBarEngine().position(widget)
@@ -213,16 +210,7 @@ QColor Style::scrollBarArrowColor(const QStyleOptionSlider *option,
     _animations->scrollBarEngine().setSubControlRect(widget, control, rect);
   }
 
-  if (rect.intersects(
-          _animations->scrollBarEngine().subControlRect(widget, control))) {
-    auto highlight = _helper->hoverColor(palette);
-    if (animated) {
-      color = KColorUtils::mix(color, highlight, opacity);
-
-    } else if (mouseOver) {
-      color = highlight;
-    }
-  }
+  // scroll bar arrows keep their color on hover instead of turning into the accent
 
   // finally, global opacity when ScrollBarShowOnMouseOver
   const qreal globalOpacity(_animations->scrollBarEngine().opacity(

@@ -100,8 +100,7 @@ void Style::updateDolphinCardScrollArea(QAbstractScrollArea *scrollArea,
       auto *vp = scrollArea->viewport();
       if (!vp)
         return;
-      const QColor win = QApplication::palette().color(QPalette::Window);
-      const QColor cardColor = Render::cardBackgroundFill(win).brush.color();
+      const QColor cardColor = Render::cardBackgroundFill(QApplication::palette()).brush.color();
       QPalette pal = vp->palette();
       pal.setColor(QPalette::Window, cardColor);
       pal.setColor(QPalette::Base, cardColor);
@@ -169,8 +168,7 @@ void Style::applyDolphinCardBackground(
     QColor &background, const QAbstractScrollArea *scrollArea) const {
   if (!scrollArea->inherits("KItemListContainer"))
     return;
-  const QColor win = QApplication::palette().color(QPalette::Window);
-  background = Render::cardBackgroundFill(win).brush.color();
+  background = Render::cardBackgroundFill(QApplication::palette()).brush.color();
 }
 
 void Style::updateDolphinCardScrollAreaScrollbar(

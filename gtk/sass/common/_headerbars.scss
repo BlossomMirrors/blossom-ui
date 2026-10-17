@@ -21,13 +21,14 @@ windowcontrols > button > image {
 }
 
 // after the per-class resets and same specificity, so it wins the tie
+// kwin leaves 9px between the button boxes
 windowcontrols > button:not(:first-child),
 windowcontrols > button.image-button:not(:first-child) {
-    margin-left: 14px;
+    margin-left: 9px;
 }
 
 button.titlebutton + button.titlebutton {
-    margin-left: 8px; // gtk3 headerbar box already adds 6px -> 14 total
+    margin-left: 3px; // gtk3 headerbar box already adds 6px -> 9 total
 }
 
 %titlebar,

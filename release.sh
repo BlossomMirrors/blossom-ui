@@ -15,6 +15,9 @@ fi
 
 SRC_DIR=$(pwd)
 RPMBUILD=~/rpmbuild
+TOOLBOX=blossomui-build
+
+build_rpm() {
 mkdir -p "$RPMBUILD"/{SPECS,SOURCES,BUILD,RPMS,SRPMS} release
 
 # generate RPM spec file with complete file listings for all theme components
@@ -35,6 +38,10 @@ BuildRequires:  gettext
 BuildRequires:  sassc
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtsvg-devel
+BuildRequires:  qt6-qtbase-private-devel
+BuildRequires:  qt6-qtdeclarative-devel
+BuildRequires:  zlib-devel
+BuildRequires:  kf6-kconfigwidgets-devel
 BuildRequires:  kf6-kcoreaddons-devel
 BuildRequires:  kf6-kcolorscheme-devel
 BuildRequires:  kf6-kconfig-devel
@@ -52,6 +59,8 @@ BuildRequires:  cmake(KDecoration3)
 # Build requirements for QT5
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtsvg-devel
+BuildRequires:  qt5-qtdeclarative-devel
+BuildRequires:  kf5-kconfigwidgets-devel
 BuildRequires:  kf5-kcoreaddons-devel
 BuildRequires:  kf5-kconfig-devel
 BuildRequires:  kf5-kguiaddons-devel
@@ -273,6 +282,17 @@ fi
 - $CHANGELOG
 EOF
 
+if [ -f /run/.toolboxenv ]; then
+    echo "=== Installing build dependencies in the toolbox ==="
+    sudo dnf install -y rpm-build ninja-build
+    sudo dnf builddep -y "$RPMBUILD/SPECS/$NAME.spec"
+fi
+
+# a tree configured by another cmake points at compilers and libraries the toolbox does not have
+if [ -f "$SRC_DIR/build/rpm/CMakeCache.txt" ] && ! grep -q "^CMAKE_COMMAND:INTERNAL=$(command -v cmake)$" "$SRC_DIR/build/rpm/CMakeCache.txt"; then
+    rm -rf "$SRC_DIR/build/rpm"
+fi
+
 echo "=== Building (incremental CMake) ==="
 cmake -S "$SRC_DIR" -B "$SRC_DIR/build/rpm" -G Ninja \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -297,6 +317,26 @@ if command -v rpmbuild >/dev/null 2>&1; then
     echo "Note: RPM includes both Qt5 and Qt6 application styles with all theme components"
 else
     echo "rpmbuild not found, skipping RPM release."
+fi
+}
+
+RUN_TOOLS=()
+if [ -f /run/.toolboxenv ]; then
+    # inside the toolbox only the rpm is built and the host builds the flatpaks
+    build_rpm
+    exit 0
+elif command -v toolbox >/dev/null 2>&1; then
+    # build in a toolbox so compilers and devel packages never touch the system image
+    FEDORA=$(. /etc/os-release && echo "$VERSION_ID")
+    if ! toolbox list --containers | grep -qw "$TOOLBOX"; then
+        echo "=== Creating the $TOOLBOX toolbox on Fedora $FEDORA ==="
+        toolbox create -y -r "$FEDORA" "$TOOLBOX"
+    fi
+    # the shared home puts linuxbrew and distrobox tools in the path so keep only the toolbox system tools
+    toolbox run -c "$TOOLBOX" env PATH=/usr/local/bin:/usr/bin bash -c 'cd "$1" && shift && ./release.sh "$@"' _ "$SRC_DIR" "$@"
+    RUN_TOOLS=(toolbox run -c "$TOOLBOX" env PATH=/usr/local/bin:/usr/bin)
+else
+    build_rpm
 fi
 
 # Flatpak
@@ -336,8 +376,8 @@ flatpak install --noninteractive --system flathub \
 # pre-compile the GTK3 theme CSS so the org.gtk.Gtk3theme.BlossomUI flatpak
 # extension can just install it, without needing sassc inside the sandbox
 mkdir -p "$SRC_DIR/gtk/build"
-sassc -M -t compact -I "$SRC_DIR/build/rpm/gtk" "$SRC_DIR/gtk/sass/gtk3-light.scss" "$SRC_DIR/gtk/build/gtk3-light.css"
-sassc -M -t compact -I "$SRC_DIR/build/rpm/gtk" "$SRC_DIR/gtk/sass/gtk3-dark.scss" "$SRC_DIR/gtk/build/gtk3-dark.css"
+"${RUN_TOOLS[@]}" sassc -M -t compact -I "$SRC_DIR/build/rpm/gtk" "$SRC_DIR/gtk/sass/gtk3-light.scss" "$SRC_DIR/gtk/build/gtk3-light.css"
+"${RUN_TOOLS[@]}" sassc -M -t compact -I "$SRC_DIR/build/rpm/gtk" "$SRC_DIR/gtk/sass/gtk3-dark.scss" "$SRC_DIR/gtk/build/gtk3-dark.css"
 
 # create flatpak source archive (clean, no transform)
 tar --warning=no-file-changed -czf "$SRC_DIR/flatpak/blossomui-flatpak-source.tar.gz" \

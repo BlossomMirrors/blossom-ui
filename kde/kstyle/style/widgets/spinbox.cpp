@@ -10,15 +10,14 @@ namespace Render {
 
 Fill spinBoxArrowColor(const Helper *helper, const QPalette &palette, bool animated,
                        qreal opacity, bool subControlHover, bool atLimit) {
-  QColor color = helper->arrowColor(palette, QPalette::Text);
-  if (animated) {
-    const QColor highlight = helper->hoverColor(palette);
-    color = KColorUtils::mix(color, highlight, opacity);
-  } else if (subControlHover) {
-    color = helper->focusColor(palette);
-  } else if (atLimit) {
-    color = helper->arrowColor(palette, QPalette::Disabled, QPalette::Text);
-  }
+    Q_UNUSED(animated)
+    Q_UNUSED(opacity)
+    Q_UNUSED(subControlHover)
+    // spin box arrows keep the text color on hover instead of turning into the accent
+    QColor color = helper->arrowColor(palette, QPalette::Text);
+    if (atLimit) {
+        color = helper->arrowColor(palette, QPalette::Disabled, QPalette::Text);
+    }
   return Fill(color);
 }
 

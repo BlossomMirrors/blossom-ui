@@ -6,12 +6,12 @@
 #include "widgetspec.h"
 
 namespace BlossomUI {
+class Helper;
 namespace Render {
 
 extern const WidgetSpec RadioButtonSpec;
 
-Fill radioButtonFill(const QPalette &palette, bool on, bool mouseOver,
-                     bool isInMenu, qreal animation);
+Fill radioButtonFill(const Helper *helper, const QPalette &palette, bool on, bool mouseOver, bool isInMenu, qreal animation);
 Border radioButtonBorder(const QPalette &palette, const Fill &fill,
                          bool mouseOver, qreal animation);
 

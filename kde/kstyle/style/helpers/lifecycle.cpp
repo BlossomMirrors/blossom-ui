@@ -58,8 +58,6 @@ void Helper::loadConfig() {
       KStatefulBrush(KColorScheme::View, KColorScheme::NegativeText);
   _windowAlternateBackgroundBrush =
       KStatefulBrush(KColorScheme::Window, KColorScheme::AlternateBackground);
-  _buttonAlternateBackgroundBrush =
-      KStatefulBrush(KColorScheme::Button, KColorScheme::AlternateBackground);
 
   const QPalette palette(QApplication::palette());
 

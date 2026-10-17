@@ -90,9 +90,11 @@ public:
     return _windowAlternateBackgroundBrush.brush(palette).color();
   }
 
-  //* alternate button background (used for hover)
-  QColor buttonAlternateBackground(const QPalette &palette) const {
-    return _buttonAlternateBackgroundBrush.brush(palette).color();
+  //* hover fill for buttons and controls
+  // plasma paints its accent into the button alternate color so hover takes the view background which is the high surface
+  QColor hoverSurface(const QPalette &palette) const
+  {
+      return palette.color(QPalette::Base);
   }
 
   //* shadow
@@ -419,7 +421,6 @@ private:
   KStatefulBrush _viewHoverBrush;
   KStatefulBrush _viewNegativeTextBrush;
   KStatefulBrush _windowAlternateBackgroundBrush;
-  KStatefulBrush _buttonAlternateBackgroundBrush;
   //@}
 
   //* event filter

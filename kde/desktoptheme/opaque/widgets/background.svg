@@ -214,7 +214,7 @@
        fill="#1a1a1a"
        d="m19 6c-3.324 0-6 2.676-6 6h6v-5z"
        transform="translate(0,904.36)"
-      class="ColorScheme-Background"
+      class="ColorScheme-ViewBackground"
       style="opacity:1;fill:currentColor;fill-opacity:1" />
   </g>
   <rect
@@ -234,7 +234,7 @@
        y="-51"
        x="-916.36"
        transform="matrix(0,-1,-1,0,0,0)"
-      class="ColorScheme-Background"
+      class="ColorScheme-ViewBackground"
       style="opacity:1;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect25"
@@ -257,7 +257,7 @@
        y="-51"
        x="948.36"
        transform="rotate(90)"
-      class="ColorScheme-Background"
+      class="ColorScheme-ViewBackground"
       style="opacity:1;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect30"
@@ -280,7 +280,7 @@
        y="916.36"
        x="-19"
        transform="scale(-1,1)"
-      class="ColorScheme-Background"
+      class="ColorScheme-ViewBackground"
       style="opacity:1;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect35"
@@ -302,7 +302,7 @@
        width="6"
        y="916.36"
        x="51"
-      class="ColorScheme-Background"
+      class="ColorScheme-ViewBackground"
       style="opacity:1;fill:currentColor;fill-opacity:1" />
     <rect
        id="rect40"
@@ -330,7 +330,7 @@
        width="32"
        y="916.36"
        x="19"
-      class="ColorScheme-Background"
+      class="ColorScheme-ViewBackground"
       style="opacity:1;fill:currentColor;fill-opacity:1" />
   </g>
   <rect
@@ -442,7 +442,7 @@
        y="-51"
        x="-916.36"
        transform="matrix(0,-1,-1,0,0,0)"
-       class="ColorScheme-Background" />
+       class="ColorScheme-ViewBackground" />
     <rect
        style="opacity:0.15"
        id="rect64"

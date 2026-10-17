@@ -9,6 +9,21 @@
 namespace BlossomUI {
 namespace Render {
 
+namespace
+{
+
+Shadow buttonShadow(const QPalette &palette)
+{
+    const bool isDark = palette.color(QPalette::Window).lightness() < 128;
+    Shadow shadow;
+    shadow.yOffset = Button_ShadowYOffset;
+    shadow.blur = Button_ShadowBlur;
+    shadow.color = QColor(0, 0, 0, isDark ? Button_ShadowAlphaDark : Button_ShadowAlphaLight);
+    return shadow;
+}
+
+} // namespace
+
 const WidgetSpec ButtonSpec =
     WidgetBuilder()
         .geometry(Geometry()
@@ -32,59 +47,29 @@ const WidgetSpec ToolButtonSpec =
 WidgetSpec buttonFrame(const Helper *helper,
                        const WidgetInteractionState &state,
                        bool defaultButton) {
-  QPalette palette = state.palette;
-  if (state.enabled && defaultButton) {
-    palette.setColor(QPalette::Button,
-                     KColorUtils::mix(palette.color(QPalette::Button),
-                                      palette.color(QPalette::Base), 0.7));
-  }
-
-  const QColor base = palette.color(QPalette::Button);
-  const QColor focus = helper->focusColor(palette);
-  const QColor tinted = KColorUtils::mix(base, focus, 0.28);
-  const QColor tintedHover = KColorUtils::mix(base, focus, 0.38);
-
-  // accent tint only for a resting focused button, never while pressed or
-  // mid-press-animation
-  const bool tintForFocus =
-      state.focused && !state.pressed && state.pressOpacity < 0.0;
-
-  QColor resting = base;
-  if (tintForFocus) {
-    resting = (state.mode == AnimationFocus)
-                  ? KColorUtils::mix(base, tinted, state.opacity)
-                  : tinted;
-  }
-
-  WidgetSpec spec = ButtonSpec;
-  spec.fill(StateStyle<Fill>(Fill(resting))
-                .hovered(Fill(tintForFocus
-                                  ? tintedHover
-                                  : helper->buttonAlternateBackground(palette)))
-                .pressed(Fill(resting.darker(105))));
-  return spec;
+    Q_UNUSED(defaultButton)
+    const QPalette &palette = state.palette;
+    // like the web registry buttons hover and press only switch to the hover surface and never take the accent color
+    const QColor hover = helper->hoverSurface(palette);
+    WidgetSpec spec = ButtonSpec;
+    spec.fill(StateStyle<Fill>(Fill(palette.color(QPalette::Button))).hovered(Fill(hover)).pressed(Fill(hover)));
+    spec.shadow(buttonShadow(palette));
+    return spec;
 }
 
 WidgetSpec toolButtonFrame(const Helper *helper,
                            const WidgetInteractionState &state) {
   const QColor text = state.palette.color(QPalette::WindowText);
-  const QColor hover = helper->alphaColor(text, 0.1);
+  // ghost buttons hover with the same surface as raised buttons like the web registry ghost variant
+  const QColor hover = helper->hoverSurface(state.palette);
   const QColor sunken = helper->alphaColor(text, 0.2);
-  const QColor focus = helper->focusColor(state.palette);
 
   // resting is a fully transparent hover so the ghost fill fades in rather
   // than snapping when the hover animation runs
-  QColor resting = helper->alphaColor(text, 0.0);
-  if (state.focused && !state.pressed)
-    resting = focus;
+  const QColor resting = helper->alphaColor(hover, 0.0);
 
   WidgetSpec spec = ToolButtonSpec;
-  spec.fill(
-      StateStyle<Fill>(Fill(resting))
-          .hovered(
-              Fill(state.focused ? KColorUtils::mix(focus, hover, 0.5) : hover))
-          .pressed(Fill(sunken))
-          .animated());
+  spec.fill(StateStyle<Fill>(Fill(resting)).hovered(Fill(hover)).pressed(Fill(sunken)).animated());
   return spec;
 }
 
@@ -123,21 +108,18 @@ ContentLayout toolButtonContent(Qt::ToolButtonStyle style,
 }
 
 QPalette::ColorRole buttonTextRole(bool flat, bool focused, bool pressed) {
-  if (!flat)
-    return QPalette::ButtonText;
-  return (focused && pressed) ? QPalette::HighlightedText
-                              : QPalette::WindowText;
+    Q_UNUSED(focused)
+    Q_UNUSED(pressed)
+    // the fill stays a neutral surface in every state so the text keeps its normal color
+    return flat ? QPalette::WindowText : QPalette::ButtonText;
 }
 
 QPalette::ColorRole toolButtonTextRole(bool flat, bool focused, bool pressed,
                                        bool hovered) {
-  if (flat) {
-    return (((focused && pressed) || pressed) && !hovered)
-               ? QPalette::HighlightedText
-               : QPalette::WindowText;
-  }
-  return (focused || pressed) ? QPalette::HighlightedText
-                              : QPalette::ButtonText;
+    Q_UNUSED(focused)
+    Q_UNUSED(pressed)
+    Q_UNUSED(hovered)
+    return flat ? QPalette::WindowText : QPalette::ButtonText;
 }
 
 QIcon::Mode buttonIconMode(bool enabled, bool flat, bool focused, bool pressed,
@@ -153,11 +135,13 @@ QIcon::Mode buttonIconMode(bool enabled, bool flat, bool focused, bool pressed,
 
 QIcon::Mode toolButtonIconMode(bool enabled, bool flat, bool focused,
                                bool pressed, bool hovered) {
-  if (!enabled)
-    return QIcon::Disabled;
-  if ((!flat && (focused || pressed)) || (flat && pressed && !hovered))
-    return QIcon::Selected;
-  return QIcon::Normal;
+    Q_UNUSED(flat)
+    Q_UNUSED(focused)
+    Q_UNUSED(pressed)
+    Q_UNUSED(hovered)
+    if (!enabled)
+        return QIcon::Disabled;
+    return QIcon::Normal;
 }
 
 } // namespace Render

@@ -7,6 +7,7 @@
 #include "frame.h"
 
 namespace BlossomUI {
+class Helper;
 namespace Render {
 
 // widget-owned size constants (logical pixels)
@@ -16,8 +17,7 @@ static constexpr int CheckBox_ItemSpacing = 4;
 
 extern const WidgetSpec CheckBoxBoxSpec;
 
-Fill checkBoxFill(const QPalette &palette, bool on, bool partial, bool mouseOver,
-                  bool isInMenu, qreal animation);
+Fill checkBoxFill(const Helper *helper, const QPalette &palette, bool on, bool partial, bool mouseOver, bool isInMenu, qreal animation);
 Border checkBoxBorder(const QPalette &palette, const Fill &fill, bool mouseOver,
                       qreal animation);
 

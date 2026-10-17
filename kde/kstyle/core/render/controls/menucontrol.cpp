@@ -54,7 +54,8 @@ bool Render::MenuControl::drawPanelMenuPrimitive(const QStyleOption *option,
   bool hasAlpha(_style->_helper->hasAlphaChannel(widget));
   if (isSlintPopup)
     hasAlpha = true;
-  auto background(_style->_helper->frameBackgroundColor(palette));
+  // menus use the high surface like the plasma popups so they match the rest of the desktop
+  auto background(palette.color(QPalette::Base));
 
   painter->save();
 
@@ -293,20 +294,14 @@ bool Render::MenuControl::drawMenuBarItemControl(const QStyleOption *option,
 
   painter->save();
 
-  // render hover and focus
-  if (useStrongFocus && (selected || sunken)) {
-    QColor backgroundColor;
-    if (sunken)
-      backgroundColor = _style->_helper->focusColor(palette);
-    else if (selected)
-      backgroundColor = _style->_helper->hoverColor(palette);
+  // menu bar entries hover and open like ghost buttons with the button hover surface instead of an accent
+  if (selected || sunken) {
+      const QColor backgroundColor = _style->_helper->hoverSurface(palette);
 
-    painter->setRenderHints(QPainter::Antialiasing);
-    painter->setBrush(backgroundColor);
-    painter->setPen(Qt::NoPen);
-    painter->drawRoundedRect(rect.adjusted(1, 1, -1, -1),
-                             StyleConfigData::cornerRadius(),
-                             StyleConfigData::cornerRadius());
+      painter->setRenderHints(QPainter::Antialiasing);
+      painter->setBrush(backgroundColor);
+      painter->setPen(Qt::NoPen);
+      painter->drawRoundedRect(rect.adjusted(1, 1, -1, -1), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
   }
 
   /*
@@ -344,17 +339,6 @@ bool Render::MenuControl::drawMenuBarItemControl(const QStyleOption *option,
                              iconRect.size(), dpr, iconMode, iconState);
     _style->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
 
-    // render outline
-    if (!useStrongFocus && (selected || sunken)) {
-      QColor outlineColor;
-      if (sunken)
-        outlineColor = _style->_helper->focusColor(palette);
-      else if (selected)
-        outlineColor = _style->_helper->hoverColor(palette);
-
-      _style->_helper->renderFocusLine(painter, iconRect, outlineColor);
-    }
-
   } else {
     // get text rect
     const int textFlags(Qt::AlignCenter | _style->_mnemonics->textFlags());
@@ -362,22 +346,7 @@ bool Render::MenuControl::drawMenuBarItemControl(const QStyleOption *option,
         option->fontMetrics.boundingRect(rect, textFlags, menuItemOption->text);
 
     // render text
-    const QPalette::ColorRole role = (useStrongFocus && sunken)
-                                         ? QPalette::HighlightedText
-                                         : QPalette::WindowText;
-    _style->drawItemText(painter, textRect, textFlags, palette, enabled,
-                 menuItemOption->text, role);
-
-    // render outline
-    if (!useStrongFocus && (selected || sunken)) {
-      QColor outlineColor;
-      if (sunken)
-        outlineColor = _style->_helper->focusColor(palette);
-      else if (selected)
-        outlineColor = _style->_helper->hoverColor(palette);
-
-      _style->_helper->renderFocusLine(painter, textRect, outlineColor);
-    }
+    _style->drawItemText(painter, textRect, textFlags, palette, enabled, menuItemOption->text, QPalette::WindowText);
   }
 
   painter->restore();

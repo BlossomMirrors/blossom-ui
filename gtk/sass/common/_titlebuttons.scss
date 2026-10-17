@@ -6,15 +6,16 @@
         border-spacing: 6px;
 
         &:not(.empty) {
+            // with the 8px headerbar padding this puts the button box 9px from the window edge like kwin
             &.start:dir(ltr),
             &.end:dir(rtl) {
-                margin-left: 3px;
+                margin-left: 1px;
                 margin-right: 4px;
             }
 
             &.start:dir(rtl),
             &.end:dir(ltr) {
-                margin-right: 3px;
+                margin-right: 1px;
                 margin-left: 4px;
             }
         }
@@ -26,15 +27,40 @@
 } @else {
     headerbar,
     .titlebar {
+        // with the 8px headerbar padding this puts the button box 9px from the window edge like kwin
         .right,
         .left:dir(rtl) {
-            margin-right: 2px;
+            margin-right: 1px;
         }
 
         .left,
         .right:dir(rtl) {
-            margin-left: 2px;
+            margin-left: 1px;
         }
+    }
+}
+
+// colors.json window-button strengths of the surface mod color with the icon turning dark on the light fill in the dark theme like kwin
+@mixin _titlebutton_states($hover, $hover_border, $pressed, $active_icon) {
+    &:hover,
+    &:active,
+    &:active:hover {
+        color: $active_icon;
+        background-color: $hover;
+        border-color: $hover_border;
+        box-shadow: none;
+        animation: none;
+
+        &:backdrop {
+            color: $active_icon;
+        }
+    }
+
+    // pressed buttons get the stronger fill without a border
+    &:active,
+    &:active:hover {
+        background-color: $pressed;
+        border-color: transparent;
     }
 }
 
@@ -44,16 +70,14 @@ windowcontrols > button.image-button {
     @extend %button_basic;
     @extend %button_basic_flat;
 
-    // kdecoration draws a 22x22 rounded rect (radius 3): 60%-alpha fill inside a
-    // fully opaque 1px outline, with a 20x20 icon and a 150ms InOutQuad fade
-    $titlebutton-size: 20px 20px;
+    // same look as the kwin window decoration with an 18px box and a 1px border inside a radius 3 corner and a 150ms fade
     $_deco_ease: cubic-bezier(0.45, 0, 0.55, 1);
 
     border-radius: 3px;
     padding: 0;
     margin: 0;
-    min-width: 20px;
-    min-height: 20px;
+    min-width: 16px;
+    min-height: 16px;
     box-shadow: none;
     border: 1px solid transparent;
     transition:
@@ -69,27 +93,31 @@ windowcontrols > button.image-button {
 
     background-position: center;
     background-repeat: no-repeat;
-    background-size: $titlebutton-size;
 
+    // kwin draws the glyph 10px wide and the close glyph 9px so each icon is scaled by how much of its 16px canvas the glyph fills
     &.close {
+        background-size: 16.67px 16.67px;
         background-image: -gtk-recolor(
             url("./blossomui-gtk-assets/window-close-symbolic.svg")
         );
     }
 
     &.maximize {
+        background-size: 15.15px 15.15px;
         background-image: -gtk-recolor(
             url("./blossomui-gtk-assets/window-maximize-symbolic.svg")
         );
     }
 
     &.minimize {
+        background-size: 14.7px 14.7px;
         background-image: -gtk-recolor(
             url("./blossomui-gtk-assets/window-minimize-symbolic.svg")
         );
     }
 
     .maximized &.maximize {
+        background-size: 15.15px 15.15px;
         background-image: -gtk-recolor(
             url("./blossomui-gtk-assets/window-restore-symbolic.svg")
         );
@@ -102,35 +130,43 @@ windowcontrols > button.image-button {
         box-shadow: none;
     }
 
-    &:hover,
-    &:active,
-    &:active:hover {
-        color: $titlebar_bg_color;
-        background-color: gtkalpha($titlebar_fg_color, 0.6);
-        border-color: $titlebar_fg_color;
-        box-shadow: none;
-        animation: none;
-        transition:
-            background-color 150ms $_deco_ease,
-            border-color 150ms $_deco_ease,
-            color 150ms $_deco_ease;
+    // gtk3 builds one file per theme and gtk4 picks the dark colors with the color scheme media query
+    @if $gtkver == "3" {
+        @if $variant == "dark" {
+            @include _titlebutton_states($window_button_dark_hover, $window_button_dark_hover_border,
+                                         $window_button_dark_pressed, $titlebar_bg_color);
+        } @else {
+            @include _titlebutton_states($window_button_light_hover, $window_button_light_hover_border,
+                                         $window_button_light_pressed, $titlebar_fg_color);
+        }
+    } @else {
+        @include _titlebutton_states($window_button_light_hover, $window_button_light_hover_border,
+                                     $window_button_light_pressed, $titlebar_fg_color);
 
-        &:backdrop {
-            color: $backdrop_titlebar_bg_color;
-            background-color: gtkalpha($backdrop_titlebar_fg_color, 0.6);
-            border-color: $backdrop_titlebar_fg_color;
+        @media (prefers-color-scheme: dark) {
+            @include _titlebutton_states($window_button_dark_hover, $window_button_dark_hover_border,
+                                         $window_button_dark_pressed, $titlebar_bg_color);
         }
     }
-    &.close:hover,
-    &.close:active,
-    &.close:active:hover {
-        background-color: gtkalpha($close_button_bg, 0.6);
-        border-color: $close_button_bg;
 
-        color: $titlebar_fg_color;
+    &.close:hover {
+        color: $window_close_icon;
+        background-color: $window_close_hover;
+        border-color: $window_close_border;
 
         &:backdrop {
-            color: $backdrop_titlebar_fg_color;
+            color: $window_close_icon;
+        }
+    }
+
+    &.close:active,
+    &.close:active:hover {
+        color: $window_close_icon;
+        background-color: $window_close_pressed;
+        border-color: $window_close_border;
+
+        &:backdrop {
+            color: $window_close_icon;
         }
     }
 

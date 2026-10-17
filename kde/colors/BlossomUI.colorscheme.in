@@ -1,20 +1,20 @@
 [Background]
-Color=@NEUTRAL_900_RGB@
+Color=@SURFACE_DARK_HIGH_RGB@
 
 [BackgroundFaint]
-Color=@NEUTRAL_900_RGB@
+Color=@SURFACE_DARK_HIGH_RGB@
 
 [BackgroundIntense]
-Color=@NEUTRAL_900_RGB@
+Color=@SURFACE_DARK_HIGH_RGB@
 
 [Color0]
-Color=@NEUTRAL_400_RGB@
+Color=@TEXT_DARK_TERTIARY_RGB@
 
 [Color0Faint]
-Color=@NEUTRAL_400_RGB@
+Color=@TEXT_DARK_TERTIARY_RGB@
 
 [Color0Intense]
-Color=@NEUTRAL_400_RGB@
+Color=@TEXT_DARK_TERTIARY_RGB@
 
 [Color1]
 Color=@RED_300_RGB@
@@ -71,22 +71,22 @@ Color=@PRIMARY_100_RGB@
 Color=@PRIMARY_100_RGB@
 
 [Color7]
-Color=@NEUTRAL_50_RGB@
+Color=@TEXT_DARK_PRIMARY_RGB@
 
 [Color7Faint]
-Color=@NEUTRAL_50_RGB@
+Color=@TEXT_DARK_PRIMARY_RGB@
 
 [Color7Intense]
-Color=@NEUTRAL_50_RGB@
+Color=@TEXT_DARK_PRIMARY_RGB@
 
 [Foreground]
-Color=@NEUTRAL_25_RGB@
+Color=@TEXT_DARK_HEADING_RGB@
 
 [ForegroundFaint]
-Color=@NEUTRAL_50_RGB@
+Color=@TEXT_DARK_PRIMARY_RGB@
 
 [ForegroundIntense]
-Color=@NEUTRAL_25_RGB@
+Color=@TEXT_DARK_HEADING_RGB@
 
 [General]
 Blur=true

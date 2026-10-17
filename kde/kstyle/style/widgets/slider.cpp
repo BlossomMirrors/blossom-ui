@@ -28,7 +28,9 @@ WidgetSpec sliderHandle(const QPalette &palette, const Fill &fill, const QColor 
 }
 
 Fill sliderGrooveFill(const Helper *helper, const QPalette &palette) {
-  return Fill(helper->alphaColor(palette.color(QPalette::WindowText), 0.16));
+    Q_UNUSED(helper)
+    // the empty groove uses the button surface like the switch track
+    return Fill(palette.color(QPalette::Button));
 }
 
 Fill sliderGrooveHighlight(const QPalette &palette) {
@@ -45,8 +47,8 @@ Fill sliderHandleOutline(const QPalette &palette) {
 }
 
 Fill dialGrooveFill(const QPalette &palette) {
-  return Fill(KColorUtils::mix(palette.color(QPalette::Window),
-                               palette.color(QPalette::WindowText), 0.16));
+    // the empty groove uses the button surface like the switch track
+    return Fill(palette.color(QPalette::Button));
 }
 
 Fill dialHighlight(const QPalette &palette) {

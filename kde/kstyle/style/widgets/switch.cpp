@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "switch.h"
 
+#include "blossomuihelper.h"
+
 #include <KColorUtils>
 
 namespace BlossomUI {
@@ -11,9 +13,10 @@ const WidgetSpec SwitchTrackSpec =
 
 const WidgetSpec SwitchThumbSpec = WidgetBuilder().geometry(Geometry().shape(Shape::Ellipse));
 
-Fill switchTrackFill(const QPalette &palette, bool mouseOver) {
-  QColor color = palette.color(QPalette::Button);
-  return Fill(mouseOver ? color.lighter(105) : color);
+Fill switchTrackFill(const Helper *helper, const QPalette &palette, bool mouseOver)
+{
+    // the off track hovers with the same surface as buttons
+    return Fill(mouseOver ? helper->hoverSurface(palette) : palette.color(QPalette::Button));
 }
 
 Fill switchFillTrailFill(const QPalette &palette, bool mouseOver) {

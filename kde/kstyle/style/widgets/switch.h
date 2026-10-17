@@ -6,6 +6,7 @@
 #include "widgetspec.h"
 
 namespace BlossomUI {
+class Helper;
 namespace Render {
 
 // widget-owned size constants (logical pixels)
@@ -16,7 +17,7 @@ static constexpr int Switch_ThumbMargin = 3;
 extern const WidgetSpec SwitchTrackSpec;
 extern const WidgetSpec SwitchThumbSpec;
 
-Fill switchTrackFill(const QPalette &palette, bool mouseOver);
+Fill switchTrackFill(const Helper *helper, const QPalette &palette, bool mouseOver);
 Fill switchFillTrailFill(const QPalette &palette, bool mouseOver);
 Border switchTrackBorder(const QPalette &palette, const Fill &track,
                          const Fill &trail, bool mouseOver, qreal progress);

@@ -32,9 +32,8 @@ WidgetSpec cardFrame(const QPalette &palette, const QColor &background);
 //go through WidgetRenderer (the Dolphin overlay)
 int cardRadius();
 
-//* Dolphin "card" background - lighter than the window in dark themes,
-//darker in light themes
-Fill cardBackgroundFill(const QColor &windowColor);
+//* Dolphin "card" background, the high surface from the color scheme view
+Fill cardBackgroundFill(const QPalette &palette);
 
 Border cardBorder(const QPalette &palette);
 

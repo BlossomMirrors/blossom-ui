@@ -16,7 +16,6 @@ if [ "$1" = "--data-only" ]; then
     sudo rm -rf /usr/share/icons/BlossomUI /usr/share/plasma/desktoptheme/BlossomUI
     sudo cmake --install "$SRC_DIR/build/data"
 else
-    sudo dnf install -y kdecoration-devel sassc gettext # FIXME: should be included in the DX OS image
     echo " *** Building *** "
     "$SRC_DIR/release.sh"
 

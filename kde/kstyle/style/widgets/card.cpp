@@ -44,10 +44,9 @@ int cardRadius() {
   return StyleConfigData::cornerRadius() + Card_InsetRadiusBias;
 }
 
-Fill cardBackgroundFill(const QColor &windowColor) {
-  const bool isDark = windowColor.lightness() < 128;
-  return Fill(isDark ? KColorUtils::mix(windowColor, QColor(255, 255, 255), 0.12)
-                     : KColorUtils::mix(windowColor, QColor(0, 0, 0), 0.04));
+Fill cardBackgroundFill(const QPalette &palette)
+{
+    return Fill(palette.color(QPalette::Base));
 }
 
 Border cardBorder(const QPalette &palette) {
