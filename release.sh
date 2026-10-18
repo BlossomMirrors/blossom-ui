@@ -284,7 +284,7 @@ EOF
 
 if [ -f /run/.toolboxenv ]; then
     echo "=== Installing build dependencies in the toolbox ==="
-    sudo dnf install -y rpm-build ninja-build
+    sudo dnf install -y rpm-build ninja-build ccache zsh
     sudo dnf builddep -y "$RPMBUILD/SPECS/$NAME.spec"
 fi
 
