@@ -177,16 +177,26 @@ splitbutton {
     }
   }
 
-  > menubutton > button > arrow.none {
-    -gtk-icon-source: -gtk-icontheme('pan-down-symbolic');
-  }
+}
+
+// menu and split button arrows use the same line chevron as combo boxes like the kstyle arrows
+menubutton arrow,
+splitbutton arrow {
+  min-width: 16px;
+  min-height: 16px;
+  -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+  color: gtkmix($button_fg_color, $button_bg_color, 0.85);
+
+  &.up { -gtk-icon-source: -gtk-icontheme("pan-up-symbolic"); }
+  &.left { -gtk-icon-source: -gtk-icontheme("pan-start-symbolic"); }
+  &.right { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); }
 }
 buttoncontent {
   > box {
     border-spacing: 4px;
 
     > label {
-      font-weight: bold;
+      font-weight: normal;
 
       &:dir(ltr) { padding-right: 2px; }
       &:dir(rtl) { padding-left: 2px; }

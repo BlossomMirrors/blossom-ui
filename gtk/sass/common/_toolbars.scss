@@ -21,9 +21,9 @@
         );
     }
 
-    padding: 4px;
+    padding: 9px;
     @if $gtkver!= "3" {
-        border-spacing: 2px;
+        border-spacing: 0;
     }
     color: $toolbar_fg_color;
     background-color: $toolbar_bg_color;
@@ -47,13 +47,18 @@ toolbar {
             .opaque
         ) {
         @extend %button_basic_flat;
+
+        min-width: 16px;
+        min-height: 16px;
+        margin: 1px;
+        padding: 5px - $button_press_shrink;
     }
 
     .linked
         button:not(.raised):not(.suggested-action):not(.destructive-action):not(
             .opaque
         ) {
-        border-radius: $button_radius;
+        border-radius: $flat_button_radius;
         margin-left: 1px;
         margin-right: 1px;
     }
@@ -85,15 +90,6 @@ toolbar {
         margin: 0 4px;
     }
 
-    &:not(.inline-toolbar):not(.osd) {
-        // workaround: add margins to the children of tool items to simulate
-        // spacing, ignore the overflow button (.toggle) and the overflow menu
-        // (.popup)
-        > *:not(.toggle):not(.popup) > * {
-            margin-right: 1px;
-            margin-bottom: 1px;
-        }
-    }
 }
 
 //searchbar, location-bar

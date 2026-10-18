@@ -41,17 +41,32 @@ spinbutton {
         > button.image-button.up:not(.flat),
         > button.image-button.down:not(.flat) {
             min-height: 16px;
+            min-width: 16px;
+            padding: 0 2px;
             margin: 0;
+            border: none;
             border-radius: 0;
             box-shadow: none;
             background-color: transparent;
+            background-image: none;
+            animation: none;
+            color: gtkmix($text_color, $base_color, 0.85);
 
             image {
                 color: inherit;
             }
 
-            &:hover {
-                color: $selected_bg_color;
+            &:hover,
+            &:active,
+            &:checked {
+                color: gtkmix($text_color, $base_color, 0.85);
+                background-color: transparent;
+                background-image: none;
+                box-shadow: none;
+            }
+
+            &:disabled {
+                color: gtkmix($insensitive_text_color, $insensitive_base_color, 0.85);
             }
         }
     }
@@ -98,8 +113,8 @@ spinbutton {
         }
 
         button {
-            min-height: 32px;
-            min-width: 32px;
+            min-height: 32px - 2 * $button_press_shrink;
+            min-width: 32px - 2 * $button_press_shrink;
             padding: 0;
 
             &.up {
@@ -111,11 +126,11 @@ spinbutton {
         }
 
         %top_button {
-            border-radius: $button_radius $button_radius 0 0;
+            border-radius: $raised_button_radius $raised_button_radius 0 0;
         }
 
         %bottom_button {
-            border-radius: 0 0 $button_radius $button_radius;
+            border-radius: 0 0 $raised_button_radius $raised_button_radius;
         }
     }
 

@@ -418,7 +418,6 @@ bool Style::eventFilterComboBoxContainer(QWidget *widget, QEvent *event) {
 
     const auto rect(widget->rect());
     const auto &palette(widget->palette());
-    // combo box popups use the high surface like menus and plasma popups
     const auto background(palette.color(QPalette::Base));
     const auto outline(_helper->frameOutlineColor(palette));
 

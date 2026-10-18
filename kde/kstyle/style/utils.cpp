@@ -210,7 +210,6 @@ QColor Style::scrollBarArrowColor(const QStyleOptionSlider *option,
     _animations->scrollBarEngine().setSubControlRect(widget, control, rect);
   }
 
-  // scroll bar arrows keep their color on hover instead of turning into the accent
 
   // finally, global opacity when ScrollBarShowOnMouseOver
   const qreal globalOpacity(_animations->scrollBarEngine().opacity(

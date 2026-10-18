@@ -490,7 +490,6 @@ QColor Helper::arrowColor(const QPalette &palette, bool mouseOver,
                           AnimationMode mode) const {
     Q_UNUSED(mouseOver)
     QColor outline(arrowColor(palette, QPalette::WindowText));
-    // arrows keep the text color on hover and only take the accent for focus
     if (mode == AnimationHover) {
         if (hasFocus)
             outline = focusColor(palette);

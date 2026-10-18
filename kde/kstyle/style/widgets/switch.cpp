@@ -15,7 +15,6 @@ const WidgetSpec SwitchThumbSpec = WidgetBuilder().geometry(Geometry().shape(Sha
 
 Fill switchTrackFill(const Helper *helper, const QPalette &palette, bool mouseOver)
 {
-    // the off track hovers with the same surface as buttons
     return Fill(mouseOver ? helper->hoverSurface(palette) : palette.color(QPalette::Button));
 }
 

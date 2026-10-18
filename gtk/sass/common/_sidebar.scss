@@ -3,8 +3,8 @@
  ***********/
 .sidebar {
     background-color: $bg_color;
-    margin: 5px;
-    border-radius: $radius;
+    margin: 0;
+    border-radius: 0;
 
     &:backdrop {
         background-color: $backdrop_bg_color;
@@ -17,12 +17,16 @@
 
         row {
             padding: 0px 2px;
-            border-radius: $radius;
-            margin: 0 $radius / 2;
+            border-radius: $item_radius;
+            margin: 1px 4px;
 
             &:selected {
                 color: $selected_bg_color;
-                font-weight: bold;
+                font-weight: 600;
+
+                &:backdrop {
+                    color: $backdrop_selected_bg_color;
+                }
             }
 
             > label {
@@ -45,15 +49,28 @@ stacksidebar {
 
     row {
         padding: 6px 2px;
-        border-radius: $radius;
-        margin: $radius / 2;
+        border-radius: $item_radius;
+        margin: 1px 4px;
 
         @if $gtkver!= "3" {
             @include focus-ring();
         }
 
         &.activatable:hover {
-            background-color: $sidebar_hover_bg;
+            background-color: $button_bg_color;
+        }
+
+        &:selected {
+            color: $selected_bg_color;
+            font-weight: 600;
+
+            &:hover {
+                background-color: gtkalpha($selected_bg_color, 0.28);
+            }
+
+            &:backdrop {
+                color: $backdrop_selected_bg_color;
+            }
         }
 
         > label {

@@ -320,11 +320,9 @@ void Button::drawIconWithMask(QPainter *painter) const
     QColor fillColor;
     QColor borderColor;
     if (isClose) {
-        // hover is the dark red with a lighter red border and pressed fills with that lighter red
         fillColor = QColor(isPressed() ? BLOSSOMUI_RED_700 : BLOSSOMUI_RED_800);
         borderColor = QColor(BLOSSOMUI_RED_700);
     } else {
-        // pressed buttons get a stronger fill without the border like in the design
         if (isPressed()) {
             fillColor = QColor(lightTitleBar ? BLOSSOMUI_WINDOW_BUTTON_LIGHT_PRESSED : BLOSSOMUI_WINDOW_BUTTON_DARK_PRESSED);
         } else {

@@ -20,7 +20,7 @@ treeview.view {
     border-left-color: gtkmix(
         $text_color,
         $base_color,
-        0.2
+        0.25
     ); // this is actually the tree lines color,
     border-top-color: $base_color; // while this is the grid lines color, better then nothing
     border-radius: 0;
@@ -33,8 +33,22 @@ treeview.view {
         &:focus,
         & {
             border-radius: 0;
+            background-color: gtkalpha($selected_bg_color, 0.18);
+            color: $text_color;
+        }
 
-            @extend %selected_items;
+        &:hover {
+            background-color: gtkalpha($selected_bg_color, 0.28);
+        }
+
+        &:disabled {
+            color: $insensitive_selected_fg_color;
+            background-color: gtkalpha($insensitive_selected_bg_color, 0.18);
+        }
+
+        &:backdrop {
+            color: $backdrop_text_color;
+            background-color: gtkalpha($backdrop_selected_bg_color, 0.18);
         }
     }
 
@@ -59,7 +73,7 @@ treeview.view {
         border-left-color: gtkmix(
             $backdrop_text_color,
             $backdrop_base_color,
-            0.2
+            0.25
         );
         border-top: $backdrop_base_color;
     }
@@ -97,29 +111,13 @@ treeview.view {
         -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
 
         &:dir(rtl) {
-            -gtk-icon-source: -gtk-icontheme("pan-end-symbolic-rtl");
+            -gtk-icon-source: -gtk-icontheme("pan-start-symbolic");
         }
 
-        color: gtkmix($text_color, $base_color, 0.7);
-
-        &:hover {
-            color: $text_color;
-        }
-
+        &,
+        &:hover,
         &:selected {
-            color: gtkmix($selected_fg_color, $selected_bg_color, 0.7);
-
-            &:hover {
-                color: $selected_fg_color;
-            }
-
-            &:backdrop {
-                color: gtkmix(
-                    $backdrop_selected_fg_color,
-                    $backdrop_selected_bg_color,
-                    0.7
-                );
-            }
+            color: gtkmix($text_color, $base_color, 0.85);
         }
 
         &:checked {
@@ -127,7 +125,7 @@ treeview.view {
         }
 
         &:backdrop {
-            color: gtkmix($backdrop_text_color, $backdrop_base_color, 0.7);
+            color: gtkmix($backdrop_text_color, $backdrop_base_color, 0.85);
         }
     }
 
@@ -176,7 +174,7 @@ treeview.view {
             &:hover {
                 @extend %column_header_button;
 
-                background-color: $column_header_hover_bg;
+                background-color: $button_hover_bg_color;
                 box-shadow: none;
                 transition: none; //I shouldn't need this
             }
@@ -184,7 +182,8 @@ treeview.view {
             &:active {
                 @extend %column_header_button;
 
-                color: $fg_color;
+                color: $button_fg_color;
+                background-color: $button_hover_bg_color;
                 transition: none; //I shouldn't need this
                 animation: none;
             }
@@ -230,15 +229,25 @@ treeview.view {
 }
 
 %column_header_button {
-    padding: 0 6px;
-    min-height: 26px;
+    padding: 6px;
+    min-height: 0;
     min-width: 18px;
+    color: $button_fg_color;
+    background-color: $button_bg_color;
     background-image: none;
     border-style: none solid solid none;
     border-width: 1px;
     border-bottom-color: gtkalpha($fg_color, 0.1);
     border-right-color: gtkalpha($fg_color, 0.2);
     border-radius: 0;
+
+    &:first-child {
+        border-top-left-radius: 6px;
+    }
+
+    &:last-child {
+        border-top-right-radius: 6px;
+    }
 
     &:disabled {
         border-bottom-color: gtkalpha($insensitive_fg_color, 0.1);

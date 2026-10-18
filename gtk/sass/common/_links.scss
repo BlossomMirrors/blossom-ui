@@ -16,11 +16,10 @@ link {
     }
 
     &:hover {
-        $_fg: gtkshade($link_color, 1.1);
-        color: $_fg;
+        color: $link_color;
 
         *:selected & {
-            color: gtkmix($selected_fg_color, $_fg, 0.9);
+            color: gtkmix($selected_fg_color, $link_color, 0.8);
         }
     }
 
@@ -65,6 +64,7 @@ button:visited {
 
     text-shadow: none;
 
+    &,
     &:focus,
     &:hover,
     &:focus:hover,

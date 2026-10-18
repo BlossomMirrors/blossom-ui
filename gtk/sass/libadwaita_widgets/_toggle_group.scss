@@ -10,7 +10,7 @@ toggle-group {
   $group_padding: 3px;
   ---group-padding: #{$group_padding};
 
-  background: gtkalpha($fg_color, 0.05);
+  background: $tabbar_bg_color;
   border-radius: $button_radius;
   padding: var(---group-padding);
 
@@ -20,8 +20,12 @@ toggle-group {
 
   > toggle {
     border-radius: if(($button_radius > $group_padding), calc(#{$button_radius} - var(---group-padding)), 0);
-    font-weight: bold;
+    font-weight: normal;
     min-width: 30px;
+
+    &, &:active, &:checked:active {
+      animation: none;
+    }
     min-height: calc(30px - var(---group-padding) * 2);
 
     &.image-button > image:disabled {
@@ -55,21 +59,15 @@ toggle-group {
 
     @include focus-ring($transition: $toggle_transition, $outer: true, $offset: 0);
 
-    &:hover {
-      background-color: $hover_color;
-    }
-
-    &:active, &.keyboard-activating {
-      background-color: $active_color;
+    &:hover, &:active, &.keyboard-activating {
+      @include nav-item-hover;
     }
 
     &:checked {
-      background-color: var(--active-toggle-bg-color);
-      color: var(--active-toggle-fg-color);
-      box-shadow: none;
+      @include nav-item-selected;
 
       &:disabled {
-        background-color: color-mix(in srgb, var(--active-toggle-bg-color) var(--disabled-opacity), transparent);
+        background-color: color-mix(in srgb, $selected_bg_color 9%, transparent);
         box-shadow: none;
       }
     }
@@ -162,22 +160,12 @@ toggle-group {
     > toggle {
       @include focus-ring($transition: $button_transition);
 
+      &:hover:not(:checked) {
+        @include nav-item-hover;
+      }
+
       &:checked {
-        background-color: $selected_color;
-        color: inherit;
-        box-shadow: none;
-
-        &:hover {
-          background-color: $selected_hover_color;
-        }
-
-        &:active, &.keyboard-activating {
-          background-color: $selected_active_color;
-        }
-
-        &:disabled {
-          background-color: color-mix(in srgb, $selected_color var(--disabled-opacity), transparent);
-        }
+        @include nav-item-selected;
       }
     }
 

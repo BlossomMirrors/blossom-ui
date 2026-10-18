@@ -29,7 +29,6 @@ WidgetSpec sliderHandle(const QPalette &palette, const Fill &fill, const QColor 
 
 Fill sliderGrooveFill(const Helper *helper, const QPalette &palette) {
     Q_UNUSED(helper)
-    // the empty groove uses the button surface like the switch track
     return Fill(palette.color(QPalette::Button));
 }
 
@@ -47,7 +46,6 @@ Fill sliderHandleOutline(const QPalette &palette) {
 }
 
 Fill dialGrooveFill(const QPalette &palette) {
-    // the empty groove uses the button surface like the switch track
     return Fill(palette.color(QPalette::Button));
 }
 

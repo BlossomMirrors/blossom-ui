@@ -28,17 +28,21 @@
         > row {
             min-height: 26px;
             padding: 0 4px;
-            border-radius: $radius;
-            margin: 0 ($radius / 2) 2px;
+            border-radius: $item_radius;
+            margin: 1px 4px;
             @include focus-ring($focus-state: ":focus-visible:focus-within");
 
             &:hover {
-                background-color: $sidebar_hover_bg;
+                background-color: $button_bg_color;
             }
             &:selected {
                 background-color: gtkalpha($selected_bg_color, 0.18);
                 color: $selected_bg_color;
-                font-weight: bold;
+                font-weight: 600;
+
+                &:hover {
+                    background-color: gtkalpha($selected_bg_color, 0.28);
+                }
 
                 &:disabled {
                     color: $insensitive_selected_fg_color;

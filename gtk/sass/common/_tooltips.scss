@@ -8,22 +8,18 @@ tooltip {
         color: $tooltip_fg_color;
         background-color: $tooltip_bg_color;
         background-clip: padding-box;
-        @if $gtkver!= "3" {
-            border: 1px solid $tooltip_borders_color;
-        }
     }
 
     @if $gtkver!= "3" {
-        padding: 6px 10px;
+        padding: 4px 4px 4px 5px;
 
         > box {
             border-spacing: 4px;
         }
     }
-    border-radius: $radius;
+    border-radius: $_popup_radius;
     box-shadow: none; // otherwise it gets inherited by windowframe.csd
 
-    // FIXME: we need a border or tooltips vanish on black background.
     decoration {
         background-color: transparent;
     }

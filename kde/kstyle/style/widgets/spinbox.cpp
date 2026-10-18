@@ -13,7 +13,6 @@ Fill spinBoxArrowColor(const Helper *helper, const QPalette &palette, bool anima
     Q_UNUSED(animated)
     Q_UNUSED(opacity)
     Q_UNUSED(subControlHover)
-    // spin box arrows keep the text color on hover instead of turning into the accent
     QColor color = helper->arrowColor(palette, QPalette::Text);
     if (atLimit) {
         color = helper->arrowColor(palette, QPalette::Disabled, QPalette::Text);

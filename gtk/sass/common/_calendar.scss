@@ -7,7 +7,7 @@
         color: $text_color;
 
         &:selected {
-            @extend %selected_items;
+            @include nav-item-selected;
         }
 
         &.button {
@@ -85,10 +85,10 @@
 
             > label.day-number {
                 padding: 4px;
-                border-radius: $radius;
+                border-radius: $item_radius;
 
                 &:selected {
-                    @extend %selected_items;
+                    @include nav-item-selected;
                 }
 
                 &:checked {

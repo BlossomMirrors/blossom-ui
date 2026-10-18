@@ -10,6 +10,16 @@ dropdown > button > box {
         border-spacing: 4px;
     }
 
+    > arrow {
+        &:dir(ltr) {
+            margin-left: 5px;
+        }
+
+        &:dir(rtl) {
+            margin-right: 5px;
+        }
+    }
+
     > stack > row.activatable:hover {
         background: none;
         box-shadow: none;
@@ -22,12 +32,36 @@ combobox {
         -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
         min-height: 16px;
         min-width: 16px;
+        color: gtkmix($button_fg_color, $button_bg_color, 0.85);
+
+        &:disabled {
+            color: gtkmix($insensitive_button_fg_color, $insensitive_button_bg_color, 0.85);
+        }
     }
 
-    button {
+    > button,
+    > box > button.combo {
         min-width: 0;
-        padding-left: $BlossomuircButtonHeight + 4px;
-        padding-right: $BlossomuircButtonHeight + 4px;
+        min-height: 20px;
+        padding-top: 5px - $button_press_shrink;
+        padding-bottom: 5px - $button_press_shrink;
+        padding-left: 6px - $button_press_shrink;
+        padding-right: 5px - $button_press_shrink;
+
+        &:dir(rtl) {
+            padding-left: 5px - $button_press_shrink;
+            padding-right: 6px - $button_press_shrink;
+        }
+    }
+
+    > box > button.combo arrow {
+        &:dir(ltr) {
+            margin-left: 9px;
+        }
+
+        &:dir(rtl) {
+            margin-right: 9px;
+        }
     }
 
     // align menu labels with the button label
@@ -111,4 +145,54 @@ combobox {
 }
 .linked.vertical > combobox:only-child > box > button.combo {
     @extend %linked_vertical_only_child;
+}
+
+// an editable combo box joins the field and its arrow button like a split button
+// the focus ring sits inside the field because the button next to it would cover an outer ring
+$_combo_field_border: gtkmix($fg_color, $base_color, 0.15);
+
+combobox > box.linked {
+    > entry.combo {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    > entry.combo + button.combo {
+        &,
+        &:hover,
+        &:active,
+        &:checked,
+        &:disabled {
+            background-image: none;
+            border: 1px solid $_combo_field_border;
+            border-left-width: 0;
+            border-radius: 0 $raised_button_radius $raised_button_radius 0;
+            box-shadow: none;
+        }
+
+        background-color: $button_bg_color;
+
+        &:hover,
+        &:active,
+        &:checked {
+            background-color: $button_hover_bg_color;
+        }
+
+        &:disabled {
+            background-color: $insensitive_button_bg_color;
+            border-color: gtkmix($insensitive_fg_color, $insensitive_base_color, 0.08);
+        }
+    }
+
+    @if $gtkver == "3" {
+        > entry.combo:focus {
+            border-color: gtkmix($selected_bg_color, $base_color, 0.65);
+            box-shadow: inset 0 0 0 1.5px gtkalpha($selected_bg_color, 0.5);
+        }
+    } @else {
+        > entry.combo:focus-within {
+            border-color: gtkmix($selected_bg_color, $base_color, 0.65);
+            box-shadow: inset 0 0 0 1.5px gtkalpha($selected_bg_color, 0.5);
+        }
+    }
 }

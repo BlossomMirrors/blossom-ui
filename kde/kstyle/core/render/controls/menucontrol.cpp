@@ -54,7 +54,6 @@ bool Render::MenuControl::drawPanelMenuPrimitive(const QStyleOption *option,
   bool hasAlpha(_style->_helper->hasAlphaChannel(widget));
   if (isSlintPopup)
     hasAlpha = true;
-  // menus use the high surface like the plasma popups so they match the rest of the desktop
   auto background(palette.color(QPalette::Base));
 
   painter->save();
@@ -294,7 +293,6 @@ bool Render::MenuControl::drawMenuBarItemControl(const QStyleOption *option,
 
   painter->save();
 
-  // menu bar entries hover and open like ghost buttons with the button hover surface instead of an accent
   if (selected || sunken) {
       const QColor backgroundColor = _style->_helper->hoverSurface(palette);
 

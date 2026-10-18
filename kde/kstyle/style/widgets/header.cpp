@@ -11,7 +11,6 @@ namespace Render {
 Fill headerSectionFill(const Helper *helper, const QPalette &palette, bool sunken,
                        bool mouseOver, bool animated, qreal opacity) {
   const QColor normal = palette.color(QPalette::Button);
-  // header sections hover and press with the button hover surface instead of an accent tint
   const QColor hover = helper->hoverSurface(palette);
 
   if (sunken)

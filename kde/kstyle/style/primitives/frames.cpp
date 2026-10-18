@@ -412,7 +412,6 @@ QColor Helper::frameOutlineColor(const QPalette &palette, bool mouseOver,
     Q_UNUSED(mouseOver)
     QColor outline = windowAlternateBackground(palette);
 
-    // only focus colors the outline like the web registry focus ring and hover leaves it alone
     if (mode == AnimationFocus)
         outline = KColorUtils::mix(outline, focusColor(palette), opacity);
     else if (hasFocus)
@@ -430,7 +429,6 @@ QColor Helper::sidePanelOutlineColor(const QPalette &palette) const {
 
 QColor Helper::frameBackgroundColor(const QPalette &palette,
                                     QPalette::ColorGroup group) const {
-    // panels like group boxes tab frames and docks are cards so they use the high surface from the color scheme view
     return palette.color(group, QPalette::Base);
 }
 

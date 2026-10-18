@@ -364,16 +364,16 @@ void Helper::renderSliderHandle(QPainter *painter, const QRect &rect,
                                 qreal hoverOpacity, bool sunken) const {
   painter->setRenderHint(QPainter::Antialiasing, true);
 
-  // hover circle behind handle: grows from handle size outward
+  // the hover circle grows from the visible handle until it reaches 4px around it which is half of the old halo
   if (hoverOpacity > 0.0 && hoverColor.isValid()) {
-    constexpr qreal maxExpand = Render::Slider_HoverMargin;
-    const qreal expand = maxExpand * hoverOpacity;
-    QRectF hoverRect = QRectF(rect).adjusted(-expand, -expand, expand, expand);
-    QColor color(hoverColor);
-    color.setAlpha(qRound(50 * hoverOpacity));
-    painter->setBrush(color);
-    painter->setPen(Qt::NoPen);
-    painter->drawEllipse(hoverRect);
+      constexpr qreal haloWidth = 4;
+      const qreal expand = -Render::Slider_HandleInset + haloWidth * hoverOpacity;
+      QRectF hoverRect = QRectF(rect).adjusted(-expand, -expand, expand, expand);
+      QColor color(hoverColor);
+      color.setAlpha(qRound(89 * hoverOpacity));
+      painter->setBrush(color);
+      painter->setPen(Qt::NoPen);
+      painter->drawEllipse(hoverRect);
   }
 
   Render::WidgetInteractionState state;

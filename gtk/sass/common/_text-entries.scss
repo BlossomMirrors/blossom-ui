@@ -2,20 +2,31 @@
  * Text Entries *
  ****************/
 
+$_entry_border: gtkmix($fg_color, $base_color, 0.15);
+$_entry_hover_border: gtkmix($fg_color, $base_color, 0.3);
+$_entry_disabled_border: gtkmix($insensitive_fg_color, $insensitive_base_color, 0.08);
+
+@mixin _entry_focus_frame($c) {
+    border-color: gtkmix($c, $base_color, 0.65);
+    box-shadow: 0 0 0 1.5px gtkalpha($c, 0.5);
+}
+
 %entry,
 entry {
     %entry_basic,
     & {
-        min-height: $_entry_height;
-        padding-left: 6px;
-        padding-right: 6px;
-        border-radius: $button_radius;
+        min-height: 29px;
+        padding-left: 10.5px;
+        padding-right: 10.5px;
+        border: 1px solid $_entry_border;
+        border-radius: 7.5px;
         @if $gtkver!= "3" {
             border-spacing: 4px;
         }
         transition: all 200ms $ease-out-quad;
 
         @include entry(normal);
+        box-shadow: none;
 
         image {
             // icons inside the entry
@@ -36,7 +47,9 @@ entry {
         }
 
         &.flat {
+            &:hover,
             &:focus,
+            &:focus-within,
             &:backdrop,
             &:disabled,
             &:backdrop:disabled,
@@ -44,17 +57,23 @@ entry {
                 min-height: 0;
                 padding: 2px;
                 background-color: transparent;
+                border-color: transparent;
                 border-radius: 0;
+                box-shadow: none;
             }
+        }
+
+        &:hover {
+            border-color: $_entry_hover_border;
         }
 
         @if $gtkver== "3" {
             &:focus {
-                @include entry(focus);
+                @include _entry_focus_frame($selected_bg_color);
             }
         } @else {
             &:focus-within {
-                @include entry(focus);
+                @include _entry_focus_frame($selected_bg_color);
                 > placeholder {
                     opacity: 0; /* We hide placeholders on focus */
                 }
@@ -63,16 +82,20 @@ entry {
 
         &:disabled {
             @include entry(insensitive);
+            border-color: $_entry_disabled_border;
         }
 
         &:backdrop {
             @include entry(backdrop);
+            border-color: $_entry_border;
+            box-shadow: none;
 
             transition: $backdrop_transition;
         }
 
         &:backdrop:disabled {
             @include entry(backdrop-insensitive);
+            border-color: $_entry_disabled_border;
         }
 
         @if $gtkver== "3" {
@@ -84,8 +107,8 @@ entry {
                 background-color: gtkalpha($text_color, 0.2);
                 color: transparent;
                 &:focus-within {
-                    background-color: $selected_text_bg_color;
-                    color: $fg_color;
+                    background-color: $selected_bg_color;
+                    color: $selected_fg_color;
                 }
             }
         }
@@ -122,11 +145,11 @@ entry {
 
                 @if $gtkver== "3" {
                     &:focus {
-                        @include entry(focus, $e_color);
+                        @include _entry_focus_frame($e_color);
                     }
                 } @else {
                     &:focus-within {
-                        @include entry(focus, $e_color);
+                        @include _entry_focus_frame($e_color);
                     }
                 }
 
@@ -185,7 +208,7 @@ entry {
     }
 
     progress {
-        margin: 2px -6px;
+        margin: 2px -10.5px;
         background-color: transparent;
         background-image: none;
         border-radius: 0;

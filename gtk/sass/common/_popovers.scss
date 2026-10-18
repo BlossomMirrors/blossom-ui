@@ -1,6 +1,13 @@
 /***************
  * Popovers   *
  ***************/
+
+$_popup_radius: 7px;
+
+@include adaptive_color("popup_outline_color", rgba(255, 255, 255, 20 / 255), rgba(0, 0, 0, 40 / 255));
+@include adaptive_color("separator_color", rgba(255, 255, 255, 10 / 255), rgba(0, 0, 0, 16 / 255));
+$_popup_outline: gtkcolor("@popup_outline_color");
+$_separator_color: gtkcolor("@separator_color");
 @if $gtkver== "3" {
     popover.background {
         padding: 0;
@@ -11,8 +18,8 @@
         > * {
             background-color: gtkalpha($menu_bg_color, $menu_opacity);
             background-clip: padding-box;
-            border: 1px solid $menu_border;
-            border-radius: $popover_radius;
+            border: 1px solid $_popup_outline;
+            border-radius: $_popup_radius;
             box-shadow: 0 1px 2px transparentize(black, 0.7);
         }
 
@@ -61,7 +68,7 @@
         > contents {
             background-color: gtkalpha($menu_bg_color, $menu_opacity);
             background-clip: padding-box;
-            border: 1px solid $menu_border;
+            border: 1px solid $_popup_outline;
             box-shadow: 0 1px 2px transparentize($BlossomuircShadowColor, 0.7);
         }
 
@@ -71,7 +78,7 @@
 
         > contents {
             padding: 8px;
-            border-radius: $popover_radius;
+            border-radius: $_popup_radius;
 
             > list,
             > .view,
@@ -81,7 +88,7 @@
             }
 
             separator {
-                background-color: gtkalpha($menu_fg_color, 0.05);
+                background-color: $_separator_color;
                 margin: 3px;
             }
 

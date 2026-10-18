@@ -21,7 +21,6 @@ windowcontrols > button > image {
 }
 
 // after the per-class resets and same specificity, so it wins the tie
-// kwin leaves 9px between the button boxes
 windowcontrols > button:not(:first-child),
 windowcontrols > button.image-button:not(:first-child) {
     margin-left: 9px;
@@ -74,7 +73,7 @@ headerbar {
     .title {
         padding-left: 12px;
         padding-right: 12px;
-        font-weight: bold;
+        font-weight: normal;
     }
 
     .subtitle {

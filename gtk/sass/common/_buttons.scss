@@ -115,17 +115,27 @@ $_ripple_color_destructive: gtkalpha($destructive_color, 0.35);
     }
 }
 
+@mixin raised-button($t, $c: $button_bg_color, $tc: $button_fg_color, $mix: 0.28) {
+    @include button($t, $c, $tc, $mix: $mix);
+    box-shadow: $button_shadow;
+}
+
 %button,
 button {
+    // libadwaita makes button labels bold and qt keeps them at the regular weight
+    font-weight: normal;
     @at-root %button_basic,
         & {
-        min-height: 23px + $BlossomuircButtonHeight;
+        min-height: 19px + $BlossomuircButtonHeight;
         min-width: 16px + $BlossomuircButtonWidth;
-        padding: $_btn_pad;
-        border-radius: $button_radius;
+        // the transparent border is the room the pressed fill shrinks into so the size never changes
+        padding: 6px - $button_press_shrink;
+        border: $button_press_shrink solid transparent;
+        border-radius: $raised_button_radius;
+        background-clip: border-box;
         transition: $button_transition;
 
-        @include button(normal);
+        @include raised-button(normal);
 
         @if $gtkver== "3" {
             &:not(.flat),
@@ -137,6 +147,7 @@ button {
         @at-root %button_basic_flat,
             &.flat {
             @include button(undecorated);
+            border-radius: $flat_button_radius;
             // to avoid adiacent buttons borders clashing when transitioning, the transition on the normal state is set
             // to none, while it's added back in the hover state, so the button decoration will fade in on hover, but
             // it won't fade out when the pointer leave the button allocation area. To make the transition more evident
@@ -156,10 +167,12 @@ button {
                 transition-duration: 500ms;
 
                 @include button(flat-hover);
+                @if $gtkver== "3" {
+                    -gtk-icon-effect: highlight;
+                }
 
                 &:active {
                     transition: $button_transition;
-                    animation: none;
 
                     @include button(flat-active);
                 }
@@ -167,7 +180,7 @@ button {
             &:focus:not(:hover):not(:checked) {
                 background-color: transparent;
                 box-shadow: none;
-            } // FIXME needs some kind of focus indication
+            }
             &:checked {
                 @include button(flat-active);
             }
@@ -175,28 +188,22 @@ button {
                 @include button(backdrop-flat-active);
             }
             &:checked:hover {
-                @include button(flat-hover);
+                @include button(flat-active);
             }
             &:checked:disabled,
             &:checked:disabled:backdrop {
                 @include button(flat-insensitive-active);
             }
-        }
 
-        &:focus,
-        &.popup.toggle:checked {
-            @include button(focused);
-        }
-
-        &:hover {
-            @include button(hover);
-            @if $gtkver== "3" {
-                -gtk-icon-effect: highlight;
+            &.image-button {
+                min-width: 16px;
+                min-height: 16px;
+                padding: 5px - $button_press_shrink;
             }
         }
 
-        &:focus:hover {
-            @include button(focused-hover);
+        &:hover {
+            @include raised-button(hover);
         }
 
         &:checked {
@@ -216,13 +223,20 @@ button {
             }
         }
 
-        &:not(.flat):active {
+        // the drop shadow is dropped because it would stay at the unshrunk edge
+        &.keyboard-activating,
+        &:active,
+        &:checked {
+            background-clip: padding-box;
+        }
+
+        &:active {
             animation: ripple_effect 700ms cubic-bezier(0, 0, 0.2, 1) forwards;
         }
 
         &:backdrop {
             & {
-                @include button(backdrop);
+                @include raised-button(backdrop);
 
                 transition: $backdrop_transition;
                 @if $gtkver== "3" {
@@ -235,7 +249,7 @@ button {
                 }
 
                 &:disabled {
-                    @include button(backdrop-insensitive);
+                    @include raised-button(backdrop-insensitive);
 
                     &:active,
                     &:checked {
@@ -245,7 +259,7 @@ button {
             }
         }
         &:disabled {
-            @include button(insensitive);
+            @include raised-button(insensitive);
 
             &:active,
             &:checked {
@@ -254,30 +268,36 @@ button {
         }
 
         &.image-button {
-            min-width: 23px + $BlossomuircButtonHeight;
-            padding-left: $_img_btn_pad;
-            padding-right: $_img_btn_pad;
+            min-width: 16px;
+            min-height: 16px;
+            padding: 6px - $button_press_shrink;
         }
 
         &.text-button {
-            padding-left: 16px;
-            padding-right: 16px;
+            min-width: 80px + $BlossomuircButtonWidth - 2 * 6px;
         }
 
         &.text-button.image-button {
-            padding-left: 6px;
-            padding-right: 8px;
+            min-height: 19px + $BlossomuircButtonHeight;
 
             label {
-                padding-left: 6px;
-                padding-right: 6px;
+                padding-left: 0;
+                padding-right: 0;
+
+                &:dir(ltr) {
+                    padding-left: 4px;
+                }
+
+                &:dir(rtl) {
+                    padding-right: 4px;
+                }
             }
         }
 
         @if $gtkver!= "3" {
             &.arrow-button {
-                padding-left: 8px;
-                padding-right: 8px;
+                padding-left: 6px - $button_press_shrink;
+                padding-right: 6px - $button_press_shrink;
 
                 > box {
                     border-spacing: 4px;
@@ -417,7 +437,7 @@ button {
             // 60% fill against the full-opacity ring mirrors the titlebar
             // close button (60% fill, full border) so both danger reds sit
             // at a similar brightness
-            @include button(tinted, $b_color, $mix: 0.6);
+            @include raised-button(tinted, $b_color, $mix: 0.6);
 
             &.flat {
                 @include button(undecorated);
@@ -426,7 +446,7 @@ button {
             }
 
             &:hover {
-                @include button(tinted-hover, $b_color, $mix: 0.6);
+                @include raised-button(tinted-hover, $b_color, $mix: 0.6);
             }
 
             // kstyle parity: pressing never floods the button with the
@@ -457,7 +477,7 @@ button {
             }
 
             &:disabled {
-                @include button(insensitive, gtkmix($b_color, $button_bg_color, 0.28));
+                @include raised-button(insensitive, gtkmix($b_color, $button_bg_color, 0.28));
 
                 &:active,
                 &:checked {
@@ -494,6 +514,36 @@ button {
         }
     }
 
+    // suggested buttons follow the web registry primary button with a faint accent fill and accent text
+    &.suggested-action:not(.flat) {
+        background-color: gtkalpha($selected_bg_color, 0.25);
+        background-image: none;
+        color: gtkmix($selected_bg_color, $fg_color, 0.7);
+
+        &:hover,
+        &:active,
+        &:checked {
+            background-color: gtkalpha($selected_bg_color, 0.35);
+            background-image: none;
+            color: gtkmix($selected_bg_color, $fg_color, 0.7);
+        }
+    }
+
+    headerbar .stack-switcher > &#{$flat_not_chain},
+    headerbar stackswitcher > &#{$flat_not_chain},
+    .titlebar .stack-switcher > &#{$flat_not_chain},
+    .titlebar stackswitcher > &#{$flat_not_chain} {
+        &:hover:not(:checked) {
+            @include nav-item-hover;
+        }
+
+        &:checked,
+        &:checked:hover,
+        &:checked:active {
+            @include nav-item-selected;
+        }
+    }
+
     .stack-switcher > &,
     stackswitcher > & {
         // to position the needs attention dot, padding is added to the button
@@ -501,6 +551,16 @@ button {
         // padding added too.
 
         outline-offset: -3px; // needs to be set or it gets overriden by GtkRadioButton outline-offset
+
+        &:hover:not(:checked) {
+            @include nav-item-hover;
+        }
+
+        &:checked,
+        &:checked:hover,
+        &:checked:active {
+            @include nav-item-selected;
+        }
 
         > label {
             padding: 0 6px;
@@ -562,10 +622,14 @@ button {
     @at-root %circular_button,
         menubutton.circular &,
         &.circular {
-        min-width: 23px + $BlossomuircButtonHeight;
-        padding-left: $_img_btn_pad;
-        padding-right: $_img_btn_pad;
+        min-width: 19px + $BlossomuircButtonHeight;
+        padding-left: 6px - $button_press_shrink;
+        padding-right: 6px - $button_press_shrink;
         border-radius: $circular_radius;
+
+        &.image-button {
+            min-width: 16px;
+        }
 
         label {
             padding: 0;
@@ -619,17 +683,17 @@ button {
 }
 
 %linked_left {
-    border-top-left-radius: $button_radius;
-    border-bottom-left-radius: $button_radius;
+    border-top-left-radius: $raised_button_radius;
+    border-bottom-left-radius: $raised_button_radius;
 }
 
 %linked_right {
-    border-top-right-radius: $button_radius;
-    border-bottom-right-radius: $button_radius;
+    border-top-right-radius: $raised_button_radius;
+    border-bottom-right-radius: $raised_button_radius;
 }
 
 %linked_only_child {
-    border-radius: $button_radius;
+    border-radius: $raised_button_radius;
 }
 
 // .linked assumes Box, which reverses nodes in RTL, so 1st child is always left
@@ -680,17 +744,17 @@ button {
 }
 
 %linked_vertical_top {
-    border-top-left-radius: $button_radius;
-    border-top-right-radius: $button_radius;
+    border-top-left-radius: $raised_button_radius;
+    border-top-right-radius: $raised_button_radius;
 }
 
 %linked_vertical_bottom {
-    border-bottom-left-radius: $button_radius;
-    border-bottom-right-radius: $button_radius;
+    border-bottom-left-radius: $raised_button_radius;
+    border-bottom-right-radius: $raised_button_radius;
 }
 
 %linked_vertical_only_child {
-    border-radius: $button_radius;
+    border-radius: $raised_button_radius;
 }
 
 %linked_vertical {
@@ -791,18 +855,18 @@ modelbutton.flat arrow {
     .toolbar :not(.linked) > fontbutton > button,
     .toolbar :not(.linked) > appchooserbutton > button,
     .toolbar :not(.linked) > combobox > box > button {
-        margin: 3px;
+        margin: 2px;
     }
 }
 
 button.color {
-    padding: 4px;
+    padding: 4px - $button_press_shrink;
     min-height: 23px + $BlossomuircButtonHeight - 4px;
 
     colorswatch:only-child {
         &,
         overlay {
-            border-radius: max($button-radius - 4px, 0);
+            border-radius: max($raised_button_radius - 4px, 0);
         }
     }
 }
@@ -817,5 +881,33 @@ list row button.image-button:not(.flat) {
     &:active,
     &:checked {
         @include button(active);
+    }
+}
+
+// stack switchers are tab bars so they sit on the same tab bar surface as notebooks and toggle groups
+.stack-switcher,
+stackswitcher {
+    margin: 4px 0;
+    padding: 3px;
+    border-radius: $button_radius;
+    background-color: $tabbar_bg_color;
+
+    &.linked > button,
+    > button {
+        margin: 0;
+        border-radius: $button_radius - 3px;
+        border-color: transparent;
+        box-shadow: none;
+
+        // tabs switch pages instead of running an action so they do not play the button ripple
+        &,
+        &:active,
+        &:checked:active {
+            animation: none;
+        }
+
+        &:not(:checked):not(:hover) {
+            background-color: transparent;
+        }
     }
 }

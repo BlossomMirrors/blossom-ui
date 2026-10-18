@@ -7,7 +7,7 @@ frame {
     }
 
     > label {
-        color: gtkalpha($fg_color, 0.5);
+        color: $fg_color;
     }
 }
 @if $gtkver!= "3" {
@@ -80,7 +80,7 @@ menu scrolledwindow:not(.navigation-sidebar):not(.sidebar) > .view {
 
 //vbox and hbox separators
 separator {
-    background: transparentize(white, 0.95);
+    background: $_separator_color;
     min-width: 1px;
     min-height: 1px;
 

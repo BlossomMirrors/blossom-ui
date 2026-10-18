@@ -2,6 +2,17 @@ viewswitcher {
   border-spacing: 3px;
   min-height: 28px;
 
+  // the wide switcher is a tab bar so it gets the same tab bar surface as notebooks and toggle groups
+  &.wide {
+    padding: 3px;
+    border-radius: $button_radius;
+    background-color: $tabbar_bg_color;
+
+    button.toggle {
+      border-radius: $button_radius - 3px;
+    }
+  }
+
   &.narrow {
     margin-top: -3px;
     margin-bottom: -3px;
@@ -11,6 +22,28 @@ viewswitcher {
   button.toggle {
     padding: 0;
     margin: 0;
+    border-radius: $button_radius;
+    box-shadow: none;
+
+    &, &:active, &:checked:active {
+      animation: none;
+    }
+  }
+
+  button.toggle,
+  headerbar & button.toggle#{$flat_not_chain} {
+    &:hover:not(:checked) {
+      @include nav-item-hover;
+    }
+
+    &:checked,
+    &:checked:hover,
+    &:checked:active {
+      @include nav-item-selected;
+    }
+  }
+
+  button.toggle {
 
     > stack > box {
       &.narrow {

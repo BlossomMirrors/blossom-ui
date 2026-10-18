@@ -120,6 +120,12 @@ row.spin {
     border-spacing: 6px;
     box-shadow: none;
 
+    // the row draws the focus ring so the embedded field keeps no frame of its own
+    &, &:hover, &:focus-within, &:backdrop, &:disabled {
+      border-color: transparent;
+      box-shadow: none;
+    }
+
     &, &:focus {
       outline: none;
       &:not(.vertical) { box-shadow: none; }

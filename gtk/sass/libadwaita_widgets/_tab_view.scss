@@ -28,7 +28,7 @@ tabbar {
 
     > tabboxchild {
       @include focus-ring($focus-state: ':focus-within:focus-visible');
-      border-radius: $radius;
+      border-radius: $button_radius;
     }
 
     > separator {
@@ -48,6 +48,7 @@ tabbar {
   tab {
     transition: background-color 200ms $ease-out-quad, color 200ms $ease-out-quad;
     margin: 4px 0;
+    border-radius: $button_radius;
 
     color: gtkalpha($fg_color, 0.7);
 
@@ -61,10 +62,7 @@ tabbar {
     }
 
     &:selected {
-      color: $selected_bg_color;
-      font-weight: bold;
-      background-color: gtkalpha($selected_bg_color, 0.18);
-      @include _shadows($widget_shadow);
+      @include nav-item-selected;
     }
 
     &:selected:disabled {
@@ -151,7 +149,7 @@ dnd {
   tab {
     min-height: 20px;
     padding: 3px;
-    border-radius: $radius;
+    border-radius: $button_radius;
 
     button.image-button {
       padding: 0;

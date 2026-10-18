@@ -49,7 +49,6 @@ WidgetSpec buttonFrame(const Helper *helper,
                        bool defaultButton) {
     Q_UNUSED(defaultButton)
     const QPalette &palette = state.palette;
-    // like the web registry buttons hover and press only switch to the hover surface and never take the accent color
     const QColor hover = helper->hoverSurface(palette);
     WidgetSpec spec = ButtonSpec;
     spec.fill(StateStyle<Fill>(Fill(palette.color(QPalette::Button))).hovered(Fill(hover)).pressed(Fill(hover)));
@@ -60,7 +59,6 @@ WidgetSpec buttonFrame(const Helper *helper,
 WidgetSpec toolButtonFrame(const Helper *helper,
                            const WidgetInteractionState &state) {
   const QColor text = state.palette.color(QPalette::WindowText);
-  // ghost buttons hover with the same surface as raised buttons like the web registry ghost variant
   const QColor hover = helper->hoverSurface(state.palette);
   const QColor sunken = helper->alphaColor(text, 0.2);
 
@@ -110,7 +108,6 @@ ContentLayout toolButtonContent(Qt::ToolButtonStyle style,
 QPalette::ColorRole buttonTextRole(bool flat, bool focused, bool pressed) {
     Q_UNUSED(focused)
     Q_UNUSED(pressed)
-    // the fill stays a neutral surface in every state so the text keeps its normal color
     return flat ? QPalette::WindowText : QPalette::ButtonText;
 }
 

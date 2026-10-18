@@ -83,7 +83,6 @@
 @define-color warning_color_breeze @QUATERNARY_500_HEX@;
 @define-color warning_color_insensitive_backdrop_breeze #918e67;
 @define-color warning_color_insensitive_breeze #918e67;
-// titlebar buttons share their colors with the kwin window decoration
 $window_button_light_hover: @WINDOW_BUTTON_LIGHT_HOVER_RGBA@;
 $window_button_light_hover_border: @WINDOW_BUTTON_LIGHT_HOVER_BORDER_RGBA@;
 $window_button_light_pressed: @WINDOW_BUTTON_LIGHT_PRESSED_RGBA@;

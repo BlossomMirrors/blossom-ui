@@ -40,8 +40,34 @@
     }
 }
 
-// colors.json window-button strengths of the surface mod color with the icon turning dark on the light fill in the dark theme like kwin
+$_titlebutton_transition:
+    background-color 150ms cubic-bezier(0.45, 0, 0.55, 1),
+    border-color 150ms cubic-bezier(0.45, 0, 0.55, 1),
+    color 150ms cubic-bezier(0.45, 0, 0.55, 1);
+
 @mixin _titlebutton_states($hover, $hover_border, $pressed, $active_icon) {
+    // resting on the hover colors at zero alpha makes the fade only change opacity like kwin instead of passing through black
+    // flat button rules reach titlebuttons through extend and bring a slower all property transition so every state sets the kwin timing again
+    &,
+    &:backdrop,
+    &:hover,
+    &:active,
+    &:active:hover {
+        transition: $_titlebutton_transition;
+    }
+
+    &,
+    &:backdrop {
+        background-color: rgba($hover, 0);
+        border-color: rgba($hover_border, 0);
+    }
+
+    &.close,
+    &.close:backdrop {
+        background-color: rgba($window_close_hover, 0);
+        border-color: rgba($window_close_border, 0);
+    }
+
     &:hover,
     &:active,
     &:active:hover {
@@ -56,11 +82,10 @@
         }
     }
 
-    // pressed buttons get the stronger fill without a border
     &:active,
     &:active:hover {
         background-color: $pressed;
-        border-color: transparent;
+        border-color: rgba($hover_border, 0);
     }
 }
 
@@ -70,7 +95,6 @@ windowcontrols > button.image-button {
     @extend %button_basic;
     @extend %button_basic_flat;
 
-    // same look as the kwin window decoration with an 18px box and a 1px border inside a radius 3 corner and a 150ms fade
     $_deco_ease: cubic-bezier(0.45, 0, 0.55, 1);
 
     border-radius: 3px;
@@ -125,8 +149,6 @@ windowcontrols > button.image-button {
 
     &:backdrop {
         color: $backdrop_titlebar_fg_color;
-        background-color: transparent;
-        border-color: transparent;
         box-shadow: none;
     }
 

@@ -11,12 +11,11 @@ $focus_transition:
     outline-width 200ms $ease-out-quad,
     outline-offset 200ms $ease-out-quad; // FIXME integrate it
 $radius: $BlossomuircCornerRadius;
-$button_radius: 8px;
 $circular_radius: if($button_radius==0, 0, 9999px);
-$menu_radius: $radius + 1px;
+$menu_radius: 7px;
 $menu-margin: ($menu_radius / 2) - 1px; //margin around menuitems & sidebar items
 $menu_item_padding: $BlossomuircMenuItemHeight;
-$popover_radius: $radius + 1px;
+$popover_radius: 7px;
 $window_radius: $BlossomuircOtherCornerRadius * 2;
 
 // Optional compact sizes for buttons, headerbar and headerbar widgets

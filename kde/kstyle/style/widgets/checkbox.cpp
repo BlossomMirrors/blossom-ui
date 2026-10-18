@@ -21,7 +21,6 @@ Fill checkBoxFill(const Helper *helper, const QPalette &palette, bool on, bool p
             background = background.lighter(110);
         return Fill(mouseOver ? background.lighter(105) : background);
     }
-    // unchecked boxes hover with the same surface as buttons
     if (mouseOver)
         return Fill(helper->hoverSurface(palette));
     return Fill(palette.color(QPalette::Button));

@@ -1,22 +1,33 @@
 /**********
  * Switch *
  **********/
+@include adaptive_color(
+    "blossomui_switch_thumb_color",
+    gtkcolor("@theme_fg_color"),
+    gtkcolor("@theme_bg_color")
+);
+@include adaptive_color(
+    "blossomui_switch_thumb_insensitive_color",
+    gtkcolor("@insensitive_fg_color"),
+    gtkcolor("@insensitive_bg_color")
+);
+$switch_thumb_color: gtkcolor("@blossomui_switch_thumb_color");
+$switch_thumb_insensitive_color: gtkcolor("@blossomui_switch_thumb_insensitive_color");
+
 @keyframes switch_thumb_on {
     0% { margin-left: 0; margin-right: 0; }
-    55% { margin-left: 2px; margin-right: -2px; }
+    55% { margin-left: 1px; margin-right: -1px; }
     100% { margin-left: 0; margin-right: 0; }
 }
 
 @keyframes switch_thumb_off {
     0% { margin-left: 0; margin-right: 0; }
-    55% { margin-left: -2px; margin-right: 2px; }
+    55% { margin-left: -1px; margin-right: 1px; }
     100% { margin-left: 0; margin-right: 0; }
 }
 
+// same size as the kirigami switch which is one grid unit tall with a 46 by 26 ratio and the thumb 2px from the rim
 switch {
-    // GTK forces the slider to content/2 x content-height, so content 28x14
-    // yields a 14x14 round thumb in a 32x18 pill with a 2px rim — the
-    // qqc2style switch at default gridUnit (GTK can't scale with gridUnit)
     min-width: 28px;
     min-height: 14px;
     padding: 1px;
@@ -26,16 +37,16 @@ switch {
     background-color: $button_bg_color;
     border: 1px solid gtkmix($fg_color, $button_bg_color, 0.1);
     transition:
-        background-color 150ms ease-in-out,
-        border-color 150ms ease-in-out;
+        background-color 200ms ease-in-out,
+        border-color 200ms ease-in-out;
 
     @if $gtkver!=3 {
         @include focus-ring($offset: 0, $outer: true);
     }
 
     &:hover {
-        background-color: gtkmix(white, $button_bg_color, 0.05);
-        border-color: gtkmix($fg_color, $button_bg_color, 0.16);
+        background-color: $base_color;
+        border-color: gtkmix($fg_color, $base_color, 0.16);
     }
 
     &:checked {
@@ -44,15 +55,20 @@ switch {
         border-color: gtkmix($fg_color, $selected_bg_color, 0.1);
 
         &:hover {
-            background-color: gtkmix(white, $selected_bg_color, 0.05);
-            border-color: gtkmix($fg_color, $selected_bg_color, 0.16);
+            background-color: gtkshade($selected_bg_color, 1.05);
+            border-color: gtkmix($fg_color, gtkshade($selected_bg_color, 1.05), 0.16);
         }
     }
 
     &:disabled {
         color: $insensitive_fg_color;
-        background-color: gtkalpha($button_bg_color, 0.5);
-        border-color: gtkalpha($fg_color, 0.05);
+        background-color: $insensitive_button_bg_color;
+        border-color: gtkmix($insensitive_fg_color, $insensitive_button_bg_color, 0.1);
+
+        &:checked {
+            background-color: $insensitive_selected_bg_color;
+            border-color: gtkmix($insensitive_fg_color, $insensitive_selected_bg_color, 0.1);
+        }
     }
 
     &:backdrop {
@@ -61,33 +77,36 @@ switch {
     }
 
     slider {
-        min-width: 14px;
-        min-height: 14px;
+        min-width: 12px;
+        min-height: 12px;
         margin: 0;
         border-radius: 9999px;
         box-shadow: none;
-        border: none;
-        background-color: #ededf0;
+        border: 1px solid gtkmix($fg_color, $switch_thumb_color, 0.12);
+        background-color: $switch_thumb_color;
 
         transition:
-            background-color 150ms ease-in-out,
-            color 150ms ease-in-out,
-            background-image 150ms ease-in-out;
+            background-color 200ms ease-in-out,
+            color 200ms ease-in-out,
+            background-image 200ms ease-in-out;
         animation: switch_thumb_off 200ms ease-out;
 
-        // state glyph, recolored via the slider's color (thumb darkened
-        // 55% toward black, same as kstyle/qqc2)
-        color: gtkmix(black, #ededf0, 0.55);
+        color: gtkmix(black, $switch_thumb_color, 0.55);
         background-image: -gtk-recolor(url("./blossomui-gtk-assets/switch-x-symbolic.svg"));
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 8px 8px;
+        background-size: 12px 12px;
     }
 
     &:checked slider {
-        color: $selected_bg_color;
+        color: gtkmix($selected_bg_color, $switch_thumb_color, 0.85);
         background-image: -gtk-recolor(url("./blossomui-gtk-assets/switch-check-symbolic.svg"));
+        background-size: 12px 12px;
         animation: switch_thumb_on 200ms ease-out;
+    }
+
+    &:checked:hover slider {
+        color: gtkmix(gtkshade($selected_bg_color, 1.05), $switch_thumb_color, 0.85);
     }
 
     &:dir(rtl) {
@@ -96,15 +115,20 @@ switch {
     }
 
     &:disabled slider {
-        background-color: gtkalpha(#ededf0, 0.6);
+        background-color: $switch_thumb_insensitive_color;
+        border-color: gtkmix($insensitive_fg_color, $switch_thumb_insensitive_color, 0.12);
+        color: gtkmix(black, $switch_thumb_insensitive_color, 0.55);
     }
 
-    // hide libadwaita's on/off track glyphs (1px, not 0: GTK asserts
-    // size > 0 on icon lookup)
+    &:disabled:checked slider {
+        color: gtkmix($insensitive_selected_bg_color, $switch_thumb_insensitive_color, 0.85);
+    }
+
+    // hide the libadwaita on and off track glyphs with 1px because gtk asserts a size above zero on icon lookup
     image {
         color: transparent;
         @if $gtkver != "3" {
-            // GTK4-only property, aborts the whole stylesheet on GTK3
+            // gtk3 does not know this property and would drop the whole stylesheet
             -gtk-icon-size: 1px;
         }
     }

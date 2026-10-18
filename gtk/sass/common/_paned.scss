@@ -1,6 +1,13 @@
 /*********
  * Paned *
  *********/
+@include adaptive_color(
+    "paned_separator_color",
+    rgba(255, 255, 255, 0.04),
+    rgba(0, 0, 0, 0.063)
+);
+$_paned_separator_color: gtkcolor("@paned_separator_color");
+
 paned {
     > separator {
         min-width: 1px;
@@ -9,7 +16,7 @@ paned {
         border-style: none; // just to be sure
         background-color: transparent;
         // workaround, using background istead of a border since the border will get rendered twice (?)
-        background-image: image($bg_color); //FIXME
+        background-image: image($_paned_separator_color);
         background-size: 1px 1px;
         box-shadow: none;
 
@@ -18,14 +25,16 @@ paned {
         } // FIXME is this needed?
 
         &:backdrop {
-            background-image: image($backdrop_borders_color);
+            background-image: image($_paned_separator_color);
         }
 
         &.wide {
             min-width: 5px;
             min-height: 5px;
             background-color: $bg_color;
-            background-image: image($bg_color), image($bg_color);
+            background-image:
+                image($_paned_separator_color),
+                image($_paned_separator_color);
             background-size:
                 1px 1px,
                 1px 1px;
@@ -34,8 +43,8 @@ paned {
             &:backdrop {
                 background-color: $backdrop_bg_color;
                 background-image:
-                    image($backdrop_borders_color),
-                    image($backdrop_borders_color);
+                    image($_paned_separator_color),
+                    image($_paned_separator_color);
             }
         }
     }

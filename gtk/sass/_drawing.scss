@@ -7,6 +7,16 @@ $widget_shadow: none;
 
 $card_shadow: if($BlossomuircWidgetDrawShadow, (0 1px 2px $card_shadow_color), none);
 
+$button_shadow: $card_shadow;
+
+$button_radius: 6px;
+$item_radius: 4px;
+$raised_button_radius: $button_radius;
+
+$flat_button_radius: $button_radius;
+
+$button_press_shrink: 2px;
+
 $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(black, 0.025),
                                                  inset 0 -2px gtkalpha(black, 0.02),
                                                  inset 0 -3px gtkalpha(black, 0.01),
@@ -29,6 +39,25 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
 // If $target is specified, the focus ring is applied to the specified child element.
 // If $outer is true, the focus ring extends outward. Otherwise, it extends inward.
 // If $within is true, use focus-within instead of focus:focus-visible
+// one look for every selected tab sidebar item and toggle so all of them match the kstyle selection
+@mixin nav-item-selected {
+    color: $selected_bg_color;
+    font-weight: 600;
+    background-color: gtkalpha($selected_bg_color, 0.18);
+    box-shadow: none;
+
+    &:hover {
+        background-color: gtkalpha($selected_bg_color, 0.28);
+    }
+}
+
+// headerbar flat buttons carry this not chain so tab like switchers inside headerbars repeat it to keep the tab look
+$flat_not_chain: ":not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque):not(.close):not(.minimize):not(.maximize)";
+
+@mixin nav-item-hover {
+    background-color: $button_bg_color;
+}
+
 @mixin focus-ring($target: null, $width: 2px, $offset: -$width, $outer: false, $focus-state: ':focus:focus-visible', $fc: $focus_border_color, $transition: none) {
   transition-property: outline, outline-width, outline-offset, outline-color;
   transition-duration: 300ms;
@@ -158,7 +187,6 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   @else if $t==hover {
     color: $tc;
     outline-color: gtkalpha($tc, 0.3);
-    // kstyle hovers with the Button AlternateBackground fill
     background-color: if($c==$button_bg_color, $button_hover_bg_color, gtkshade($c, 1.06));
     @include _shadows($widget_shadow);
   }
@@ -166,7 +194,7 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   @else if $t==flat-hover {
     color: $fg_color;
     outline-color: gtkalpha($fg_color, 0.3);
-    background-color: gtkalpha($fg_color, 0.1);
+    background-color: $button_hover_bg_color;
     @include _shadows(button-highlight($transparent:true), $widget_shadow);
   }
 
@@ -196,8 +224,7 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
     color: $tc;
     outline-color: gtkalpha($tc, 0.3);
     @if $c==$button_bg_color {
-      // kstyle pressed/checked: base mixed 20% toward the text color, then
-      background-color: gtkshade(gtkmix($button_fg_color, $c, 0.2), 0.95);
+      background-color: $button_hover_bg_color;
       @include _shadows($widget_shadow);
     } @else {
       background-color: gtkshade(gtkmix($c, $button_bg_color, 0.28), 0.95);
@@ -224,9 +251,9 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   }
 
   @else if $t==insensitive-active {
-    color: gtkalpha($tc, 0.5);
+    color: if($tc != $button_fg_color, gtkalpha($tc, 0.5), $insensitive_button_fg_color);
     background-color: if($c==$button_bg_color,
-                         gtkalpha(gtkshade(gtkmix($button_fg_color, $c, 0.2), 0.95), 0.4),
+                         $insensitive_base_color,
                          gtkalpha(gtkshade(gtkmix($c, $button_bg_color, 0.28), 0.95), 0.4));
     @include _shadows(button-highlight($transparent:true), $widget_shadow);
   }
@@ -246,7 +273,7 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   @else if $t==backdrop-active {
     color: $backdrop_button_fg_color;
     outline-color: gtkalpha($backdrop_button_fg_color, 0.3);
-    background-color: gtkshade(gtkmix($backdrop_button_fg_color, $backdrop_button_bg_color, 0.2), 0.95);
+    background-color: $backdrop_base_color;
     @include _shadows($widget_shadow);
   }
 
@@ -257,8 +284,8 @@ $toolbar_shadow: if($BlossomuircWidgetToolBarShadow, (inset 0 -1px gtkalpha(blac
   }
 
   @else if $t==backdrop-insensitive-active {
-    color: gtkalpha($backdrop_button_fg_color, 0.4);
-    background-color: gtkalpha(gtkshade(gtkmix($backdrop_button_fg_color, $backdrop_button_bg_color, 0.2), 0.95), 0.4);
+    color: $backdrop_insensitive_button_fg_color;
+    background-color: $insensitive_base_color;
     @include _shadows(button-highlight($transparent:true), $widget_shadow);
   }
 

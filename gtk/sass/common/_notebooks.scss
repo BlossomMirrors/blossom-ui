@@ -13,7 +13,7 @@ notebook {
     > header {
         padding: 0;
         background-color: $tabbar_bg_color;
-        border-radius: $radius;
+        border-radius: $radius - 1px;
 
         &.top,
         &.bottom {
@@ -97,12 +97,12 @@ notebook {
         tab {
             min-height: 22px;
             min-width: 22px;
-            padding: 3px 12px;
-            border-radius: $radius;
+            padding: 3px 8px;
+            border-radius: 6px;
 
             outline-offset: -5px;
 
-            color: gtkalpha($fg_color, 0.7);
+            color: gtkalpha($fg_color, 0.75);
             font-weight: normal;
             transition:
                 background-color 200ms $ease-out-quad,
@@ -110,16 +110,16 @@ notebook {
 
             &:hover {
                 color: $fg_color;
-                background-color: $tab_hover_bg;
+                background-color: $button_bg_color;
             }
 
             &:backdrop {
-                color: gtkalpha($backdrop_fg_color, 0.7);
+                color: gtkalpha($backdrop_fg_color, 0.75);
             }
 
             &:checked {
                 color: $selected_bg_color;
-                font-weight: bold;
+                font-weight: 600;
                 background-color: gtkalpha($selected_bg_color, 0.18);
                 @include _shadows($widget_shadow);
             }
@@ -133,25 +133,31 @@ notebook {
             }
 
             &:backdrop:checked {
-                color: $backdrop_selected_tab_fg_color;
-                background-color: $backdrop_selected_tab_bg_color;
+                color: $backdrop_selected_bg_color;
+                background-color: gtkalpha($backdrop_selected_bg_color, 0.18);
             }
 
-            // colors the button like the label, overridden otherwise
+            // like kstyle the close icon only brightens on hover and never gets a fill behind it
+            // the icon fades with opacity because a color mixed from currentColor resolves to nothing in gtk4
             @at-root %tab-close-button,
                 & button.flat {
-                &:hover {
-                    color: $tabbar_bg_color;
-                    background-color: $close_button_bg;
-                    transition: none;
+                &,
+                &:backdrop,
+                &:hover,
+                &:active {
+                    color: inherit;
+                    background-color: transparent;
+                    border: none;
+                    box-shadow: none;
                 }
 
-                &,
-                &:backdrop {
-                    color: gtkalpha(
-                        currentColor,
-                        if($BlossomuircTabUseBrighterCloseIcon, 1, 0.4)
-                    );
+                > image {
+                    opacity: if($BlossomuircTabUseBrighterCloseIcon, 0.75, 0.5);
+                }
+
+                &:hover > image,
+                &:active > image {
+                    opacity: if($BlossomuircTabUseBrighterCloseIcon, 1, 0.85);
                 }
 
                 padding: 0;
@@ -191,6 +197,7 @@ notebook {
                 tab {
                     margin-left: 4px;
                     margin-right: 4px;
+                    min-width: 61px;
                 }
             }
         }
@@ -222,12 +229,12 @@ notebook {
 
     > stack:not(:only-child) {
         // the :not(:only-child) is for "hidden" notebooks
-        border-radius: $radius;
-        background-color: gtkmix($bg_color, $base_color, 0.5);
+        border-radius: $radius - 1px;
+        background-color: $base_color;
         @include _shadows($widget_shadow);
 
         &:backdrop {
-            background-color: $backdrop_bg_color;
+            background-color: $backdrop_base_color;
         }
     }
 }

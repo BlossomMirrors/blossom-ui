@@ -1,143 +1,86 @@
 /************
  * GtkScale *
  ************/
-%scale_trough {
-    border-radius: 2px;
-    background-color: $light_fill;
-    // hack
-    border: 1px solid transparent;
-    background-clip: padding-box;
-
-    &:disabled {
-        background-color: gtkalpha($light_fill, 0.4);
-    }
-
-    &:backdrop {
-        background-color: $backdrop_light_fill;
-        transition: $backdrop_transition;
-
-        &:disabled {
-            background-color: gtkalpha($backdrop_light_fill, 0.4);
-        }
-    }
-
-    row:selected & {
-        &:disabled,
-        & {
-            background-color: gtkalpha($selected_fg_color, 0.4);
-        }
-    }
-
-    // OSD
-    .osd & {
-        background-color: gtkalpha($osd_borders_color, 0.8);
-
-        &:disabled {
-            background-color: $osd_insensitive_bg_color;
-        }
-    }
-}
-
-%scale_highlight {
-    margin: -1px;
-
-    border-radius: 2px;
-    background-color: $selected_bg_color;
-    border: 1px solid $selected_bg_color;
-    background-clip: padding-box;
-
-    &:backdrop {
-        background-color: $backdrop_selected_bg_color;
-        border-color: $backdrop_selected_bg_color;
-    }
-
-    &:disabled {
-        background-color: transparent; //$insensitive_selected_bg_color; //FIXME almost invisible against background
-        border-color: transparent;
-    }
-
-    &:backdrop {
-        &:disabled {
-            background-color: transparent; //$backdrop_insensitive_selected_bg_color;
-            border-color: transparent;
-        }
-    }
-}
+@include adaptive_color(
+    "blossomui_scale_slider_shadow_color",
+    gtkalpha(black, 0.43),
+    gtkalpha(black, 0.18)
+);
+@include adaptive_color(
+    "blossomui_scale_mark_color",
+    gtkalpha(white, 0.04),
+    gtkalpha(black, 0.06)
+);
+$_scale_slider_shadow: 0 1px 3px gtkcolor("@blossomui_scale_slider_shadow_color");
 
 scale {
     // sizing
-    $_marks_length: 6px;
-    $_marks_distance: 6px;
+    $_marks_length: 8px;
+    $_marks_distance: 2px;
     $_marks_size: $_marks_length + $_marks_distance;
 
-    min-height: 10px;
-    min-width: 10px;
-    padding: 12px;
+    min-height: 6px;
+    min-width: 6px;
+
+    &.horizontal {
+        padding: 12px 5px;
+    }
+
+    &.vertical {
+        padding: 5px 12px;
+    }
 
     @if $gtkver!=3 {
         @include focus-ring("> trough", $offset: 10px);
     }
 
-    // those are inside the trough node, I need them to show their own border over the trough one, so negative margin
-    //fill,
-    //highlight { margin: -1px; }
-
-    // the slider is inside the trough, so to have make it bigger there's a negative margin
-
-    slider {
-        min-height: 14px;
-        min-width: 14px;
-        margin: -6px;
-    }
-
-    // click-and-hold the slider to activate
-    &.fine-tune {
-        &.horizontal {
-            padding-top: 8px;
-            padding-bottom: 8px;
-            min-height: 14px;
-        }
-
-        &.vertical {
-            padding-left: 8px;
-            padding-right: 8px;
-            min-width: 14px;
-        }
-
-        // to make the trough grow in fine-tune mode
-        slider {
-            margin: -4px;
-        }
-
-        fill,
-        highlight,
-        trough {
-            border-radius: 5px;
-            @if $gtkver== "3" {
-                -gtk-outline-radius: 7px;
-            }
-        }
-    }
-
-    // the backing bit
     trough {
-        min-width: 2px;
-        min-height: 2px;
+        min-width: 6px;
+        min-height: 6px;
+        border-radius: 3px;
+        background-color: $button_bg_color;
 
         outline-offset: 4px;
         @if $gtkver== "3" {
             -gtk-outline-radius: 5px;
         }
 
-        @extend %scale_trough;
+        &:disabled {
+            background-color: $insensitive_button_bg_color;
+        }
+
+        &:backdrop {
+            background-color: $backdrop_button_bg_color;
+            transition: $backdrop_transition;
+        }
+
+        row:selected & {
+            &:disabled,
+            & {
+                background-color: gtkalpha($selected_fg_color, 0.4);
+            }
+        }
+
+        .osd & {
+            background-color: gtkalpha($osd_borders_color, 0.8);
+
+            &:disabled {
+                background-color: $osd_insensitive_bg_color;
+            }
+        }
     }
 
-    // the colored part of the backing bit
     highlight {
-        min-width: 2px;
-        min-height: 2px;
+        border-radius: 4px;
+        background-color: gtkmix($selected_bg_color, $bg_color, 0.75);
 
-        @extend %scale_highlight;
+        &:backdrop {
+            background-color: gtkmix($backdrop_selected_bg_color, $backdrop_bg_color, 0.75);
+        }
+
+        &:disabled {
+            background-color: transparent;
+        }
 
         row:selected & {
             &:disabled,
@@ -147,10 +90,18 @@ scale {
         }
     }
 
+    &.horizontal highlight {
+        margin: -1px 0;
+    }
+
+    &.vertical highlight {
+        margin: 0 -1px;
+    }
+
     // this is another differently styled part of the backing bit, the most relevant use case is for example
     // in media player to indicate how much video stream as been cached
     fill {
-        @extend %scale_trough;
+        border-radius: 3px;
 
         &:backdrop,
         & {
@@ -178,42 +129,43 @@ scale {
     }
 
     slider {
-        @include button(normal);
-        @include _shadows(
-            button_highlight(),
-            $widget_shadow,
-            $widget_shadow,
-            $widget_shadow
-        ); // darker shadow
-
+        min-height: 12px;
+        min-width: 12px;
         border-radius: 100%;
-        transition: $button_transition;
-        transition-property: background, box-shadow;
+        border: 1px solid $selected_bg_color;
+        background-color: $switch_thumb_color;
+        background-image: none;
+        box-shadow: $_scale_slider_shadow, 0 0 0 0 transparent;
+        transition:
+            background-color 250ms ease-in-out,
+            box-shadow 250ms ease-in-out;
 
         &:hover {
-            @include button(focused);
+            box-shadow: $_scale_slider_shadow, 0 0 0 4px gtkalpha($selected_bg_color, 0.35);
         }
 
         &:active {
-            @include button(active);
+            background-color: gtkshade($switch_thumb_color, 0.97);
+
+            @if $gtkver!= "3" {
+                transform: translate(0, 2px);
+            }
         }
 
         &:disabled {
-            @include button(insensitive);
+            background-color: $switch_thumb_insensitive_color;
+            border-color: $insensitive_selected_bg_color;
+            box-shadow: $_scale_slider_shadow;
         }
 
         &:backdrop {
             transition: $backdrop_transition;
-
-            @include button(backdrop);
+            border-color: $backdrop_selected_bg_color;
 
             &:disabled {
-                @include button(backdrop-insensitive);
+                border-color: $insensitive_selected_bg_color;
             }
         }
-
-        // ...on selected list rows
-        //row:selected & { &:disabled, & { background-color: red; } }
 
         // OSD
         .osd & {
@@ -241,6 +193,14 @@ scale {
         }
     }
 
+    &.horizontal slider {
+        margin: -4px 3px;
+    }
+
+    &.vertical slider {
+        margin: 3px -4px;
+    }
+
     marks,
     value {
         color: gtkalpha(currentColor, 0.55);
@@ -259,7 +219,7 @@ scale {
             indicator {
                 background-color: if(
                     $gtkver!= "3",
-                    gtkalpha(currentColor, 0.55),
+                    gtkcolor("@blossomui_scale_mark_color"),
                     transparent
                 );
                 min-height: $_marks_length;
@@ -285,21 +245,6 @@ scale {
         > value.right {
             margin-left: 9px;
         }
-
-        &.fine-tune {
-            > marks {
-                &.top {
-                    margin-top: $_marks_distance - 2px;
-                }
-                &.bottom {
-                    margin-bottom: $_marks_distance - 2px;
-                }
-
-                indicator {
-                    min-height: ($_marks_length - 2px);
-                }
-            }
-        }
     }
 
     &.vertical {
@@ -314,7 +259,7 @@ scale {
             indicator {
                 background-color: if(
                     $gtkver!= "3",
-                    gtkalpha(currentColor, 0.55),
+                    gtkcolor("@blossomui_scale_mark_color"),
                     transparent
                 );
                 min-height: 1px;
@@ -339,21 +284,6 @@ scale {
         }
         > value.bottom {
             margin-top: 9px;
-        }
-
-        &.fine-tune {
-            > marks {
-                &.top {
-                    margin-left: $_marks_distance - 2px;
-                }
-                &.bottom {
-                    margin-right: $_marks_distance - 2px;
-                }
-
-                indicator {
-                    min-width: ($_marks_length - 2px);
-                }
-            }
         }
     }
 

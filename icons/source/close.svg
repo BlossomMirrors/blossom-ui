@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-3.0 -3.0 30.0 30.0">
   <defs><style id="current-color-scheme" type="text/css">.ColorScheme-Text { color: #232629; }</style></defs>
-  <path d="M6 6 L18 18 M18 6 L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="ColorScheme-Text"/>
+  <rect x="2.5147" y="11" width="18.9706" height="2" rx="1" transform="rotate(45 12 12)" fill="currentColor" class="ColorScheme-Text"/>
+  <rect x="2.5147" y="11" width="18.9706" height="2" rx="1" transform="rotate(135 12 12)" fill="currentColor" class="ColorScheme-Text"/>
 </svg>

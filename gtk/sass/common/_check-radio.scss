@@ -96,6 +96,63 @@ radiobutton.text-button {
     }
 }
 
+@mixin _indicator_colors($fill, $glyph, $text, $rim) {
+    color: $glyph;
+    background-color: $fill;
+    background-image: none;
+    box-shadow: inset 0 0 0 1px gtkmix($text, $fill, $rim);
+}
+
+$_insensitive_selected_glyph_color: gtkcolor("@insensitive_selected_fg_color");
+
+@each $node, $rim, $rim_hover in (check, 0.1, 0.16), (radio, 0.14, 0.2) {
+    #{$node} {
+        @include _indicator_colors($button_bg_color, $selected_fg_color, $fg_color, $rim);
+
+        &:hover {
+            @include _indicator_colors($base_color, $selected_fg_color, $fg_color, $rim_hover);
+        }
+
+        &:backdrop {
+            @include _indicator_colors($backdrop_button_bg_color, $backdrop_selected_fg_color, $backdrop_fg_color, $rim);
+        }
+
+        &:checked,
+        &:indeterminate {
+            @include _indicator_colors($selected_bg_color, $selected_fg_color, $fg_color, $rim);
+
+            &:hover {
+                @include _indicator_colors(gtkshade($selected_bg_color, 1.05), $selected_fg_color, $fg_color, $rim_hover);
+            }
+
+            &:backdrop {
+                @include _indicator_colors($backdrop_selected_bg_color, $backdrop_selected_fg_color, $backdrop_fg_color, $rim);
+            }
+        }
+
+        &:disabled {
+            @include _indicator_colors($insensitive_button_bg_color, $insensitive_fg_color, $insensitive_fg_color, $rim);
+
+            &:checked,
+            &:indeterminate {
+                @include _indicator_colors($insensitive_selected_bg_color, $_insensitive_selected_glyph_color, $insensitive_fg_color, $rim);
+            }
+        }
+
+        @if $gtkver== "3" {
+            menu menuitem &:checked:not(:disabled),
+            menu menuitem &:indeterminate:not(:disabled) {
+                @include _indicator_colors(gtkshade($selected_bg_color, 1.1), $selected_fg_color, $fg_color, $rim);
+            }
+        } @else {
+            popover.menu modelbutton &:checked:not(:disabled),
+            popover.menu modelbutton &:indeterminate:not(:disabled) {
+                @include _indicator_colors(gtkshade($selected_bg_color, 1.1), $selected_fg_color, $fg_color, $rim);
+            }
+        }
+    }
+}
+
 check,
 radio {
     margin: 0 4px;
@@ -122,41 +179,13 @@ radio {
 
     min-height: 16px;
     min-width: 16px;
+    transition:
+        background-color 250ms ease-in-out,
+        box-shadow 250ms ease-in-out;
 
-    & {
-        // for unchecked
-        @each $state, $t in ("", "normal"), (":hover", "hover"),
-            (":active", "active"), (":disabled", "insensitive"),
-            (":checked:disabled", "insensitive"),
-            (":indeterminate:disabled", "insensitive"),
-            (":backdrop", "backdrop"),
-            (":backdrop:disabled", "backdrop-insensitive"),
-            (":checked:backdrop:disabled", "backdrop-insensitive"),
-            (":indeterminate:backdrop:disabled", "backdrop-insensitive")
-        {
-            &#{$state} {
-                @include check($t);
-            }
-        }
-    }
-
-    & {
-        // for checked
-        @each $t in (":checked"), (":indeterminate") {
-            &#{$t} {
-                @each $state, $t in ("", "normal"), (":hover", "hover"),
-                    (":active", "active"), (":backdrop", "backdrop")
-                {
-                    &#{$state} {
-                        @include check(
-                            $t,
-                            $selected_bg_color,
-                            $selected_fg_color,
-                            $checked: true
-                        );
-                    }
-                }
-            }
+    @if $gtkver!= "3" {
+        &:active:not(:disabled) {
+            transform: translate(1px, 1px);
         }
     }
 
@@ -203,7 +232,7 @@ radio {
 %check,
 check {
     border-radius: $radius / 2;
-    -gtk-icon-shadow: 0 1px rgba(0, 0, 0, 0.5);
+    -gtk-icon-shadow: none;
 
     &:checked {
         -gtk-icon-source: image(
@@ -225,7 +254,7 @@ check {
 %radio,
 radio {
     border-radius: 100%;
-    -gtk-icon-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    -gtk-icon-shadow: none;
 
     &:checked {
         -gtk-icon-source: image(
@@ -265,7 +294,7 @@ check {
     &:checked:not(:backdrop),
     &:indeterminate:not(:backdrop) {
         -gtk-icon-transform: unset;
-        transition: 400ms;
+        transition: 250ms;
     }
 }
 
