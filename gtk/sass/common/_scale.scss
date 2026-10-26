@@ -45,8 +45,9 @@ scale {
             -gtk-outline-radius: 5px;
         }
 
+        // the insensitive button color equals the window so a disabled groove keeps the button surface at half strength like qt
         &:disabled {
-            background-color: $insensitive_button_bg_color;
+            background-color: gtkalpha($button_bg_color, 0.5);
         }
 
         &:backdrop {

@@ -83,6 +83,12 @@ $_ripple_color: gtkalpha($selected_bg_color, 0.35);
     }
 }
 
+// gtk ends the ripple animation the moment the mouse is released so the rest state needs the same invisible layers to fade the running ripple out like qt
+$_ripple_fade: background-image 300ms $ease-out-quad;
+@function _ripple_rest($c) {
+    @return radial-gradient(circle farthest-corner at center, gtkalpha($c, 0) 100%, transparent 0%), image(gtkalpha($c, 0));
+}
+
 // same ripple, tinted with the button's own color (destructive buttons)
 $_ripple_color_destructive: gtkalpha($destructive_color, 0.35);
 @keyframes ripple_effect_destructive {
@@ -133,9 +139,10 @@ button {
         border: $button_press_shrink solid transparent;
         border-radius: $raised_button_radius;
         background-clip: border-box;
-        transition: $button_transition;
+        transition: $button_transition, $_ripple_fade;
 
         @include raised-button(normal);
+        background-image: _ripple_rest($selected_bg_color);
 
         @if $gtkver== "3" {
             &:not(.flat),
@@ -209,7 +216,7 @@ button {
         &:checked {
             @include button(active);
 
-            transition-duration: 50ms;
+            transition-duration: 50ms, 300ms;
         }
 
         &.keyboard-activating,
@@ -219,7 +226,7 @@ button {
             &:focus {
                 @include button(active-hover);
 
-                transition-duration: 50ms;
+                transition-duration: 50ms, 300ms;
             }
         }
 
@@ -438,6 +445,7 @@ button {
             // close button (60% fill, full border) so both danger reds sit
             // at a similar brightness
             @include raised-button(tinted, $b_color, $mix: 0.6);
+            background-image: _ripple_rest($b_color);
 
             &.flat {
                 @include button(undecorated);

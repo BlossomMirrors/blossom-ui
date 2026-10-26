@@ -62,8 +62,8 @@ switch {
 
     &:disabled {
         color: $insensitive_fg_color;
-        background-color: $insensitive_button_bg_color;
-        border-color: gtkmix($insensitive_fg_color, $insensitive_button_bg_color, 0.1);
+        background-color: gtkalpha($button_bg_color, 0.5);
+        border-color: gtkmix($insensitive_fg_color, $bg_color, 0.1);
 
         &:checked {
             background-color: $insensitive_selected_bg_color;

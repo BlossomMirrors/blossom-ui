@@ -2,14 +2,6 @@
  * Notebooks *
  *************/
 notebook {
-    @if $gtkver!= "3" {
-        @include focus-ring(
-            "> header > tabs > tab:checked",
-            $offset: -2px,
-            $focus-state: ":focus:focus-visible"
-        );
-    }
-
     > header {
         padding: 0;
         background-color: $tabbar_bg_color;
@@ -100,7 +92,7 @@ notebook {
             padding: 3px 8px;
             border-radius: 6px;
 
-            outline-offset: -5px;
+            outline: none;
 
             color: gtkalpha($fg_color, 0.75);
             font-weight: normal;
@@ -368,4 +360,3 @@ notebook {
         }
     }
 }
-
