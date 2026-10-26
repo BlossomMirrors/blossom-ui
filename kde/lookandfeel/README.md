@@ -9,7 +9,7 @@ A modern light theme featuring:
 - **Widget Style**: BlossomUI
 - **Color Scheme**: BlossomUI Light
 - **Icon Theme**: Breeze (light)
-- **Cursor Theme**: Bibata-Modern-Classic
+- **Cursor Theme**: Bibata-Blossom-Black (Bibata-Modern-Classic with rounded resize arrows)
 - **Window Decorations**: BlossomUI
 - **Sound Theme**: Ocean
 
@@ -18,7 +18,7 @@ A modern dark theme featuring:
 - **Widget Style**: BlossomUI
 - **Color Scheme**: BlossomUI Dark
 - **Icon Theme**: Breeze Dark
-- **Cursor Theme**: Bibata-Modern-Classic
+- **Cursor Theme**: Bibata-Blossom-Black (Bibata-Modern-Classic with rounded resize arrows)
 - **Window Decorations**: BlossomUI
 - **Sound Theme**: Ocean
 
@@ -91,7 +91,7 @@ Each Global Theme configures the following components automatically:
 - ✅ **Application Style**: BlossomUI widget style
 - ✅ **Color Scheme**: Coordinated light/dark colors
 - ✅ **Icons**: Breeze (light) or Breeze Dark
-- ✅ **Cursors**: Bibata-Modern-Classic
+- ✅ **Cursors**: Bibata-Blossom-Black (also ships Bibata-Blossom-White and the sharp Bibata-Blossom-Classic-Black and Bibata-Blossom-Classic-White)
 - ✅ **Window Decorations**: BlossomUI decorations
 - ✅ **Plasma Theme**: Default Plasma theme
 - ✅ **Splash Screen**: Minimal splash
@@ -125,12 +125,6 @@ lookandfeel/
 │       └── defaults
 └── CMakeLists.txt              # Build configuration
 ```
-
-## Requirements
-
-- Breeze icon theme (provided by KDE)
-- Bibata-Modern-Classic cursor theme (optional, will fallback to breeze_cursors)
-- Ocean sound theme (provided by KDE, optional)
 
 ## Notes
 

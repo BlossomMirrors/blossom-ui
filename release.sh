@@ -236,6 +236,12 @@ fi
 %{_datadir}/icons/hicolor/scalable/apps/blossomui-settings.svgz
 %{_datadir}/icons/BlossomUI/
 
+# Cursors
+%{_datadir}/icons/Bibata-Blossom-Black/
+%{_datadir}/icons/Bibata-Blossom-White/
+%{_datadir}/icons/Bibata-Blossom-Classic-Black/
+%{_datadir}/icons/Bibata-Blossom-Classic-White/
+
 # Plasma Look-and-Feel (Global Themes)
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.light.desktop/
 %{_datadir}/plasma/look-and-feel/org.blossomos.ui.dark.desktop/

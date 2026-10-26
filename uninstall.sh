@@ -63,6 +63,9 @@ rm -rf /usr/share/wallpapers/Blossom\ Rays
 # Icons
 rm -rf "/usr/share/icons/${_PROJECT}"
 
+# Cursors
+rm -rf /usr/share/icons/Bibata-Blossom-Black /usr/share/icons/Bibata-Blossom-White /usr/share/icons/Bibata-Blossom-Classic-Black /usr/share/icons/Bibata-Blossom-Classic-White
+
 # GTK themes
 rm -rf /usr/share/themes/${_PROJECT}
 

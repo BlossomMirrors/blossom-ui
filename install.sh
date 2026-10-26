@@ -13,7 +13,7 @@ if [ "$1" = "--data-only" ]; then
         -DBUILD_QT6=OFF
     cmake --build "$SRC_DIR/build/data"
     echo "*** Installing theme files ***"
-    sudo rm -rf /usr/share/icons/BlossomUI /usr/share/plasma/desktoptheme/BlossomUI
+    sudo rm -rf /usr/share/icons/BlossomUI /usr/share/icons/Bibata-Blossom-Black /usr/share/icons/Bibata-Blossom-White /usr/share/icons/Bibata-Blossom-Classic-Black /usr/share/icons/Bibata-Blossom-Classic-White /usr/share/plasma/desktoptheme/BlossomUI
     sudo cmake --install "$SRC_DIR/build/data"
 else
     echo " *** Building *** "
